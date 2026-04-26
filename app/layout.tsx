@@ -29,9 +29,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-white text-black">
-
-        {/* 🔝 NAVBAR */}
+<body className="min-h-full flex flex-col bg-[#FAFAF7] text-[#171717]">        {/* 🔝 NAVBAR */}
         <header className="w-full border-b border-gray-200">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
 

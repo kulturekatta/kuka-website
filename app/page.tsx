@@ -1,9 +1,7 @@
 import { experiences } from "@/data/experiences";
 export default function HomePage() {
   return (
-    <main className="min-h-screen px-6 py-20 space-y-24">
-
-      {/* 🔥 HERO */}
+<main className="min-h-screen bg-[#FAFAF7] text-[#171717] px-6 py-20 space-y-24">        {/* 🔥 HERO */}
       <section className="max-w-4xl">
         <h1 className="text-5xl font-semibold leading-tight">
           Culture is what we do.
@@ -17,7 +15,7 @@ export default function HomePage() {
         <div className="mt-8 flex gap-4">
           <a
             href="/experiences"
-            className="px-6 py-3 bg-black text-white rounded-lg"
+            className="px-6 py-3 bg-white text-black rounded-lg"
           >
             Explore Experiences
           </a>
@@ -303,7 +301,7 @@ export default function HomePage() {
           <div className="mt-8 flex flex-wrap gap-4">
             <a
               href="/experiences"
-              className="px-6 py-3 bg-black text-white rounded-lg"
+              className="px-6 py-3 bg-white text-black rounded-lg"
             >
               Explore Experiences
             </a>
