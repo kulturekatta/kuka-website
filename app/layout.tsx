@@ -35,12 +35,12 @@ export default function RootLayout({
 
             {/* 🟡 LOGO */}
             <Link href="/" className="flex items-center">
-              <Image
-                src="/logo.png"
-                alt="KultureKatta logo"
-                width={110}
-                height={36}
-                className="object-contain"
+                <Image
+                 src="/logo.png"
+                  alt="KultureKatta"
+                  width={140}
+                  height={40}
+                  className="h-40 w-40"
               />
             </Link>
 
