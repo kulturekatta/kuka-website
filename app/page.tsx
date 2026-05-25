@@ -3,45 +3,49 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-[#FAFAF7] text-[#171717]">
       {/* Hero Section */}
-      <section className="mx-auto flex min-h-screen max-w-6xl flex-col justify-center px-6 py-20 md:px-10">
-        <div className="max-w-4xl">
-          <p className="mb-4 text-sm font-medium uppercase tracking-[0.25em] text-[#6F6A5F]">
-            KultureKatta
-          </p>
+      <section className="grid gap-10 md:grid-cols-[1.1fr_0.9fr] items-center px-6 py-20 bg-[#F7F1E8]">
+  <div>
+    <p className="mb-4 text-sm uppercase tracking-[0.25em] text-[#8B3A2B]">
+      KultureKatta
+    </p>
 
-          <h1 className="mb-10 max-w-3xl text-5xl font-semibold leading-tight tracking-tight md:text-7xl">
-            Culture is what we do.
-          </h1>
+    <h1 className="max-w-3xl text-5xl md:text-7xl font-serif leading-tight text-[#1F1B16]">
+      Culture is what we do.
+    </h1>
 
-          <div className="space-y-2 text-xl leading-relaxed text-[#2A2A2A] md:text-2xl">
-            <p>It is what we read.</p>
-            <p>What we listen to.</p>
-            <p>What we eat.</p>
-            <p>What we see.</p>
-            <p>What we feel.</p>
-            <p>What we celebrate.</p>
-            <p>What we question.</p>
-            <p>What we remember.</p>
-            <p>What shapes our thoughts.</p>
-          </div>
+    <p className="mt-6 max-w-xl text-lg leading-8 text-[#4A4038]">
+      It is what we read. What we listen to. What we eat. What we make. What we remember. What we pass on.
+    </p>
 
-          <div className="mt-12 flex flex-wrap gap-4">
-            <a
-              href="/experiences"
-              className="rounded-full bg-[#171717] px-6 py-3 text-sm font-medium text-white transition hover:bg-[#333333]"
-            >
-              Explore Kattas
-            </a>
+    <p className="mt-4 max-w-xl text-lg leading-8 text-[#4A4038]">
+      Workshops, walks, games, conversations, and hands-on experiences that bring people back to curiosity, creativity, and community.
+    </p>
 
-            <a
-              href="/contact"
-              className="rounded-full border border-[#171717] px-6 py-3 text-sm font-medium text-[#171717] transition hover:bg-[#171717] hover:text-white"
-            >
-              Talk To Us
-            </a>
-          </div>
-        </div>
-      </section>
+    <div className="mt-8 flex flex-wrap gap-4">
+      <a
+        href="/experiences"
+        className="rounded-full bg-[#8B3A2B] px-6 py-3 text-white transition hover:bg-[#6f2f24]"
+      >
+        Explore Kattas
+      </a>
+
+      <a
+        href="/contact"
+        className="rounded-full border border-[#8B3A2B] px-6 py-3 text-[#8B3A2B] transition hover:bg-[#8B3A2B] hover:text-white"
+      >
+        Talk To Us
+      </a>
+    </div>
+  </div>
+
+  <div className="rounded-[2rem] overflow-hidden shadow-xl">
+    <img
+      src="/images/home/hero-katta.jpg"
+      alt="People at a KultureKatta experience"
+      className="h-full w-full object-cover"
+    />
+  </div>
+</section>
 
       {/* Culture Section */}
       <section className="mx-auto max-w-6xl px-6 py-20 md:px-10">
