@@ -46,16 +46,14 @@ export default function RootLayout({
 
             {/* 🔗 NAV LINKS + CTA */}
             <nav className="flex items-center gap-5 text-lg font-medium text-gray-800">
-              <Link href="/" className="hover:text-black">Home</Link>
               <Link href="/about" className="hover:text-black">About</Link>
               <Link href="/experiences" className="hover:text-black">Experiences</Link>
               <Link href="/for-organisations" className="hover:text-black">For Organisations</Link>
+              <Link href="/katta-studio" className="hover:text-black">Katta Studio</Link>
               <Link href="/stories" className="hover:text-black">Stories</Link>
-              <Link href="/work-with-us" className="hover:text-black">Work With Us</Link>
               <Link href="/contact" className="hover:text-black">Contact</Link>
-
               {/* 🚀 CTA BUTTON */}
-              <Link
+              <Link 
                 href="/experiences"
                 className="bg-black text-white px-4 py-2 rounded-xl text-sm hover:bg-gray-800"
               >
