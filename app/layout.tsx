@@ -45,7 +45,7 @@ export default function RootLayout({
             </Link>
 
             {/* 🔗 NAV LINKS + CTA */}
-            <nav className="flex items-center gap-6 text-sm font-medium text-gray-800">
+            <nav className="flex items-center gap-5 text-lg font-medium text-gray-800">
               <Link href="/" className="hover:text-black">Home</Link>
               <Link href="/about" className="hover:text-black">About</Link>
               <Link href="/experiences" className="hover:text-black">Experiences</Link>
