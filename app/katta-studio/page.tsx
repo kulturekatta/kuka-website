@@ -9,7 +9,7 @@ export default function KattaStudioPage() {
       {/* Katta Studio Growth Clinic - Hero */}
 <section className="bg-[#17110D] px-6 py-24 text-white">
   <div className="mx-auto max-w-5xl text-center">
-    <p className="mb-5 text-2xl font-semibold uppercase tracking-[0.28em] text-[#D8B98C]">
+    <p className="mb-5 text-3xl font-semibold uppercase tracking-[0.28em] text-[#D8B98C]">
       Katta Studio Growth Clinic
     </p>
 
@@ -47,7 +47,7 @@ export default function KattaStudioPage() {
 </section>
 
 {/* Founder Thinking Boxes */}
-<section className="bg-white px-6 py-24 text-[#17110D]">
+<section className="bg-white px-6 pt-8 py-24 text-[#17110D]">
   <div className="mx-auto max-w-6xl">
     <div className="mx-auto max-w-3xl text-center">
       <p className="mb-4 text-2xl font-semibold uppercase tracking-[0.25em] text-[#9A6B3F]">
@@ -83,44 +83,81 @@ export default function KattaStudioPage() {
   </div>
 </section>
 
+<section className="bg-[#FAF7F2] px-6 py-12 text-[#17110D]">
+  <div className="mx-auto max-w-5xl rounded-3xl bg-[#17110D] px-8 py-12 text-center text-white shadow-xl">
+    <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-[#E8C766]">
+      Katta Studio Growth Clinic
+    </p>
+
+    <h2 className="mb-6 text-3xl font-bold md:text-5xl">
+      Book a 30-minute brand growth call
+    </h2>
+
+    <p className="mx-auto max-w-3xl text-lg leading-relaxed text-white/85 md:text-xl">
+      We work with early-stage founders and creative businesses to build visibility,
+      clarity, and growth — whether that means stronger positioning, better content,
+      a website, LinkedIn presence, lead generation, or a simple sales funnel.
+    </p>
+
+    <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-white/85 md:text-xl">
+      We are currently opening a few slots for a practical, no-pressure 30-minute
+      Growth Clinic where we look at your current online presence and share
+      2–3 actionable ideas to improve visibility, enquiries, and sales.
+    </p>
+
+    <div className="mt-8 rounded-2xl bg-white px-6 py-6 text-[#17110D]">
+      <p className="text-xl font-bold md:text-2xl">
+        Answer a few questions, get your brand profiled, and then we’ll set up
+        your initial 30-minute call.
+      </p>
+    </div>
+
+    <div className="mt-8">
+  <a
+    href="#growth-clinic-form"
+    className="inline-flex rounded-full bg-[#E8C766] px-8 py-4 text-base font-bold text-[#17110D] transition hover:bg-white"
+  >
+    Start with the Growth Clinic
+  </a>
+</div>
+  </div>
+</section>
+
       {/* PROBLEM SECTION */}
       {/* The Real Problem */}
-<section className="bg-[#17110D] px-6 py-24 text-white">
-  <div className="mx-auto max-w-4xl text-center">
-    <p className="mb-5 text-2xl font-semibold uppercase tracking-[0.28em] text-[#D8B98C]">
+<section className="bg-[#111111] px-6 py-24 text-white">
+  <div className="mx-auto max-w-5xl text-center">
+    <p className="mb-4 text-2xl font-semibold uppercase tracking-[0.25em] text-[#F4C95D]">
       The real problem
     </p>
 
-    <h2 className="text-4xl font-semibold leading-tight md:text-6xl">
-      You may not have a content problem.
+    <h2 className="mx-auto max-w-4xl text-4xl font-bold leading-tight md:text-5xl">
+      What may be getting in the way
     </h2>
 
-    <p className="mx-auto mt-8 max-w-3xl text-lg leading-8 text-white/80 md:text-xl">
-      You may be posting regularly, running ads, trying reels, changing your bio
-      every three weeks, and still wondering why the right enquiries are not
-      coming in.
-    </p>
+    <div className="mx-auto mt-8 max-w-3xl space-y-6 text-lg leading-8 text-white/80 md:text-xl">
+      <p>
+        You may be posting regularly, running ads, trying reels, changing your
+        bio every three weeks, and still wondering why the right enquiries are
+        not coming in.
+      </p>
 
-    <p className="mx-auto mt-6 max-w-2xl text-xl font-medium leading-8 text-white md:text-2xl">
-      Often, the real issue is not effort. It is clarity.
-    </p>
+      <p>
+        Often, the real issue is not effort. It is clarity.
+      </p>
+
+      <p className="font-semibold text-white">
+        Growth usually gets stuck because of one or more of these gaps.
+      </p>
+    </div>
   </div>
 </section>
 
 {/* The Gaps */}
-<section className="bg-[#FAF7F2] px-6 py-24 text-[#17110D]">
+<section className="bg-[#FAF7F2] px-6 pt-2 pb-20 text-[#17110D]">
   <div className="mx-auto max-w-6xl">
-    <div className="mx-auto max-w-3xl text-center">
-      <p className="mb-4 text-2xl font-semibold uppercase tracking-[0.25em] text-[#9A6B3F]">
-        What may be getting in the way
-      </p>
 
-      <h2 className="text-3xl font-semibold leading-tight md:text-5xl">
-        Growth usually gets stuck because of one or more of these gaps.
-      </h2>
-    </div>
-
-    <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       <div className="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-black/5">
         <h3 className="text-2xl font-semibold text-[#17110D]">
           Positioning gap
@@ -213,7 +250,7 @@ export default function KattaStudioPage() {
 </section>
 
 {/* What Happens Inside - Boxes */}
-<section className="bg-white px-6 py-24 text-[#17110D]">
+<section className="bg-white px-6 pt-6 py-24 text-[#17110D]">
   <div className="mx-auto max-w-6xl">
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
       <div className="rounded-3xl bg-[#FAF7F2] p-8 text-center shadow-sm ring-1 ring-black/5">
@@ -298,7 +335,7 @@ export default function KattaStudioPage() {
 </section>
 
 {/* Who It Is For - Boxes */}
-<section className="bg-white px-6 py-24 text-[#17110D]">
+<section className="bg-white px-6 pt-6 py-24 text-[#17110D]">
   <div className="mx-auto max-w-6xl">
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
       <div className="rounded-3xl bg-[#FAF7F2] p-8 shadow-sm ring-1 ring-black/5">
@@ -369,7 +406,7 @@ export default function KattaStudioPage() {
 </section>
 
 {/* Diagnosis Areas */}
-<section className="bg-white px-6 py-24 text-[#17110D]">
+<section className="bg-white px-6 pt-6 py-24 text-[#17110D]">
   <div className="mx-auto max-w-6xl">
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
       <div className="rounded-3xl bg-[#FAF7F2] p-8 shadow-sm ring-1 ring-black/5">
@@ -482,7 +519,7 @@ export default function KattaStudioPage() {
 </section>
 
 {/* What You Get - Boxes */}
-<section className="bg-white px-6 py-24 text-[#17110D]">
+<section className="bg-white px-6 pt-6 py-24 text-[#17110D]">
   <div className="mx-auto max-w-6xl">
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       <div className="rounded-3xl bg-[#FAF7F2] p-8 shadow-sm ring-1 ring-black/5">
@@ -563,7 +600,7 @@ export default function KattaStudioPage() {
 </section>
 
 {/* Formats - Cards */}
-<section className="bg-white px-6 py-24 text-[#17110D]">
+<section className="bg-white px-6 pt-6 py-24 text-[#17110D]">
   <div className="mx-auto max-w-6xl">
     <div className="grid gap-6 md:grid-cols-3">
       <div className="rounded-3xl bg-[#FAF7F2] p-8 shadow-sm ring-1 ring-black/5">
@@ -643,7 +680,7 @@ export default function KattaStudioPage() {
 </section>
 
 {/* Why Katta Studio - Questions */}
-<section className="bg-white px-6 py-24 text-[#17110D]">
+<section className="bg-white px-6 pt-6 py-24 text-[#17110D]">
   <div className="mx-auto max-w-5xl text-center">
     <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
       <div className="rounded-3xl bg-[#FAF7F2] p-8 shadow-sm ring-1 ring-black/5">
@@ -705,7 +742,7 @@ export default function KattaStudioPage() {
 </section>
 
 {/* Contact Form */}
-<section className="bg-white px-6 py-24 text-[#17110D]">
+<section className="bg-white px-6 pt-8 py-24 text-[#17110D]">
   <div className="mx-auto max-w-3xl">
     <div className="mb-10 text-center">
       <p className="mb-4 text-2xl font-semibold uppercase tracking-[0.25em] text-[#9A6B3F]">

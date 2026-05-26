@@ -20,10 +20,17 @@ export default function GrowthClinicContactForm() {
       return;
     }
 
-    if (!painPoints.trim() || !email.trim() || !city.trim() || !mobile.trim()) {
-      setError("Please fill all required fields.");
-      return;
-    }
+    if (
+  !brandName.trim() ||
+  !brandLink.trim() ||
+  !painPoints.trim() ||
+  !email.trim() ||
+  !city.trim() ||
+  !mobile.trim()
+) {
+  setError("Please fill all required fields.");
+  return;
+}
 
     setError("");
 
@@ -50,31 +57,50 @@ Mobile / WhatsApp: ${mobile}
     window.open(whatsappUrl, "_blank");
   };
 
+  const inputClass =
+    "w-full rounded-2xl border border-white/15 bg-white px-5 py-4 text-lg text-[#17110D] outline-none transition placeholder:text-[#9B8B80] focus:border-[#F4C95D] focus:ring-2 focus:ring-[#F4C95D]/40 md:text-xl";
+
+  const labelClass =
+    "mb-3 block text-base font-semibold text-white md:text-lg";
+
   return (
     <form
+      id="growth-clinic-form"
       onSubmit={handleSubmit}
-      className="rounded-3xl bg-[#FAF7F2] p-8 shadow-sm ring-1 ring-black/5 md:p-12"
+      className="rounded-[2rem] bg-[#111111] p-8 text-white shadow-xl ring-1 ring-white/10 md:p-12"
     >
+      <div className="mx-auto mb-10 max-w-3xl text-center">
+        <p className="mb-4 text-sm font-semibold uppercase tracking-[0.25em] text-[#F4C95D]">
+          Get in touch
+        </p>
+
+        <h2 className="text-4xl font-bold leading-tight md:text-5xl">
+          Let’s look at what is really blocking your growth.
+        </h2>
+
+        <p className="mt-6 text-lg leading-8 text-white/75 md:text-xl">
+          Tell us a little about your brand, where you feel stuck, and what you
+          are trying to grow. We will get back to you with the next step.
+        </p>
+      </div>
+
       <div className="grid gap-7">
         <div>
-          <label className="mb-3 block text-base font-semibold text-[#17110D] md:text-lg">
-            Brand name{" "}
-            <span className="font-normal text-[#6A5A50]">(optional)</span>
-          </label>
+          <label className={labelClass}>Brand name *</label>
 
           <input
-            type="text"
-            value={brandName}
-            onChange={(e) => setBrandName(e.target.value)}
-            placeholder="Your brand name"
-            className="w-full rounded-2xl border border-black/10 bg-white px-5 py-4 text-lg outline-none transition placeholder:text-[#9B8B80] focus:border-[#C49A6C] md:text-xl"
-          />
+          type="text"
+          value={brandName}
+          onChange={(e) => setBrandName(e.target.value)}
+          placeholder="Your brand name"
+          required
+          className={inputClass}
+        />
         </div>
 
         <div>
-          <label className="mb-3 block text-base font-semibold text-[#17110D] md:text-lg">
-            Instagram / LinkedIn handle or website{" "}
-            <span className="font-normal text-[#6A5A50]">(optional)</span>
+          <label className={labelClass}>
+          Instagram / LinkedIn handle or Website *
           </label>
 
           <input
@@ -82,14 +108,13 @@ Mobile / WhatsApp: ${mobile}
             value={brandLink}
             onChange={(e) => setBrandLink(e.target.value)}
             placeholder="@yourhandle or website link"
-            className="w-full rounded-2xl border border-black/10 bg-white px-5 py-4 text-lg outline-none transition placeholder:text-[#9B8B80] focus:border-[#C49A6C] md:text-xl"
+            required
+            className={inputClass}
           />
         </div>
 
         <div>
-          <label className="mb-3 block text-base font-semibold text-[#17110D] md:text-lg">
-            3 pain points *
-          </label>
+          <label className={labelClass}>3 pain points *</label>
 
           <textarea
             value={painPoints}
@@ -97,15 +122,13 @@ Mobile / WhatsApp: ${mobile}
             placeholder="Tell us 3 things you are currently struggling with..."
             rows={5}
             required
-            className="w-full resize-none rounded-2xl border border-black/10 bg-white px-5 py-4 text-lg outline-none transition placeholder:text-[#9B8B80] focus:border-[#C49A6C] md:text-xl"
+            className={`${inputClass} resize-none`}
           />
         </div>
 
         <div className="grid gap-7 md:grid-cols-2">
           <div>
-            <label className="mb-3 block text-base font-semibold text-[#17110D] md:text-lg">
-              Email address *
-            </label>
+            <label className={labelClass}>Email address *</label>
 
             <input
               type="email"
@@ -113,14 +136,12 @@ Mobile / WhatsApp: ${mobile}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
               required
-              className="w-full rounded-2xl border border-black/10 bg-white px-5 py-4 text-lg outline-none transition placeholder:text-[#9B8B80] focus:border-[#C49A6C] md:text-xl"
+              className={inputClass}
             />
           </div>
 
           <div>
-            <label className="mb-3 block text-base font-semibold text-[#17110D] md:text-lg">
-              City *
-            </label>
+            <label className={labelClass}>City *</label>
 
             <input
               type="text"
@@ -128,15 +149,13 @@ Mobile / WhatsApp: ${mobile}
               onChange={(e) => setCity(e.target.value)}
               placeholder="Your city"
               required
-              className="w-full rounded-2xl border border-black/10 bg-white px-5 py-4 text-lg outline-none transition placeholder:text-[#9B8B80] focus:border-[#C49A6C] md:text-xl"
+              className={inputClass}
             />
           </div>
         </div>
 
         <div>
-          <label className="mb-3 block text-base font-semibold text-[#17110D] md:text-lg">
-            Mobile / WhatsApp number *
-          </label>
+          <label className={labelClass}>Mobile / WhatsApp number *</label>
 
           <input
             type="tel"
@@ -144,14 +163,12 @@ Mobile / WhatsApp: ${mobile}
             onChange={(e) => setMobile(e.target.value)}
             placeholder="+91..."
             required
-            className="w-full rounded-2xl border border-black/10 bg-white px-5 py-4 text-lg outline-none transition placeholder:text-[#9B8B80] focus:border-[#C49A6C] md:text-xl"
+            className={inputClass}
           />
         </div>
 
         <div>
-          <label className="mb-3 block text-base font-semibold text-[#17110D] md:text-lg">
-            Captcha: What is 4 + 5? *
-          </label>
+          <label className={labelClass}>Captcha: What is 4 + 5? *</label>
 
           <input
             type="text"
@@ -159,7 +176,7 @@ Mobile / WhatsApp: ${mobile}
             onChange={(e) => setCaptcha(e.target.value)}
             placeholder="Enter answer"
             required
-            className="w-full rounded-2xl border border-black/10 bg-white px-5 py-4 text-lg outline-none transition placeholder:text-[#9B8B80] focus:border-[#C49A6C] md:text-xl"
+            className={inputClass}
           />
         </div>
 
@@ -171,12 +188,12 @@ Mobile / WhatsApp: ${mobile}
 
         <button
           type="submit"
-          className="mt-2 rounded-full bg-[#17110D] px-8 py-5 text-lg font-semibold text-white transition hover:bg-[#2A1D16] md:text-xl"
+          className="mt-2 rounded-full bg-[#F4C95D] px-8 py-5 text-lg font-bold text-[#17110D] transition hover:bg-white md:text-xl"
         >
           Send enquiry on WhatsApp
         </button>
 
-        <p className="text-center text-base leading-7 text-[#6A5A50] md:text-lg">
+        <p className="text-center text-base leading-7 text-white/60 md:text-lg">
           Your details will open as a pre-filled WhatsApp message to
           +91-9730244996.
         </p>
