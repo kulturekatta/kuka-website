@@ -5,7 +5,7 @@ const featuredExperiences = [
     label: "Hands-on",
     title: "Hands-on cultural workshops",
     text: "Art, craft, pottery, kokedama, kirigami, textiles, paper crafts and more — small, warm experiences where you actually make something with your hands.",
-    cta: "View experiences",
+    cta: "Explore workshops",
     href: "/experiences/hands-on",
   },
   {
@@ -19,21 +19,21 @@ const featuredExperiences = [
     label: "Talks & Conversations",
     title: "Talks, salons and circles",
     text: "Thoughtful gatherings where stories, ideas, people, memory and culture meet without becoming a boring lecture.",
-    cta: "Join a circle",
+    cta: "Explore talks",
     href: "/experiences/talks-conversations",
   },
   {
     label: "Food & Senses",
     title: "Taste, smell, listen, notice",
     text: "Food experiences, tasting tables, sensory workshops and slow gatherings that help you experience culture through the body.",
-    cta: "Explore sensory experiences",
+    cta: "Explore the senses",
     href: "/experiences/food-senses",
   },
   {
     label: "Play & Movement",
     title: "Games, movement and playful learning",
     text: "Traditional games, movement sessions, team play, outdoor activities and joyful formats where connection happens naturally.",
-    cta: "Explore playful experiences",
+    cta: "Explore games",
     href: "/experiences/play-movement",
   },
   {
@@ -299,31 +299,33 @@ export default function HomePage() {
             hiding.
           </p>
 
-<div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-  {featuredExperiences.map((item) => (
-    <div
-      key={item.href}
-      className="rounded-3xl border border-[#E8D8C5] bg-[#FFFDF8] p-8 text-center shadow-sm transition hover:-translate-y-1 hover:border-[#8A4B2A] hover:shadow-md"
-    >
-      <p className="text-lg font-bold uppercase tracking-[0.2em] text-[#8A4B2A]">
-        {item.label}
-      </p>
+          <div className="mt-14 grid items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {featuredExperiences.map((item) => (
+              <div
+                key={item.href}
+                className="flex h-full flex-col rounded-3xl border border-[#E8D8C5] bg-[#FFFDF8] p-8 text-center shadow-sm transition hover:-translate-y-1 hover:border-[#8A4B2A] hover:shadow-md"
+              >
+                <p className="text-lg font-bold uppercase tracking-[0.2em] text-[#8A4B2A]">
+                  {item.label}
+                </p>
 
-      <h3 className="mt-4 text-2xl font-black leading-tight text-[#17110D]">
-        {item.title}
-      </h3>
+                <h3 className="mt-4 text-2xl font-black leading-tight text-[#17110D]">
+                  {item.title}
+                </h3>
 
-      <p className="mt-4 leading-7 text-[#5F5147]">{item.text}</p>
+                <p className="mt-4 leading-7 text-[#5F5147]">{item.text}</p>
 
-      <Link
-        href={item.href}
-        className="mt-8 inline-flex rounded-full bg-[#17110D] px-6 py-3 text-sm font-bold uppercase tracking-wide text-[#FAF7F2] transition hover:bg-[#8A4B2A]"
-      >
-        {item.cta}
-      </Link>
-    </div>
-  ))}
-</div>
+                <div className="mt-auto pt-8">
+                  <Link
+                    href={item.href}
+                    className="inline-flex rounded-full bg-[#17110D] px-6 py-3 text-sm font-bold uppercase tracking-wide text-[#FAF7F2] transition hover:bg-[#8A4B2A]"
+                  >
+                    {item.cta}
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -551,54 +553,52 @@ export default function HomePage() {
           </div>
 
           <div className="mt-14 grid gap-6 md:grid-cols-3">
-  {stories.map((story) => (
-    <div
-      key={story.title}
-      className="rounded-3xl border border-[#3A2A20] bg-[#211812] p-8 text-left shadow-sm transition hover:-translate-y-1 hover:bg-[#2A1D16] hover:shadow-md"
-    >
-      <p className="text-4xl">{story.icon}</p>
+            {stories.map((story) => (
+              <div
+                key={story.title}
+                className="rounded-3xl border border-[#3A2A20] bg-[#211812] p-8 text-left shadow-sm transition hover:-translate-y-1 hover:bg-[#2A1D16] hover:shadow-md"
+              >
+                <p className="text-4xl">{story.icon}</p>
 
-      <h3 className="mt-5 text-2xl font-black">{story.title}</h3>
+                <h3 className="mt-5 text-2xl font-black">{story.title}</h3>
 
-      <p className="mt-4 leading-7 text-[#DCCAB6]">{story.text}</p>
-    </div>
-  ))}
-</div>
+                <p className="mt-4 leading-7 text-[#DCCAB6]">{story.text}</p>
+              </div>
+            ))}
+          </div>
 
-{/* More stories CTA */}
-<div className="mt-12 rounded-3xl border border-[#3A2A20] bg-[#211812] p-8 text-center shadow-sm">
-  <p className="text-3xl font-bold uppercase tracking-[0.2em] text-[#D8B98C]">
-    More Kattas. More stories.
-  </p>
+          {/* More stories CTA */}
+          <div className="mt-12 rounded-3xl border border-[#3A2A20] bg-[#211812] p-8 text-center shadow-sm">
+            <p className="text-3xl font-bold uppercase tracking-[0.2em] text-[#D8B98C]">
+              More Kattas. More stories.
+            </p>
 
-  <h3 className="mt-4 text-3xl font-black leading-tight text-[#FAF7F2]">
-    This is just the beginning of the aftertaste.
-  </h3>
+            <h3 className="mt-4 text-3xl font-black leading-tight text-[#FAF7F2]">
+              This is just the beginning of the aftertaste.
+            </h3>
 
-  <p className="mx-auto mt-4 max-w-2xl leading-7 text-[#DCCAB6]">
-    From plants carried home to songs stuck in people’s heads, from first-time
-    makers to strangers becoming familiar faces — every Katta leaves something
-    behind.
-  </p>
+            <p className="mx-auto mt-4 max-w-2xl leading-7 text-[#DCCAB6]">
+              From plants carried home to songs stuck in people’s heads, from first-time
+              makers to strangers becoming familiar faces — every Katta leaves something
+              behind.
+            </p>
 
-  <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-    <Link
-      href="/community"
-      className="rounded-full bg-[#FAF7F2] px-8 py-4 text-sm font-bold uppercase tracking-wide text-[#17110D] transition hover:bg-[#D8B98C]"
-    >
-      Read more stories
-    </Link>
+            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <Link
+                href="/community"
+                className="rounded-full bg-[#FAF7F2] px-8 py-4 text-sm font-bold uppercase tracking-wide text-[#17110D] transition hover:bg-[#D8B98C]"
+              >
+                Read more stories
+              </Link>
 
-    <Link
-      href="/experiences"
-      className="rounded-full border border-[#D8B98C] px-8 py-4 text-sm font-bold uppercase tracking-wide text-[#FAF7F2] transition hover:bg-[#FAF7F2] hover:text-[#17110D]"
-    >
-      Explore Kattas
-    </Link>
-  </div>
-</div>
-
-
+              <Link
+                href="/experiences"
+                className="rounded-full border border-[#D8B98C] px-8 py-4 text-sm font-bold uppercase tracking-wide text-[#FAF7F2] transition hover:bg-[#FAF7F2] hover:text-[#17110D]"
+              >
+                Explore Kattas
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
