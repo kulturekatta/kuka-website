@@ -21,16 +21,16 @@ export default function GrowthClinicContactForm() {
     }
 
     if (
-  !brandName.trim() ||
-  !brandLink.trim() ||
-  !painPoints.trim() ||
-  !email.trim() ||
-  !city.trim() ||
-  !mobile.trim()
-) {
-  setError("Please fill all required fields.");
-  return;
-}
+      !brandName.trim() ||
+      !brandLink.trim() ||
+      !painPoints.trim() ||
+      !email.trim() ||
+      !city.trim() ||
+      !mobile.trim()
+    ) {
+      setError("Please fill all required fields.");
+      return;
+    }
 
     setError("");
 
@@ -60,25 +60,22 @@ Mobile / WhatsApp: ${mobile}
   const inputClass =
     "w-full rounded-2xl border border-white/15 bg-white px-5 py-4 text-lg text-[#17110D] outline-none transition placeholder:text-[#9B8B80] focus:border-[#F4C95D] focus:ring-2 focus:ring-[#F4C95D]/40 md:text-xl";
 
-  const labelClass =
-    "mb-3 block text-base font-semibold text-white md:text-lg";
+  const labelClass = "kk-body mb-3 block font-semibold text-white";
 
   return (
     <form
       id="growth-clinic-form"
       onSubmit={handleSubmit}
-      className="rounded-[2rem] bg-[#111111] p-8 text-white shadow-xl ring-1 ring-white/10 md:p-12"
+      className="kk-section-dark rounded-[2rem] p-8 shadow-xl ring-1 ring-white/10 md:p-12"
     >
       <div className="mx-auto mb-10 max-w-3xl text-center">
-        <p className="mb-4 text-sm font-semibold uppercase tracking-[0.25em] text-[#F4C95D]">
-          Get in touch
-        </p>
+        <p className="kk-eyebrow mb-4 text-[#F4C95D]">Get in touch</p>
 
-        <h2 className="text-4xl font-bold leading-tight md:text-5xl">
+        <h2 className="kk-section-heading leading-tight md:text-5xl">
           Let’s look at what is really blocking your growth.
         </h2>
 
-        <p className="mt-6 text-lg leading-8 text-white/75 md:text-xl">
+        <p className="kk-body mt-6 text-white/75 md:text-xl">
           Tell us a little about your brand, where you feel stuck, and what you
           are trying to grow. We will get back to you with the next step.
         </p>
@@ -89,18 +86,18 @@ Mobile / WhatsApp: ${mobile}
           <label className={labelClass}>Brand name *</label>
 
           <input
-          type="text"
-          value={brandName}
-          onChange={(e) => setBrandName(e.target.value)}
-          placeholder="Your brand name"
-          required
-          className={inputClass}
-        />
+            type="text"
+            value={brandName}
+            onChange={(e) => setBrandName(e.target.value)}
+            placeholder="Your brand name"
+            required
+            className={inputClass}
+          />
         </div>
 
         <div>
           <label className={labelClass}>
-          Instagram / LinkedIn handle or Website *
+            Instagram / LinkedIn handle or Website *
           </label>
 
           <input
@@ -181,20 +178,20 @@ Mobile / WhatsApp: ${mobile}
         </div>
 
         {error && (
-          <p className="rounded-2xl bg-red-50 px-5 py-4 text-base font-medium leading-7 text-red-700 md:text-lg">
+          <p className="kk-body rounded-2xl bg-red-50 px-5 py-4 font-medium text-red-700 md:text-lg">
             {error}
           </p>
         )}
 
         <button
           type="submit"
-          className="mt-2 rounded-full bg-[#F4C95D] px-8 py-5 text-lg font-bold text-[#17110D] transition hover:bg-white md:text-xl"
+          className="kk-rounded-button mt-2 border-[#F4C95D] bg-[#F4C95D] px-8 py-5 text-[#17110D] hover:border-white hover:bg-white"
         >
           Send enquiry on WhatsApp
         </button>
 
-        <p className="text-center text-base leading-7 text-white/60 md:text-lg">
-          Your details will open as a pre-filled WhatsApp message to
+        <p className="kk-body text-center text-white/60 md:text-lg">
+          Your details will open as a pre-filled WhatsApp message to <br />
           +91-9730244996.
         </p>
       </div>

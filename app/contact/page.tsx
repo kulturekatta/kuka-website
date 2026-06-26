@@ -53,8 +53,8 @@ const quickLinks = [
   },
   {
     title: "WhatsApp / Call",
-    value: "+91 97302 44996",
-    href: "https://wa.me/919730244996",
+    value: "+91 70303 71411",
+    href: "https://wa.me/917030371411",
   },
   {
     title: "Instagram",
@@ -65,49 +65,47 @@ const quickLinks = [
 
 export default function ContactPage() {
   return (
-    <main className="min-h-screen bg-[#FAF7F2] text-[#17110D]">
+    <main className="min-h-screen kk-section-light">
       {/* Hero Section */}
-      <section className="bg-[#17110D] px-6 py-24 text-[#FAF7F2] sm:px-10 lg:px-16">
+      <section className="kk-section-dark px-6 py-24 sm:px-10 lg:px-16">
         <div className="mx-auto max-w-6xl">
-          <p className="text-3xl font-bold uppercase tracking-[0.28em] text-[#D8B98C]">
-            Contact KultureKatta
-          </p>
+          <p className="kk-eyebrow text-[#D8B98C]">Contact KultureKatta</p>
 
           <div className="mt-8 grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
             <div>
-              <h1 className="max-w-4xl text-5xl font-black leading-tight sm:text-6xl lg:text-7xl">
+              <h1 className="kk-page-heading max-w-4xl leading-tight">
                 <span className="block">Let’s make</span>
                 <span className="block">something happen.</span>
               </h1>
 
-              <p className="mt-8 max-w-2xl text-lg leading-8 text-[#E8D8C5] sm:text-xl">
+              <p className="kk-body mt-8 max-w-2xl text-[#E8D8C5] sm:text-xl">
                 Want to host, collaborate, volunteer, partner, or bring a Katta
                 to your space? We’d love to hear from you.
               </p>
             </div>
 
-            <div className="rounded-[2rem] border border-[#3A2A20] bg-[#211812] p-8 shadow-sm">
-              <p className="text-2xl font-black text-[#FAF7F2]">
+            <div className="rounded-[2rem] border border-white/15 bg-white/[0.04] p-8 shadow-sm">
+              <p className="kk-card-title text-[#FAFAF7]">
                 Let’s start at the very beginning.
               </p>
 
-              <p className="mt-4 leading-7 text-[#DCCAB6]">
-                Some conversations become workshops. Some become
-                collaborations. Some become communities. Some simply begin with
-                a hello — suspiciously powerful little word.
+              <p className="kk-body mt-4 text-[#DCCAB6]">
+                Some conversations become workshops. Some become collaborations.
+                Some become communities. Some simply begin with a hello —
+                suspiciously powerful little word.
               </p>
 
               <div className="mt-8 flex flex-col gap-4 sm:flex-row lg:flex-col">
                 <Link
-                  href="https://wa.me/919730244996"
-                  className="rounded-full bg-[#FAF7F2] px-7 py-4 text-center text-sm font-bold uppercase tracking-wide text-[#17110D] transition hover:bg-[#D8B98C]"
+                  href="https://wa.me/917030371411"
+                  className="kk-rounded-button border-[#FAFAF7] bg-[#FAFAF7] text-[#17110D] hover:border-[#D8B98C] hover:bg-[#D8B98C]"
                 >
                   WhatsApp us
                 </Link>
 
                 <Link
                   href="mailto:hello@kulturekatta.com"
-                  className="rounded-full border border-[#D8B98C] px-7 py-4 text-center text-sm font-bold uppercase tracking-wide text-[#FAF7F2] transition hover:bg-[#D8B98C] hover:text-[#17110D]"
+                  className="kk-rounded-button border-[#D8B98C] bg-transparent text-[#FAFAF7] hover:bg-[#D8B98C] hover:text-[#17110D]"
                 >
                   Email us
                 </Link>
@@ -118,19 +116,19 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Options */}
-      <section className="bg-[#FAF7F2] px-6 py-24 sm:px-10 lg:px-16">
+      <section className="kk-section-light px-6 py-24 sm:px-10 lg:px-16">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-3xl font-bold uppercase tracking-[0.28em] text-[#8A4B2A]">
+            <p className="kk-section-label text-[#8A4B2A]">
               Choose your doorway
             </p>
 
-            <h2 className="mt-5 text-4xl font-black leading-tight sm:text-5xl">
+            <h2 className="kk-section-heading mt-5 leading-tight sm:text-5xl">
               <span className="block">What would you like</span>
               <span className="block">to talk about?</span>
             </h2>
 
-            <p className="mt-6 text-lg leading-8 text-[#5F4A3D]">
+            <p className="kk-body mt-6 text-[#5F4A3D]">
               Whether you want to attend, host, partner, volunteer, or build a
               cultural experience with us, there’s a place to begin.
             </p>
@@ -140,23 +138,21 @@ export default function ContactPage() {
             {contactOptions.map((item) => (
               <div
                 key={item.title}
-                className="group flex min-h-[320px] flex-col rounded-[2rem] border border-[#E8D8C5] bg-[#FFFDF8] p-8 shadow-sm transition hover:-translate-y-1 hover:border-[#8A4B2A] hover:shadow-md"
+                className="group flex min-h-[320px] flex-col rounded-[2rem] border border-[#E8D8C5] bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:border-[#8A4B2A] hover:shadow-md"
               >
-                <p className="text-sm font-bold uppercase tracking-[0.22em] text-[#8A4B2A]">
-                  {item.label}
-                </p>
+                <p className="kk-eyebrow text-[#8A4B2A]">{item.label}</p>
 
-                <h3 className="mt-5 text-2xl font-black leading-tight text-[#17110D]">
+                <h3 className="kk-card-title mt-5 leading-tight text-[#17110D]">
                   {item.title}
                 </h3>
 
-                <p className="mt-4 flex-1 leading-7 text-[#5F4A3D]">
+                <p className="kk-body mt-4 flex-1 text-[#5F4A3D]">
                   {item.text}
                 </p>
 
                 <Link
                   href={item.href}
-                  className="mt-8 inline-flex w-fit rounded-full bg-[#17110D] px-6 py-3 text-sm font-bold uppercase tracking-wide text-[#FAF7F2] transition group-hover:bg-[#8A4B2A]"
+                  className="kk-rounded-button mt-8 w-fit border-[#17110D] bg-[#17110D] text-[#FAFAF7] group-hover:border-[#8A4B2A] group-hover:bg-[#8A4B2A]"
                 >
                   {item.buttonText}
                 </Link>
@@ -167,19 +163,17 @@ export default function ContactPage() {
       </section>
 
       {/* Direct Contact Details */}
-      <section className="bg-[#EFE2D0] px-6 py-24 sm:px-10 lg:px-16">
+      <section className="kk-section-light px-6 py-24 sm:px-10 lg:px-16">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-3xl font-bold uppercase tracking-[0.28em] text-[#8A4B2A]">
-              Direct contact
-            </p>
+            <p className="kk-section-label text-[#8A4B2A]">Direct contact</p>
 
-            <h2 className="mt-5 text-4xl font-black leading-tight sm:text-5xl">
+            <h2 className="kk-section-heading mt-5 leading-tight sm:text-5xl">
               <span className="block">Prefer the</span>
               <span className="block">old-school way?</span>
             </h2>
 
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-[#5F4A3D]">
+            <p className="kk-body mx-auto mt-6 max-w-2xl text-[#5F4A3D]">
               Email, call, WhatsApp, or find us on Instagram. We are very much
               real humans. No mysterious ticketing portal energy here.
             </p>
@@ -196,13 +190,11 @@ export default function ContactPage() {
                     ? "noopener noreferrer"
                     : undefined
                 }
-                className="rounded-[2rem] border border-[#D8B98C] bg-[#FFFDF8] p-7 text-left shadow-sm transition hover:-translate-y-1 hover:border-[#8A4B2A] hover:shadow-md"
+                className="rounded-[2rem] border border-[#E8D8C5] bg-white p-7 text-left shadow-sm transition hover:-translate-y-1 hover:border-[#8A4B2A] hover:shadow-md"
               >
-                <p className="text-sm font-bold uppercase tracking-[0.22em] text-[#8A4B2A]">
-                  {item.title}
-                </p>
+                <p className="kk-eyebrow text-[#8A4B2A]">{item.title}</p>
 
-                <p className="mt-4 break-words text-xl font-black leading-snug text-[#17110D]">
+                <p className="kk-card-title mt-4 break-words leading-snug text-[#17110D]">
                   {item.value}
                 </p>
               </Link>
@@ -212,31 +204,29 @@ export default function ContactPage() {
       </section>
 
       {/* Inquiry Form Placeholder */}
-      <section className="bg-[#FFFDF8] px-6 py-24 sm:px-10 lg:px-16">
+      <section className="kk-section-dark px-6 py-24 sm:px-10 lg:px-16">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-3xl font-bold uppercase tracking-[0.28em] text-[#8A4B2A]">
-              Enquiry form
-            </p>
+            <p className="kk-section-label text-[#D8B98C]">Enquiry form</p>
 
-            <h2 className="mt-5 text-4xl font-black leading-tight sm:text-5xl">
+            <h2 className="kk-section-heading mt-5 leading-tight sm:text-5xl">
               <span className="block">Tell us what</span>
               <span className="block">you’re thinking.</span>
             </h2>
 
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-[#5F4A3D]">
+            <p className="kk-body mx-auto mt-6 max-w-2xl text-[#DCCAB6]">
               This can later connect to your actual form, CRM, Google Sheet,
               email, or whatever slightly chaotic but effective system we use
               before becoming fancy.
             </p>
           </div>
 
-          <form className="mx-auto mt-14 max-w-2xl rounded-[2rem] border border-[#E8D8C5] bg-[#FAF7F2] p-8 shadow-sm">
+          <form className="mx-auto mt-14 max-w-2xl rounded-[2rem] border border-white/15 bg-white/[0.04] p-8 shadow-sm">
             <div className="grid gap-6">
               <div>
                 <label
                   htmlFor="name"
-                  className="text-m font-bold uppercase tracking-[0.18em] text-[#8A4B2A]"
+                  className="kk-small-text font-semibold uppercase tracking-[0.18em] text-[#D8B98C]"
                 >
                   Name
                 </label>
@@ -245,14 +235,14 @@ export default function ContactPage() {
                   name="name"
                   type="text"
                   placeholder="Your name"
-                  className="mt-3 w-full rounded-2xl border border-[#E8D8C5] bg-[#FFFDF8] px-5 py-4 text-[#17110D] outline-none transition placeholder:text-[#9B8A7C] focus:border-[#8A4B2A]"
+                  className="mt-3 w-full rounded-2xl border border-white/15 bg-[#FAFAF7] px-5 py-4 text-[#17110D] outline-none transition placeholder:text-[#9B8A7C] focus:border-[#D8B98C]"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="email"
-                  className="text-m font-bold uppercase tracking-[0.18em] text-[#8A4B2A]"
+                  className="kk-small-text font-semibold uppercase tracking-[0.18em] text-[#D8B98C]"
                 >
                   Email
                 </label>
@@ -261,14 +251,14 @@ export default function ContactPage() {
                   name="email"
                   type="email"
                   placeholder="you@example.com"
-                  className="mt-3 w-full rounded-2xl border border-[#E8D8C5] bg-[#FFFDF8] px-5 py-4 text-[#17110D] outline-none transition placeholder:text-[#9B8A7C] focus:border-[#8A4B2A]"
+                  className="mt-3 w-full rounded-2xl border border-white/15 bg-[#FAFAF7] px-5 py-4 text-[#17110D] outline-none transition placeholder:text-[#9B8A7C] focus:border-[#D8B98C]"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="phone"
-                  className="text-m font-bold uppercase tracking-[0.18em] text-[#8A4B2A]"
+                  className="kk-small-text font-semibold uppercase tracking-[0.18em] text-[#D8B98C]"
                 >
                   Phone / WhatsApp
                 </label>
@@ -277,28 +267,30 @@ export default function ContactPage() {
                   name="phone"
                   type="tel"
                   placeholder="+91..."
-                  className="mt-3 w-full rounded-2xl border border-[#E8D8C5] bg-[#FFFDF8] px-5 py-4 text-[#17110D] outline-none transition placeholder:text-[#9B8A7C] focus:border-[#8A4B2A]"
+                  className="mt-3 w-full rounded-2xl border border-white/15 bg-[#FAFAF7] px-5 py-4 text-[#17110D] outline-none transition placeholder:text-[#9B8A7C] focus:border-[#D8B98C]"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="interest"
-                  className="text-m font-bold uppercase tracking-[0.18em] text-[#8A4B2A]"
+                  className="kk-small-text font-semibold uppercase tracking-[0.18em] text-[#D8B98C]"
                 >
                   I want to
                 </label>
                 <select
                   id="interest"
                   name="interest"
-                  className="mt-3 w-full rounded-2xl border border-[#E8D8C5] bg-[#FFFDF8] px-5 py-4 text-[#17110D] outline-none transition focus:border-[#8A4B2A]"
+                  className="mt-3 w-full rounded-2xl border border-white/15 bg-[#FAFAF7] px-5 py-4 text-[#17110D] outline-none transition focus:border-[#D8B98C]"
                   defaultValue=""
                 >
                   <option value="" disabled>
                     Choose one
                   </option>
                   <option value="attend">Attend an experience</option>
-                  <option value="partner">Work / partner with KultureKatta</option>
+                  <option value="partner">
+                    Work / partner with KultureKatta
+                  </option>
                   <option value="volunteer">Volunteer with KultureKatta</option>
                   <option value="host">Host a Katta</option>
                   <option value="school">Bring KuKa to a school / college</option>
@@ -310,7 +302,7 @@ export default function ContactPage() {
               <div>
                 <label
                   htmlFor="message"
-                  className="text-m font-bold uppercase tracking-[0.18em] text-[#8A4B2A]"
+                  className="kk-small-text font-semibold uppercase tracking-[0.18em] text-[#D8B98C]"
                 >
                   Message
                 </label>
@@ -319,18 +311,18 @@ export default function ContactPage() {
                   name="message"
                   rows={6}
                   placeholder="Tell us a little more..."
-                  className="mt-3 w-full resize-none rounded-2xl border border-[#E8D8C5] bg-[#FFFDF8] px-5 py-4 text-[#17110D] outline-none transition placeholder:text-[#9B8A7C] focus:border-[#8A4B2A]"
+                  className="mt-3 w-full resize-none rounded-2xl border border-white/15 bg-[#FAFAF7] px-5 py-4 text-[#17110D] outline-none transition placeholder:text-[#9B8A7C] focus:border-[#D8B98C]"
                 />
               </div>
 
               <button
                 type="submit"
-                className="rounded-full bg-[#17110D] px-8 py-4 text-sm font-bold uppercase tracking-wide text-[#FAF7F2] transition hover:bg-[#8A4B2A]"
+                className="kk-rounded-button border-[#FAFAF7] bg-[#FAFAF7] text-[#17110D] hover:border-[#D8B98C] hover:bg-[#D8B98C]"
               >
                 Send enquiry
               </button>
 
-              <p className="text-sm leading-6 text-[#5F4A3D]">
+              <p className="kk-small-text text-[#DCCAB6]">
                 Note: This form is currently front-end only. Once your backend
                 or form tool is connected, the submit button can send real
                 enquiries.
@@ -341,18 +333,16 @@ export default function ContactPage() {
       </section>
 
       {/* Closing CTA */}
-      <section className="bg-[#F6D8C6] px-6 py-24 text-[#17110D] sm:px-10 lg:px-16">
+      <section className="kk-section-light px-6 py-24 sm:px-10 lg:px-16">
         <div className="mx-auto max-w-5xl text-center">
-          <p className="text-3xl font-bold uppercase tracking-[0.28em] text-[#8A4B2A]">
-            Start with hello
-          </p>
+          <p className="kk-section-label text-[#8A4B2A]">Start with hello</p>
 
-          <h2 className="mt-5 text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">
+          <h2 className="kk-section-heading mt-5 leading-tight sm:text-5xl lg:text-6xl">
             <span className="block">Some ideas need a room,</span>
             <span className="block">a table, and a few curious people.</span>
           </h2>
 
-          <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-[#5F4A3D]">
+          <p className="kk-body mx-auto mt-6 max-w-3xl text-[#5F4A3D]">
             If you have a space, a skill, a community, a question, a wild idea,
             or just a strong feeling that culture should be more alive — talk to
             us.
@@ -360,15 +350,15 @@ export default function ContactPage() {
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
-              href="https://wa.me/919730244996"
-              className="rounded-full bg-[#17110D] px-8 py-4 text-sm font-bold uppercase tracking-wide text-[#FAF7F2] transition hover:bg-[#8A4B2A]"
+              href="https://wa.me/917030371411"
+              className="kk-rounded-button border-[#17110D] bg-[#17110D] text-[#FAFAF7] hover:border-[#8A4B2A] hover:bg-[#8A4B2A]"
             >
               WhatsApp us
             </Link>
 
             <Link
               href="/experiences"
-              className="rounded-full border border-[#17110D] bg-transparent px-8 py-4 text-sm font-bold uppercase tracking-wide text-[#17110D] transition hover:bg-[#17110D] hover:text-[#FAF7F2]"
+              className="kk-rounded-button border-[#17110D] bg-transparent text-[#17110D] hover:bg-[#17110D] hover:text-[#FAFAF7]"
             >
               Explore experiences
             </Link>

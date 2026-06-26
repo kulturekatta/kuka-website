@@ -1,7 +1,8 @@
-import Image from "next/image";
-import Link from "next/link";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Navbar from "./components/Navbar";
+import GoToTopButton from "./components/GoToTopButton";
+import Footer from "./components/Footer";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -15,8 +16,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "KultureKatta",
-  description: "Culture is what we do.",
+  title: "KultureKatta | Culture-Led Experiences for Teams & Private Groups",
+  description:
+    "KultureKatta designs culture-led workshops, city trails, creative sessions, festive experiences, and custom gatherings for teams and private groups.",
 };
 
 export default function RootLayout({
@@ -27,47 +29,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-<body className="min-h-full flex flex-col bg-[#FAFAF7] text-[#171717]">        {/* 🔝 NAVBAR */}
-        <header className="w-full border-b border-gray-200">
-          <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+      <body className="kk-site-bg min-h-full flex flex-col">
+        <Navbar />
 
-            {/* 🟡 LOGO */}
-            <Link href="/" className="flex items-center">
-                <Image
-                 src="/logo.png"
-                  alt="KultureKatta"
-                  width={140}
-                  height={40}
-                  className="h-40 w-40"
-              />
-            </Link>
+        <main className="flex-1">{children}</main>
 
-            {/* 🔗 NAV LINKS + CTA */}
-            <nav className="flex items-center gap-5 text-lg font-medium text-gray-800">
-              <Link href="/about" className="hover:text-black">About</Link>
-              <Link href="/experiences" className="hover:text-black">Experiences</Link>
-              <Link href="/for-organisations" className="hover:text-black">For Organisations</Link>
-              <Link href="/katta-studio" className="hover:text-black">Katta Studio</Link>
-              <Link href="/stories" className="hover:text-black">Stories</Link>
-              <Link href="/contact" className="hover:text-black">Contact</Link>
-              {/* 🚀 CTA BUTTON */}
-              <Link 
-                href="/experiences"
-                className="bg-black text-white px-4 py-2 rounded-xl text-sm hover:bg-gray-800"
-              >
-                Explore
-              </Link>
-            </nav>
-          </div>
-        </header>
+        <Footer />
 
-        {/* 📄 PAGE CONTENT */}
-        <main className="flex-1">
-          {children}
-        </main>
-
+        <GoToTopButton />
       </body>
     </html>
   );

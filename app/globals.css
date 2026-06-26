@@ -3,6 +3,16 @@
 :root {
   --background: #FAFAF7;
   --foreground: #171717;
+
+  --kk-light: #FAFAF7;
+  --kk-cream: #FAF7F2;
+  --kk-dark: #2A1E19;
+  --kk-text-dark: #171717;
+  --kk-muted: rgba(23, 23, 23, 0.7);
+  --kk-muted-light: rgba(250, 247, 242, 0.72);
+  --kk-border-dark: rgba(23, 23, 23, 0.16);
+  --kk-border-light: rgba(250, 247, 242, 0.22);
+  --kk-accent: #D8BFAF;
 }
 
 @theme inline {
@@ -12,8 +22,279 @@
   --font-mono: var(--font-geist-mono);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--kk-light);
+  color: var(--kk-text-dark);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+@layer components {
+  /* -----------------------------
+     GLOBAL LAYOUT HELPERS
+  ----------------------------- */
+
+  .kk-container {
+    @apply mx-auto max-w-6xl px-6;
+  }
+
+  .kk-section-padding {
+    @apply py-20 sm:py-24;
+  }
+
+  .kk-hero-padding {
+    @apply py-24 sm:py-32;
+  }
+
+  .kk-grid-2 {
+    @apply grid gap-8 md:grid-cols-2;
+  }
+
+  .kk-grid-3 {
+    @apply grid gap-8 md:grid-cols-3;
+  }
+
+  /* -----------------------------
+     GLOBAL SITE BACKGROUNDS
+     Main site stays warm/light.
+     Header and footer can use dark wrappers.
+  ----------------------------- */
+
+  .kk-site-bg {
+    background-color: var(--kk-light);
+    color: var(--kk-text-dark);
+  }
+
+  .kk-header-dark {
+    background-color: var(--kk-dark);
+    color: var(--kk-cream);
+  }
+
+  .kk-footer-dark {
+    background-color: var(--kk-dark);
+    color: var(--kk-cream);
+  }
+
+  .kk-section-light {
+    background-color: var(--kk-light);
+    color: var(--kk-text-dark);
+  }
+
+  .kk-section-cream {
+    background-color: var(--kk-cream);
+    color: var(--kk-text-dark);
+  }
+
+  .kk-section-dark {
+    background-color: var(--kk-dark);
+    color: var(--kk-cream);
+  }
+
+  /* -----------------------------
+     GLOBAL TYPOGRAPHY
+  ----------------------------- */
+
+  .kk-eyebrow {
+    @apply text-sm font-semibold uppercase tracking-[0.35em];
+  }
+
+  .kk-section-label {
+    @apply text-2xl sm:text-3xl font-semibold uppercase tracking-[0.25em];
+  }
+
+  .kk-section-heading {
+    @apply text-3xl font-semibold uppercase tracking-tight;
+  }
+
+  .kk-page-heading {
+    @apply text-4xl sm:text-6xl font-semibold tracking-tight;
+  }
+
+  .kk-card-title {
+    @apply text-2xl sm:text-3xl font-semibold tracking-tight;
+  }
+
+  .kk-body {
+    @apply text-base leading-8;
+  }
+
+  .kk-body-large {
+    @apply text-lg leading-9;
+  }
+
+  .kk-small-text {
+    @apply text-sm leading-6;
+  }
+
+  /* -----------------------------
+     GLOBAL TEXT COLORS
+  ----------------------------- */
+
+  .kk-text-muted-dark {
+    @apply text-black/70;
+  }
+
+  .kk-text-muted-light {
+    @apply text-white/75;
+  }
+
+  .kk-text-accent {
+    color: var(--kk-accent);
+  }
+
+  .kk-text-dark {
+    color: var(--kk-text-dark);
+  }
+
+  .kk-text-light {
+    color: var(--kk-cream);
+  }
+
+  /* -----------------------------
+     GLOBAL BORDERS
+  ----------------------------- */
+
+  .kk-border-dark {
+    @apply border-black/15;
+  }
+
+  .kk-border-light {
+    @apply border-white/20;
+  }
+
+  /* -----------------------------
+     GLOBAL CARDS
+  ----------------------------- */
+
+  .kk-card-light {
+    @apply rounded-3xl border border-black/15 bg-white p-8;
+  }
+
+  .kk-card-cream {
+    @apply rounded-3xl border border-black/15 p-8;
+    background-color: var(--kk-cream);
+  }
+
+  .kk-card-dark {
+    @apply rounded-3xl border border-white/20 bg-white/5 p-8;
+  }
+
+  .kk-card-soft {
+    @apply rounded-3xl border border-black/10 bg-white/60 p-8;
+  }
+
+  /* -----------------------------
+     GLOBAL LINKS
+  ----------------------------- */
+
+  .kk-link-dark {
+    @apply inline-flex text-sm font-semibold uppercase tracking-[0.25em] underline underline-offset-8 transition hover:text-black/60;
+    color: var(--kk-text-dark);
+    text-decoration-color: var(--kk-accent);
+  }
+
+  .kk-link-light {
+    @apply inline-flex text-sm font-semibold uppercase tracking-[0.25em] text-white underline underline-offset-8 transition;
+    text-decoration-color: var(--kk-accent);
+  }
+
+  .kk-link-light:hover {
+    color: var(--kk-accent);
+  }
+
+  /* -----------------------------
+     GLOBAL BUTTON BASE
+  ----------------------------- */
+
+  .kk-rounded-button {
+    @apply inline-flex items-center justify-center rounded-full border px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] transition;
+  }
+
+  /* -----------------------------
+     BUTTONS FOR DARK SECTIONS
+     Use these on dark backgrounds.
+  ----------------------------- */
+
+  .kk-button-light {
+    @apply inline-flex items-center justify-center rounded-full border border-white bg-white px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] transition hover:bg-transparent hover:text-white;
+    color: var(--kk-text-dark);
+  }
+
+  .kk-button-dark-outline {
+    @apply inline-flex items-center justify-center rounded-full border border-white/30 px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-white transition hover:border-white hover:bg-white;
+  }
+
+  .kk-button-dark-outline:hover {
+    color: var(--kk-text-dark);
+  }
+
+  .kk-button-on-dark {
+    @apply inline-flex items-center justify-center rounded-full border border-white/30 px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-white transition hover:border-white hover:bg-white;
+  }
+
+  .kk-button-on-dark:hover {
+    color: var(--kk-text-dark);
+  }
+
+  /* -----------------------------
+     BUTTONS FOR LIGHT SECTIONS
+     Use these on light / cream / white backgrounds.
+  ----------------------------- */
+
+  .kk-button-dark {
+    @apply inline-flex items-center justify-center rounded-full border px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-white transition hover:bg-transparent;
+    border-color: var(--kk-dark);
+    background-color: var(--kk-dark);
+  }
+
+  .kk-button-dark:hover {
+    color: var(--kk-dark);
+  }
+
+  .kk-button-light-outline {
+    @apply inline-flex items-center justify-center rounded-full border border-black/20 px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] transition hover:text-white;
+    color: var(--kk-text-dark);
+  }
+
+  .kk-button-light-outline:hover {
+    border-color: var(--kk-dark);
+    background-color: var(--kk-dark);
+  }
+
+  .kk-button-on-light {
+    @apply inline-flex items-center justify-center rounded-full border border-black/20 px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] transition hover:text-white;
+    color: var(--kk-text-dark);
+  }
+
+  .kk-button-on-light:hover {
+    border-color: var(--kk-dark);
+    background-color: var(--kk-dark);
+  }
+
+  /* -----------------------------
+     OLD CLASS NAME COMPATIBILITY
+     Keep these because some pages already use them.
+  ----------------------------- */
+
+  .kk-button-outline-dark {
+    @apply inline-flex items-center justify-center rounded-full border border-black/20 px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] transition hover:text-white;
+    color: var(--kk-text-dark);
+  }
+
+  .kk-button-outline-dark:hover {
+    border-color: var(--kk-dark);
+    background-color: var(--kk-dark);
+  }
+
+  .kk-button-outline-light {
+    @apply inline-flex items-center justify-center rounded-full border border-white/30 px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-white transition;
+  }
+
+  .kk-button-outline-light:hover {
+    border-color: var(--kk-accent);
+    color: var(--kk-accent);
+  }
 }
