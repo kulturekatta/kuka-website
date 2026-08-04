@@ -1,0 +1,1015 @@
+@import "tailwindcss";
+
+:root {
+  /* =========================================================
+     KULTUREKATTA GLOBAL DESIGN CONTROLS
+
+     Change the values in this block to update the whole site.
+     Page and component files should use the semantic kk-* classes
+     rather than setting their own font sizes or colours.
+  ========================================================= */
+
+  /* 1. SITE COLOURS */
+  --kk-background: #fafaf7;
+  --kk-surface: #ffffff;
+  --kk-surface-alt: #f4f4f0;
+  --kk-dark: #2a1e19;
+  --kk-text: #211a17;
+  --kk-text-muted: #59524c;
+  --kk-accent: #8a5e36;
+  --kk-accent-hover: #704829;
+  --kk-border: rgba(33, 26, 23, 0.14);
+  --kk-border-strong: rgba(33, 26, 23, 0.28);
+  --kk-text-on-dark: #ffffff;
+  --kk-text-muted-on-dark: rgba(255, 255, 255, 0.72);
+
+  /* 2. SITE FONTS */
+  --kk-font-sans:
+    "Segoe UI", Inter, ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, Arial, sans-serif;
+  --kk-font-mono:
+    "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+  /* 3. PAGE LABEL — the short title immediately below the navbar */
+  --kk-page-label-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem);
+  --kk-page-label-line: 1.2;
+  --kk-page-label-weight: 700;
+  --kk-page-label-spacing: 0.18em;
+  --kk-page-label-color: var(--kk-accent);
+
+  /* 4. PAGE HEADLINE — the main H1 */
+  --kk-page-title-size: clamp(2.25rem, 1.55rem + 3vw, 3.75rem);
+  --kk-page-title-line: 1.08;
+  --kk-page-title-weight: 650;
+  --kk-page-title-spacing: -0.035em;
+  --kk-page-title-color: var(--kk-text);
+
+  /* 5. PAGE INTRODUCTION — text directly below the main H1 */
+  --kk-page-intro-size: clamp(1.05rem, 0.98rem + 0.35vw, 1.25rem);
+  --kk-page-intro-line: 1.7;
+  --kk-page-intro-weight: 400;
+  --kk-page-intro-color: var(--kk-text-muted);
+
+  /* 6. SECTION LABELS AND HEADLINES
+     Brown headings such as “What We Create” and “Choose your doorway” */
+  --kk-section-label-size: clamp(1.75rem, 2rem + 1.2vw, 2.2rem);
+  --kk-section-label-line: 1.3;
+  --kk-section-label-weight: 700;
+  --kk-section-label-spacing: 0.17em;
+  --kk-section-label-color: var(--kk-accent);
+
+  --kk-section-title-size: clamp(1.9rem, 1.45rem + 1.9vw, 2.8rem);
+  --kk-section-title-line: 1.16;
+  --kk-section-title-weight: 650;
+  --kk-section-title-spacing: -0.025em;
+  --kk-section-title-color: var(--kk-text);
+
+  /* 7. BODY COPY */
+  --kk-body-size: clamp(1.125rem, 1.075rem + 0.25vw, 1.25rem);
+  --kk-body-line: 1.7;
+  --kk-body-weight: 400;
+  --kk-body-color: var(--kk-text-muted);
+
+  --kk-body-large-size: clamp(1.3125rem, 1.2rem + 0.45vw, 1.5rem);
+  --kk-body-large-line: 1.6;
+
+  --kk-small-size: 0.875rem;
+  --kk-small-line: 1.6;
+
+  /* 8. CARDS */
+  --kk-card-background: var(--kk-surface);
+  --kk-card-background-soft: var(--kk-surface);
+  --kk-card-border-color: var(--kk-border);
+  --kk-card-border-width: 1px;
+  --kk-card-shadow: 0 10px 30px rgba(33, 26, 23, 0.045);
+  --kk-card-hover-shadow: 0 16px 36px rgba(33, 26, 23, 0.1);
+  --kk-card-hover-lift: -0.25rem;
+
+  --kk-card-title-size: clamp(1.35rem, 1.2rem + 0.65vw, 1.7rem);
+  --kk-card-title-line: 1.28;
+  --kk-card-title-weight: 650;
+  --kk-card-title-color: #000000;
+
+  --kk-card-body-size: var(--kk-body-size);
+  --kk-card-body-line: var(--kk-body-line);
+  --kk-card-body-weight: var(--kk-body-weight);
+  --kk-card-body-color: var(--kk-text-muted);
+
+  --kk-card-number-size: 3rem;
+  --kk-card-number-line: 1;
+  --kk-card-number-weight: 700;
+  --kk-card-number-color: var(--kk-accent);
+
+  --kk-card-year-size: var(--kk-card-title-size);
+  --kk-card-year-line: 1.2;
+  --kk-card-year-weight: 700;
+  --kk-card-year-color: var(--kk-accent);
+
+  --kk-card-meta-size: 0.875rem;
+  --kk-card-meta-line: 1.55;
+  --kk-card-meta-weight: 600;
+  --kk-card-meta-color: var(--kk-text-muted);
+
+  --kk-card-label-size: 1rem;
+
+  --kk-card-padding: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+  --kk-card-padding-compact: clamp(1.25rem, 1.05rem + 0.75vw, 1.5rem);
+  --kk-card-padding-roomy: clamp(2rem, 1.55rem + 2vw, 3.5rem);
+  --kk-card-radius: 1.5rem;
+  --kk-card-content-gap: 1rem;
+
+  /* 9. LAYOUT AND VERTICAL RHYTHM */
+  --kk-container-width: 72rem;
+  --kk-page-gutter: clamp(1.25rem, 3vw, 3rem);
+  --kk-page-start-space: clamp(3rem, 4.5vw, 4.5rem);
+  --kk-section-space: clamp(3.5rem, 5vw, 5rem);
+  --kk-grid-gap: clamp(1.25rem, 2vw, 2rem);
+
+  /* 10. BUTTONS
+     All kk-* buttons are fully rounded. */
+  --kk-button-size: 0.875rem;
+  --kk-button-line: 1.2;
+  --kk-button-weight: 700;
+  --kk-button-letter-spacing: 0.1em;
+  --kk-button-padding-y: 0.9rem;
+  --kk-button-padding-x: 1.4rem;
+  --kk-button-radius: 9999px;
+  --kk-button-background: var(--kk-dark);
+  --kk-button-text-color: var(--kk-text-on-dark);
+  --kk-button-border: var(--kk-dark);
+  --kk-button-hover-background: var(--kk-accent);
+  --kk-button-hover-text-color: var(--kk-text-on-dark);
+  --kk-button-hover-border: var(--kk-accent);
+
+  /* 11. FORMS */
+  --kk-form-label-size: 0.9rem;
+  --kk-form-label-color: var(--kk-text);
+
+  /* Backwards-compatible aliases used by older page code */
+  --background: var(--kk-background);
+  --foreground: var(--kk-text);
+  --kk-light: var(--kk-background);
+  --kk-cream: var(--kk-background);
+  --kk-white: var(--kk-surface);
+  --kk-text-dark: var(--kk-text);
+  --kk-muted: var(--kk-text-muted);
+  --kk-muted-light: var(--kk-text-muted-on-dark);
+  --kk-border-dark: var(--kk-border);
+  --kk-border-light: rgba(255, 255, 255, 0.2);
+  --kk-accent-strong: var(--kk-accent);
+  --kk-number-size: var(--kk-card-number-size);
+  --kk-card-marker-size: var(--kk-card-number-size);
+  --kk-doorway-card-title-size: var(--kk-card-title-size);
+  --kk-hero-title-size: var(--kk-page-title-size);
+  --kk-hero-title-line: var(--kk-page-title-line);
+}
+
+@theme inline {
+  --color-background: var(--kk-background);
+  --color-foreground: var(--kk-text);
+  --font-sans: var(--kk-font-sans);
+  --font-mono: var(--kk-font-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--kk-background);
+}
+
+body {
+  margin: 0;
+  background: var(--kk-background);
+  color: var(--kk-text);
+  font-family: var(--kk-font-sans);
+  font-size: var(--kk-body-size);
+  line-height: var(--kk-body-line);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+@layer base {
+  a {
+    color: inherit;
+  }
+}
+
+::selection {
+  background: color-mix(in srgb, var(--kk-accent) 22%, white);
+  color: var(--kk-text);
+}
+
+@layer components {
+  /* GLOBAL LAYOUT */
+  .kk-site-bg,
+  .kk-page-root {
+    background: var(--kk-background);
+    color: var(--kk-text);
+  }
+
+  .kk-container {
+    width: min(100%, var(--kk-container-width));
+    margin-inline: auto;
+    padding-inline: var(--kk-page-gutter);
+  }
+
+  .kk-section-padding {
+    padding-block: var(--kk-section-space);
+  }
+
+  .kk-hero-padding,
+  .kk-page-hero {
+    padding-top: var(--kk-page-start-space);
+    padding-bottom: var(--kk-section-space);
+  }
+
+  .kk-grid-2 {
+    display: grid;
+    gap: var(--kk-grid-gap);
+  }
+
+  .kk-grid-3 {
+    display: grid;
+    gap: var(--kk-grid-gap);
+  }
+
+  @media (min-width: 48rem) {
+    .kk-grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .kk-grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  /* BACKGROUNDS
+     All content sections are light. Only the navbar and footer are dark. */
+  .kk-section-light,
+  .kk-section-cream,
+  .kk-section-white,
+  .kk-section-dark {
+    background: var(--kk-background);
+    color: var(--kk-text);
+  }
+
+  .kk-header-dark,
+  .kk-footer-dark {
+    background: var(--kk-dark);
+    color: var(--kk-text-on-dark);
+  }
+
+  .kk-utility-bar {
+    background: var(--kk-background);
+    color: var(--kk-text);
+    border-bottom: 1px solid var(--kk-border);
+  }
+
+  /* TYPOGRAPHY ROLES */
+  .kk-page-label {
+    font-size: var(--kk-page-label-size);
+    line-height: var(--kk-page-label-line);
+    font-weight: var(--kk-page-label-weight);
+    letter-spacing: var(--kk-page-label-spacing);
+    text-transform: uppercase;
+    color: var(--kk-page-label-color);
+  }
+
+  .kk-page-heading,
+  .kk-page-title,
+  .kk-hero-title {
+    font-size: var(--kk-page-title-size);
+    line-height: var(--kk-page-title-line);
+    font-weight: var(--kk-page-title-weight);
+    letter-spacing: var(--kk-page-title-spacing);
+    color: var(--kk-page-title-color);
+  }
+
+  .kk-page-intro {
+    font-size: var(--kk-page-intro-size);
+    line-height: var(--kk-page-intro-line);
+    font-weight: var(--kk-page-intro-weight);
+    color: var(--kk-page-intro-color);
+  }
+
+  .kk-section-label,
+  .kk-eyebrow {
+    font-size: var(--kk-section-label-size);
+    line-height: var(--kk-section-label-line);
+    font-weight: var(--kk-section-label-weight);
+    letter-spacing: var(--kk-section-label-spacing);
+    text-transform: uppercase;
+    color: var(--kk-section-label-color);
+  }
+
+  .kk-section-heading,
+  .kk-section-title {
+    font-size: var(--kk-section-title-size);
+    line-height: var(--kk-section-title-line);
+    font-weight: var(--kk-section-title-weight);
+    letter-spacing: var(--kk-section-title-spacing);
+    color: var(--kk-section-title-color);
+  }
+
+  .kk-body {
+    font-size: var(--kk-body-size);
+    line-height: var(--kk-body-line);
+    font-weight: var(--kk-body-weight);
+    color: var(--kk-body-color);
+  }
+
+  .kk-body-large {
+    font-size: var(--kk-body-large-size);
+    line-height: var(--kk-body-large-line);
+    font-weight: var(--kk-body-weight);
+    color: var(--kk-body-color);
+  }
+
+  .kk-small-text {
+    font-size: var(--kk-small-size);
+    line-height: var(--kk-small-line);
+    color: var(--kk-body-color);
+  }
+
+  .kk-card-title {
+    font-size: var(--kk-card-title-size);
+    line-height: var(--kk-card-title-line);
+    font-weight: var(--kk-card-title-weight);
+    letter-spacing: -0.015em;
+    color: var(--kk-card-title-color);
+  }
+
+  .kk-card-body {
+    font-size: var(--kk-card-body-size);
+    line-height: var(--kk-card-body-line);
+    font-weight: var(--kk-card-body-weight);
+    color: var(--kk-card-body-color);
+  }
+
+  .kk-card-value {
+    font-size: var(--kk-body-large-size);
+    line-height: var(--kk-body-large-line);
+    font-weight: 600;
+    color: var(--kk-text);
+  }
+
+  .kk-card-number,
+  .kk-card-marker {
+    font-size: var(--kk-card-number-size);
+    line-height: var(--kk-card-number-line);
+    font-weight: var(--kk-card-number-weight);
+    letter-spacing: -0.045em;
+    color: var(--kk-card-number-color);
+  }
+
+  .kk-card-year {
+    font-size: var(--kk-card-year-size);
+    line-height: var(--kk-card-year-line);
+    font-weight: var(--kk-card-year-weight);
+    color: var(--kk-card-year-color);
+  }
+
+  .kk-card-meta,
+  .kk-doorway-card-label {
+    font-size: var(--kk-card-meta-size);
+    line-height: var(--kk-card-meta-line);
+    font-weight: var(--kk-card-meta-weight);
+    color: var(--kk-card-meta-color);
+  }
+
+  .kk-card-label {
+    font-size: var(--kk-card-label-size);
+    line-height: var(--kk-card-meta-line);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--kk-accent);
+  }
+
+  .kk-card-tag {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    border-radius: 9999px;
+    background: var(--kk-card-background-soft);
+    padding: 0.3rem 0.75rem;
+    font-size: var(--kk-card-meta-size);
+    line-height: var(--kk-card-meta-line);
+    font-weight: var(--kk-card-meta-weight);
+    color: var(--kk-card-meta-color);
+  }
+
+  .kk-badge {
+    font-size: var(--kk-card-meta-size);
+    line-height: var(--kk-card-meta-line);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--kk-text-on-dark);
+  }
+
+  .kk-form-label {
+    display: block;
+    font-size: var(--kk-form-label-size);
+    line-height: 1.4;
+    font-weight: 700;
+    color: var(--kk-form-label-color);
+  }
+
+  /* TEXT COLOURS */
+  .kk-text-muted-dark,
+  .kk-section-dark .kk-text-muted-light {
+    color: var(--kk-text-muted);
+  }
+
+  .kk-text-muted-light {
+    color: var(--kk-text-muted-on-dark);
+  }
+
+  .kk-text-accent,
+  .kk-text-accent-strong {
+    color: var(--kk-accent);
+  }
+
+  .kk-text-dark,
+  .kk-section-dark .kk-text-light {
+    color: var(--kk-text);
+  }
+
+  .kk-text-light {
+    color: var(--kk-text-on-dark);
+  }
+
+  /* BORDERS */
+  .kk-border-dark,
+  .kk-section-dark .kk-border-light {
+    border-color: var(--kk-border);
+  }
+
+  .kk-border-light {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  /* CARDS
+     Page files control grid placement and intentional minimum heights.
+     Everything visual and typographic is controlled here. */
+  .kk-card,
+  .kk-card-light,
+  .kk-card-cream,
+  .kk-card-dark,
+  .kk-card-soft {
+    position: relative;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    border: var(--kk-card-border-width) solid var(--kk-card-border-color);
+    border-radius: var(--kk-card-radius);
+    background: var(--kk-card-background);
+    color: var(--kk-text);
+    padding: var(--kk-card-padding);
+    box-shadow: var(--kk-card-shadow);
+  }
+
+  .kk-card--soft,
+  .kk-card--featured {
+    background: var(--kk-card-background);
+  }
+
+  .kk-card--featured {
+    border-color: var(--kk-accent);
+  }
+
+  .kk-card--compact {
+    padding: var(--kk-card-padding-compact);
+  }
+
+  .kk-card--roomy {
+    padding: var(--kk-card-padding-roomy);
+  }
+
+  .kk-card--centered {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .kk-card--interactive {
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  .kk-card--interactive:hover {
+    transform: translateY(var(--kk-card-hover-lift));
+    border-color: var(--kk-accent);
+    box-shadow: var(--kk-card-hover-shadow);
+  }
+
+  .kk-card--interactive:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--kk-accent) 35%, transparent);
+    outline-offset: 3px;
+  }
+
+  .kk-card-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--kk-card-content-gap);
+  }
+
+  .kk-card-footer {
+    margin-top: auto;
+    border-top: 1px solid var(--kk-card-border-color);
+    padding-top: 1.25rem;
+  }
+
+  .kk-card-list {
+    color: var(--kk-card-body-color);
+  }
+
+  .kk-card-list-item {
+    font-size: var(--kk-card-body-size);
+    line-height: var(--kk-card-body-line);
+    font-weight: var(--kk-card-body-weight);
+    color: var(--kk-card-body-color);
+  }
+
+  .kk-card-avatar {
+    display: flex;
+    width: 4rem;
+    height: 4rem;
+    align-items: center;
+    justify-content: center;
+    border: var(--kk-card-border-width) solid var(--kk-card-border-color);
+    border-radius: 9999px;
+    background: var(--kk-card-background);
+    font-size: var(--kk-card-title-size);
+    line-height: 1;
+    font-weight: 700;
+    color: var(--kk-accent);
+  }
+
+  .kk-chip {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    border: var(--kk-card-border-width) solid var(--kk-card-border-color);
+    border-radius: 9999px;
+    background: var(--kk-card-background);
+    padding: 0.7rem 1.2rem;
+    font-size: var(--kk-card-meta-size);
+    line-height: var(--kk-card-meta-line);
+    font-weight: var(--kk-card-meta-weight);
+    color: var(--kk-card-meta-color);
+    box-shadow: var(--kk-card-shadow);
+  }
+
+  /* Large framed content blocks use the same surface language without
+     pretending to be grid cards. */
+  .kk-panel {
+    border: var(--kk-card-border-width) solid var(--kk-card-border-color);
+    border-radius: var(--kk-card-radius);
+    background: var(--kk-card-background);
+    color: var(--kk-text);
+    padding: var(--kk-card-padding-roomy);
+    box-shadow: var(--kk-card-shadow);
+  }
+
+  .kk-panel--flush {
+    overflow: hidden;
+    padding: 0;
+  }
+
+  /* BUTTONS */
+  .kk-rounded-button,
+  .kk-button,
+  .kk-button-dark,
+  .kk-button-light,
+  .kk-button-light-outline,
+  .kk-button-dark-outline,
+  .kk-button-on-light,
+  .kk-button-on-dark,
+  .kk-button-outline-dark,
+  .kk-button-outline-light {
+    display: inline-flex;
+    min-height: 3rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--kk-button-radius);
+    border: 1px solid transparent;
+    padding: var(--kk-button-padding-y) var(--kk-button-padding-x);
+    font-family: var(--kk-font-sans);
+    font-size: var(--kk-button-size);
+    line-height: var(--kk-button-line);
+    font-weight: var(--kk-button-weight);
+    letter-spacing: var(--kk-button-letter-spacing);
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color 180ms ease,
+      border-color 180ms ease,
+      color 180ms ease,
+      transform 180ms ease;
+  }
+
+  /* PRIMARY BUTTON
+     Reserve this dark filled style for the main action in a section. */
+  .kk-button-dark {
+    border-color: var(--kk-dark);
+    background: var(--kk-dark);
+    color: var(--kk-text-on-dark);
+  }
+
+  /* DEFAULT / SECONDARY BUTTONS
+     Outlined on light backgrounds. */
+  .kk-rounded-button,
+  .kk-button,
+  .kk-button-light,
+  .kk-button-light-outline,
+  .kk-button-dark-outline,
+  .kk-button-on-light,
+  .kk-button-outline-dark {
+    border-color: var(--kk-border-strong);
+    background: transparent;
+    color: var(--kk-text);
+  }
+
+  /* OUTLINED BUTTONS ON DARK BACKGROUNDS */
+  .kk-button-on-dark,
+  .kk-button-outline-light {
+    border-color: rgba(255, 255, 255, 0.55);
+    background: transparent;
+    color: var(--kk-text-on-dark);
+  }
+
+  /* COMMON BUTTON HOVER */
+  .kk-rounded-button:hover,
+  .kk-button:hover,
+  .kk-button-dark:hover,
+  .kk-button-light:hover,
+  .kk-button-light-outline:hover,
+  .kk-button-dark-outline:hover,
+  .kk-button-on-light:hover,
+  .kk-button-on-dark:hover,
+  .kk-button-outline-dark:hover,
+  .kk-button-outline-light:hover {
+    border-color: var(--kk-button-hover-border);
+    background: var(--kk-button-hover-background);
+    color: var(--kk-button-hover-text-color);
+    transform: translateY(-1px);
+  }
+
+  /* KEYBOARD ACCESSIBILITY */
+  .kk-rounded-button:focus-visible,
+  .kk-button:focus-visible,
+  .kk-button-dark:focus-visible,
+  .kk-button-light:focus-visible,
+  .kk-button-light-outline:focus-visible,
+  .kk-button-dark-outline:focus-visible,
+  .kk-button-on-light:focus-visible,
+  .kk-button-on-dark:focus-visible,
+  .kk-button-outline-dark:focus-visible,
+  .kk-button-outline-light:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--kk-accent) 35%, transparent);
+    outline-offset: 3px;
+  }
+
+  /* WHITE BUTTON INSIDE THE DARK NAVBAR OR FOOTER */
+  .kk-header-dark .kk-button-light,
+  .kk-footer-dark .kk-button-light {
+    border-color: var(--kk-text-on-dark);
+    background: var(--kk-text-on-dark);
+    color: var(--kk-dark);
+  }
+
+  .kk-header-dark .kk-button-light:hover,
+  .kk-footer-dark .kk-button-light:hover {
+    border-color: var(--kk-button-hover-border);
+    background: var(--kk-button-hover-background);
+    color: var(--kk-button-hover-text-color);
+  }
+
+  /* LINKS */
+  .kk-link-dark,
+  .kk-link-light {
+    display: inline-flex;
+    color: var(--kk-text);
+    font-size: var(--kk-small-size);
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-decoration-line: underline;
+    text-decoration-color: var(--kk-accent);
+    text-underline-offset: 0.45rem;
+    transition: color 180ms ease;
+  }
+
+  .kk-link-dark:hover,
+  .kk-link-light:hover {
+    color: var(--kk-accent-hover);
+  }
+
+  .kk-header-dark .kk-link-light,
+  .kk-footer-dark .kk-link-light {
+    color: var(--kk-text-on-dark);
+  }
+}
+
+/* =========================================================
+   GLOBAL CONSISTENCY ENFORCEMENT
+
+   These role-based rules intentionally win over old page-level
+   Tailwind font-size and colour utilities. Layout utilities such
+   as max-width, margin and grid placement remain available.
+========================================================= */
+
+.kk-page-root .kk-page-label {
+  font-size: var(--kk-page-label-size) !important;
+  line-height: var(--kk-page-label-line) !important;
+  font-weight: var(--kk-page-label-weight) !important;
+  letter-spacing: var(--kk-page-label-spacing) !important;
+  color: var(--kk-page-label-color) !important;
+}
+
+.kk-page-root :is(.kk-page-heading, .kk-page-title, .kk-hero-title) {
+  font-size: var(--kk-page-title-size) !important;
+  line-height: var(--kk-page-title-line) !important;
+  font-weight: var(--kk-page-title-weight) !important;
+  letter-spacing: var(--kk-page-title-spacing) !important;
+  color: var(--kk-page-title-color) !important;
+}
+
+.kk-page-root .kk-page-intro {
+  font-size: var(--kk-page-intro-size) !important;
+  line-height: var(--kk-page-intro-line) !important;
+  font-weight: var(--kk-page-intro-weight) !important;
+  color: var(--kk-page-intro-color) !important;
+}
+
+.kk-page-root :is(.kk-section-label, .kk-eyebrow) {
+  font-size: var(--kk-section-label-size) !important;
+  line-height: var(--kk-section-label-line) !important;
+  font-weight: var(--kk-section-label-weight) !important;
+  letter-spacing: var(--kk-section-label-spacing) !important;
+  color: var(--kk-section-label-color) !important;
+}
+
+.kk-page-root :is(.kk-section-heading, .kk-section-title) {
+  font-size: var(--kk-section-title-size) !important;
+  line-height: var(--kk-section-title-line) !important;
+  font-weight: var(--kk-section-title-weight) !important;
+  letter-spacing: var(--kk-section-title-spacing) !important;
+  color: var(--kk-section-title-color) !important;
+}
+
+.kk-page-root .kk-body {
+  font-size: var(--kk-body-size) !important;
+  line-height: var(--kk-body-line) !important;
+  font-weight: var(--kk-body-weight) !important;
+  color: var(--kk-body-color) !important;
+}
+
+.kk-page-root .kk-body-large {
+  font-size: var(--kk-body-large-size) !important;
+  line-height: var(--kk-body-large-line) !important;
+  font-weight: var(--kk-body-weight) !important;
+  color: var(--kk-body-color) !important;
+}
+
+.kk-page-root .kk-card-title {
+  font-size: var(--kk-card-title-size) !important;
+  line-height: var(--kk-card-title-line) !important;
+  font-weight: var(--kk-card-title-weight) !important;
+  color: var(--kk-card-title-color) !important;
+}
+
+/* Keep every card surface white, including soft and featured variants. */
+.kk-page-root
+  :is(
+    .kk-card,
+    .kk-card-light,
+    .kk-card-cream,
+    .kk-card-dark,
+    .kk-card-soft,
+    .kk-card--soft,
+    .kk-card--featured
+  ) {
+  background: var(--kk-card-background) !important;
+}
+
+/* Standardise card headings even where older pages still use h2–h4 directly. */
+.kk-page-root
+  :is(
+    .kk-card,
+    .kk-card-light,
+    .kk-card-cream,
+    .kk-card-dark,
+    .kk-card-soft,
+    .kk-card--soft,
+    .kk-card--featured
+  )
+  :is(.kk-card-title, h2, h3, h4) {
+  color: var(--kk-card-title-color) !important;
+}
+
+.kk-page-root .kk-card-body {
+  font-size: var(--kk-card-body-size) !important;
+  line-height: var(--kk-card-body-line) !important;
+  font-weight: var(--kk-card-body-weight) !important;
+  color: var(--kk-card-body-color) !important;
+}
+
+.kk-page-root .kk-card-value {
+  font-size: var(--kk-body-large-size) !important;
+  line-height: var(--kk-body-large-line) !important;
+  font-weight: 600 !important;
+  color: var(--kk-text) !important;
+}
+
+.kk-page-root
+  :is(.kk-card, .kk-card-light, .kk-card-cream, .kk-card-dark, .kk-card-soft)
+  .kk-body {
+  font-size: var(--kk-card-body-size) !important;
+  line-height: var(--kk-card-body-line) !important;
+  font-weight: var(--kk-card-body-weight) !important;
+  color: var(--kk-card-body-color) !important;
+}
+
+.kk-page-root
+  :is(.kk-card, .kk-card-light, .kk-card-cream, .kk-card-dark, .kk-card-soft)
+  p:not(.kk-card-title):not(.kk-card-number):not(.kk-card-marker):not(
+    .kk-card-meta
+  ):not(.kk-card-year):not(.kk-card-value):not(.kk-card-label):not(
+    .kk-card-tag
+  ):not(.kk-section-label):not(.kk-eyebrow):not(.kk-body-large),
+.kk-page-root
+  :is(.kk-card, .kk-card-light, .kk-card-cream, .kk-card-dark, .kk-card-soft)
+  li {
+  font-size: var(--kk-card-body-size) !important;
+  line-height: var(--kk-card-body-line) !important;
+  font-weight: var(--kk-card-body-weight) !important;
+  color: var(--kk-card-body-color) !important;
+}
+
+.kk-page-root :is(.kk-card-number, .kk-card-marker) {
+  font-size: var(--kk-card-number-size) !important;
+  line-height: var(--kk-card-number-line) !important;
+  font-weight: var(--kk-card-number-weight) !important;
+  color: var(--kk-card-number-color) !important;
+}
+
+.kk-page-root .kk-card-year {
+  font-size: var(--kk-card-year-size) !important;
+  line-height: var(--kk-card-year-line) !important;
+  font-weight: var(--kk-card-year-weight) !important;
+  color: var(--kk-card-year-color) !important;
+}
+
+.kk-page-root :is(.kk-card-meta, .kk-doorway-card-label) {
+  font-size: var(--kk-card-meta-size) !important;
+  line-height: var(--kk-card-meta-line) !important;
+  font-weight: var(--kk-card-meta-weight) !important;
+  color: var(--kk-card-meta-color) !important;
+}
+
+.kk-page-root .kk-card-label {
+  font-size: var(--kk-card-label-size) !important;
+  line-height: var(--kk-card-meta-line) !important;
+  font-weight: 700 !important;
+  color: var(--kk-accent) !important;
+}
+
+.kk-page-root .kk-card-tag {
+  font-size: var(--kk-card-meta-size) !important;
+  line-height: var(--kk-card-meta-line) !important;
+  font-weight: var(--kk-card-meta-weight) !important;
+  color: var(--kk-card-meta-color) !important;
+}
+
+.kk-page-root .kk-badge {
+  font-size: var(--kk-card-meta-size) !important;
+  line-height: var(--kk-card-meta-line) !important;
+  color: var(--kk-text-on-dark) !important;
+}
+
+.kk-page-root .kk-small-text {
+  font-size: var(--kk-small-size) !important;
+  line-height: var(--kk-small-line) !important;
+  color: var(--kk-body-color) !important;
+}
+
+.kk-page-root .kk-form-label {
+  font-size: var(--kk-form-label-size) !important;
+  color: var(--kk-form-label-color) !important;
+}
+
+:is(
+  .kk-rounded-button,
+  .kk-button,
+  .kk-button-dark,
+  .kk-button-light,
+  .kk-button-light-outline,
+  .kk-button-dark-outline,
+  .kk-button-on-light,
+  .kk-button-on-dark,
+  .kk-button-outline-dark,
+  .kk-button-outline-light
+) {
+  font-size: var(--kk-button-size) !important;
+  line-height: var(--kk-button-line) !important;
+  font-weight: var(--kk-button-weight) !important;
+  letter-spacing: var(--kk-button-letter-spacing) !important;
+  border-radius: var(--kk-button-radius) !important;
+  text-decoration: none !important;
+}
+
+/* Keep nested spans or paragraphs legible inside buttons. */
+.kk-page-root
+  :is(
+    .kk-rounded-button,
+    .kk-button,
+    .kk-button-dark,
+    .kk-button-light,
+    .kk-button-light-outline,
+    .kk-button-dark-outline,
+    .kk-button-on-light,
+    .kk-button-on-dark,
+    .kk-button-outline-dark,
+    .kk-button-outline-light
+  )
+  * {
+  color: inherit !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+  font-weight: inherit !important;
+  letter-spacing: inherit !important;
+}
+
+/* One vertical rhythm across every top-level page section. */
+.kk-page-root > section {
+  padding-top: var(--kk-section-space) !important;
+  padding-bottom: var(--kk-section-space) !important;
+}
+
+.kk-page-root > section:first-child {
+  padding-top: var(--kk-page-start-space) !important;
+}
+
+/* Unnamed body copy inside pages inherits the global body controls. */
+.kk-page-root
+  p:not(.kk-page-label):not(.kk-page-intro):not(.kk-section-label):not(
+    .kk-eyebrow
+  ):not(.kk-card-title):not(.kk-card-number):not(.kk-card-marker):not(
+    .kk-card-meta
+  ):not(.kk-card-year):not(.kk-card-value):not(.kk-card-label):not(
+    .kk-card-tag
+  ):not(.kk-doorway-card-label):not(.kk-body):not(.kk-body-large):not(
+    .kk-small-text
+  ) {
+  font-size: var(--kk-body-size);
+  line-height: var(--kk-body-line);
+  color: var(--kk-body-color);
+}
+
+/* Neutral, consistent form fields. */
+main input:not([type="checkbox"]):not([type="radio"]),
+main textarea,
+main select {
+  border-color: var(--kk-border) !important;
+  background: var(--kk-surface) !important;
+  color: var(--kk-text) !important;
+}
+
+main input:focus,
+main textarea:focus,
+main select:focus {
+  border-color: var(--kk-accent) !important;
+  outline: 2px solid color-mix(in srgb, var(--kk-accent) 22%, transparent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

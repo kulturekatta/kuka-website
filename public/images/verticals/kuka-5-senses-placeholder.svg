@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" role="img" aria-labelledby="title desc">
+  <title id="title">KuKa 5 Senses placeholder logo</title>
+  <desc id="desc">A temporary circular sensory mark for KuKa 5 Senses.</desc>
+  <rect width="600" height="600" rx="76" fill="#fafaf7"/>
+  <circle cx="300" cy="255" r="150" fill="none" stroke="#8a5e36" stroke-width="18"/>
+  <circle cx="300" cy="255" r="34" fill="#8a5e36"/>
+  <g fill="none" stroke="#2a1e19" stroke-width="14" stroke-linecap="round">
+    <path d="M300 105v62"/>
+    <path d="M443 209l-59 19"/>
+    <path d="M388 374l-36-50"/>
+    <path d="M212 374l36-50"/>
+    <path d="M157 209l59 19"/>
+  </g>
+  <text x="300" y="472" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="52" font-weight="700" fill="#2a1e19">KuKa 5 Senses</text>
+</svg>
