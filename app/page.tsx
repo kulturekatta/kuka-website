@@ -334,11 +334,13 @@ const verticals = [
   },
   {
   icon: "👁️",
-  iconLabel: "Sensory Culture",
+  iconLabel: "Sensory culture",
+  eyebrow: "Taste, touch, scent, sound and sight",
   title: "KuKa 5 Senses",
   text: "Multisensory experiences through taste, touch, scent, sound, sight, memory, and culture.",
   href: "/kuka-universe/5-senses",
-  },
+  cta: "Discover KuKa 5 Senses",
+},
   {
     icon: "🌿",
     iconLabel: "Wellbeing and slowness",
@@ -354,8 +356,9 @@ const verticals = [
     eyebrow: "Nature and adventure",
     title: "The Ground by KuKa",
     text: "Outdoor learning, hiking, adventure, ecology, field skills, nature immersion, and experiences that bring people closer to the living world.",
-    href: "/kuka-universe/the-ground",
-    cta: "Discover The Ground",
+    href: "/kuka-universe#verticals",
+    cta: "Coming soon",
+    isPlanned: true,
   },
   {
     icon: "📜",
@@ -363,8 +366,9 @@ const verticals = [
     eyebrow: "Stories, memory and archives",
     title: "KuKa Chronicles",
     text: "Stories, oral histories, cultural memory, archives, conversations, publications, and documentation that preserve how people and places live.",
-    href: "/kuka-universe/chronicles",
-    cta: "Discover KuKa Chronicles",
+    href: "/kuka-universe#verticals",
+    cta: "Coming soon",
+    isPlanned: true,
   },
   {
     icon: "💻",
@@ -372,8 +376,9 @@ const verticals = [
     eyebrow: "Digital participation",
     title: "KuKa Digital",
     text: "Online and hybrid cultural experiences, digital storytelling, learning, archives, and new ways for people to participate across distance.",
-    href: "/kuka-universe/digital",
-    cta: "Discover KuKa Digital",
+    href: "/kuka-universe#verticals",
+    cta: "Coming soon",
+    isPlanned: true,
   },
   {
     icon: "🌍",
@@ -381,8 +386,9 @@ const verticals = [
     eyebrow: "Local and global exchange",
     title: "KuKa Exchange",
     text: "Cultural exchanges, residencies, visiting groups, collaborative programs, and encounters that connect local knowledge with the wider world.",
-    href: "/kuka-universe/exchange",
-    cta: "Discover KuKa Exchange",
+    href: "/kuka-universe#verticals",
+    cta: "Coming soon",
+    isPlanned: true,
   },
   {
     icon: "🤲",
@@ -390,8 +396,9 @@ const verticals = [
     eyebrow: "Culture-led impact",
     title: "KuKa Impact",
     text: "Programs that widen access, support creative livelihoods, strengthen communities, encourage inclusion, and connect culture with meaningful action.",
-    href: "/kuka-universe/impact",
-    cta: "Discover KuKa Impact",
+    href: "/kuka-universe#verticals",
+    cta: "Coming soon",
+    isPlanned: true,
   },
 ];
 
@@ -466,7 +473,7 @@ const whatWeCreate = [
 
 export default function HomePage() {
   return (
-    <main className="kk-page-root kk-site-bg min-h-screen">
+    <div className="kk-page-root kk-site-bg min-h-screen">
       {/* HERO */}
       <section className="kk-section-light relative overflow-hidden pt-16 pb-20 md:pt-14 md:pb-24">
         <div className="mx-auto flex max-w-7xl flex-col items-center px-6 text-center sm:px-10 lg:px-16">
@@ -908,35 +915,64 @@ export default function HomePage() {
               </div>
 
               <div className="mt-16 grid items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {verticals.map((item) => (
-                  <Link
-                    key={item.title}
-                    href={item.href}
-                    aria-label={item.cta}
-                    className="kk-card kk-card--interactive group min-h-[350px]"
-                  >
-                    <IllustratedIcon
-                      icon={item.icon}
-                      label={item.iconLabel}
-                    />
+                {verticals.map((item) => {
+                  const cardContent = (
+                    <>
+                      <IllustratedIcon
+                        icon={item.icon}
+                        label={item.iconLabel}
+                      />
 
-                    <p className="kk-card-label mt-6 text-center">
-                      {item.eyebrow}
-                    </p>
+                      <div className="mt-6 flex min-h-[3.75rem] items-center justify-center">
+                        <p className="kk-card-label text-center">
+                          {item.eyebrow}
+                        </p>
+                      </div>
 
-                    <h3 className="kk-card-title mt-4 text-center">
-                      {item.title}
-                    </h3>
+                      <div className="mt-3 flex min-h-[3.5rem] items-center justify-center">
+                        <h3 className="kk-card-title text-center">
+                          {item.title}
+                        </h3>
+                      </div>
 
-                    <p className="kk-card-body mt-5 flex-1 text-center">
-                      {item.text}
-                    </p>
+                      <p className="kk-card-body mt-4 flex-1 text-center">
+                        {item.text}
+                      </p>
 
-                    <span className="kk-link-dark mt-8 self-center">
-                      {item.cta}
-                    </span>
-                  </Link>
-                ))}
+                      {item.isPlanned ? (
+                        <span className="mt-8 self-center text-xs font-semibold uppercase tracking-[0.16em] text-black/45">
+                          Coming soon
+                        </span>
+                      ) : (
+                        <span className="kk-link-dark mt-8 self-center">
+                          {item.cta}
+                        </span>
+                      )}
+                    </>
+                  );
+
+                  if (item.isPlanned) {
+                    return (
+                      <article
+                        key={item.title}
+                        className="kk-card min-h-[350px]"
+                      >
+                        {cardContent}
+                      </article>
+                    );
+                  }
+
+                  return (
+                    <Link
+                      key={item.title}
+                      href={item.href}
+                      aria-label={item.cta}
+                      className="kk-card kk-card--interactive group min-h-[350px]"
+                    >
+                      {cardContent}
+                    </Link>
+                  );
+                })}
               </div>
 
               {/* EXPLORE THE UNIVERSE CARD */}
@@ -1068,6 +1104,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

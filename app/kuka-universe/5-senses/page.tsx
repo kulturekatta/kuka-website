@@ -147,7 +147,7 @@ const process = [
 
 export default function KukaFiveSensesPage() {
   return (
-    <main className="kk-page-root min-h-screen">
+    <div className="kk-page-root min-h-screen">
       <VerticalHero
         name={vertical.name}
         tagline="Culture you can taste, touch, smell, hear, and see."
@@ -217,6 +217,6 @@ export default function KukaFiveSensesPage() {
         secondaryLabel="Private Experiences"
         secondaryHref="/private-experiences"
       />
-    </main>
+    </div>
   );
 }

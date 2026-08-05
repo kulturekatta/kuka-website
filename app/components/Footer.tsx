@@ -57,22 +57,26 @@ const footerSections: FooterSection[] = [
     ],
   },
   {
-    title: "Studio Services",
-    links: [
-      {
-        label: "About Katta Studio",
-        href: "/katta-studio",
-      },
-      {
-        label: "Website Development",
-        href: "/katta-studio#website-development",
-      },
-      {
-        label: "Social Media Presence",
-        href: "/katta-studio#social-media",
-      },
-    ],
-  },
+  title: "Studio Services",
+  links: [
+    {
+      label: "About Katta Studio",
+      href: "/katta-studio",
+    },
+    {
+      label: "Website Development",
+      href: "/katta-studio#websites-and-digital-presence",
+    },
+    {
+      label: "Brand Positioning & Visual Identity",
+      href: "/katta-studio#brand-positioning-and-visual-identity",
+    },
+    {
+      label: "Social Media Presence",
+      href: "/katta-studio#social-media-and-content",
+    },
+  ],
+},
   {
     title: "Connect",
     links: [

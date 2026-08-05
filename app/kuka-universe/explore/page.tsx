@@ -108,7 +108,7 @@ const process = [
 
 export default function KukaExplorePage() {
   return (
-    <main className="kk-page-root min-h-screen">
+    <div className="kk-page-root min-h-screen">
       <VerticalHero
         name={vertical.name}
         tagline={vertical.tagline}
@@ -203,6 +203,6 @@ export default function KukaExplorePage() {
         secondaryLabel="For Organizations"
         secondaryHref="/for-organizations"
       />
-    </main>
+    </div>
   );
 }

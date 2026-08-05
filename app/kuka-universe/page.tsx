@@ -121,7 +121,7 @@ const combinations = [
 
 export default function KukaUniversePage() {
   return (
-    <main className="kk-page-root min-h-screen">
+    <div className="kk-page-root min-h-screen">
       <section className="kk-section-light kk-hero-padding overflow-hidden">
         <div className="kk-container">
           <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(300px,0.65fr)] lg:gap-16">
@@ -375,6 +375,6 @@ export default function KukaUniversePage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

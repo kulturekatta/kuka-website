@@ -126,7 +126,7 @@ function PageIcon({ icon, label }: { icon: string; label: string }) {
 
 export default function MomentsPage() {
   return (
-    <main className="kk-page-root min-h-screen">
+    <div className="kk-page-root min-h-screen">
       <section className="kk-section-light kk-hero-padding">
         <div className="kk-container text-center">
           <PageIcon icon="🌦️" label="Moments, seasons and conditions" />
@@ -320,6 +320,6 @@ export default function MomentsPage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

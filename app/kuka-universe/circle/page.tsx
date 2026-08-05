@@ -108,7 +108,7 @@ const process = [
 
 export default function KukaCirclePage() {
   return (
-    <main className="kk-page-root min-h-screen">
+    <div className="kk-page-root min-h-screen">
       <VerticalHero
         name={vertical.name}
         tagline="Childhood is not preparation for life. It is life itself."
@@ -205,6 +205,6 @@ export default function KukaCirclePage() {
         secondaryLabel="Private Children’s Experiences"
         secondaryHref="/private-experiences"
       />
-    </main>
+    </div>
   );
 }

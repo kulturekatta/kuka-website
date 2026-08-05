@@ -231,7 +231,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       : [];
 
   return (
-    <main className="kk-page-root min-h-screen kk-section-light">
+    <div className="kk-page-root min-h-screen kk-section-light">
       <section className="kk-section-light px-6 py-16">
         <div className="mx-auto max-w-6xl">
           <p className="kk-page-label text-[var(--kk-accent)]">
@@ -334,6 +334,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           )}
         </div>
       </section>
-    </main>
+    </div>
   );
 }

@@ -93,7 +93,7 @@ export default function LegalPageLayout({
   );
 
   return (
-    <main className="kk-page-root kk-site-bg min-h-screen">
+    <div className="kk-page-root kk-site-bg min-h-screen">
       {/* HERO */}
       <section className="kk-section-light overflow-hidden">
         <div className="kk-container text-center">
@@ -207,6 +207,6 @@ export default function LegalPageLayout({
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

@@ -137,7 +137,7 @@ export default function ExperiencesPage() {
   };
 
   return (
-    <main className="kk-page-root min-h-screen kk-section-light">
+    <div className="kk-page-root min-h-screen kk-section-light">
       {/* HERO */}
       <section className="relative overflow-hidden kk-section-light px-6 pb-20 pt-14 sm:px-10 lg:px-16">
         <div className="absolute bottom-10 right-10 hidden h-40 w-40 rounded-full bg-[var(--kk-accent)]/10 blur-3xl lg:block" />
@@ -378,6 +378,6 @@ export default function ExperiencesPage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

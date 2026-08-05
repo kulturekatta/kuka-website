@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import Link from "next/link";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 
 const opportunityOptions = [
   "Full-time role",
@@ -49,86 +50,81 @@ const labelClassName =
 
 const helperClassName = "mt-2 text-sm leading-6 text-black/55";
 
-export default function WorkWithUsApplicationForm() {
-  const [statusMessage, setStatusMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+type FormStatus = "idle" | "submitting" | "success" | "error";
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+export default function WorkWithUsApplicationForm() {
+  const [status, setStatus] = useState<FormStatus>("idle");
+  const [statusMessage, setStatusMessage] = useState("");
+  const startedAtRef = useRef(0);
+
+  useEffect(() => {
+    startedAtRef.current = Date.now();
+  }, []);
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const form = event.currentTarget;
     const formData = new FormData(form);
-
     const getValue = (fieldName: string) =>
       String(formData.get(fieldName) ?? "").trim();
 
-    const fullName = getValue("fullName");
-    const email = getValue("email");
-    const phone = getValue("phone");
-    const city = getValue("city");
-    const opportunityType = getValue("opportunityType");
-    const workArrangement = getValue("workArrangement");
-    const portfolioLink = getValue("portfolioLink");
-    const availability = getValue("availability");
-    const compensation = getValue("compensation");
-    const experience = getValue("experience");
-    const message = getValue("message");
-    const captcha = getValue("captcha");
+    const payload = {
+      fullName: getValue("fullName"),
+      city: getValue("city"),
+      email: getValue("email"),
+      phone: getValue("phone"),
+      opportunityType: getValue("opportunityType"),
+      workArrangement: getValue("workArrangement"),
+      availability: getValue("availability"),
+      compensation: getValue("compensation"),
+      portfolioLink: getValue("portfolioLink"),
+      experience: getValue("experience"),
+      message: getValue("message"),
+      consent: formData.get("consent") === "on",
+      formGuard: getValue("formGuard"),
+      startedAt: startedAtRef.current,
+      sourcePage: "/katta-studio/work-with-us#application-form",
+    };
 
+    setStatus("submitting");
     setStatusMessage("");
 
-    if (captcha !== "11") {
-      setErrorMessage("That answer is not quite right. Please try again.");
-      return;
+    try {
+      const response = await fetch("/api/work-with-us", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = (await response.json()) as {
+        success?: boolean;
+        message?: string;
+      };
+
+      if (!response.ok || !result.success) {
+        throw new Error(
+          result.message ||
+            "Your application could not be sent. Please try again.",
+        );
+      }
+
+      form.reset();
+      startedAtRef.current = Date.now();
+      setStatus("success");
+      setStatusMessage(
+        "Thank you. Your application has been sent, and a confirmation email is on its way.",
+      );
+    } catch (error) {
+      setStatus("error");
+      setStatusMessage(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again.",
+      );
     }
-
-    setErrorMessage("");
-
-    const subject = encodeURIComponent(
-      `Application to Katta Studio – ${opportunityType} – ${fullName}`,
-    );
-
-    const body = encodeURIComponent(`Hello Katta Studio,
-
-I would like to apply to work with Katta Studio.
-
-PERSONAL DETAILS
-
-Name: ${fullName}
-Email: ${email}
-Phone / WhatsApp: ${phone || "Not provided"}
-City: ${city}
-
-OPPORTUNITY DETAILS
-
-Opportunity type: ${opportunityType}
-Preferred working arrangement: ${workArrangement}
-Availability: ${availability}
-Expected compensation or project rate: ${compensation || "Open to discussion"}
-
-WORK DETAILS
-
-Portfolio / résumé / work samples:
-${portfolioLink}
-
-Relevant experience:
-${experience}
-
-WHY I WOULD LIKE TO WORK WITH KATTA STUDIO
-
-${message}
-
-Thank you,
-${fullName}`);
-
-    const recipientEmail = "kulturekatta@gmail.com";
-    const mailtoLink = `mailto:${recipientEmail}?subject=${subject}&body=${body}`;
-
-    setStatusMessage(
-      "Your application is ready. Your default email app should open now.",
-    );
-
-    window.location.href = mailtoLink;
   };
 
   return (
@@ -202,12 +198,12 @@ ${fullName}`);
 
                 <div className="mt-8 rounded-2xl border border-dashed border-black/20 p-5">
                   <p className="text-sm font-semibold text-[var(--kk-text)]">
-                    Adding an attachment?
+                    Sharing a résumé or portfolio?
                   </p>
 
                   <p className="mt-2 text-sm leading-6 text-black/60">
-                    Add a public link in the form, or attach the file manually
-                    when your email app opens.
+                    Add a publicly accessible portfolio, LinkedIn, Google Drive,
+                    or résumé link in the form.
                   </p>
                 </div>
               </div>
@@ -492,90 +488,82 @@ ${fullName}`);
                   </span>
                 </legend>
 
-                <div className="rounded-3xl border border-[var(--kk-accent)]/25 bg-[var(--kk-surface-alt)] p-5 sm:p-6">
-                  <div className="grid gap-5 sm:grid-cols-[1fr_auto] sm:items-end">
-                    <div>
-                      <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[var(--kk-accent)]">
-                        Security check
-                      </p>
-
-                      <label
-                        htmlFor="captcha"
-                        className="mt-2 block text-lg font-semibold text-[var(--kk-text)]"
-                      >
-                        What is{" "}
-                        <span className="whitespace-nowrap text-2xl">
-                          7 + 4?
-                        </span>{" "}
-                        <span className="text-[var(--kk-accent)]">*</span>
-                      </label>
-
-                      <p id="captcha-description" className={helperClassName}>
-                        This quick check helps prevent automated submissions.
-                      </p>
-                    </div>
-
-                    <input
-                      id="captcha"
-                      name="captcha"
-                      type="text"
-                      required
-                      inputMode="numeric"
-                      autoComplete="off"
-                      placeholder="Answer"
-                      aria-invalid={Boolean(errorMessage)}
-                      aria-describedby={
-                        errorMessage ? "captcha-error" : "captcha-description"
-                      }
-                      onChange={() => {
-                        if (errorMessage) setErrorMessage("");
-                      }}
-                      className={`${inputClassName} mt-0 w-full bg-white text-center text-lg font-semibold sm:w-32`}
-                    />
-                  </div>
-
-                  {errorMessage && (
-                    <p
-                      id="captcha-error"
-                      role="alert"
-                      className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700"
-                    >
-                      {errorMessage}
-                    </p>
-                  )}
+                <div
+                  className="absolute -left-[10000px] top-auto h-px w-px overflow-hidden"
+                  aria-hidden="true"
+                >
+                  <label htmlFor="work-with-us-form-guard">
+                    Leave this field empty
+                  </label>
+                  <input
+                    id="work-with-us-form-guard"
+                    name="formGuard"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="new-password"
+                  />
                 </div>
+
+                <label className="flex cursor-pointer items-start gap-3 rounded-3xl border border-[var(--kk-accent)]/25 bg-[var(--kk-surface-alt)] p-5 sm:p-6">
+                  <input
+                    type="checkbox"
+                    name="consent"
+                    required
+                    className="mt-1 h-5 w-5 shrink-0 accent-[var(--kk-accent)]"
+                  />
+                  <span className="text-sm leading-6 text-black/60">
+                    I agree that KultureKatta and Katta Studio may use the
+                    information submitted here to review and respond to my
+                    application as described in the{" "}
+                    <Link
+                      href="/privacy-policy"
+                      className="font-semibold underline decoration-black/30 underline-offset-2 hover:decoration-black"
+                    >
+                      Privacy Policy
+                    </Link>.{" "}
+                    <span aria-hidden="true">*</span>
+                  </span>
+                </label>
               </fieldset>
 
               <div className="mt-8">
                 <button
                   type="submit"
-                  className="kk-button-dark w-full justify-center sm:w-auto"
+                  disabled={status === "submitting"}
+                  className="kk-button-dark w-full justify-center disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                 >
-                  Apply to Work With Us <span aria-hidden="true">→</span>
+                  {status === "submitting"
+                    ? "Sending application..."
+                    : "Apply to Work With Us"}{" "}
+                  <span aria-hidden="true">→</span>
                 </button>
 
                 <p className="kk-small-text mt-4 max-w-2xl">
-                  Your default email app will open with the application
-                  prepared. Review it and add any attachments before sending.
+                  Keep your portfolio and résumé links publicly accessible. You
+                  will receive an automatic confirmation after submission.
                 </p>
 
                 {statusMessage && (
                   <p
-                    role="status"
-                    aria-live="polite"
-                    className="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800"
+                    role={status === "error" ? "alert" : "status"}
+                    aria-live={status === "error" ? "assertive" : "polite"}
+                    className={`mt-5 rounded-2xl px-4 py-3 text-sm font-semibold ${
+                      status === "error"
+                        ? "border border-red-200 bg-red-50 text-red-800"
+                        : "border border-emerald-200 bg-emerald-50 text-emerald-800"
+                    }`}
                   >
                     {statusMessage}
                   </p>
                 )}
 
                 <p className="kk-small-text mt-5">
-                  Email app not opening?{" "}
+                  Submission trouble? Email{" "}
                   <a
-                    href="mailto:kulturekatta@gmail.com?subject=Application%20to%20work%20with%20Katta%20Studio"
+                    href="mailto:hey@kulturekatta.com?subject=Katta%20Studio%20Work%20With%20Us"
                     className="font-semibold text-[var(--kk-text)] underline decoration-[var(--kk-accent)] underline-offset-4 transition hover:text-black/60"
                   >
-                    Apply by email instead
+                    hey@kulturekatta.com
                   </a>
                   .
                 </p>

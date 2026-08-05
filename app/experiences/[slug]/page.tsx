@@ -52,7 +52,7 @@ export default async function ExperienceCategoryPage({
       : null;
 
   return (
-    <main className="kk-page-root kk-section-light">
+    <div className="kk-page-root kk-section-light">
       <section className="kk-section-light px-6 py-24">
         <div className="mx-auto max-w-6xl">
           <p className="kk-page-label">{category.eyebrow}</p>
@@ -164,6 +164,6 @@ export default async function ExperienceCategoryPage({
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

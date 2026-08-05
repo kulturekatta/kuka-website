@@ -180,6 +180,34 @@ html {
   background: var(--kk-background);
 }
 
+/* Keyboard-only shortcut to bypass repeated navigation. */
+.kk-skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1000;
+  transform: translateY(-200%);
+  border-radius: 0.75rem;
+  background: var(--kk-dark);
+  color: var(--kk-text-on-dark);
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  box-shadow: 0 10px 30px rgba(33, 26, 23, 0.2);
+  transition: transform 160ms ease;
+}
+
+.kk-skip-link:focus,
+.kk-skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 3px solid var(--kk-accent);
+  outline-offset: 3px;
+}
+
+#main-content {
+  scroll-margin-top: 1rem;
+}
+
 body {
   margin: 0;
   background: var(--kk-background);
@@ -999,6 +1027,26 @@ main select:focus {
   outline-offset: 2px;
 }
 
+
+/* =========================================================
+   MOBILE NAVIGATION INTERACTION
+
+   Keeps the sticky navbar above page content, gives the
+   hamburger a comfortable touch target, and ensures the icon
+   itself never intercepts the button click.
+========================================================= */
+
+/* Keep the main navbar above page content and floating elements. */
+
+
+/* The utility bar sits immediately below the navbar layer. */
+.kk-utility-bar {
+  position: relative;
+  z-index: 9999;
+}
+
+
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1012,4 +1060,39 @@ main select:focus {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
+}
+
+/* =========================================================
+   FLOATING CONTACT DRAWER — NATIVE MODAL DIALOG
+
+   A modal <dialog> enters the browser's top layer. This keeps
+   the sticky navbar, utility bar, search, logo, and page content
+   completely non-interactive while the drawer is open.
+========================================================= */
+
+#floating-contact-drawer.kk-contact-dialog {
+  position: fixed;
+  inset: 0 0 0 auto;
+  width: min(100%, 28.75rem);
+  max-width: 28.75rem;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 0;
+  background: var(--kk-surface-alt);
+  color: var(--kk-text);
+  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.22);
+}
+
+#floating-contact-drawer.kk-contact-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.45);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+#floating-contact-drawer.kk-contact-dialog:not([open]) {
+  display: none;
 }

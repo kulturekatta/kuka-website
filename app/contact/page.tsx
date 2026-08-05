@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 
 const contactOptions = [
   {
@@ -18,7 +18,7 @@ const contactOptions = [
     title: "Ask us anything",
     text: "Have a question about KultureKatta, our events, cities, formats, or upcoming plans? Start here.",
     buttonText: "Email us",
-    href: "mailto:hello@kulturekatta.com?subject=General%20Enquiry%20for%20KultureKatta",
+    href: "mailto:hey@kulturekatta.com?subject=General%20Enquiry%20for%20KultureKatta",
   },
   {
     icon: "🤝",
@@ -26,7 +26,7 @@ const contactOptions = [
     title: "Work / Partner with KultureKatta",
     text: "For venues, cafés, studios, cultural spaces, brands, collectives, and collaborators who want to create something meaningful with us.",
     buttonText: "Partner with us",
-    href: "mailto:hello@kulturekatta.com?subject=Partnership%20Enquiry%20for%20KultureKatta",
+    href: "mailto:hey@kulturekatta.com?subject=Partnership%20Enquiry%20for%20KultureKatta",
   },
   {
     icon: "🙌",
@@ -34,7 +34,7 @@ const contactOptions = [
     title: "Volunteer with KultureKatta",
     text: "Want to help at events, support artists, assist with community building, documentation, research, or on-ground coordination?",
     buttonText: "Volunteer with us",
-    href: "mailto:hello@kulturekatta.com?subject=Volunteer%20with%20KultureKatta",
+    href: "mailto:hey@kulturekatta.com?subject=Volunteer%20with%20KultureKatta",
   },
   {
     icon: "🎤",
@@ -42,7 +42,7 @@ const contactOptions = [
     title: "Host a Katta",
     text: "Are you an artist, facilitator, storyteller, maker, teacher, performer, chef, walker, thinker, or curious human with something to share?",
     buttonText: "Become a host",
-    href: "mailto:hello@kulturekatta.com?subject=Host%20a%20Katta",
+    href: "mailto:hey@kulturekatta.com?subject=Host%20a%20Katta",
   },
   {
     icon: "📰",
@@ -50,7 +50,7 @@ const contactOptions = [
     title: "Media, stories and features",
     text: "For interviews, media features, press enquiries, cultural stories, founder conversations, and documentation requests.",
     buttonText: "Contact for media",
-    href: "mailto:hello@kulturekatta.com?subject=Media%20Enquiry%20for%20KultureKatta",
+    href: "mailto:hey@kulturekatta.com?subject=Media%20Enquiry%20for%20KultureKatta",
   },
 ];
 
@@ -78,29 +78,77 @@ const inputClassName =
 const labelClassName =
   "kk-form-label block text-sm font-semibold tracking-[0.01em] text-[var(--kk-text)]";
 
-export default function ContactPage() {
-  const [captcha, setCaptcha] = useState("");
-  const [captchaError, setCaptchaError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+type FormStatus = "idle" | "submitting" | "success" | "error";
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+export default function ContactPage() {
+  const [status, setStatus] = useState<FormStatus>("idle");
+  const [statusMessage, setStatusMessage] = useState("");
+  const startedAtRef = useRef(0);
+
+  useEffect(() => {
+    startedAtRef.current = Date.now();
+  }, []);
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    setCaptchaError("");
-    setSuccessMessage("");
+    const form = event.currentTarget;
+    const formData = new FormData(form);
 
-    if (captcha.trim() !== "14") {
-      setCaptchaError("Please solve the captcha correctly.");
-      return;
+    const payload = {
+      name: String(formData.get("name") ?? ""),
+      email: String(formData.get("email") ?? ""),
+      phone: String(formData.get("phone") ?? ""),
+      interest: String(formData.get("interest") ?? ""),
+      message: String(formData.get("message") ?? ""),
+      consent: formData.get("consent") === "on",
+      formGuard: String(formData.get("formGuard") ?? ""),
+      startedAt: startedAtRef.current,
+      sourcePage: "/contact",
+    };
+
+    setStatus("submitting");
+    setStatusMessage("");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = (await response.json()) as {
+        success?: boolean;
+        message?: string;
+      };
+
+      if (!response.ok || !result.success) {
+        throw new Error(
+          result.message ||
+            "Your enquiry could not be sent. Please try again.",
+        );
+      }
+
+      form.reset();
+      startedAtRef.current = Date.now();
+      setStatus("success");
+      setStatusMessage(
+        "Thank you. Your enquiry has been sent, and a confirmation email is on its way.",
+      );
+    } catch (error) {
+      setStatus("error");
+      setStatusMessage(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again.",
+      );
     }
-
-    setSuccessMessage(
-      "Thank you. Your captcha has been verified. The form can be submitted once the form backend is connected.",
-    );
   };
 
   return (
-    <main className="kk-page-root kk-contact-page kk-section-light min-h-screen">
+    <div className="kk-page-root kk-contact-page kk-section-light min-h-screen">
       {/* HERO SECTION */}
       <section className="kk-section-light relative overflow-hidden">
         <div className="mx-auto flex max-w-7xl flex-col items-center px-6 text-center sm:px-10 lg:px-16">
@@ -428,62 +476,55 @@ export default function ContactPage() {
                     />
                   </div>
 
-                  <div className="sm:col-span-2">
-                    <div className="rounded-2xl border border-black/10 bg-[var(--kk-surface-alt)] p-5">
-                      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-                        <div>
-                          <label htmlFor="captcha" className={labelClassName}>
-                            Quick check{" "}
-                            <span className="text-[var(--kk-accent)]">*</span>
-                          </label>
-                          <p className="mt-2 text-sm text-black/55">
-                            What is{" "}
-                            <span className="font-semibold text-[var(--kk-text)]">
-                              9 + 5
-                            </span>
-                            ?
-                          </p>
-                        </div>
-
-                        <input
-                          id="captcha"
-                          name="captcha"
-                          type="text"
-                          inputMode="numeric"
-                          pattern="[0-9]*"
-                          value={captcha}
-                          onChange={(event) => {
-                            setCaptcha(event.target.value);
-                            setCaptchaError("");
-                            setSuccessMessage("");
-                          }}
-                          placeholder="Answer"
-                          required
-                          aria-describedby={
-                            captchaError ? "captcha-error" : undefined
-                          }
-                          className={`${inputClassName} mt-0 sm:w-36`}
-                        />
-                      </div>
-
-                      {captchaError && (
-                        <p
-                          id="captcha-error"
-                          role="alert"
-                          className="kk-small-text mt-3 font-semibold text-red-700"
-                        >
-                          {captchaError}
-                        </p>
-                      )}
-                    </div>
+                  <div
+                    className="absolute -left-[10000px] top-auto h-px w-px overflow-hidden"
+                    aria-hidden="true"
+                  >
+                    <label htmlFor="contact-form-guard">
+                      Leave this field empty
+                    </label>
+                    <input
+                      id="contact-form-guard"
+                      name="formGuard"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="new-password"
+                    />
                   </div>
 
-                  {successMessage && (
+                  <label className="flex cursor-pointer items-start gap-3 sm:col-span-2">
+                    <input
+                      type="checkbox"
+                      name="consent"
+                      required
+                      className="mt-1 h-5 w-5 shrink-0 accent-[var(--kk-accent)]"
+                    />
+                    <span className="text-sm leading-6 text-black/60">
+                      I agree that KultureKatta may use the information submitted
+                      here to respond to my enquiry as described in the{" "}
+                      <Link
+                        href="/privacy-policy"
+                        className="font-semibold underline decoration-black/30 underline-offset-2 hover:decoration-black"
+                      >
+                        Privacy Policy
+                      </Link>.{" "}
+                      <span className="text-[var(--kk-accent)]" aria-hidden="true">
+                        *
+                      </span>
+                    </span>
+                  </label>
+
+                  {statusMessage && (
                     <p
-                      role="status"
-                      className="kk-small-text rounded-2xl border border-green-200 bg-green-50 px-5 py-4 font-semibold text-green-800 sm:col-span-2"
+                      role={status === "error" ? "alert" : "status"}
+                      aria-live={status === "error" ? "assertive" : "polite"}
+                      className={`kk-small-text rounded-2xl px-5 py-4 font-semibold sm:col-span-2 ${
+                        status === "error"
+                          ? "border border-red-200 bg-red-50 text-red-800"
+                          : "border border-green-200 bg-green-50 text-green-800"
+                      }`}
                     >
-                      {successMessage}
+                      {statusMessage}
                     </p>
                   )}
 
@@ -494,15 +535,16 @@ export default function ContactPage() {
 
                     <button
                       type="submit"
-                      className="kk-button-dark w-full justify-center sm:w-auto"
+                      disabled={status === "submitting"}
+                      className="kk-button-dark w-full justify-center disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                     >
-                      Send enquiry
+                      {status === "submitting" ? "Sending enquiry..." : "Send enquiry"}
                     </button>
                   </div>
 
                   <p className="text-xs leading-5 text-black/45 sm:col-span-2">
-                    Online submissions are currently being connected. Until
-                    then, email or WhatsApp us for an immediate enquiry.
+                    You will receive an automatic confirmation after a successful
+                    submission.
                   </p>
                 </div>
               </form>
@@ -543,6 +585,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

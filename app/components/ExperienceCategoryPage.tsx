@@ -74,7 +74,7 @@ export default function ExperienceCategoryPage({
   primaryCta = "Plan this experience",
 }: ExperienceCategoryPageProps) {
   return (
-    <main className="kk-page-root kk-site-bg min-h-screen">
+    <div className="kk-page-root kk-site-bg min-h-screen">
       <section className="kk-section-light pt-16 pb-20 md:pt-20 md:pb-24">
         <div className="kk-container text-center">
           <PageIcon icon={icon} label={iconLabel} />
@@ -168,6 +168,6 @@ export default function ExperienceCategoryPage({
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

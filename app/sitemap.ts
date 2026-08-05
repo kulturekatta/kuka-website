@@ -1,70 +1,123 @@
 import type { MetadataRoute } from "next";
+import { experienceCategories } from "@/data/experienceCategories";
 
-const baseUrl = "https://kulturekatta.com";
+const BASE_URL = "https://kulturekatta.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const pages: MetadataRoute.Sitemap = [
+  const staticPages: MetadataRoute.Sitemap = [
     {
-      url: baseUrl,
+      url: BASE_URL,
       changeFrequency: "weekly",
       priority: 1,
     },
     {
-      url: `${baseUrl}/experiences`,
+      url: `${BASE_URL}/experiences`,
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/experiences/by-mood`,
+      url: `${BASE_URL}/moods`,
       changeFrequency: "weekly",
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/for-organizations`,
-      changeFrequency: "monthly",
-      priority: 0.9,
+      url: `${BASE_URL}/moments`,
+      changeFrequency: "weekly",
+      priority: 0.8,
     },
     {
-      url: `${baseUrl}/private-experiences`,
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/kuka-verse`,
+      url: `${BASE_URL}/experiences/custom-combination`,
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/about`,
+      url: `${BASE_URL}/experiences/festive`,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/experiences/wellness`,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/for-organizations`,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/private-experiences`,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/kuka-universe`,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/kuka-universe/5-senses`,
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/katta-studio`,
+      url: `${BASE_URL}/kuka-universe/circle`,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/kuka-universe/explore`,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/kuka-universe/wellness`,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/about`,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/katta-studio`,
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/contact`,
+      url: `${BASE_URL}/katta-studio/work-with-us`,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/contact`,
       changeFrequency: "yearly",
       priority: 0.6,
     },
     {
-      url: `${baseUrl}/privacy-policy`,
+      url: `${BASE_URL}/privacy-policy`,
       changeFrequency: "yearly",
       priority: 0.3,
     },
     {
-      url: `${baseUrl}/cookie-policy`,
+      url: `${BASE_URL}/cookie-policy`,
       changeFrequency: "yearly",
       priority: 0.3,
     },
     {
-      url: `${baseUrl}/terms-of-use`,
+      url: `${BASE_URL}/terms-of-use`,
       changeFrequency: "yearly",
       priority: 0.3,
     },
   ];
 
-  return pages;
+  const experienceCategoryPages: MetadataRoute.Sitemap =
+    experienceCategories.map((category) => ({
+      url: `${BASE_URL}${category.href}`,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    }));
+
+  return [...staticPages, ...experienceCategoryPages];
 }

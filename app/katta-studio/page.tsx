@@ -14,6 +14,7 @@ const businessOutcomes = [
 const coreServiceAreas = [
   {
     number: "01",
+    id: "websites-and-digital-presence",
     title: "Websites and digital presence",
     description:
       "Clear, responsive digital experiences that help people understand your work, trust your brand, and take the next step.",
@@ -30,6 +31,7 @@ const coreServiceAreas = [
   },
   {
     number: "02",
+    id: "social-media-and-content",
     title: "Social media and content",
     description:
       "Content systems and campaign communication that help your brand appear consistent, useful, and recognisable.",
@@ -47,6 +49,7 @@ const coreServiceAreas = [
   },
   {
     number: "03",
+    id: "growth-clinic-and-strategic-support",
     title: "Growth Clinic and strategic support",
     description:
       "Focused assessments and strategic support to identify what is blocking growth and what deserves attention first.",
@@ -63,6 +66,7 @@ const coreServiceAreas = [
   },
   {
     number: "04",
+    id: "founder-and-business-systems",
     title: "Founder and business systems",
     description:
       "Practical internal systems that make planning, tracking, communication, and delivery easier for small and growing teams.",
@@ -359,8 +363,9 @@ export default function KattaStudioPage() {
           <div className="mt-14 grid gap-8 md:grid-cols-2">
             {coreServiceAreas.map((area) => (
               <article
+                id={area.id}
                 key={area.number}
-                className="kk-card kk-card--roomy kk-card--interactive"
+                className="kk-card kk-card--roomy kk-card--interactive scroll-mt-40"
               >
                 <p className="kk-card-number mb-5">{area.number}</p>
 
@@ -603,7 +608,10 @@ export default function KattaStudioPage() {
           </div>
 
           <div className="mt-14 grid gap-8 lg:grid-cols-2">
-            <article className="kk-card kk-card--roomy">
+            <article
+              id="brand-positioning-and-visual-identity"
+              className="kk-card kk-card--roomy scroll-mt-40"
+            >
               <p className="kk-card-label">In-house</p>
 
               <h3 className="kk-card-title mt-4">

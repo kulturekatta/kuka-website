@@ -120,7 +120,7 @@ const process = [
 
 export default function KukaWellnessPage() {
   return (
-    <main className="kk-page-root min-h-screen">
+    <div className="kk-page-root min-h-screen">
       <VerticalHero
         name={vertical.name}
         tagline="Slow down without switching off from life."
@@ -220,6 +220,6 @@ export default function KukaWellnessPage() {
         secondaryLabel="Private Experiences"
         secondaryHref="/private-experiences"
       />
-    </main>
+    </div>
   );
 }

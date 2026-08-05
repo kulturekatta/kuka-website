@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useRef, type KeyboardEvent } from "react";
+import styles from "./Navbar.module.css";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -15,6 +17,9 @@ const navLinks = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const mobileMenuRef = useRef<HTMLDetailsElement>(null);
+  const mobileMenuSummaryRef = useRef<HTMLElement>(null);
+  const firstMobileLinkRef = useRef<HTMLAnchorElement>(null);
 
   const isActive = (href: string) => {
     if (href === "/") {
@@ -24,81 +29,109 @@ export default function Navbar() {
     return pathname === href || pathname.startsWith(`${href}/`);
   };
 
+  const closeMobileMenu = (restoreFocus = false) => {
+    if (!mobileMenuRef.current) {
+      return;
+    }
+
+    mobileMenuRef.current.open = false;
+
+    if (restoreFocus) {
+      mobileMenuSummaryRef.current?.focus();
+    }
+  };
+
+  const handleMobileMenuToggle = () => {
+    if (!mobileMenuRef.current?.open) {
+      return;
+    }
+
+    window.requestAnimationFrame(() => {
+      firstMobileLinkRef.current?.focus();
+    });
+  };
+
+  const handleMobileMenuKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key !== "Escape" || !mobileMenuRef.current?.open) {
+      return;
+    }
+
+    event.preventDefault();
+    closeMobileMenu(true);
+  };
+
   return (
     <>
       {/* TOP UTILITY BAR */}
-      <div className="kk-utility-bar w-full">
-        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-3 md:flex-row md:items-center md:justify-between">
-          {/* CONTACT DETAILS - LEFT */}
-          
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-semibold uppercase tracking-[0.18em] text-black/65">
-              <a
-                href="https://wa.me/919730244996"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Contact KultureKatta on WhatsApp"
-                className="whitespace-nowrap transition hover:text-[var(--kk-accent)]"
-              >
-                +91 97302 44996
-              </a>
+      <div className={styles.utilityBar}>
+        <div className={styles.utilityInner}>
+          <div className={styles.contactDetails}>
+            <a
+              href="https://wa.me/919730244996"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              +91 97302 44996
+            </a>
 
-              <a
-                href="mailto:hey@kulturekatta.com"
-                aria-label="Email KultureKatta"
-                className="whitespace-nowrap transition hover:text-[var(--kk-accent)]"
-              >
-                hey@kulturekatta.com
-              </a>
+            <a href="mailto:hey@kulturekatta.com">
+              hey@kulturekatta.com
+            </a>
 
-              <a
-                href="https://www.instagram.com/kulturekatta"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="whitespace-nowrap transition hover:text-[var(--kk-accent)]"
-              >
-                Instagram
-              </a>
-            </div>
+            <a
+              href="https://www.instagram.com/kulturekatta"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Instagram
+            </a>
+          </div>
 
-          {/* SEARCH - RIGHT */}
           <form
             action="/search"
-            className="flex w-full items-center rounded-full border border-black/15 bg-white px-4 py-2 md:max-w-md"
+            role="search"
+            className={styles.searchForm}
           >
+            <label htmlFor="site-search" className={styles.srOnly}>
+              Search KultureKatta
+            </label>
+
             <input
-              type="search"
+              id="site-search"
               name="q"
+              type="search"
               placeholder="Search workshops, walks, music..."
-              className="w-full bg-transparent text-sm text-[var(--kk-text)] placeholder:text-black/45 outline-none"
             />
 
-            <button
-              type="submit"
-              className="ml-3 text-sm font-medium normal-case tracking-normal text-black/50 transition hover:text-[var(--kk-accent)]"
-            >
-              Search
-            </button>
+            <button type="submit">Search</button>
           </form>
         </div>
       </div>
 
-      {/* MAIN NAVBAR */}
-      <header className="kk-header-dark sticky top-0 z-50 w-full border-b border-white/10 shadow-sm">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          {/* LOGO */}
-          <Link href="/" className="flex items-center">
+      {/* MAIN HEADER */}
+      <header className={styles.header}>
+        <div className={styles.headerInner}>
+          <Link
+            href="/"
+            aria-label="KultureKatta home"
+            className={styles.logoLink}
+            onClick={() => closeMobileMenu()}
+          >
             <Image
               src="/logo.png"
               alt="KultureKatta"
               width={140}
               height={40}
-              className="h-28 w-auto"
+              className={styles.logo}
               priority
             />
           </Link>
 
-          {/* NAV LINKS + CTA */}
-          <nav className="hidden items-center gap-4 text-base font-medium text-white/75 lg:flex">
+          {/* DESKTOP NAVIGATION */}
+          <nav
+            aria-label="Primary navigation"
+            className={styles.desktopNavigation}
+          >
             {navLinks.map((item) => {
               const active = isActive(item.href);
 
@@ -106,25 +139,96 @@ export default function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`whitespace-nowrap transition ${
+                  aria-current={active ? "page" : undefined}
+                  className={
                     active
-                      ? "text-white underline decoration-[var(--kk-accent)] decoration-2 underline-offset-8"
-                      : "hover:text-white"
-                  }`}
+                      ? styles.desktopLinkActive
+                      : styles.desktopLink
+                  }
                 >
                   {item.label}
                 </Link>
               );
             })}
 
-            {/* CTA BUTTON */}
             <Link
               href="/experiences"
-              className="kk-button-light whitespace-nowrap px-5 py-3"
+              aria-current={isActive("/experiences") ? "page" : undefined}
+              className={styles.exploreButton}
             >
               Explore Experiences
             </Link>
           </nav>
+
+          {/* NATIVE MOBILE MENU */}
+          <details
+            ref={mobileMenuRef}
+            className={styles.mobileMenuDetails}
+            onToggle={handleMobileMenuToggle}
+            onKeyDown={handleMobileMenuKeyDown}
+          >
+            <summary
+              ref={mobileMenuSummaryRef}
+              className={styles.mobileMenuSummary}
+              aria-label="Open or close navigation menu"
+              aria-controls="mobile-navigation-menu"
+            >
+              <span
+                className={styles.menuIcon}
+                aria-hidden="true"
+              >
+                ☰
+              </span>
+
+              <span
+                className={styles.closeIcon}
+                aria-hidden="true"
+              >
+                ×
+              </span>
+            </summary>
+
+            <div id="mobile-navigation-menu" className={styles.mobileMenu}>
+              <nav aria-label="Mobile navigation">
+                <ul className={styles.mobileMenuList}>
+                  {navLinks.map((item, index) => {
+                    const active = isActive(item.href);
+
+                    return (
+                      <li key={item.href}>
+                        <Link
+                          ref={index === 0 ? firstMobileLinkRef : undefined}
+                          href={item.href}
+                          aria-current={
+                            active ? "page" : undefined
+                          }
+                          className={
+                            active
+                              ? styles.mobileLinkActive
+                              : styles.mobileLink
+                          }
+                          onClick={() => closeMobileMenu()}
+                        >
+                          {item.label}
+                        </Link>
+                      </li>
+                    );
+                  })}
+
+                  <li className={styles.mobileExploreItem}>
+                    <Link
+                      href="/experiences"
+                      aria-current={isActive("/experiences") ? "page" : undefined}
+                      className={styles.mobileExploreButton}
+                      onClick={() => closeMobileMenu()}
+                    >
+                      Explore Experiences
+                    </Link>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </details>
         </div>
       </header>
     </>

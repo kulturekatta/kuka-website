@@ -34,12 +34,12 @@ export default function KattaStudioWorkWithUs() {
                   Explore Opportunities
                 </Link>
 
-                <a
-                  href="mailto:hello@kulturekatta.com?subject=Application%20to%20work%20with%20Katta%20Studio"
+                <Link
+                  href="/katta-studio/work-with-us#application-form"
                   className="kk-button-on-light"
                 >
-                  Send Your Portfolio
-                </a>
+                  Apply With Your Portfolio
+                </Link>
               </div>
             </div>
 

@@ -150,7 +150,7 @@ const teamMembers = [
 
 export default function AboutPage() {
   return (
-    <main className="kk-page-root kk-section-light min-h-screen">
+    <div className="kk-page-root kk-section-light min-h-screen">
       {/* HERO */}
       <section className="kk-section-light kk-hero-padding">
         <div className="kk-container text-center">
@@ -474,6 +474,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

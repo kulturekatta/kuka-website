@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import Link from "next/link";
+import { FormEvent, useEffect, useRef, useState } from "react";
 
 const organizationTypes = [
   "Company or corporate team",
@@ -72,6 +73,11 @@ type FormStatus = "idle" | "submitting" | "success" | "error";
 export default function OrganizationInquiryForm() {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const startedAtRef = useRef(0);
+
+  useEffect(() => {
+    startedAtRef.current = Date.now();
+  }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -121,11 +127,12 @@ export default function OrganizationInquiryForm() {
       details: String(formData.get("details") ?? ""),
       referralSource: String(formData.get("referralSource") ?? ""),
 
-      captcha: String(formData.get("captcha") ?? ""),
       consent: formData.get("consent") === "on",
 
-     // Hidden anti-spam field.
+      // Hidden anti-spam fields.
       formGuard: String(formData.get("formGuard") ?? ""),
+      startedAt: startedAtRef.current,
+      sourcePage: "/for-organizations#organization-inquiry",
     };
 
     setStatus("submitting");
@@ -153,6 +160,7 @@ export default function OrganizationInquiryForm() {
       }
 
       form.reset();
+      startedAtRef.current = Date.now();
       setStatus("success");
     } catch (error) {
       setStatus("error");
@@ -215,8 +223,8 @@ export default function OrganizationInquiryForm() {
 
               <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-black/65 md:text-lg">
                 Thank you for telling us about your organization and
-                what you are planning. The KultureKatta team will review
-                the requirements and get in touch.
+                what you are planning. A confirmation email is on its way,
+                and the KultureKatta team will review the requirements.
               </p>
 
               <button
@@ -224,6 +232,7 @@ export default function OrganizationInquiryForm() {
                 onClick={() => {
                   setStatus("idle");
                   setErrorMessage("");
+                  startedAtRef.current = Date.now();
                 }}
                 className="mt-7 inline-flex min-h-12 items-center justify-center rounded-full border border-black/15 bg-white px-6 py-3 text-sm font-semibold text-[var(--kk-text)] transition hover:-translate-y-0.5 hover:border-black/30 hover:bg-black/[0.03] hover:shadow-md"
               >
@@ -239,7 +248,6 @@ export default function OrganizationInquiryForm() {
                 value="organization"
               />
 
-              {/* Honeypot field */}
               {/* Honeypot field — genuine visitors must leave this empty */}
                 <div
                   className="absolute -left-[10000px] top-auto h-px w-px overflow-hidden"
@@ -742,52 +750,6 @@ export default function OrganizationInquiryForm() {
 
               <div className="my-10 border-t border-black/10 md:my-12" />
 
-              {/* HUMAN CHECK */}
-              <fieldset className="rounded-[1.5rem] border border-black/10 bg-[var(--kk-site-bg,#faf8f4)] p-5 md:p-6">
-                <legend className="sr-only">
-                  Human Check
-                </legend>
-
-                <div className="flex items-start gap-4">
-                  <div
-                    className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[var(--kk-accent)]/10 text-2xl"
-                    aria-hidden="true"
-                  >
-                    🛡️
-                  </div>
-
-                  <div>
-                    <h3 className={sectionHeadingClass}>
-                      Human Check
-                    </h3>
-
-                    <p className="mt-1 text-base leading-7 text-black/55">
-                      This quick question helps us prevent automated spam
-                      submissions.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mt-7">
-                  <label htmlFor="captcha" className={labelClass}>
-                    What is 9 + 5?{" "}
-                    <span aria-hidden="true">*</span>
-                  </label>
-
-                  <input
-                    id="captcha"
-                    name="captcha"
-                    type="text"
-                    required
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    maxLength={3}
-                    placeholder="Enter the answer"
-                    className={`${inputClass} max-w-xs`}
-                  />
-                </div>
-              </fieldset>
-
               {/* CONSENT */}
               <label className="mt-7 flex cursor-pointer items-start gap-3">
                 <input
@@ -799,7 +761,13 @@ export default function OrganizationInquiryForm() {
 
                 <span className="text-base leading-7 text-black/65">
                   I agree that KultureKatta may use the information
-                  submitted here to respond to this inquiry.{" "}
+                  submitted here to respond to this inquiry as described in the{" "}
+                  <Link
+                    href="/privacy-policy"
+                    className="font-semibold underline decoration-black/30 underline-offset-2 hover:decoration-black"
+                  >
+                    Privacy Policy
+                  </Link>.{" "}
                   <span aria-hidden="true">*</span>
                 </span>
               </label>

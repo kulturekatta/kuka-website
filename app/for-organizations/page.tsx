@@ -189,19 +189,30 @@ function SectionHeader({
 
 export default function ForOrganizationsPage() {
   return (
-    <main className="kk-page-root kk-site-bg min-h-screen">
+    <div className="kk-page-root kk-site-bg min-h-screen">
       {/* HERO */}
-      <section className="kk-section-light flex min-h-[calc(100svh-13.75rem)] items-center overflow-hidden pt-6 pb-5 md:pt-7 md:pb-6">
+      <section className="kk-section-light overflow-hidden">
         <div className="kk-container text-center">
           <div className="mb-3 flex justify-center">
             <IconBox icon="🤝" size="hero" />
           </div>
 
-          <p className="kk-page-label whitespace-nowrap text-[var(--kk-accent)]">
-            KuKa for Organizations
-          </p>
+          <p className="kk-page-label text-[var(--kk-accent)]">
+              <span className="block sm:hidden">KuKa</span>
 
-          <h1 className="mx-auto mt-3 max-w-4xl text-[clamp(2rem,3.8vw,3.4rem)] font-bold leading-[1.05] tracking-[-0.035em] text-[var(--kk-text)]">
+              <span
+                className="mt-1 block whitespace-nowrap sm:hidden"
+                style={{ letterSpacing: "0.06em" }}
+              >
+                for Organizations
+              </span>
+
+              <span className="hidden sm:inline">
+                KuKa for Organizations
+              </span>
+            </p>
+
+          <h1 className="mx-auto mt-4 max-w-3xl text-[clamp(1.9rem,8vw,3.4rem)] font-bold leading-[1.08] tracking-[-0.035em] text-[var(--kk-text)]">
             Culture-led experiences for organizations, teams, and communities.
           </h1>
 
@@ -376,6 +387,6 @@ export default function ForOrganizationsPage() {
 
       {/* ORGANIZATION INQUIRY FORM */}
       <OrganizationInquiryForm />
-    </main>
+    </div>
   );
 }

@@ -13,7 +13,7 @@ const sampleExperiences = [
 
 export default function PrivateExperiencesPage() {
   return (
-    <main className="kk-page-root kk-site-bg min-h-screen">
+    <div className="kk-page-root kk-site-bg min-h-screen">
       {/* HERO */}
       <section className="kk-section-light kk-hero-padding">
         <div className="kk-container text-center">
@@ -107,6 +107,6 @@ export default function PrivateExperiencesPage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

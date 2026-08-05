@@ -1,6 +1,10 @@
 "use client";
 
+import type { Ref } from "react";
+
 type FloatingContactButtonProps = {
+  buttonRef?: Ref<HTMLButtonElement>;
+  expanded: boolean;
   onClick: () => void;
 };
 
@@ -23,20 +27,23 @@ function MessageIcon() {
 }
 
 export default function FloatingContactButton({
+  buttonRef,
+  expanded,
   onClick,
 }: FloatingContactButtonProps) {
   return (
     <button
+      ref={buttonRef}
       type="button"
       onClick={onClick}
-      aria-label="Open contact form"
+      aria-label={expanded ? "Contact form open" : "Open contact form"}
       aria-controls="floating-contact-drawer"
-      aria-expanded="false"
-      className="fixed bottom-24 right-4 z-[75] flex items-center gap-2 rounded-full bg-[var(--kk-accent)] px-5 py-3.5 font-semibold text-[var(--kk-text)] shadow-[0_14px_40px_rgba(0,0,0,0.22)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(0,0,0,0.28)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--kk-text)] focus-visible:ring-offset-2 md:bottom-auto md:right-0 md:top-1/2 md:-translate-y-1/2 md:flex-col md:gap-3 md:rounded-l-2xl md:rounded-r-none md:px-3 md:py-5 md:hover:-translate-x-1 md:hover:-translate-y-1/2"
+      aria-expanded={expanded}
+      className="fixed right-0 top-1/2 z-[75] hidden -translate-y-1/2 flex-col items-center gap-3 rounded-l-2xl rounded-r-none bg-[var(--kk-accent)] px-3 py-5 font-semibold text-[var(--kk-text)] shadow-[0_14px_40px_rgba(0,0,0,0.22)] transition duration-300 hover:-translate-x-1 hover:-translate-y-1/2 hover:shadow-[0_18px_50px_rgba(0,0,0,0.28)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--kk-text)] focus-visible:ring-offset-2 md:flex"
     >
       <MessageIcon />
 
-      <span className="text-sm md:[writing-mode:vertical-rl] md:rotate-180">
+      <span className="rotate-180 text-sm [writing-mode:vertical-rl]">
         Contact Us
       </span>
     </button>

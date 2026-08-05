@@ -34,3 +34,18 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Website form email configuration
+
+All enquiry and application forms use Resend and share the following server-side environment variables:
+
+```env
+RESEND_API_KEY=re_xxxxxxxxx
+WEBSITE_FORMS_TO_EMAIL=kuka.forms@kulturekatta.com
+WEBSITE_FORMS_FROM_EMAIL="KultureKatta Website <kuka.forms@kulturekatta.com>"
+PUBLIC_CONTACT_EMAIL=hey@kulturekatta.com
+```
+
+Set the same variables in `.env.local` for local development and in the Netlify environment settings for deployed builds. Do not expose or commit the real Resend API key.
+
+The legacy `ORGANIZATION_INQUIRY_TO_EMAIL` and `ORGANIZATION_INQUIRY_FROM_EMAIL` variables are supported temporarily as fallbacks, but the shared `WEBSITE_FORMS_*` variables should be used going forward.

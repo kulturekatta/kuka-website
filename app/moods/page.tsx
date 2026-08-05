@@ -157,7 +157,7 @@ function PageIcon({ icon, label }: { icon: string; label: string }) {
 
 export default function ExploreByMoodPage() {
   return (
-    <main className="kk-page-root min-h-screen">
+    <div className="kk-page-root min-h-screen">
       <section className="kk-section-light kk-hero-padding">
         <div className="kk-container text-center">
           <PageIcon icon="🧭" label="Mood and intent" />
@@ -308,6 +308,6 @@ export default function ExploreByMoodPage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

@@ -1,17 +1,19 @@
 import type { Metadata } from "next";
 import Navbar from "./components/Navbar";
-import GoToTopButton from "./components/GoToTopButton";
 import Footer from "./components/Footer";
+import GoToTopButton from "./components/GoToTopButton";
 import CookieBanner from "./components/CookieBanner";
-import FloatingSocialBar from "./components/FloatingSocialBar";
 import FloatingContactDrawer from "./components/FloatingContactDrawer";
+
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://kulturekatta.com"),
   title:
     "KultureKatta | Culture-Led Experiences for Organizations & Private Groups",
   description:
     "KultureKatta designs culture-led workshops, city trails, creative sessions, festive experiences, and custom gatherings for organizations, teams, and private groups.",
+  applicationName: "KultureKatta",
 };
 
 export default function RootLayout({
@@ -26,19 +28,27 @@ export default function RootLayout({
       className="h-full antialiased"
     >
       <body className="kk-site-bg flex min-h-full flex-col">
+        <a href="#main-content" className="kk-skip-link">
+          Skip to main content
+        </a>
+
         <Navbar />
 
-        <main className="kk-section-light flex-1">{children}</main>
+        <main
+          id="main-content"
+          tabIndex={-1}
+          className="kk-section-light flex-1"
+        >
+          {children}
+        </main>
 
         <Footer />
 
-        {/* GLOBAL FLOATING CONTACT ELEMENTS */}
-        <FloatingSocialBar />
         <FloatingContactDrawer />
 
-        <GoToTopButton />
-
         <CookieBanner />
+
+        <GoToTopButton />
       </body>
     </html>
   );
