@@ -25,7 +25,7 @@ type ExperienceCategoryPageProps = {
 
 function PageIcon({ icon, label }: { icon: string; label: string }) {
   return (
-    <div className="mb-6 flex justify-center">
+    <div className="mb-6 flex justify-start">
       <span
         role="img"
         aria-label={label}
@@ -76,16 +76,16 @@ export default function ExperienceCategoryPage({
   return (
     <div className="kk-page-root kk-site-bg min-h-screen">
       <section className="kk-section-light pt-16 pb-20 md:pt-20 md:pb-24">
-        <div className="kk-container text-center">
+        <div className="kk-container text-left">
           <PageIcon icon={icon} label={iconLabel} />
 
           <p className="kk-page-label text-[var(--kk-accent)]">{eyebrow}</p>
 
-          <h1 className="kk-page-heading mx-auto max-w-5xl">{title}</h1>
+          <h1 className="kk-page-heading max-w-5xl">{title}</h1>
 
-          <p className="kk-page-intro mx-auto mt-8 max-w-4xl">{intro}</p>
+          <p className="kk-page-intro mt-8 max-w-4xl">{intro}</p>
 
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <div className="mt-10 flex flex-col items-start gap-4 sm:flex-row sm:flex-wrap">
             <Link href="/contact" className="kk-button-dark">
               {primaryCta}
             </Link>
@@ -99,7 +99,7 @@ export default function ExperienceCategoryPage({
 
       <section className="kk-section-cream pt-12 pb-20 md:pt-16 md:pb-24">
         <div className="kk-container">
-          <div className="mx-auto max-w-3xl text-center">
+          <div className="max-w-3xl text-left">
             <p className="kk-section-label mb-5">What it can include</p>
             <h2 className="kk-section-heading">{firstSectionTitle}</h2>
             <p className="kk-body mt-6">{firstSectionIntro}</p>
@@ -109,13 +109,11 @@ export default function ExperienceCategoryPage({
             {experiences.map((item) => (
               <article
                 key={item.title}
-                className="kk-card kk-card--interactive min-h-[285px] text-center"
+                className="kk-card kk-card--interactive min-h-[285px] text-left"
               >
                 <SmallIcon icon={item.icon} label={item.title} />
                 <h3 className="kk-card-title mt-5">{item.title}</h3>
-                <p className="kk-card-body mt-4 flex-1 text-center">
-                  {item.text}
-                </p>
+                <p className="kk-card-body mt-4 flex-1">{item.text}</p>
               </article>
             ))}
           </div>
@@ -124,7 +122,7 @@ export default function ExperienceCategoryPage({
 
       <section className="kk-section-light pt-12 pb-20 md:pt-16 md:pb-24">
         <div className="kk-container">
-          <div className="mx-auto max-w-3xl text-center">
+          <div className="max-w-3xl text-left">
             <p className="kk-section-label mb-5">How it works</p>
             <h2 className="kk-section-heading">{secondSectionTitle}</h2>
             <p className="kk-body mt-6">{secondSectionIntro}</p>
@@ -134,11 +132,11 @@ export default function ExperienceCategoryPage({
             {process.map((item) => (
               <article
                 key={item.title}
-                className="kk-card kk-card--interactive min-h-[270px] text-center"
+                className="kk-card kk-card--interactive min-h-[270px] text-left"
               >
                 <SmallIcon icon={item.icon} label={item.title} />
                 <h3 className="kk-card-title mt-5">{item.title}</h3>
-                <p className="kk-card-body mt-4 text-center">{item.text}</p>
+                <p className="kk-card-body mt-4">{item.text}</p>
               </article>
             ))}
           </div>
@@ -147,12 +145,12 @@ export default function ExperienceCategoryPage({
 
       <section className="kk-section-cream pt-12 pb-20 md:pt-16 md:pb-24">
         <div className="kk-container">
-          <div className="kk-panel mx-auto max-w-5xl text-center">
+          <div className="kk-panel max-w-5xl text-left">
             <PageIcon icon={icon} label={iconLabel} />
             <h2 className="kk-section-heading">{closingTitle}</h2>
-            <p className="kk-body mx-auto mt-6 max-w-3xl">{closingText}</p>
+            <p className="kk-body mt-6 max-w-3xl">{closingText}</p>
 
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <div className="mt-10 flex flex-col items-start gap-4 sm:flex-row sm:flex-wrap">
               <Link href="/contact" className="kk-button-dark">
                 {primaryCta}
               </Link>
