@@ -2,23 +2,29 @@ import { defineConfig, devices } from "@playwright/test";
 
 const externalBaseUrl = process.env.BASE_URL?.trim().replace(/\/$/, "");
 const baseURL = externalBaseUrl || "http://127.0.0.1:3000";
+const isCI = Boolean(process.env.CI);
 
 export default defineConfig({
   testDir: "./tests/e2e",
-  // Netlify may challenge a burst of parallel automated requests. Keep the
-  // deployed-preview run deliberately gentle while retaining normal local speed.
-  fullyParallel: !externalBaseUrl,
-  forbidOnly: Boolean(process.env.CI),
-  retries: externalBaseUrl ? 1 : process.env.CI ? 1 : 0,
-  workers: externalBaseUrl ? 1 : process.env.CI ? 2 : undefined,
+
+  // Keep deployed-preview and CI runs deliberately sequential. This avoids
+  // Netlify challenge responses and prevents interactive tests from competing
+  // for a single Next.js server during hydration.
+  fullyParallel: !externalBaseUrl && !isCI,
+  forbidOnly: isCI,
+  retries: externalBaseUrl || isCI ? 1 : 0,
+  workers: externalBaseUrl || isCI ? 1 : undefined,
+
   timeout: 45_000,
   expect: {
     timeout: 10_000,
   },
+
   reporter: [
     ["list"],
     ["html", { outputFolder: "playwright-report", open: "never" }],
   ],
+
   use: {
     baseURL,
     trace: "retain-on-failure",
@@ -27,6 +33,7 @@ export default defineConfig({
     actionTimeout: 10_000,
     navigationTimeout: 30_000,
   },
+
   projects: [
     {
       name: "chromium",
@@ -41,12 +48,15 @@ export default defineConfig({
       use: { ...devices["Desktop Safari"] },
     },
   ],
+
   webServer: externalBaseUrl
     ? undefined
     : {
-        command: "npm run dev",
+        // CI tests the same production mode used for deployment. Local
+        // development keeps the faster dev server unless BASE_URL is supplied.
+        command: isCI ? "npm run start" : "npm run dev",
         url: baseURL,
-        reuseExistingServer: !process.env.CI,
-        timeout: 120_000,
+        reuseExistingServer: !isCI,
+        timeout: 180_000,
       },
 });
