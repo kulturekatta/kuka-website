@@ -99,7 +99,7 @@ export default function GrowthClinicContactForm() {
 
   return (
     <form
-      id="growth-clinic-form"
+      id="growth-clinic-contact-form"
       onSubmit={handleSubmit}
       className="mx-auto max-w-5xl overflow-hidden rounded-[2rem] border border-black/10 bg-white shadow-[0_24px_70px_rgba(0,0,0,0.07)]"
     >
