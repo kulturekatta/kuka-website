@@ -137,43 +137,52 @@ export default function ExperiencesPage() {
   };
 
   return (
-    <div className="kk-page-root min-h-screen kk-section-light">
+    <div className="kk-page-root min-h-screen w-full min-w-0 max-w-[100vw] overflow-x-clip kk-section-light">
       {/* HERO */}
-      <section className="relative overflow-hidden kk-section-light px-6 pb-20 pt-14 sm:px-10 lg:px-16">
+      <section
+        data-testid="experiences-hero"
+        className="relative w-full min-w-0 max-w-[100vw] overflow-x-clip kk-section-light pb-20 pt-14"
+      >
         <div className="absolute bottom-10 right-10 hidden h-40 w-40 rounded-full bg-[var(--kk-accent)]/10 blur-3xl lg:block" />
 
-        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-          <div className="mt-0">
+        <div
+          data-testid="experiences-hero-grid"
+          className="mx-auto grid w-[calc(100vw-3rem)] min-w-0 max-w-7xl gap-12 sm:w-[calc(100vw-5rem)] lg:w-full lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-center"
+        >
+          <div data-testid="experiences-hero-copy" className="mt-0 w-full min-w-0 max-w-full">
             <p className="kk-page-label text-[var(--kk-accent)]">
               Explore Experiences
             </p>
 
-            <h1 className="kk-page-heading mt-6 max-w-4xl">
+            <h1 className="kk-page-heading mt-6 w-full max-w-4xl break-words [overflow-wrap:anywhere]">
               Pick a rabbit hole.
               <br />
               We’ll bring the culture.
             </h1>
 
-            <p className="kk-page-intro mt-8 max-w-2xl">
+            <p className="kk-page-intro mt-8 w-full max-w-2xl break-words [overflow-wrap:anywhere]">
               KultureKatta experiences are small, warm, participatory gatherings
               where you make, walk, taste, listen, play, question, and leave
               with a story. Sometimes with a plant. Sometimes with flour on your
               sleeve. Occasionally with a new obsession.
             </p>
 
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-              <Link href="/contact" className="kk-button-light">
+            <div data-testid="experiences-hero-actions" className="mt-10 flex w-full min-w-0 max-w-full flex-col gap-4 sm:flex-row">
+              <Link href="/contact" className="kk-button-light box-border w-full min-w-0 max-w-full whitespace-normal px-4 sm:w-auto">
                 Plan a Katta with us
               </Link>
 
-              <Link href="#curiosity-generator" className="kk-button-light">
+              <Link
+                href="#curiosity-generator"
+                className="kk-button-light box-border w-full min-w-0 max-w-full whitespace-normal px-4 sm:w-auto"
+              >
                 I’m feeling curious
               </Link>
             </div>
           </div>
 
-          <div className="kk-card">
-            <div className="rounded-[2rem] bg-background p-6 text-foreground">
+          <div className="kk-card w-full min-w-0 max-w-full overflow-hidden">
+            <div className="min-w-0 rounded-[2rem] bg-background p-6 text-foreground">
               <p className="kk-eyebrow">Today’s possible personality</p>
 
               <div className="mt-6 space-y-4">
@@ -187,7 +196,7 @@ export default function ExperiencesPage() {
                 ].map((item) => (
                   <div
                     key={item}
-                    className="kk-card kk-card--compact kk-card-title"
+                    className="kk-card kk-card--compact kk-card-title min-w-0 break-words"
                   >
                     {item}
                   </div>

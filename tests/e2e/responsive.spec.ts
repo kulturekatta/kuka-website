@@ -32,6 +32,53 @@ for (const viewport of viewports) {
           `${route} overflows at ${viewport.width}px`,
         ).toBeLessThanOrEqual(dimensions.viewportWidth + 1);
         expect(dimensions.bodyWidth).toBeLessThanOrEqual(dimensions.viewportWidth + 1);
+
+        // A parent with overflow hidden can mask content that is wider than the
+        // viewport without increasing document.scrollWidth. Check the visible
+        // content itself so clipped headings, paragraphs and buttons are caught.
+        const clippedElements = await page.locator("main#main-content").evaluate((main) => {
+          const viewportWidth = document.documentElement.clientWidth;
+          const candidates = Array.from(
+            main.querySelectorAll<HTMLElement>(
+              'h1, h2, h3, h4, p, a, button, img, form, [role="button"]',
+            ),
+          );
+
+          return candidates
+            .filter((element) => {
+              const style = window.getComputedStyle(element);
+              const rect = element.getBoundingClientRect();
+
+              return (
+                style.display !== "none" &&
+                style.visibility !== "hidden" &&
+                Number.parseFloat(style.opacity || "1") > 0 &&
+                style.position !== "fixed" &&
+                rect.width > 0 &&
+                rect.height > 0
+              );
+            })
+            .filter((element) => {
+              const rect = element.getBoundingClientRect();
+              return rect.left < -1 || rect.right > viewportWidth + 1;
+            })
+            .map((element) => {
+              const rect = element.getBoundingClientRect();
+              return {
+                tag: element.tagName.toLowerCase(),
+                text: element.textContent?.trim().replace(/\s+/g, " ").slice(0, 100),
+                left: Math.round(rect.left),
+                right: Math.round(rect.right),
+                viewportWidth,
+              };
+            });
+        });
+
+        expect(
+          clippedElements,
+          `${route} has visible content clipped outside the ${viewport.width}px viewport`,
+        ).toEqual([]);
+
         await expect(page.locator("main#main-content")).toBeVisible();
       });
     }
