@@ -84,13 +84,25 @@ export default function ContactPage() {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [statusMessage, setStatusMessage] = useState("");
   const startedAtRef = useRef(0);
+  const statusMessageRef = useRef<HTMLParagraphElement>(null);
+  const isSubmittingRef = useRef(false);
 
   useEffect(() => {
     startedAtRef.current = Date.now();
   }, []);
 
+  useEffect(() => {
+    if (status === "success" || status === "error") {
+      statusMessageRef.current?.focus();
+    }
+  }, [status]);
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (isSubmittingRef.current) {
+      return;
+    }
 
     const form = event.currentTarget;
     const formData = new FormData(form);
@@ -107,6 +119,7 @@ export default function ContactPage() {
       sourcePage: "/contact",
     };
 
+    isSubmittingRef.current = true;
     setStatus("submitting");
     setStatusMessage("");
 
@@ -144,6 +157,8 @@ export default function ContactPage() {
           ? error.message
           : "Something went wrong. Please try again.",
       );
+    } finally {
+      isSubmittingRef.current = false;
     }
   };
 
@@ -516,6 +531,8 @@ export default function ContactPage() {
 
                   {statusMessage && (
                     <p
+                      ref={statusMessageRef}
+                      tabIndex={-1}
                       role={status === "error" ? "alert" : "status"}
                       aria-live={status === "error" ? "assertive" : "polite"}
                       className={`kk-small-text rounded-2xl px-5 py-4 font-semibold sm:col-span-2 ${

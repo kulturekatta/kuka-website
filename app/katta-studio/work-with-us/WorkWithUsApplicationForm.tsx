@@ -56,13 +56,25 @@ export default function WorkWithUsApplicationForm() {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [statusMessage, setStatusMessage] = useState("");
   const startedAtRef = useRef(0);
+  const statusMessageRef = useRef<HTMLParagraphElement>(null);
+  const isSubmittingRef = useRef(false);
 
   useEffect(() => {
     startedAtRef.current = Date.now();
   }, []);
 
+  useEffect(() => {
+    if (status === "success" || status === "error") {
+      statusMessageRef.current?.focus();
+    }
+  }, [status, statusMessage]);
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (isSubmittingRef.current) {
+      return;
+    }
 
     const form = event.currentTarget;
     const formData = new FormData(form);
@@ -87,6 +99,7 @@ export default function WorkWithUsApplicationForm() {
       sourcePage: "/katta-studio/work-with-us#application-form",
     };
 
+    isSubmittingRef.current = true;
     setStatus("submitting");
     setStatusMessage("");
 
@@ -124,6 +137,8 @@ export default function WorkWithUsApplicationForm() {
           ? error.message
           : "Something went wrong. Please try again.",
       );
+    } finally {
+      isSubmittingRef.current = false;
     }
   };
 
@@ -545,6 +560,8 @@ export default function WorkWithUsApplicationForm() {
 
                 {statusMessage && (
                   <p
+                    ref={statusMessageRef}
+                    tabIndex={-1}
                     role={status === "error" ? "alert" : "status"}
                     aria-live={status === "error" ? "assertive" : "polite"}
                     className={`mt-5 rounded-2xl px-4 py-3 text-sm font-semibold ${

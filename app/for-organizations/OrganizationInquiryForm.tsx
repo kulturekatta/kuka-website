@@ -74,13 +74,25 @@ export default function OrganizationInquiryForm() {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const startedAtRef = useRef(0);
+  const statusMessageRef = useRef<HTMLDivElement>(null);
+  const isSubmittingRef = useRef(false);
 
   useEffect(() => {
     startedAtRef.current = Date.now();
   }, []);
 
+  useEffect(() => {
+    if (status === "success" || status === "error") {
+      statusMessageRef.current?.focus();
+    }
+  }, [status, errorMessage]);
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (isSubmittingRef.current) {
+      return;
+    }
 
     const form = event.currentTarget;
     const formData = new FormData(form);
@@ -92,6 +104,14 @@ export default function OrganizationInquiryForm() {
     if (selectedInterests.length === 0) {
       setStatus("error");
       setErrorMessage("Please select at least one area of interest.");
+      return;
+    }
+
+    const hasConsent = formData.get("consent") === "on";
+
+    if (!hasConsent) {
+      setStatus("error");
+      setErrorMessage("Please agree to the Privacy Policy before submitting.");
       return;
     }
 
@@ -127,7 +147,7 @@ export default function OrganizationInquiryForm() {
       details: String(formData.get("details") ?? ""),
       referralSource: String(formData.get("referralSource") ?? ""),
 
-      consent: formData.get("consent") === "on",
+      consent: hasConsent,
 
       // Hidden anti-spam fields.
       formGuard: String(formData.get("formGuard") ?? ""),
@@ -135,6 +155,7 @@ export default function OrganizationInquiryForm() {
       sourcePage: "/for-organizations#organization-inquiry",
     };
 
+    isSubmittingRef.current = true;
     setStatus("submitting");
     setErrorMessage("");
 
@@ -170,6 +191,8 @@ export default function OrganizationInquiryForm() {
           ? error.message
           : "Something went wrong. Please try again.",
       );
+    } finally {
+      isSubmittingRef.current = false;
     }
   }
 
@@ -221,7 +244,11 @@ export default function OrganizationInquiryForm() {
                 Your Inquiry Has Been Received
               </h3>
 
-              <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-black/65 md:text-lg">
+              <p
+                ref={statusMessageRef}
+                tabIndex={-1}
+                className="mx-auto mt-4 max-w-xl text-base leading-7 text-black/65 md:text-lg"
+              >
                 Thank you for telling us about your organization and
                 what you are planning. A confirmation email is on its way,
                 and the KultureKatta team will review the requirements.
@@ -775,6 +802,8 @@ export default function OrganizationInquiryForm() {
               {/* ERROR MESSAGE */}
               {status === "error" && errorMessage ? (
                 <div
+                  ref={statusMessageRef}
+                  tabIndex={-1}
                   className="mt-6 rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-base leading-7 text-red-800"
                   role="alert"
                   aria-live="assertive"

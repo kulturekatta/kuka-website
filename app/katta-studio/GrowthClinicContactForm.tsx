@@ -15,13 +15,25 @@ export default function GrowthClinicContactForm() {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [statusMessage, setStatusMessage] = useState("");
   const startedAtRef = useRef(0);
+  const statusMessageRef = useRef<HTMLDivElement>(null);
+  const isSubmittingRef = useRef(false);
 
   useEffect(() => {
     startedAtRef.current = Date.now();
   }, []);
 
+  useEffect(() => {
+    if (status === "success" || status === "error") {
+      statusMessageRef.current?.focus();
+    }
+  }, [status, statusMessage]);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (isSubmittingRef.current) {
+      return;
+    }
 
     const form = event.currentTarget;
     const formData = new FormData(form);
@@ -39,6 +51,7 @@ export default function GrowthClinicContactForm() {
       sourcePage: "/katta-studio#growth-clinic-form",
     };
 
+    isSubmittingRef.current = true;
     setStatus("submitting");
     setStatusMessage("");
 
@@ -82,6 +95,8 @@ export default function GrowthClinicContactForm() {
           ? error.message
           : "Something went wrong. Please try again.",
       );
+    } finally {
+      isSubmittingRef.current = false;
     }
   };
 
@@ -328,6 +343,8 @@ export default function GrowthClinicContactForm() {
         {/* FORM STATUS */}
         {statusMessage && (
           <div
+            ref={statusMessageRef}
+            tabIndex={-1}
             role={status === "error" ? "alert" : "status"}
             aria-live={status === "error" ? "assertive" : "polite"}
             className={`rounded-2xl px-5 py-4 text-sm font-medium ${

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useRef, type KeyboardEvent } from "react";
+import { useEffect, useRef, type KeyboardEvent } from "react";
 import styles from "./Navbar.module.css";
 
 const navLinks = [
@@ -20,6 +20,8 @@ export default function Navbar() {
   const mobileMenuRef = useRef<HTMLDetailsElement>(null);
   const mobileMenuSummaryRef = useRef<HTMLElement>(null);
   const firstMobileLinkRef = useRef<HTMLAnchorElement>(null);
+  const lastMobileLinkRef = useRef<HTMLAnchorElement>(null);
+  const previousBodyOverflowRef = useRef<string | null>(null);
 
   const isActive = (href: string) => {
     if (href === "/") {
@@ -29,22 +31,89 @@ export default function Navbar() {
     return pathname === href || pathname.startsWith(`${href}/`);
   };
 
+  const lockBodyScroll = () => {
+    if (previousBodyOverflowRef.current === null) {
+      previousBodyOverflowRef.current = document.body.style.overflow;
+    }
+
+    document.body.style.overflow = "hidden";
+  };
+
+  const unlockBodyScroll = () => {
+    if (previousBodyOverflowRef.current === null) {
+      return;
+    }
+
+    document.body.style.overflow = previousBodyOverflowRef.current;
+    previousBodyOverflowRef.current = null;
+  };
+
   const closeMobileMenu = (restoreFocus = false) => {
     if (!mobileMenuRef.current) {
       return;
     }
 
     mobileMenuRef.current.open = false;
+    unlockBodyScroll();
 
     if (restoreFocus) {
       mobileMenuSummaryRef.current?.focus();
     }
   };
 
+  useEffect(() => {
+    const handleDocumentClick = (event: MouseEvent) => {
+      const details = mobileMenuRef.current;
+
+      if (!details?.open) {
+        return;
+      }
+
+      const target = event.target;
+
+      if (target instanceof Node && details.contains(target)) {
+        return;
+      }
+
+      // Prevent links/buttons behind the open mobile menu from activating.
+      event.preventDefault();
+      event.stopPropagation();
+
+      details.open = false;
+
+      if (previousBodyOverflowRef.current !== null) {
+        document.body.style.overflow = previousBodyOverflowRef.current;
+        previousBodyOverflowRef.current = null;
+      }
+
+      mobileMenuSummaryRef.current?.focus();
+    };
+
+    document.addEventListener("click", handleDocumentClick, true);
+
+    return () => {
+      document.removeEventListener("click", handleDocumentClick, true);
+
+      if (previousBodyOverflowRef.current !== null) {
+        document.body.style.overflow = previousBodyOverflowRef.current;
+        previousBodyOverflowRef.current = null;
+      }
+    };
+  }, []);
+
   const handleMobileMenuToggle = () => {
-    if (!mobileMenuRef.current?.open) {
+    const details = mobileMenuRef.current;
+
+    if (!details) {
       return;
     }
+
+    if (!details.open) {
+      unlockBodyScroll();
+      return;
+    }
+
+    lockBodyScroll();
 
     window.requestAnimationFrame(() => {
       firstMobileLinkRef.current?.focus();
@@ -52,12 +121,37 @@ export default function Navbar() {
   };
 
   const handleMobileMenuKeyDown = (event: KeyboardEvent<HTMLElement>) => {
-    if (event.key !== "Escape" || !mobileMenuRef.current?.open) {
+    if (!mobileMenuRef.current?.open) {
       return;
     }
 
-    event.preventDefault();
-    closeMobileMenu(true);
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeMobileMenu(true);
+      return;
+    }
+
+    if (event.key !== "Tab") {
+      return;
+    }
+
+    const firstLink = firstMobileLinkRef.current;
+    const lastLink = lastMobileLinkRef.current;
+
+    if (!firstLink || !lastLink) {
+      return;
+    }
+
+    if (event.shiftKey && document.activeElement === firstLink) {
+      event.preventDefault();
+      lastLink.focus();
+      return;
+    }
+
+    if (!event.shiftKey && document.activeElement === lastLink) {
+      event.preventDefault();
+      firstLink.focus();
+    }
   };
 
   return (
@@ -217,6 +311,7 @@ export default function Navbar() {
 
                   <li className={styles.mobileExploreItem}>
                     <Link
+                      ref={lastMobileLinkRef}
                       href="/experiences"
                       aria-current={isActive("/experiences") ? "page" : undefined}
                       className={styles.mobileExploreButton}

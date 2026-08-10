@@ -88,11 +88,7 @@ export default function FloatingContactDrawer() {
   }, []);
 
   const openDrawer = () => {
-    lastActiveElementRef.current =
-      document.activeElement instanceof HTMLElement
-        ? document.activeElement
-        : triggerButtonRef.current;
-
+    lastActiveElementRef.current = triggerButtonRef.current;
     setIsOpen(true);
   };
 

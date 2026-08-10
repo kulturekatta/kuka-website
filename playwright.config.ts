@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
 const externalBaseUrl = process.env.BASE_URL?.trim().replace(/\/$/, "");
-const baseURL = externalBaseUrl || "http://127.0.0.1:3000";
+const baseURL = externalBaseUrl || "http://localhost:3000";
 const isCI = Boolean(process.env.CI);
 
 export default defineConfig({
