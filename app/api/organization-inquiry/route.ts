@@ -4,12 +4,10 @@ import {
   cleanList,
   cleanText,
   hasValidConsent,
-  isDuplicateSubmission,
   isHoneypotTriggered,
   isRateLimited,
   isSubmissionTooFast,
   isValidEmail,
-  rememberSuccessfulSubmission,
   sendWebsiteForm,
 } from "@/app/lib/website-forms";
 
@@ -131,20 +129,6 @@ export async function POST(request: Request) {
       );
     }
 
-    const duplicateParts = [
-      "organization",
-      workEmail,
-      organizationName,
-      experienceGoal,
-    ];
-
-    if (isDuplicateSubmission(duplicateParts)) {
-      return NextResponse.json({
-        success: true,
-        message: "Your inquiry has already been received.",
-      });
-    }
-
     const subjectOrganizationName = organizationName
       .replace(/[\r\n]+/g, " ")
       .slice(0, 100);
@@ -178,8 +162,6 @@ export async function POST(request: Request) {
         { label: "Source page", value: sourcePage },
       ],
     });
-
-    rememberSuccessfulSubmission(duplicateParts);
 
     return NextResponse.json({
       success: true,

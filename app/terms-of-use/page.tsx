@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "Terms of Use | KultureKatta",
   description:
     "Terms governing your use of the KultureKatta website and services.",
+  alternates: {
+    canonical: "/terms-of-use",
+  },
 };
 
 const linkClass =

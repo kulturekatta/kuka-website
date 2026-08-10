@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   description:
     "KultureKatta designs culture-led workshops, city trails, creative sessions, festive experiences, and custom gatherings for organizations, teams, and private groups.",
   applicationName: "KultureKatta",
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function RootLayout({

@@ -132,8 +132,7 @@ export default function Footer() {
             grid w-full items-start gap-x-8 gap-y-12
             sm:grid-cols-2
             md:grid-cols-3
-            xl:grid-cols-[minmax(240px,280px)_repeat(5,max-content)]
-            xl:justify-between
+            xl:grid-cols-[minmax(220px,1.3fr)_repeat(5,minmax(0,1fr))]
             xl:gap-x-6
           "
         >
@@ -141,7 +140,7 @@ export default function Footer() {
             <div className="min-w-0 xl:pr-2">
               <Link
                 href="/"
-                className="inline-flex text-2xl font-semibold tracking-tight text-white"
+                className="inline-flex min-h-11 min-w-11 items-center text-2xl font-semibold tracking-tight text-white"
                 aria-label="KultureKatta home"
               >
                 KultureKatta
@@ -174,7 +173,7 @@ export default function Footer() {
 
               return (
                 <div key={section.title} className="min-w-0 xl:pt-[10px]">
-                  <h2 className="whitespace-nowrap text-sm font-semibold uppercase leading-5 tracking-[0.16em] text-white">
+                  <h2 className="break-words text-sm font-semibold uppercase leading-5 tracking-[0.16em] text-white">
                     {section.title}
                   </h2>
 
@@ -202,7 +201,7 @@ export default function Footer() {
                             href={link.href}
                             target={link.external ? "_blank" : undefined}
                             rel={link.external ? "noopener noreferrer" : undefined}
-                            className="inline-block whitespace-nowrap text-sm font-normal leading-6 text-white/65 transition-colors duration-200 hover:text-white"
+                            className="inline-flex min-h-11 min-w-11 max-w-full items-center break-words text-sm font-normal leading-6 text-white/65 transition-colors duration-200 hover:text-white"
                           >
                             {link.label}
                           </Link>
@@ -216,7 +215,7 @@ export default function Footer() {
                           totalItems < 4 ? "xl:row-start-4" : undefined
                         }
                       >
-                        <CookieSettingsButton className="inline-block whitespace-nowrap text-left !text-sm !font-normal font-[inherit] leading-6 text-white/65 transition-colors duration-200 hover:text-white" />
+                        <CookieSettingsButton className="inline-flex min-h-11 min-w-11 max-w-full items-center break-words text-left !text-sm !font-normal font-[inherit] leading-6 text-white/65 transition-colors duration-200 hover:text-white" />
                       </li>
                     )}
                   </ul>
@@ -228,8 +227,8 @@ export default function Footer() {
 
         {/* BOTTOM BAR */}
         <div className="mt-12 border-t border-white/15 pt-6 md:mt-16">
-          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-            <div>
+          <div className="flex flex-col gap-6 md:flex-row md:flex-wrap md:items-end md:justify-between">
+            <div className="min-w-0">
               <p className="text-sm text-white/60">
                 © {new Date().getFullYear()} KultureKatta. All rights reserved.
               </p>
@@ -244,29 +243,29 @@ export default function Footer() {
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+            <div className="flex min-w-0 max-w-full flex-wrap items-center gap-x-5 gap-y-3">
               <Link
                 href="/privacy-policy"
-                className="text-sm font-normal leading-6 text-white/60 transition-colors duration-200 hover:text-white"
+                className="inline-flex min-h-11 min-w-11 max-w-full items-center break-words text-sm font-normal leading-6 text-white/60 transition-colors duration-200 hover:text-white"
               >
                 Privacy Policy
               </Link>
 
               <Link
                 href="/terms-of-use"
-                className="text-sm font-normal leading-6 text-white/60 transition-colors duration-200 hover:text-white"
+                className="inline-flex min-h-11 min-w-11 max-w-full items-center break-words text-sm font-normal leading-6 text-white/60 transition-colors duration-200 hover:text-white"
               >
                 Terms of Use
               </Link>
 
               <Link
                 href="/cookie-policy"
-                className="text-sm font-normal leading-6 text-white/60 transition-colors duration-200 hover:text-white"
+                className="inline-flex min-h-11 min-w-11 max-w-full items-center break-words text-sm font-normal leading-6 text-white/60 transition-colors duration-200 hover:text-white"
               >
                 Cookie Policy
               </Link>
 
-              <CookieSettingsButton className="inline-block text-left !text-sm !font-normal font-[inherit] leading-6 text-white/65 transition-colors duration-200 hover:text-white" />
+              <CookieSettingsButton className="inline-flex min-h-11 min-w-11 max-w-full items-center break-words text-left !text-sm !font-normal font-[inherit] leading-6 text-white/65 transition-colors duration-200 hover:text-white" />
             </div>
           </div>
         </div>

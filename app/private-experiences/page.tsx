@@ -1,4 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Private Cultural Experiences | KultureKatta",
+  description:
+    "Create warm, hands-on private experiences for birthdays, families, friends, couples, visiting guests, and intimate celebrations.",
+  alternates: {
+    canonical: "/private-experiences",
+  },
+};
 
 const sampleExperiences = [
   "Pottery celebration",

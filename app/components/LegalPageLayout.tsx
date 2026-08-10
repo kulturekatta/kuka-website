@@ -142,7 +142,7 @@ export default function LegalPageLayout({
             </aside>
 
             {/* SECTIONS */}
-            <div className="space-y-6">
+            <div className="min-w-0 space-y-6">
               {sections.map((section, index) => (
                 <section
                   key={section.id}

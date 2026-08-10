@@ -34,20 +34,10 @@ type RateLimitEntry = {
 };
 
 type GlobalFormState = typeof globalThis & {
-  __kukaRecentFormSubmissions?: Map<string, number>;
   __kukaFormRateLimits?: Map<string, RateLimitEntry>;
 };
 
-const recentSubmissionWindowMs = 90_000;
 const globalFormState = globalThis as GlobalFormState;
-
-function getRecentSubmissionStore(): Map<string, number> {
-  if (!globalFormState.__kukaRecentFormSubmissions) {
-    globalFormState.__kukaRecentFormSubmissions = new Map<string, number>();
-  }
-
-  return globalFormState.__kukaRecentFormSubmissions;
-}
 
 export function cleanText(value: unknown, maxLength = 500): string {
   if (typeof value !== "string") {
@@ -79,6 +69,15 @@ export function cleanList(value: unknown, maxItems = 20): string[] {
 
 export function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+export function isValidHttpUrl(value: string): boolean {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
 }
 
 export function hasValidConsent(value: unknown): boolean {
@@ -135,41 +134,6 @@ export function isSubmissionTooFast(value: unknown): boolean {
   }
 
   return Date.now() - startedAt < 1_000;
-}
-
-function getSubmissionFingerprint(parts: string[]): string {
-  return createHash("sha256")
-    .update(parts.join("|"))
-    .digest("hex");
-}
-
-function cleanRecentSubmissionStore(now: number): Map<string, number> {
-  const store = getRecentSubmissionStore();
-
-  for (const [key, timestamp] of store.entries()) {
-    if (now - timestamp > recentSubmissionWindowMs) {
-      store.delete(key);
-    }
-  }
-
-  return store;
-}
-
-export function isDuplicateSubmission(parts: string[]): boolean {
-  const now = Date.now();
-  const store = cleanRecentSubmissionStore(now);
-  const previousTimestamp = store.get(getSubmissionFingerprint(parts));
-
-  return Boolean(
-    previousTimestamp &&
-      now - previousTimestamp <= recentSubmissionWindowMs,
-  );
-}
-
-export function rememberSuccessfulSubmission(parts: string[]): void {
-  const now = Date.now();
-  const store = cleanRecentSubmissionStore(now);
-  store.set(getSubmissionFingerprint(parts), now);
 }
 
 function escapeHtml(value: string): string {

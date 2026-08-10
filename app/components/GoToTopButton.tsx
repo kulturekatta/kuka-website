@@ -18,6 +18,7 @@ export default function GoToTopButton() {
       onClick={scrollToTop}
       aria-label="Go to top"
       title="Go to top"
+      className="kk-go-to-top-button"
       style={{
         position: "fixed",
         right: "1rem",

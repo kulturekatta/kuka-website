@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Explore by Mood & Intent | KultureKatta",
   description:
     "Discover KuKa experiences by what you feel like doing, experiencing, or gaining right now.",
+  alternates: {
+    canonical: "/moods",
+  },
 };
 
 const moodCards = [

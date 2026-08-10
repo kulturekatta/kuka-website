@@ -1,5 +1,16 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title:
+    "KultureKatta | Culture-Led Experiences for Organizations & Private Groups",
+  description:
+    "KultureKatta designs culture-led workshops, city trails, creative sessions, festive experiences, and custom gatherings for organizations, teams, and private groups.",
+  alternates: {
+    canonical: "/",
+  },
+};
 
 type IllustratedIconProps = {
   icon: string;
@@ -1012,7 +1023,7 @@ export default function HomePage() {
                   </div>
 
                   <div className="flex justify-center md:justify-end">
-                    <span className="kk-button-dark whitespace-nowrap">
+                    <span className="kk-button-dark">
                       Explore the Universe
                     </span>
                   </div>

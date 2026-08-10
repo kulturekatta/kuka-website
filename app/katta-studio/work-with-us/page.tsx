@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "Work With Us | Katta Studio",
   description:
     "Explore employment, internship, freelance and project-based opportunities with Katta Studio.",
+  alternates: {
+    canonical: "/katta-studio/work-with-us",
+  },
 };
 
 const opportunityTypes = [

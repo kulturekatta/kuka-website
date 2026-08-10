@@ -3,12 +3,10 @@ import {
   cleanEmail,
   cleanText,
   hasValidConsent,
-  isDuplicateSubmission,
   isHoneypotTriggered,
   isRateLimited,
   isSubmissionTooFast,
   isValidEmail,
-  rememberSuccessfulSubmission,
   sendWebsiteForm,
 } from "@/app/lib/website-forms";
 
@@ -94,15 +92,6 @@ export async function POST(request: Request) {
       );
     }
 
-    const duplicateParts = ["contact", email, interest, message];
-
-    if (isDuplicateSubmission(duplicateParts)) {
-      return NextResponse.json({
-        success: true,
-        message: "Your enquiry has already been received.",
-      });
-    }
-
     await sendWebsiteForm({
       formName: "General Website Enquiry",
       internalSubject: `[KuKa Website] ${interestLabel} — ${name}`,
@@ -119,8 +108,6 @@ export async function POST(request: Request) {
         { label: "Source page", value: sourcePage },
       ],
     });
-
-    rememberSuccessfulSubmission(duplicateParts);
 
     return NextResponse.json({
       success: true,

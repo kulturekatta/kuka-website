@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   title: "KuKa Wellness | Creative, Cultural & Community Wellbeing",
   description:
     "KuKa Wellness brings together rest, movement, creativity, nature, reflection, sound, food, and community through thoughtful participatory experiences.",
+  alternates: {
+    canonical: "/kuka-universe/wellness",
+  },
 };
 
 const vertical = getKukaVertical("wellness")!;

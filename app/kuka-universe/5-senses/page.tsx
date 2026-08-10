@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   title: "KuKa 5 Senses | Multisensory Cultural Experiences",
   description:
     "KuKa 5 Senses creates participatory experiences through taste, touch, scent, sound, and sight for individuals, private groups, organizations, and institutions.",
+  alternates: {
+    canonical: "/kuka-universe/5-senses",
+  },
 };
 
 const vertical = getKukaVertical("5-senses")!;

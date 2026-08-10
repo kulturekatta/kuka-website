@@ -82,10 +82,18 @@ export default function FloatingContactDrawer() {
   const portalRootRef = useRef<HTMLDivElement>(null);
   const lastActiveElementRef = useRef<HTMLElement | null>(null);
   const startedAtRef = useRef(0);
+  const statusMessageRef = useRef<HTMLParagraphElement>(null);
+  const isSubmittingRef = useRef(false);
 
   useEffect(() => {
     startedAtRef.current = Date.now();
   }, []);
+
+  useEffect(() => {
+    if (status === "success" || status === "error") {
+      statusMessageRef.current?.focus();
+    }
+  }, [status, statusMessage]);
 
   const openDrawer = () => {
     lastActiveElementRef.current = triggerButtonRef.current;
@@ -197,6 +205,10 @@ export default function FloatingContactDrawer() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    if (isSubmittingRef.current) {
+      return;
+    }
+
     const form = event.currentTarget;
     const formData = new FormData(form);
 
@@ -212,6 +224,7 @@ export default function FloatingContactDrawer() {
       sourcePage: window.location.pathname,
     };
 
+    isSubmittingRef.current = true;
     setStatus("submitting");
     setStatusMessage("");
 
@@ -250,6 +263,8 @@ export default function FloatingContactDrawer() {
           ? error.message
           : "Something went wrong. Please try again.",
       );
+    } finally {
+      isSubmittingRef.current = false;
     }
   };
 
@@ -505,6 +520,8 @@ export default function FloatingContactDrawer() {
 
                 {statusMessage && (
                   <p
+                    ref={statusMessageRef}
+                    tabIndex={-1}
                     role={status === "error" ? "alert" : "status"}
                     aria-live={
                       status === "error" ? "assertive" : "polite"

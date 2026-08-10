@@ -1,4 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "About KultureKatta | Culture Made Participatory",
+  description:
+    "Meet KultureKatta, learn why it exists, and discover its neighborhood-first approach to participatory cultural experiences.",
+  alternates: {
+    canonical: "/about",
+  },
+};
 
 const problemItems = [
   {

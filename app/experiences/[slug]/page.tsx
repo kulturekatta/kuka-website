@@ -28,6 +28,9 @@ export async function generateMetadata({ params }: ExperienceCategoryPageProps) 
   return {
     title: `${category.heroTitle} | KultureKatta`,
     description: category.heroSubtitle,
+    alternates: {
+      canonical: `/experiences/${slug}`,
+    },
   };
 }
 

@@ -3,12 +3,11 @@ import {
   cleanEmail,
   cleanText,
   hasValidConsent,
-  isDuplicateSubmission,
   isHoneypotTriggered,
   isRateLimited,
   isSubmissionTooFast,
   isValidEmail,
-  rememberSuccessfulSubmission,
+  isValidHttpUrl,
   sendWebsiteForm,
 } from "@/app/lib/website-forms";
 
@@ -96,6 +95,16 @@ export async function POST(request: Request) {
       );
     }
 
+    if (!isValidHttpUrl(portfolioLink)) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Please enter a valid public portfolio or résumé link.",
+        },
+        { status: 400 },
+      );
+    }
+
     if (!hasValidConsent(body.consent)) {
       return NextResponse.json(
         {
@@ -104,20 +113,6 @@ export async function POST(request: Request) {
         },
         { status: 400 },
       );
-    }
-
-    const duplicateParts = [
-      "work-with-us",
-      email,
-      opportunityType,
-      portfolioLink,
-    ];
-
-    if (isDuplicateSubmission(duplicateParts)) {
-      return NextResponse.json({
-        success: true,
-        message: "Your application has already been received.",
-      });
     }
 
     await sendWebsiteForm({
@@ -143,8 +138,6 @@ export async function POST(request: Request) {
         { label: "Source page", value: sourcePage },
       ],
     });
-
-    rememberSuccessfulSubmission(duplicateParts);
 
     return NextResponse.json({
       success: true,

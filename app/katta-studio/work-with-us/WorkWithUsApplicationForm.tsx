@@ -445,8 +445,9 @@ export default function WorkWithUsApplicationForm() {
                   <input
                     id="portfolioLink"
                     name="portfolioLink"
-                    type="text"
+                    type="url"
                     required
+                    autoComplete="url"
                     placeholder="Portfolio, LinkedIn, Google Drive or résumé link"
                     className={inputClassName}
                   />

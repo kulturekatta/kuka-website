@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "The KuKa Universe | KultureKatta",
   description:
     "Discover the KuKa Universe, its nine connected verticals, and the Mood & Intent and Moments, Seasons & Conditions discovery layers.",
+  alternates: {
+    canonical: "/kuka-universe",
+  },
 };
 
 const sharedPrinciples = [

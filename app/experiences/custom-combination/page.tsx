@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Custom Combination Experiences | KultureKatta",
   description:
     "Combine KuKa workshops, food, walks, stories, music, games, movement, wellness, and seasonal culture into one custom group experience.",
+  alternates: {
+    canonical: "/experiences/custom-combination",
+  },
 };
 
 const experiences = [

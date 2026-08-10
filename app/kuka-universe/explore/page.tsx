@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   title: "KuKa Explore | Culture-Led Walks, Trails & Journeys",
   description:
     "Discover KuKa Explore: city walks, cultural trails, nature experiences, day trips, getaways, and place-based journeys designed by KultureKatta.",
+  alternates: {
+    canonical: "/kuka-universe/explore",
+  },
 };
 
 const vertical = getKukaVertical("explore")!;

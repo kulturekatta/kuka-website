@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Wellness & Slowing Down Experiences | KultureKatta",
   description:
     "Culture-led wellness experiences through mindful making, nature connection, gentle movement, reflection, sensory rest, and screen-light pauses.",
+  alternates: {
+    canonical: "/experiences/wellness",
+  },
 };
 
 const experiences = [

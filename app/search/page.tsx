@@ -1,4 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Search KultureKatta",
+  description:
+    "Search KultureKatta workshops, walks, music, food, culture-led programs, and group experiences.",
+  alternates: {
+    canonical: "/search",
+  },
+};
 
 type SearchPageProps = {
   searchParams?: Promise<{
@@ -145,6 +155,22 @@ const searchableItems = [
     ],
   },
   {
+    title: "Wellness & Slowing Down",
+    href: "/experiences/wellness",
+    type: "Experience Category",
+    description:
+      "Mindful making, nature connection, gentle movement, reflection, sensory rest, and screen-light pauses.",
+    keywords: [
+      "wellness",
+      "wellbeing",
+      "slow down",
+      "mindful",
+      "nature",
+      "reflection",
+      "sensory rest",
+    ],
+  },
+  {
     title: "For Organizations",
     href: "/for-organizations",
     type: "Page",
@@ -247,9 +273,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
           <form
             action="/search"
+            role="search"
             className="mt-10 flex max-w-3xl flex-col gap-4 sm:flex-row"
           >
+            <label htmlFor="search-page-query" className="sr-only">
+              Search KultureKatta
+            </label>
             <input
+              id="search-page-query"
               type="search"
               name="q"
               defaultValue={query}
@@ -288,7 +319,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
               <div className="grid gap-5">
                 {results.map((item) => (
                   <Link
-                    key={item.href}
+                    key={`${item.href}-${item.title}`}
                     href={item.href}
                     className="kk-card kk-card--compact kk-card--interactive group"
                   >

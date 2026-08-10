@@ -1,5 +1,15 @@
+import type { Metadata } from "next";
 import KattaStudioWorkWithUs from "../components/KattaStudioWorkWithUs";
 import GrowthClinicContactForm from "./GrowthClinicContactForm";
+
+export const metadata: Metadata = {
+  title: "Katta Studio | Strategy, Content & Growth for Creative Brands",
+  description:
+    "Katta Studio helps creative and culture-led brands with websites, positioning, visual identity, content, social media, and practical growth systems.",
+  alternates: {
+    canonical: "/katta-studio",
+  },
+};
 
 const businessOutcomes = [
   "Professional online presence",

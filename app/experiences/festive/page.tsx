@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Festive & Seasonal Experiences | KultureKatta",
   description:
     "Culture-led festive and seasonal programs around rituals, food, crafts, music, stories, masks, calendars, and regional traditions.",
+  alternates: {
+    canonical: "/experiences/festive",
+  },
 };
 
 const experiences = [

@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   title: "KuKa Circle | Hands-On Cultural Learning for Children",
   description:
     "KuKa Circle creates screen-light, hands-on, curiosity-led cultural experiences for children, families, schools, and learning communities.",
+  alternates: {
+    canonical: "/kuka-universe/circle",
+  },
 };
 
 const vertical = getKukaVertical("circle")!;

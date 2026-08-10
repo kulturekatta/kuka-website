@@ -79,6 +79,16 @@ const labelClassName =
   "kk-form-label block text-sm font-semibold tracking-[0.01em] text-[var(--kk-text)]";
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
+const CONTACT_DRAFT_KEY = "kuka-contact-form-draft-v1";
+
+type ContactDraft = {
+  name: string;
+  email: string;
+  phone: string;
+  interest: string;
+  message: string;
+  consent: boolean;
+};
 
 export default function ContactPage() {
   const [status, setStatus] = useState<FormStatus>("idle");
@@ -86,9 +96,45 @@ export default function ContactPage() {
   const startedAtRef = useRef(0);
   const statusMessageRef = useRef<HTMLParagraphElement>(null);
   const isSubmittingRef = useRef(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     startedAtRef.current = Date.now();
+
+    const savedDraft = window.sessionStorage.getItem(CONTACT_DRAFT_KEY);
+
+    if (!savedDraft || !formRef.current) {
+      return;
+    }
+
+    try {
+      const draft = JSON.parse(savedDraft) as Partial<ContactDraft>;
+      const form = formRef.current;
+      const setValue = (name: keyof Omit<ContactDraft, "consent">) => {
+        const control = form.elements.namedItem(name);
+
+        if (
+          control instanceof HTMLInputElement ||
+          control instanceof HTMLSelectElement ||
+          control instanceof HTMLTextAreaElement
+        ) {
+          control.value = typeof draft[name] === "string" ? draft[name] : "";
+        }
+      };
+
+      setValue("name");
+      setValue("email");
+      setValue("phone");
+      setValue("interest");
+      setValue("message");
+
+      const consent = form.elements.namedItem("consent");
+      if (consent instanceof HTMLInputElement) {
+        consent.checked = draft.consent === true;
+      }
+    } catch {
+      window.sessionStorage.removeItem(CONTACT_DRAFT_KEY);
+    }
   }, []);
 
   useEffect(() => {
@@ -96,6 +142,26 @@ export default function ContactPage() {
       statusMessageRef.current?.focus();
     }
   }, [status]);
+
+  const saveContactDraft = () => {
+    const form = formRef.current;
+
+    if (!form) {
+      return;
+    }
+
+    const formData = new FormData(form);
+    const draft: ContactDraft = {
+      name: String(formData.get("name") ?? ""),
+      email: String(formData.get("email") ?? ""),
+      phone: String(formData.get("phone") ?? ""),
+      interest: String(formData.get("interest") ?? ""),
+      message: String(formData.get("message") ?? ""),
+      consent: formData.get("consent") === "on",
+    };
+
+    window.sessionStorage.setItem(CONTACT_DRAFT_KEY, JSON.stringify(draft));
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -145,6 +211,7 @@ export default function ContactPage() {
       }
 
       form.reset();
+      window.sessionStorage.removeItem(CONTACT_DRAFT_KEY);
       startedAtRef.current = Date.now();
       setStatus("success");
       setStatusMessage(
@@ -318,8 +385,8 @@ export default function ContactPage() {
           </div>
 
           <div className="mx-auto mt-14 max-w-5xl overflow-hidden rounded-[2rem] border border-black/10 bg-white shadow-[0_24px_70px_rgba(45,35,25,0.10)]">
-            <div className="grid lg:grid-cols-[0.78fr_1.22fr]">
-              <aside className="relative overflow-hidden bg-[var(--kk-text)] px-7 py-10 text-white sm:px-10 lg:px-11 lg:py-12">
+            <div className="grid min-w-0 lg:grid-cols-[0.78fr_1.22fr]">
+              <aside className="relative min-w-0 overflow-hidden bg-[var(--kk-text)] px-7 py-10 text-white sm:px-10 lg:px-11 lg:py-12">
                 <div
                   aria-hidden="true"
                   className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full border border-white/10"
@@ -377,10 +444,12 @@ export default function ContactPage() {
               </aside>
 
               <form
+                ref={formRef}
                 onSubmit={handleSubmit}
-                className="px-7 py-10 sm:px-10 lg:px-12 lg:py-12"
+                onInput={saveContactDraft}
+                className="min-w-0 px-7 py-10 sm:px-10 lg:px-12 lg:py-12"
               >
-                <div className="flex items-start justify-between gap-5 border-b border-black/10 pb-7">
+                <div className="flex min-w-0 flex-col items-start gap-2 border-b border-black/10 pb-7 sm:flex-row sm:justify-between sm:gap-5">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--kk-accent)]">
                       Your enquiry
@@ -390,7 +459,7 @@ export default function ContactPage() {
                     </h3>
                   </div>
 
-                  <p className="shrink-0 pt-1 text-xs text-black/45">
+                  <p className="pt-1 text-xs text-black/45 sm:shrink-0">
                     * Required
                   </p>
                 </div>

@@ -267,7 +267,7 @@ export default function OrganizationInquiryForm() {
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} noValidate>
+            <form onSubmit={handleSubmit}>
               {/* Hidden inquiry classification */}
               <input
                 type="hidden"

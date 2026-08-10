@@ -217,13 +217,15 @@
 }
 
 .mobileMenu {
-  position: absolute;
-  top: 100%;
+  position: fixed;
+  top: 5.5rem;
   right: 0;
   left: 0;
   z-index: 20001;
-  width: 100%;
+  width: 100vw;
+  max-width: 100vw;
   max-height: calc(100dvh - 5.5rem);
+  overflow-x: hidden;
   overflow-y: auto;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
   background: var(--kk-dark);

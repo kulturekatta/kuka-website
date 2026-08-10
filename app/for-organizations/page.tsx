@@ -1,5 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import OrganizationInquiryForm from "./OrganizationInquiryForm";
+
+export const metadata: Metadata = {
+  title: "Culture-Led Programs for Organizations | KultureKatta",
+  description:
+    "Plan participatory workshops, team experiences, school programs, institutional collaborations, and custom cultural programs with KultureKatta.",
+  alternates: {
+    canonical: "/for-organizations",
+  },
+};
 
 const sectionLabelClass = "kk-section-label";
 

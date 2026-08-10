@@ -54,6 +54,8 @@ export default function CookieBanner() {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const firstChoiceButtonRef = useRef<HTMLButtonElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
+  const hasSavedChoice = isValidCookieChoice(savedChoice);
+  const isOpen = savedChoice !== "loading" && (!hasSavedChoice || settingsOpen);
 
   useEffect(() => {
     const openCookieSettings = () => {
@@ -133,12 +135,21 @@ export default function CookieBanner() {
     }
   };
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.setAttribute("data-cookie-banner-open", "true");
+    } else {
+      document.body.removeAttribute("data-cookie-banner-open");
+    }
+
+    return () => {
+      document.body.removeAttribute("data-cookie-banner-open");
+    };
+  }, [isOpen]);
+
   if (savedChoice === "loading") {
     return null;
   }
-
-  const hasSavedChoice = isValidCookieChoice(savedChoice);
-  const isOpen = !hasSavedChoice || settingsOpen;
 
   if (!isOpen) {
     return null;
@@ -146,6 +157,7 @@ export default function CookieBanner() {
 
   return (
     <div
+      data-cookie-banner="true"
       className="fixed inset-x-0 bottom-0 z-[100] p-4 sm:p-6"
       role="region"
       aria-live="polite"

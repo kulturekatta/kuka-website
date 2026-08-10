@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "Privacy Policy | KultureKatta",
   description:
     "Learn how KultureKatta collects, uses, stores, and protects personal information.",
+  alternates: {
+    canonical: "/privacy-policy",
+  },
 };
 
 const linkClass =

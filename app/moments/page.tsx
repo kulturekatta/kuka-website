@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Moments, Seasons & Conditions | KultureKatta",
   description:
     "Discover KuKa possibilities shaped by season, weather, time of day, cultural calendars, natural windows, and the time you have available.",
+  alternates: {
+    canonical: "/moments",
+  },
 };
 
 const momentCards = [
