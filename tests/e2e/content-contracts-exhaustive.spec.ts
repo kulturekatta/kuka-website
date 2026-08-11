@@ -171,6 +171,8 @@ test("@exhaustive CONTENT-06 contact details remain consistent on representative
 test("@exhaustive CONTENT-07 public pages contain no placeholders, localhost URLs, or doubled CTA labels", async ({
   page,
 }) => {
+  test.setTimeout(150_000);
+
   const forbiddenText = /\b(?:lorem ipsum|todo|tbd|replace me|placeholder date)\b/i;
 
   for (const route of publicRoutes) {

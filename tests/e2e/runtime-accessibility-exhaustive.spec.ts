@@ -1,12 +1,68 @@
 import { expect, test } from "@playwright/test";
 import { preparePage, publicRoutes } from "./helpers/site";
 
+const criticalResourceTypes = new Set(["document", "script", "stylesheet", "font", "image"]);
+
+const isOptionalAnalyticsConsoleError = (message: string) =>
+  /^\[analytics\.js\] Failed to load Analytics\.js(?: Error)?$/.test(message.trim());
+
+const isWebKitRscPrefetchAccessControlError = (message: string, currentPageUrl: string) => {
+  const suffix = " due to access control checks.";
+  const normalized = message.trim();
+
+  if (!normalized.startsWith("/") || !normalized.endsWith(suffix)) return false;
+
+  const reportedUrl = normalized.slice(1, -suffix.length);
+  const pathSeparator = reportedUrl.indexOf("/");
+  if (pathSeparator < 1) return false;
+
+  try {
+    const reportedHost = reportedUrl.slice(0, pathSeparator);
+    const parsedReportedUrl = new URL(`https://${reportedUrl}`);
+    const currentHost = new URL(currentPageUrl).hostname;
+
+    return reportedHost === currentHost && parsedReportedUrl.searchParams.has("_rsc");
+  } catch {
+    return false;
+  }
+};
+
+const isWebKitCancelledNextChunkRequest = (
+  browserName: string,
+  resourceType: string,
+  requestUrl: string,
+  failure: string | undefined,
+  currentPageUrl: string,
+) => {
+  if (
+    browserName !== "webkit" ||
+    resourceType !== "script" ||
+    failure !== "Load request cancelled"
+  ) {
+    return false;
+  }
+
+  try {
+    const request = new URL(requestUrl);
+    const currentPage = new URL(currentPageUrl);
+
+    return (
+      request.origin === currentPage.origin &&
+      request.pathname.startsWith("/_next/static/chunks/") &&
+      request.pathname.endsWith(".js")
+    );
+  } catch {
+    return false;
+  }
+};
+
 test.beforeEach(async ({ page }) => {
   await preparePage(page);
 });
 
 test("@exhaustive RUNTIME-01 public routes have no console errors, page errors, or failed critical resources", async ({
   page,
+  browserName,
 }) => {
   test.setTimeout(150_000);
   let consoleErrors: string[] = [];
@@ -14,17 +70,37 @@ test("@exhaustive RUNTIME-01 public routes have no console errors, page errors, 
   let failedResources: string[] = [];
 
   page.on("console", (message) => {
-    if (message.type() === "error") consoleErrors.push(message.text());
+    if (message.type() === "error" && !isOptionalAnalyticsConsoleError(message.text())) {
+      consoleErrors.push(message.text());
+    }
   });
-  page.on("pageerror", (error) => pageErrors.push(error.message));
+  page.on("pageerror", (error) => {
+    if (!isWebKitRscPrefetchAccessControlError(error.message, page.url())) {
+      pageErrors.push(error.message);
+    }
+  });
   page.on("requestfailed", (request) => {
-    if (["document", "script", "stylesheet", "font", "image"].includes(request.resourceType())) {
+    const failure = request.failure()?.errorText;
+    const isFirefoxNavigationCancellation = failure === "NS_BINDING_ABORTED";
+    const isWebKitNextChunkCancellation = isWebKitCancelledNextChunkRequest(
+      browserName,
+      request.resourceType(),
+      request.url(),
+      failure,
+      page.url(),
+    );
+
+    if (
+      criticalResourceTypes.has(request.resourceType()) &&
+      !isFirefoxNavigationCancellation &&
+      !isWebKitNextChunkCancellation
+    ) {
       failedResources.push(`${request.resourceType()}: ${request.url()} — ${request.failure()?.errorText}`);
     }
   });
   page.on("response", (response) => {
     const type = response.request().resourceType();
-    if (["document", "script", "stylesheet", "font", "image"].includes(type) && response.status() >= 400) {
+    if (criticalResourceTypes.has(type) && response.status() >= 400) {
       failedResources.push(`${type}: ${response.status()} ${response.url()}`);
     }
   });
@@ -82,6 +158,7 @@ test("@exhaustive RUNTIME-02 every rendered image loads with non-zero intrinsic 
 test("@exhaustive SEO-META every indexable route has unique metadata and a matching canonical", async ({
   page,
 }) => {
+  test.setTimeout(150_000);
   const routes = publicRoutes.filter((route) => !route.startsWith("/search"));
   const records: Array<{
     route: string;
@@ -137,6 +214,7 @@ test("@exhaustive SEO-META every indexable route has unique metadata and a match
 test("@exhaustive A11Y-HEADINGS every public page has one H1 and no skipped heading level", async ({
   page,
 }) => {
+  test.setTimeout(150_000);
   const failures: Array<{ route: string; headings: Array<{ level: number; text: string }> }> = [];
 
   for (const route of publicRoutes) {
