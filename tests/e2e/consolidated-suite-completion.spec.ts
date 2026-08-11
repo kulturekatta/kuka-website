@@ -152,30 +152,34 @@ test("@completion NAV-ANCHORS every in-page link reveals an existing target belo
       await link.evaluate((element: HTMLAnchorElement) => element.click());
       await expect.poll(() => new URL(page.url()).hash).toBe(anchor.hash);
 
-      const result = await page.evaluate((hash) => {
-        const id = decodeURIComponent(hash.slice(1));
-        const target = document.getElementById(id);
-        if (!target) return { exists: false, visible: false, covered: false, id };
+      await expect
+        .poll(
+          () =>
+            page.evaluate((hash) => {
+              const id = decodeURIComponent(hash.slice(1));
+              const target = document.getElementById(id);
+              if (!target) return { exists: false, visible: false, covered: false };
 
-        const rect = target.getBoundingClientRect();
-        const header = document.querySelector<HTMLElement>("header");
-        const headerStyle = header ? getComputedStyle(header) : null;
-        const headerBottom =
-          header && headerStyle && ["fixed", "sticky"].includes(headerStyle.position)
-            ? header.getBoundingClientRect().bottom
-            : 0;
+              const rect = target.getBoundingClientRect();
+              const header = document.querySelector<HTMLElement>("header");
+              const headerStyle = header ? getComputedStyle(header) : null;
+              const headerBottom =
+                header && headerStyle && ["fixed", "sticky"].includes(headerStyle.position)
+                  ? header.getBoundingClientRect().bottom
+                  : 0;
 
-        return {
-          exists: true,
-          visible: rect.bottom > 0 && rect.top < window.innerHeight,
-          covered: rect.top < headerBottom - 1 && rect.bottom <= headerBottom,
-          id,
-        };
-      }, anchor.hash);
-
-      expect(result.exists, `${route} links to missing ${anchor.hash}`).toBe(true);
-      expect(result.visible, `${route}${anchor.hash} is not visible after activation`).toBe(true);
-      expect(result.covered, `${route}${anchor.hash} is hidden behind the header`).toBe(false);
+              return {
+                exists: true,
+                visible: rect.bottom > 0 && rect.top < window.innerHeight,
+                covered: rect.top < headerBottom - 1 && rect.bottom <= headerBottom,
+              };
+            }, anchor.hash),
+          {
+            message: `${route}${anchor.hash} did not settle into a visible, unobscured position`,
+            timeout: 10_000,
+          },
+        )
+        .toEqual({ exists: true, visible: true, covered: false });
       checked += 1;
     }
   }
