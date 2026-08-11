@@ -2,6 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import {
+  PHONE_PATTERN,
+  useAccessibleFormValidation,
+} from "../components/formEnhancements";
 
 const contactOptions = [
   {
@@ -97,6 +101,8 @@ export default function ContactPage() {
   const statusMessageRef = useRef<HTMLParagraphElement>(null);
   const isSubmittingRef = useRef(false);
   const formRef = useRef<HTMLFormElement>(null);
+  const { handleInvalid, handleValidationInput } =
+    useAccessibleFormValidation();
 
   useEffect(() => {
     startedAtRef.current = Date.now();
@@ -397,7 +403,7 @@ export default function ContactPage() {
                 />
 
                 <div className="relative flex h-full flex-col">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--kk-accent)]">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] !text-white">
                     A good place to begin
                   </p>
 
@@ -405,7 +411,7 @@ export default function ContactPage() {
                     Tell us the shape of your idea.
                   </h3>
 
-                  <p className="mt-5 leading-7 text-white/70">
+                  <p className="mt-5 leading-7 !text-white">
                     It does not need to be perfectly formed. These three details
                     give us enough to start a useful conversation.
                   </p>
@@ -428,7 +434,7 @@ export default function ContactPage() {
                   </ul>
 
                   <div className="mt-10 border-t border-white/15 pt-7 lg:mt-auto">
-                    <p className="text-sm text-white/60">
+                    <p className="text-sm !text-white">
                       Prefer a quick conversation?
                     </p>
                     <Link
@@ -446,7 +452,11 @@ export default function ContactPage() {
               <form
                 ref={formRef}
                 onSubmit={handleSubmit}
-                onInput={saveContactDraft}
+                onInvalid={handleInvalid}
+                onInput={(event) => {
+                  handleValidationInput(event);
+                  saveContactDraft();
+                }}
                 className="min-w-0 px-7 py-10 sm:px-10 lg:px-12 lg:py-12"
               >
                 <div className="flex min-w-0 flex-col items-start gap-2 border-b border-black/10 pb-7 sm:flex-row sm:justify-between sm:gap-5">
@@ -459,7 +469,7 @@ export default function ContactPage() {
                     </h3>
                   </div>
 
-                  <p className="pt-1 text-xs text-black/45 sm:shrink-0">
+                  <p className="pt-1 text-xs text-black/65 sm:shrink-0">
                     * Required
                   </p>
                 </div>
@@ -490,6 +500,7 @@ export default function ContactPage() {
                       id="email"
                       name="email"
                       type="email"
+                      inputMode="email"
                       autoComplete="email"
                       placeholder="you@example.com"
                       required
@@ -506,7 +517,10 @@ export default function ContactPage() {
                       id="phone"
                       name="phone"
                       type="tel"
+                      inputMode="tel"
                       autoComplete="tel"
+                      pattern={PHONE_PATTERN}
+                      title="Use 7–20 digits with an optional +, spaces, parentheses, or hyphens."
                       placeholder="+91 98765 43210"
                       className={inputClassName}
                     />
@@ -615,7 +629,7 @@ export default function ContactPage() {
                   )}
 
                   <div className="flex flex-col gap-4 border-t border-black/10 pt-7 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
-                    <p className="max-w-xs text-xs leading-5 text-black/50">
+                    <p className="max-w-xs text-xs leading-5 text-black/65">
                       We will use your details only to respond to your enquiry.
                     </p>
 
@@ -628,7 +642,7 @@ export default function ContactPage() {
                     </button>
                   </div>
 
-                  <p className="text-xs leading-5 text-black/45 sm:col-span-2">
+                  <p className="text-xs leading-5 text-black/65 sm:col-span-2">
                     You will receive an automatic confirmation after a successful
                     submission.
                   </p>

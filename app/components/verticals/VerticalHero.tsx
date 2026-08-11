@@ -33,7 +33,7 @@ export default function VerticalHero({
       <div className="kk-container">
         <nav
           aria-label="Breadcrumb"
-          className="mb-8 flex flex-wrap items-center gap-2 text-sm font-semibold text-black/50"
+          className="mb-8 flex flex-wrap items-center gap-2 text-sm font-semibold text-[var(--kk-text-muted)]"
         >
           <Link href="/" className="transition hover:text-[var(--kk-accent)]">
             Home

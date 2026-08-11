@@ -2,6 +2,11 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import {
+  PHONE_PATTERN,
+  useAccessibleFormValidation,
+  useFormDraft,
+} from "../../components/formEnhancements";
 
 const opportunityOptions = [
   "Full-time role",
@@ -51,6 +56,8 @@ const labelClassName =
 const helperClassName = "mt-2 text-sm leading-6 text-black/55";
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
+const WORK_WITH_US_DRAFT_KEY =
+  "kuka-work-with-us-form-draft-v1";
 
 export default function WorkWithUsApplicationForm() {
   const [status, setStatus] = useState<FormStatus>("idle");
@@ -58,6 +65,11 @@ export default function WorkWithUsApplicationForm() {
   const startedAtRef = useRef(0);
   const statusMessageRef = useRef<HTMLParagraphElement>(null);
   const isSubmittingRef = useRef(false);
+  const { formRef, saveDraft, clearDraft } = useFormDraft(
+    WORK_WITH_US_DRAFT_KEY,
+  );
+  const { handleInvalid, handleValidationInput } =
+    useAccessibleFormValidation();
 
   useEffect(() => {
     startedAtRef.current = Date.now();
@@ -125,6 +137,7 @@ export default function WorkWithUsApplicationForm() {
       }
 
       form.reset();
+      clearDraft();
       startedAtRef.current = Date.now();
       setStatus("success");
       setStatusMessage(
@@ -226,7 +239,13 @@ export default function WorkWithUsApplicationForm() {
 
             {/* APPLICATION FORM */}
             <form
+              ref={formRef}
               onSubmit={handleSubmit}
+              onInvalid={handleInvalid}
+              onInput={(event) => {
+                handleValidationInput(event);
+                saveDraft();
+              }}
               className="p-7 sm:p-10 lg:p-12 xl:p-14"
             >
               <div className="mb-10 flex flex-col gap-2 border-b border-black/10 pb-6 sm:flex-row sm:items-end sm:justify-between">
@@ -301,6 +320,7 @@ export default function WorkWithUsApplicationForm() {
                       id="email"
                       name="email"
                       type="email"
+                      inputMode="email"
                       required
                       autoComplete="email"
                       placeholder="you@example.com"
@@ -317,7 +337,10 @@ export default function WorkWithUsApplicationForm() {
                       id="phone"
                       name="phone"
                       type="tel"
+                      inputMode="tel"
                       autoComplete="tel"
+                      pattern={PHONE_PATTERN}
+                      title="Use 7–20 digits with an optional +, spaces, parentheses, or hyphens."
                       placeholder="+91..."
                       className={inputClassName}
                     />
@@ -446,6 +469,7 @@ export default function WorkWithUsApplicationForm() {
                     id="portfolioLink"
                     name="portfolioLink"
                     type="url"
+                    inputMode="url"
                     required
                     autoComplete="url"
                     placeholder="Portfolio, LinkedIn, Google Drive or résumé link"

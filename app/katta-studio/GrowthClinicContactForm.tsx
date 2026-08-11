@@ -2,21 +2,27 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import {
+  PHONE_PATTERN,
+  useAccessibleFormValidation,
+  useFormDraft,
+} from "../components/formEnhancements";
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
+const GROWTH_CLINIC_DRAFT_KEY =
+  "kuka-growth-clinic-form-draft-v1";
 
 export default function GrowthClinicContactForm() {
-  const [brandName, setBrandName] = useState("");
-  const [brandLink, setBrandLink] = useState("");
-  const [painPoints, setPainPoints] = useState("");
-  const [email, setEmail] = useState("");
-  const [city, setCity] = useState("");
-  const [mobile, setMobile] = useState("");
   const [status, setStatus] = useState<FormStatus>("idle");
   const [statusMessage, setStatusMessage] = useState("");
   const startedAtRef = useRef(0);
   const statusMessageRef = useRef<HTMLDivElement>(null);
   const isSubmittingRef = useRef(false);
+  const { formRef, saveDraft, clearDraft } = useFormDraft(
+    GROWTH_CLINIC_DRAFT_KEY,
+  );
+  const { handleInvalid, handleValidationInput } =
+    useAccessibleFormValidation();
 
   useEffect(() => {
     startedAtRef.current = Date.now();
@@ -37,14 +43,16 @@ export default function GrowthClinicContactForm() {
 
     const form = event.currentTarget;
     const formData = new FormData(form);
+    const getValue = (fieldName: string) =>
+      String(formData.get(fieldName) ?? "");
 
     const payload = {
-      brandName,
-      brandLink,
-      painPoints,
-      email,
-      city,
-      mobile,
+      brandName: getValue("brandName"),
+      brandLink: getValue("brandLink"),
+      painPoints: getValue("painPoints"),
+      email: getValue("email"),
+      city: getValue("city"),
+      mobile: getValue("mobile"),
       consent: formData.get("consent") === "on",
       formGuard: String(formData.get("formGuard") ?? ""),
       startedAt: startedAtRef.current,
@@ -76,13 +84,8 @@ export default function GrowthClinicContactForm() {
         );
       }
 
-      setBrandName("");
-      setBrandLink("");
-      setPainPoints("");
-      setEmail("");
-      setCity("");
-      setMobile("");
       form.reset();
+      clearDraft();
       startedAtRef.current = Date.now();
       setStatus("success");
       setStatusMessage(
@@ -114,8 +117,14 @@ export default function GrowthClinicContactForm() {
 
   return (
     <form
+      ref={formRef}
       id="growth-clinic-contact-form"
       onSubmit={handleSubmit}
+      onInvalid={handleInvalid}
+      onInput={(event) => {
+        handleValidationInput(event);
+        saveDraft();
+      }}
       className="mx-auto max-w-5xl overflow-hidden rounded-[2rem] border border-black/10 bg-white shadow-[0_24px_70px_rgba(0,0,0,0.07)]"
     >
       <div
@@ -177,8 +186,6 @@ export default function GrowthClinicContactForm() {
                 id="brandName"
                 name="brandName"
                 type="text"
-                value={brandName}
-                onChange={(e) => setBrandName(e.target.value)}
                 placeholder="Your brand name"
                 autoComplete="organization"
                 required
@@ -196,8 +203,6 @@ export default function GrowthClinicContactForm() {
                 id="brandLink"
                 name="brandLink"
                 type="text"
-                value={brandLink}
-                onChange={(e) => setBrandLink(e.target.value)}
                 placeholder="@yourhandle or website link"
                 required
                 className={inputClass}
@@ -231,8 +236,6 @@ export default function GrowthClinicContactForm() {
             <textarea
               id="painPoints"
               name="painPoints"
-              value={painPoints}
-              onChange={(e) => setPainPoints(e.target.value)}
               placeholder={`For example:\n1. Our website is not generating enquiries\n2. Our social media feels inconsistent\n3. We are unsure what to prioritise`}
               rows={6}
               required
@@ -272,8 +275,7 @@ export default function GrowthClinicContactForm() {
                 id="email"
                 name="email"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                inputMode="email"
                 placeholder="you@example.com"
                 autoComplete="email"
                 required
@@ -290,8 +292,6 @@ export default function GrowthClinicContactForm() {
                 id="city"
                 name="city"
                 type="text"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
                 placeholder="Your city"
                 autoComplete="address-level2"
                 required
@@ -309,10 +309,11 @@ export default function GrowthClinicContactForm() {
                 id="mobile"
                 name="mobile"
                 type="tel"
-                value={mobile}
-                onChange={(e) => setMobile(e.target.value)}
+                inputMode="tel"
                 placeholder="+91 98765 43210"
                 autoComplete="tel"
+                pattern={PHONE_PATTERN}
+                title="Use 7–20 digits with an optional +, spaces, parentheses, or hyphens."
                 required
                 className={inputClass}
               />

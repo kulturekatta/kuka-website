@@ -39,7 +39,7 @@ export default function FloatingContactButton({
       aria-label={expanded ? "Contact form open" : "Open contact form"}
       aria-controls="floating-contact-drawer"
       aria-expanded={expanded}
-      className="fixed right-0 top-1/2 z-[75] hidden -translate-y-1/2 flex-col items-center gap-3 rounded-l-2xl rounded-r-none bg-[var(--kk-accent)] px-3 py-5 font-semibold text-[var(--kk-text)] shadow-[0_14px_40px_rgba(0,0,0,0.22)] transition duration-300 hover:-translate-x-1 hover:-translate-y-1/2 hover:shadow-[0_18px_50px_rgba(0,0,0,0.28)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--kk-text)] focus-visible:ring-offset-2 md:flex"
+      className="fixed right-0 top-1/2 z-[75] hidden -translate-y-1/2 flex-col items-center gap-3 rounded-l-2xl rounded-r-none bg-[var(--kk-accent)] px-3 py-5 font-semibold text-white shadow-[0_14px_40px_rgba(0,0,0,0.22)] transition duration-300 hover:-translate-x-1 hover:-translate-y-1/2 hover:shadow-[0_18px_50px_rgba(0,0,0,0.28)] focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 md:flex"
     >
       <MessageIcon />
 

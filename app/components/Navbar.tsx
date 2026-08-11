@@ -3,7 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, type KeyboardEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type KeyboardEvent,
+} from "react";
 import styles from "./Navbar.module.css";
 
 const navLinks = [
@@ -17,6 +22,7 @@ const navLinks = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDetailsElement>(null);
   const mobileMenuSummaryRef = useRef<HTMLElement>(null);
   const firstMobileLinkRef = useRef<HTMLAnchorElement>(null);
@@ -54,6 +60,7 @@ export default function Navbar() {
     }
 
     mobileMenuRef.current.open = false;
+    setIsMobileMenuOpen(false);
     unlockBodyScroll();
 
     if (restoreFocus) {
@@ -80,6 +87,7 @@ export default function Navbar() {
       event.stopPropagation();
 
       details.open = false;
+      setIsMobileMenuOpen(false);
 
       if (previousBodyOverflowRef.current !== null) {
         document.body.style.overflow = previousBodyOverflowRef.current;
@@ -109,10 +117,12 @@ export default function Navbar() {
     }
 
     if (!details.open) {
+      setIsMobileMenuOpen(false);
       unlockBodyScroll();
       return;
     }
 
+    setIsMobileMenuOpen(true);
     lockBodyScroll();
 
     window.requestAnimationFrame(() => {
@@ -221,6 +231,25 @@ export default function Navbar() {
             />
           </Link>
 
+          <form
+            action="/search"
+            role="search"
+            className={styles.mobileSearchForm}
+          >
+            <label htmlFor="mobile-site-search" className={styles.srOnly}>
+              Search KultureKatta
+            </label>
+
+            <input
+              id="mobile-site-search"
+              name="q"
+              type="search"
+              inputMode="search"
+              autoComplete="off"
+              placeholder="Search"
+            />
+          </form>
+
           {/* DESKTOP NAVIGATION */}
           <nav
             aria-label="Primary navigation"
@@ -266,6 +295,7 @@ export default function Navbar() {
               className={styles.mobileMenuSummary}
               aria-label="Open or close navigation menu"
               aria-controls="mobile-navigation-menu"
+              aria-expanded={isMobileMenuOpen}
             >
               <span
                 className={styles.menuIcon}

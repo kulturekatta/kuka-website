@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   useCallback,
   useEffect,
@@ -10,6 +11,11 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import FloatingContactButton from "./FloatingContactButton";
+import {
+  PHONE_PATTERN,
+  useAccessibleFormValidation,
+  useFormDraft,
+} from "./formEnhancements";
 
 const inputClassName =
   "mt-2 w-full rounded-xl border border-black/15 bg-white px-4 py-3 text-sm text-[var(--kk-text)] outline-none transition placeholder:text-black/35 hover:border-black/25 focus:border-[var(--kk-accent)] focus:ring-4 focus:ring-black/5";
@@ -70,8 +76,13 @@ function WhatsAppIcon() {
 }
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
+const FLOATING_CONTACT_DRAFT_KEY =
+  "kuka-floating-contact-form-draft-v1";
+const FLOATING_CONTACT_RESUME_PATH_KEY =
+  "kuka-floating-contact-resume-path-v1";
 
 export default function FloatingContactDrawer() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [status, setStatus] = useState<FormStatus>("idle");
   const [statusMessage, setStatusMessage] = useState("");
@@ -84,10 +95,34 @@ export default function FloatingContactDrawer() {
   const startedAtRef = useRef(0);
   const statusMessageRef = useRef<HTMLParagraphElement>(null);
   const isSubmittingRef = useRef(false);
+  const { formRef, saveDraft, clearDraft } = useFormDraft(
+    FLOATING_CONTACT_DRAFT_KEY,
+    isOpen,
+  );
+  const { handleInvalid, handleValidationInput } =
+    useAccessibleFormValidation();
 
   useEffect(() => {
     startedAtRef.current = Date.now();
   }, []);
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      try {
+        if (
+          window.sessionStorage.getItem(
+            FLOATING_CONTACT_RESUME_PATH_KEY,
+          ) === pathname
+        ) {
+          setIsOpen(true);
+        }
+      } catch {
+        // A blocked storage area should never prevent drawer use.
+      }
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [pathname]);
 
   useEffect(() => {
     if (status === "success" || status === "error") {
@@ -97,15 +132,36 @@ export default function FloatingContactDrawer() {
 
   const openDrawer = () => {
     lastActiveElementRef.current = triggerButtonRef.current;
+    try {
+      window.sessionStorage.setItem(
+        FLOATING_CONTACT_RESUME_PATH_KEY,
+        pathname,
+      );
+    } catch {
+      // A blocked storage area should never prevent drawer use.
+    }
     setIsOpen(true);
   };
 
   const closeDrawer = useCallback(() => {
+    try {
+      window.sessionStorage.removeItem(
+        FLOATING_CONTACT_RESUME_PATH_KEY,
+      );
+    } catch {
+      // A blocked storage area should never prevent drawer use.
+    }
     setIsOpen(false);
     setStatus("idle");
     setStatusMessage("");
     startedAtRef.current = Date.now();
   }, []);
+
+  const suspendDrawerForNavigation = () => {
+    setIsOpen(false);
+    setStatus("idle");
+    setStatusMessage("");
+  };
 
   useEffect(() => {
     if (!isOpen || !drawerRef.current || !portalRootRef.current) {
@@ -250,6 +306,14 @@ export default function FloatingContactDrawer() {
       }
 
       form.reset();
+      clearDraft();
+      try {
+        window.sessionStorage.removeItem(
+          FLOATING_CONTACT_RESUME_PATH_KEY,
+        );
+      } catch {
+        // A blocked storage area should never prevent drawer use.
+      }
       startedAtRef.current = Date.now();
 
       setStatus("success");
@@ -300,7 +364,7 @@ export default function FloatingContactDrawer() {
                 <div className="relative">
                   <div className="flex items-start justify-between gap-5">
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--kk-accent)]">
+                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white">
                         Contact KultureKatta
                       </p>
 
@@ -354,7 +418,13 @@ export default function FloatingContactDrawer() {
               </div>
 
               <form
+                ref={formRef}
                 onSubmit={handleSubmit}
+                onInvalid={handleInvalid}
+                onInput={(event) => {
+                  handleValidationInput(event);
+                  saveDraft();
+                }}
                 className="relative space-y-5 px-6 py-8 sm:px-8"
               >
                 <div>
@@ -390,6 +460,7 @@ export default function FloatingContactDrawer() {
                     id="floating-contact-email"
                     name="email"
                     type="email"
+                    inputMode="email"
                     autoComplete="email"
                     placeholder="you@example.com"
                     required
@@ -409,7 +480,10 @@ export default function FloatingContactDrawer() {
                     id="floating-contact-phone"
                     name="phone"
                     type="tel"
+                    inputMode="tel"
                     autoComplete="tel"
+                    pattern={PHONE_PATTERN}
+                    title="Use 7–20 digits with an optional +, spaces, parentheses, or hyphens."
                     placeholder="+91 98765 43210"
                     className={inputClassName}
                   />
@@ -510,6 +584,7 @@ export default function FloatingContactDrawer() {
                     to my enquiry as described in the{" "}
                     <Link
                       href="/privacy-policy"
+                      onClick={suspendDrawerForNavigation}
                       className="font-semibold underline decoration-black/30 underline-offset-2 hover:decoration-black"
                     >
                       Privacy Policy
@@ -546,7 +621,7 @@ export default function FloatingContactDrawer() {
                     : "Send enquiry"}
                 </button>
 
-                <p className="text-center text-xs leading-5 text-black/45">
+                <p className="text-center text-xs leading-5 text-black/65">
                   You will receive an automatic confirmation after a successful
                   submission.
                 </p>

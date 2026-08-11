@@ -1,5 +1,5 @@
 import type { Locator, Page } from "@playwright/test";
-import { experienceCategories } from "../../../data/experienceCategories";
+import { experienceCategories } from "../../data/experienceCategories";
 
 export const COOKIE_CONSENT_KEY = "kuka-cookie-consent-v1";
 
@@ -71,9 +71,7 @@ export async function preparePage(page: Page) {
     window.localStorage.setItem(key, "rejected");
 
     const hideNetlifyPreviewDrawer = () => {
-      if (document.querySelector("style[data-playwright-netlify-drawer]")) {
-        return;
-      }
+      if (document.querySelector("style[data-playwright-netlify-drawer]")) return;
 
       const style = document.createElement("style");
       style.dataset.playwrightNetlifyDrawer = "hidden";
@@ -98,9 +96,7 @@ export async function preparePage(page: Page) {
     if (document.documentElement) {
       hideNetlifyPreviewDrawer();
     } else {
-      document.addEventListener("DOMContentLoaded", hideNetlifyPreviewDrawer, {
-        once: true,
-      });
+      document.addEventListener("DOMContentLoaded", hideNetlifyPreviewDrawer, { once: true });
     }
   }, COOKIE_CONSENT_KEY);
 }

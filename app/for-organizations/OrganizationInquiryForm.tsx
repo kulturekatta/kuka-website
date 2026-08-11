@@ -2,6 +2,11 @@
 
 import Link from "next/link";
 import { FormEvent, useEffect, useRef, useState } from "react";
+import {
+  PHONE_PATTERN,
+  useAccessibleFormValidation,
+  useFormDraft,
+} from "../components/formEnhancements";
 
 const organizationTypes = [
   "Company or corporate team",
@@ -69,6 +74,8 @@ const sectionHeadingClass =
   "text-xl font-semibold tracking-[-0.02em] text-[var(--kk-text)] md:text-2xl";
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
+const ORGANIZATION_DRAFT_KEY =
+  "kuka-organization-inquiry-form-draft-v1";
 
 export default function OrganizationInquiryForm() {
   const [status, setStatus] = useState<FormStatus>("idle");
@@ -76,6 +83,11 @@ export default function OrganizationInquiryForm() {
   const startedAtRef = useRef(0);
   const statusMessageRef = useRef<HTMLDivElement>(null);
   const isSubmittingRef = useRef(false);
+  const { formRef, saveDraft, clearDraft } = useFormDraft(
+    ORGANIZATION_DRAFT_KEY,
+  );
+  const { handleInvalid, handleValidationInput } =
+    useAccessibleFormValidation();
 
   useEffect(() => {
     startedAtRef.current = Date.now();
@@ -181,6 +193,7 @@ export default function OrganizationInquiryForm() {
       }
 
       form.reset();
+      clearDraft();
       startedAtRef.current = Date.now();
       setStatus("success");
     } catch (error) {
@@ -229,6 +242,8 @@ export default function OrganizationInquiryForm() {
         <div className="mx-auto mt-10 max-w-5xl rounded-[2rem] border border-black/10 bg-white p-5 shadow-[0_24px_70px_rgba(0,0,0,0.07)] sm:p-8 md:mt-14 md:p-10">
           {status === "success" ? (
             <div
+              ref={statusMessageRef}
+              tabIndex={-1}
               className="rounded-[1.75rem] border border-green-200 bg-green-50 px-6 py-10 text-center md:px-10"
               role="status"
               aria-live="polite"
@@ -245,8 +260,6 @@ export default function OrganizationInquiryForm() {
               </h3>
 
               <p
-                ref={statusMessageRef}
-                tabIndex={-1}
                 className="mx-auto mt-4 max-w-xl text-base leading-7 text-black/65 md:text-lg"
               >
                 Thank you for telling us about your organization and
@@ -267,7 +280,15 @@ export default function OrganizationInquiryForm() {
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit}>
+            <form
+              ref={formRef}
+              onSubmit={handleSubmit}
+              onInvalid={handleInvalid}
+              onInput={(event) => {
+                handleValidationInput(event);
+                saveDraft();
+              }}
+            >
               {/* Hidden inquiry classification */}
               <input
                 type="hidden"
@@ -361,6 +382,7 @@ export default function OrganizationInquiryForm() {
                       id="workEmail"
                       name="workEmail"
                       type="email"
+                      inputMode="email"
                       required
                       maxLength={160}
                       autoComplete="email"
@@ -379,9 +401,12 @@ export default function OrganizationInquiryForm() {
                       id="phone"
                       name="phone"
                       type="tel"
+                      inputMode="tel"
                       required
                       maxLength={30}
                       autoComplete="tel"
+                      pattern={PHONE_PATTERN}
+                      title="Use 7–20 digits with an optional +, spaces, parentheses, or hyphens."
                       placeholder="+91..."
                       className={inputClass}
                     />
@@ -474,6 +499,7 @@ export default function OrganizationInquiryForm() {
                       id="organizationWebsite"
                       name="organizationWebsite"
                       type="url"
+                      inputMode="url"
                       maxLength={250}
                       autoComplete="url"
                       placeholder="https://..."
@@ -829,7 +855,7 @@ export default function OrganizationInquiryForm() {
                   )}
                 </button>
 
-                <p className="text-base leading-7 text-black/50">
+                <p className="text-base leading-7 text-black/65">
                   Fields marked with * are required.
                 </p>
               </div>

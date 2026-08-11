@@ -951,7 +951,7 @@ export default function HomePage() {
                       </p>
 
                       {item.isPlanned ? (
-                        <span className="mt-8 self-center text-xs font-semibold uppercase tracking-[0.16em] text-black/45">
+                        <span className="mt-8 self-center text-xs font-semibold uppercase tracking-[0.16em] text-black/65">
                           Coming soon
                         </span>
                       ) : (

@@ -126,6 +126,12 @@ export default function CookieBanner() {
       window.requestAnimationFrame(() => {
         previousFocusRef.current?.focus();
       });
+    } else {
+      window.requestAnimationFrame(() => {
+        document
+          .querySelector<HTMLElement>("main#main-content")
+          ?.focus();
+      });
     }
 
     // Reload when optional-cookie consent is withdrawn so that
@@ -171,7 +177,7 @@ export default function CookieBanner() {
             type="button"
             onClick={closeSettings}
             aria-label="Close cookie settings"
-            className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full text-xl leading-none text-black/50 transition hover:bg-black/5 hover:text-black focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+            className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full text-xl leading-none text-black/65 transition hover:bg-black/5 hover:text-black focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
           >
             ×
           </button>
@@ -198,14 +204,14 @@ export default function CookieBanner() {
           <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
             <Link
               href="/cookie-policy"
-              className="text-sm font-semibold text-[var(--kk-text)] underline decoration-black/30 underline-offset-4 transition hover:decoration-black"
+              className="inline-flex min-h-11 items-center text-sm font-semibold text-[var(--kk-text)] underline decoration-black/30 underline-offset-4 transition hover:decoration-black"
             >
               Cookie Policy
             </Link>
 
             <Link
               href="/privacy-policy"
-              className="text-sm font-semibold text-[var(--kk-text)] underline decoration-black/30 underline-offset-4 transition hover:decoration-black"
+              className="inline-flex min-h-11 items-center text-sm font-semibold text-[var(--kk-text)] underline decoration-black/30 underline-offset-4 transition hover:decoration-black"
             >
               Privacy Policy
             </Link>
@@ -225,7 +231,7 @@ export default function CookieBanner() {
           <button
             type="button"
             onClick={() => saveChoice("accepted")}
-            className="min-h-12 rounded-full border border-[var(--kk-accent)] bg-[var(--kk-accent)] px-6 text-sm font-semibold text-[var(--kk-text)] transition hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+            className="min-h-12 rounded-full border border-[var(--kk-accent)] bg-[var(--kk-accent)] px-6 text-sm font-semibold text-white transition hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
           >
             Accept optional cookies
           </button>

@@ -233,11 +233,11 @@ export default function Footer() {
                 © {new Date().getFullYear()} KultureKatta. All rights reserved.
               </p>
 
-              <p className="mt-2 text-sm leading-6 text-white/45">
+              <p className="mt-2 text-sm leading-6 text-white/60">
                 KultureKatta is operated by BuffyFish (OPC) Private Limited.
               </p>
 
-              <p className="mt-1 text-sm leading-6 text-white/45">
+              <p className="mt-1 text-sm leading-6 text-white/60">
                 Thoughtful cultural experiences for organizations, teams, and
                 communities.
               </p>

@@ -71,13 +71,14 @@ for (const viewport of exactViewports) {
   });
 }
 
-test("@gap RESP-GOTOTOP-01 Go to Top appears, is tappable and returns mobile page to top", async ({
+test("@gap RESP-GOTOTOP-01 Go to Top appears after desktop scrolling, is tappable and returns the page to top", async ({
   page,
 }) => {
-  await page.setViewportSize({ width: 430, height: 932 });
+  await page.setViewportSize({ width: 1366, height: 768 });
   await page.goto("/");
 
   const button = page.getByRole("button", { name: /go to top|back to top/i });
+  await expect(button).toBeHidden();
   await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
 
   await expect(button).toBeVisible();
@@ -93,7 +94,7 @@ test("@gap RESP-GOTOTOP-01 Go to Top appears, is tappable and returns mobile pag
 test("@gap RESP-GOTOTOP-02 Go to Top does not cover an interactive footer control", async ({
   page,
 }) => {
-  await page.setViewportSize({ width: 430, height: 932 });
+  await page.setViewportSize({ width: 1366, height: 768 });
   await page.goto("/");
   await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
 

@@ -17,7 +17,7 @@ const statusContent: Record<
   future: {
     label: "Future direction",
     className:
-      "border-black/10 bg-transparent text-black/50",
+      "border-black/15 bg-transparent text-[var(--kk-text-muted)]",
   },
 };
 

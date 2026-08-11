@@ -45,6 +45,8 @@ next-env.d.ts
 .netlify
 # Playwright
 /playwright-report/
+/playwright-visual-report/
 /test-results/
 /blob-report/
 /playwright/.cache/
+/lighthouse-results/
