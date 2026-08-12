@@ -54,6 +54,9 @@ test("@completion COOKIE-PROFILE accepted and rejected choices survive reload an
   browser,
   baseURL,
 }) => {
+  // Firefox can spend tens of seconds creating and closing restored contexts
+  // against a remote preview even when the storage checks themselves pass.
+  test.setTimeout(120_000);
   expect(baseURL).toBeTruthy();
 
   for (const choice of ["accepted", "rejected"] as const) {

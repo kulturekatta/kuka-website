@@ -196,34 +196,41 @@ for (const formCase of completionFormCases) {
 
 for (const formCase of completionFormCases) {
   test(`@completion FORM-RETURN ${formCase.name} retains entered data after Privacy and Terms visits`, async ({
-    page,
+    context,
   }) => {
     for (const destination of ["privacy", "terms"] as const) {
       await test.step(destination, async () => {
-        const form = await openCompletionForm(page, formCase);
-        const marker = `${formCase.name} ${destination} return`;
-        const { inputName, textareaName } = await fillReturnMarkers(form, marker);
+        const stepPage = await context.newPage();
+        await preparePage(stepPage);
 
-        if (destination === "privacy") {
-          await form.getByRole("link", { name: "Privacy Policy" }).click();
-          await expect(page).toHaveURL(/\/privacy-policy$/);
-        } else {
-          await page.goto("/terms-of-use");
-        }
+        try {
+          const form = await openCompletionForm(stepPage, formCase);
+          const marker = `${formCase.name} ${destination} return`;
+          const { inputName, textareaName } = await fillReturnMarkers(form, marker);
 
-        await page.goBack();
-        if (formCase.floating) {
-          await expect(
-            page.getByRole("dialog", { name: "Let’s start a conversation." }),
-          ).toBeVisible();
+          if (destination === "privacy") {
+            await form.getByRole("link", { name: "Privacy Policy" }).click();
+            await expect(stepPage).toHaveURL(/\/privacy-policy$/);
+          } else {
+            await stepPage.goto("/terms-of-use");
+          }
+
+          await stepPage.goBack();
+          if (formCase.floating) {
+            await expect(
+              stepPage.getByRole("dialog", { name: "Let’s start a conversation." }),
+            ).toBeVisible();
+          }
+          await expectReturnMarkers(
+            stepPage,
+            formCase,
+            marker,
+            inputName,
+            textareaName,
+          );
+        } finally {
+          await stepPage.close();
         }
-        await expectReturnMarkers(
-          page,
-          formCase,
-          marker,
-          inputName,
-          textareaName,
-        );
       });
     }
   });
@@ -286,7 +293,6 @@ test("@completion FORM-MOBILE valid and invalid flows work at 390x844 without se
       await completionSubmitButton(form).click();
       await expectCompletionSuccess(page);
       expect(requests).toBe(1);
-      await page.unroute(`**${formCase.endpoint}`);
     });
   }
 });
