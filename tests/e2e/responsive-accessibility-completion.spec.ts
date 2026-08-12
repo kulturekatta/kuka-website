@@ -32,7 +32,6 @@ async function runAxe(page: Page, label: string) {
 }
 
 async function tabTo(page: Page, locator: Locator, limit = 140) {
-  await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
   for (let index = 0; index < limit; index += 1) {
     await page.keyboard.press("Tab");
     if (await locator.evaluate((element) => element === document.activeElement)) {
@@ -436,8 +435,8 @@ test("@completion A11Y-FOCUS-VISIBLE key desktop controls display a visible keyb
 
   const homeTargets: Array<[Locator, string]> = [
     [page.getByRole("link", { name: "Skip to main content" }), "skip link"],
-    [page.getByRole("link", { name: "KultureKatta home" }).first(), "logo"],
     [page.getByRole("searchbox", { name: "Search KultureKatta" }).first(), "search field"],
+    [page.getByRole("link", { name: "KultureKatta home" }).first(), "logo"],
     [page.getByRole("link", { name: "Plan for an Organization" }), "primary CTA"],
   ];
   for (const [target, label] of homeTargets) {

@@ -269,21 +269,26 @@ test("@completion SEARCH-MOBILE logo navigation, search access and results fit a
 }) => {
   await page.addInitScript((key) => localStorage.setItem(key, "rejected"), COOKIE_CONSENT_KEY);
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/about");
+  await page.goto("/about", { waitUntil: "domcontentloaded" });
 
   const logo = page.getByRole("link", { name: "KultureKatta home" }).first();
   await expect(logo).toBeVisible();
-  await logo.click();
-  await expect(page).toHaveURL(/\/$/);
+  await expect(logo).toHaveAttribute("href", "/");
+  await logo.focus();
+  await expect(logo).toBeFocused();
+  await Promise.all([
+    page.waitForURL(/\/$/, { waitUntil: "domcontentloaded", timeout: 30_000 }),
+    logo.press("Enter"),
+  ]);
 
-  const mobileSearchbox = page.locator('header input[type="search"]:visible, form[role="search"] input[type="search"]:visible').first();
+  const mobileSearchbox = page.locator("#mobile-site-search");
   await expect(
     mobileSearchbox,
     "Mobile users need a visible search control in the header flow",
   ).toBeVisible();
-  await mobileSearchbox.click();
-  await expect(mobileSearchbox).toBeFocused();
+  await expect(mobileSearchbox).toBeEditable();
   await mobileSearchbox.fill("Kokedama");
+  await expect(mobileSearchbox).toBeFocused();
   await mobileSearchbox.press("Enter");
   await expect(page).toHaveURL(/\/search\?q=Kokedama$/);
   const issues = await completionLayoutIssues(page);

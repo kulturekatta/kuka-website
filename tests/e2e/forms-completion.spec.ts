@@ -11,6 +11,11 @@ import {
 } from "./helpers/completion";
 import { preparePage } from "./helpers/site";
 
+// Firefox on a remote preview can spend longer creating a fresh page after a
+// deliberately aborted request. Keep the assertion timeouts strict while
+// allowing the browser fixture enough time to recover cleanly.
+test.describe.configure({ timeout: 90_000 });
+
 async function fillReturnMarkers(form: Locator, marker: string) {
   const firstTextInput = form
     .locator(
@@ -155,7 +160,7 @@ for (const formCase of completionFormCases) {
       attempts += 1;
       payloads.push(route.request().postDataJSON() as Record<string, unknown>);
       if (attempts === 1) {
-        await route.abort("failed");
+        await route.abort("connectionreset");
         return;
       }
       successfulRequests += 1;

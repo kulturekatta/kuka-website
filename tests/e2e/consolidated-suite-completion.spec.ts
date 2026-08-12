@@ -301,7 +301,6 @@ test("@completion FORM-MOBILE-BOUNDARIES every enabled mobile form submits and k
         const success = page.getByText(/confirmation email is on its way/i).first();
         await expectInsideViewport(page, success, `${width}px ${formCase.name} success`);
         expect(requests).toBe(1);
-        await page.unroute(`**${formCase.endpoint}`);
       });
     }
   }

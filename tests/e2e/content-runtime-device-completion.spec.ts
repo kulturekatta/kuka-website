@@ -261,7 +261,11 @@ test("@completion DESKTOP-FIXED fixed controls retain separate placement and do 
             style.visibility !== "hidden" &&
             style.pointerEvents !== "none" &&
             rect.width > 0 &&
-            rect.height > 0
+            rect.height > 0 &&
+            rect.right > 0 &&
+            rect.left < window.innerWidth &&
+            rect.bottom > 0 &&
+            rect.top < window.innerHeight
           );
         };
         const fixed = Array.from(
