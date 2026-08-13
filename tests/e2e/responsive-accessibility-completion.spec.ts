@@ -169,6 +169,85 @@ test("@completion MOBILE-FIXED-HIDDEN contact, social and Go to Top controls sta
   }
 });
 
+test("@completion MOB-012 every mobile page scrolls and exposes unblocked controls", async ({
+  page,
+}) => {
+  test.setTimeout(600_000);
+  await preparePage(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+
+  for (const route of publicRoutes) {
+    await test.step(route, async () => {
+      await page.goto(route, { waitUntil: "domcontentloaded" });
+      await page.addStyleTag({
+        content: "html { scroll-behavior: auto !important; }",
+      });
+      const scrollState = await page.evaluate(() => {
+        const scrollable = document.documentElement.scrollHeight > window.innerHeight + 2;
+        window.scrollTo(0, document.documentElement.scrollHeight);
+        return {
+          scrollable,
+          bodyOverflow: getComputedStyle(document.body).overflowY,
+          rootOverflow: getComputedStyle(document.documentElement).overflowY,
+        };
+      });
+      await page.waitForTimeout(50);
+
+      if (scrollState.scrollable) {
+        await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
+      }
+      expect(scrollState.bodyOverflow, `${route} leaves body scroll-locked`).not.toBe("hidden");
+      expect(scrollState.rootOverflow, `${route} leaves root scroll-locked`).not.toBe("hidden");
+
+      const controls = page.locator(
+        [
+          "header a:visible",
+          "header summary:visible",
+          "main#main-content a[href]:visible",
+          "main#main-content button:visible:not([disabled])",
+          "main#main-content input:visible:not([type='hidden']):not([disabled])",
+          "main#main-content select:visible:not([disabled])",
+          "main#main-content textarea:visible:not([disabled])",
+          "footer a[href]:visible",
+          "footer button:visible:not([disabled])",
+        ].join(","),
+      );
+      const count = await controls.count();
+      expect(count, `${route} has no visible mobile controls`).toBeGreaterThan(0);
+
+      const sampleIndexes = [...new Set([0, Math.floor(count / 2), count - 1])];
+      for (const index of sampleIndexes) {
+        const control = controls.nth(index);
+        await control.scrollIntoViewIfNeeded();
+        await expect(control).toBeInViewport();
+        const hitTest = await control.evaluate((element) => {
+          const rect = element.getBoundingClientRect();
+          const x = Math.min(window.innerWidth - 1, Math.max(0, rect.left + rect.width / 2));
+          const y = Math.min(window.innerHeight - 1, Math.max(0, rect.top + rect.height / 2));
+          const hit = document.elementFromPoint(x, y);
+          return {
+            blocked:
+              !hit ||
+              !(element === hit || element.contains(hit) || hit.contains(element)),
+            control:
+              element.getAttribute("aria-label") ||
+              element.textContent?.replace(/\s+/g, " ").trim().slice(0, 70) ||
+              element.tagName,
+            hit:
+              hit?.getAttribute("aria-label") ||
+              hit?.textContent?.replace(/\s+/g, " ").trim().slice(0, 70) ||
+              hit?.tagName ||
+              "none",
+          };
+        });
+        expect(hitTest.blocked, `${route}: ${hitTest.control} is covered by ${hitTest.hit}`).toBe(
+          false,
+        );
+      }
+    });
+  }
+});
+
 test("@completion MOBILE-TARGETS important header, card, form, footer and legal targets meet 44x44px", async ({
   page,
 }) => {
@@ -466,6 +545,129 @@ test("@completion A11Y-KEYBOARD every visible control on every public page is re
         expected.filter((candidate) => !visited.has(candidate)),
         `${route} has controls that did not accept browser-supported keyboard focus`,
       ).toEqual([]);
+    });
+  }
+});
+
+test("@completion A11Y-002 every visible mobile control accepts keyboard focus in order", async ({
+  browserName,
+  page,
+}) => {
+  test.setTimeout(600_000);
+  await preparePage(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+
+  for (const route of publicRoutes) {
+    await test.step(route, async () => {
+      await page.goto(route, { waitUntil: "domcontentloaded" });
+      const expected = await page.evaluate(() => {
+        const elements = Array.from(
+          document.querySelectorAll<HTMLElement>(
+            [
+              "a[href]",
+              "button:not([disabled])",
+              "input:not([disabled]):not([type='hidden'])",
+              "select:not([disabled])",
+              "textarea:not([disabled])",
+              "summary",
+              "[tabindex]:not([tabindex='-1'])",
+            ].join(","),
+          ),
+        ).filter((element) => {
+          if (element.closest("details:not([open])") && element.tagName !== "SUMMARY") return false;
+          const style = getComputedStyle(element);
+          return (
+            style.display !== "none" &&
+            style.visibility !== "hidden" &&
+            element.getClientRects().length > 0 &&
+            element.tabIndex >= 0
+          );
+        });
+        elements.forEach((element, index) => {
+          element.dataset.catalogueMobileFocusId = String(index);
+        });
+        return elements.map((element) => element.dataset.catalogueMobileFocusId || "");
+      });
+
+      await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
+      const visited = new Set<string>();
+      if (browserName === "webkit") {
+        const unfocusable = await page.evaluate(() => {
+          const failures: string[] = [];
+          for (const element of Array.from(
+            document.querySelectorAll<HTMLElement>("[data-catalogue-mobile-focus-id]"),
+          )) {
+            element.focus();
+            if (document.activeElement !== element) {
+              failures.push(element.dataset.catalogueMobileFocusId || "unknown");
+            }
+          }
+          return failures;
+        });
+        expect(unfocusable, `${route} has controls that reject WebKit focus`).toEqual([]);
+        expected.forEach((candidate) => visited.add(candidate));
+      } else {
+        for (let index = 0; index < expected.length + 8; index += 1) {
+          await page.keyboard.press("Tab");
+          const id = await page.evaluate(
+            () =>
+              (document.activeElement as HTMLElement | null)?.dataset
+                .catalogueMobileFocusId || "",
+          );
+          if (id) visited.add(id);
+          if (expected.every((candidate) => visited.has(candidate))) break;
+        }
+      }
+
+      expect(
+        expected.filter((candidate) => !visited.has(candidate)),
+        `${route} has mobile controls missing from keyboard traversal`,
+      ).toEqual([]);
+    });
+  }
+});
+
+test("@completion A11Y-012 every public page has unique IDs and valid ARIA references", async ({
+  page,
+}) => {
+  test.setTimeout(180_000);
+  await preparePage(page);
+
+  for (const route of publicRoutes) {
+    await test.step(route, async () => {
+      await page.goto(route, { waitUntil: "domcontentloaded" });
+      const issues = await page.evaluate(() => {
+        const idCounts = new Map<string, number>();
+        for (const element of Array.from(document.querySelectorAll<HTMLElement>("[id]"))) {
+          if (element.id) idCounts.set(element.id, (idCounts.get(element.id) || 0) + 1);
+        }
+        const duplicateIds = [...idCounts.entries()]
+          .filter(([, count]) => count > 1)
+          .map(([id, count]) => ({ id, count }));
+
+        const references: Array<{ attribute: string; value: string; tag: string }> = [];
+        for (const element of Array.from(document.querySelectorAll<HTMLElement>("*"))) {
+          for (const attribute of [
+            "aria-labelledby",
+            "aria-describedby",
+            "aria-controls",
+            "aria-owns",
+            "aria-activedescendant",
+          ]) {
+            const value = element.getAttribute(attribute)?.trim();
+            if (!value) continue;
+            for (const id of value.split(/\s+/)) {
+              if (!document.getElementById(id)) {
+                references.push({ attribute, value: id, tag: element.tagName.toLowerCase() });
+              }
+            }
+          }
+        }
+        return { duplicateIds, missingReferences: references };
+      });
+
+      expect(issues.duplicateIds, `${route} has duplicate IDs`).toEqual([]);
+      expect(issues.missingReferences, `${route} has broken ARIA references`).toEqual([]);
     });
   }
 });

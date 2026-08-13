@@ -68,7 +68,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 for (const formCase of completionFormCases) {
-  test(`@completion FORM-PHONE ${formCase.name} rejects an invalid phone and accepts its correction`, async ({
+  test(`@completion FORM-002 ${formCase.name} rejects an invalid phone and accepts its correction`, async ({
     page,
   }) => {
     let requestCount = 0;
@@ -102,6 +102,156 @@ for (const formCase of completionFormCases) {
     expect(requestCount).toBe(1);
   });
 }
+
+for (const formCase of completionFormCases) {
+  test(`@completion FORM-002 ${formCase.name} rejects an invalid email and accepts its correction`, async ({
+    page,
+  }) => {
+    let requestCount = 0;
+    await page.route(`**${formCase.endpoint}`, async (route) => {
+      requestCount += 1;
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ success: true, message: "Mock accepted." }),
+      });
+    });
+
+    const form = await openCompletionForm(page, formCase);
+    await prepareValidCompletionForm(form);
+    const email = form.locator('input[type="email"]').first();
+
+    await email.fill("not-an-email");
+    expect(await email.evaluate((input: HTMLInputElement) => input.validity.valid)).toBe(
+      false,
+    );
+    await completionSubmitButton(form).click();
+    expect(requestCount).toBe(0);
+    await expect(email).toHaveAttribute("aria-invalid", "true");
+
+    await email.fill("corrected@example.com");
+    expect(await email.evaluate((input: HTMLInputElement) => input.validity.valid)).toBe(
+      true,
+    );
+    await completionSubmitButton(form).click();
+    await expectCompletionSuccess(page);
+    expect(requestCount).toBe(1);
+  });
+}
+
+test("@completion FORM-004 every form blocks submission without mandatory consent", async ({
+  page,
+}) => {
+  test.setTimeout(180_000);
+
+  for (const formCase of completionFormCases) {
+    await test.step(formCase.name, async () => {
+      let requestCount = 0;
+      await page.route(`**${formCase.endpoint}`, async (route) => {
+        requestCount += 1;
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ success: true }),
+        });
+      });
+
+      const form = await openCompletionForm(page, formCase);
+      await prepareValidCompletionForm(form);
+      const consent = form.locator('input[name="consent"][type="checkbox"]').first();
+      await expect(consent).toBeChecked();
+      await consent.uncheck();
+      await completionSubmitButton(form).click();
+
+      expect(requestCount, `${formCase.name} sent without consent`).toBe(0);
+      expect(
+        await consent.evaluate((input: HTMLInputElement) => input.validity.valueMissing),
+      ).toBe(true);
+      await expect(consent).toBeFocused();
+    });
+  }
+});
+
+test("@completion FORM-011 every form accepts a later valid enquiry from the same email", async ({
+  page,
+}) => {
+  test.setTimeout(240_000);
+
+  for (const formCase of completionFormCases) {
+    await test.step(formCase.name, async () => {
+      const payloads: Array<Record<string, unknown>> = [];
+      await page.route(`**${formCase.endpoint}`, async (route) => {
+        payloads.push(route.request().postDataJSON() as Record<string, unknown>);
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ success: true, message: "Mock accepted." }),
+        });
+      });
+
+      let form = await openCompletionForm(page, formCase);
+      await prepareValidCompletionForm(form);
+      const email = form.locator('input[type="email"]').first();
+      const emailPayloadKey = await email.getAttribute("name");
+      expect(emailPayloadKey, `${formCase.name} email field has no name`).toBeTruthy();
+      await email.fill("repeat@example.com");
+      await completionSubmitButton(form).click();
+      await expectCompletionSuccess(page);
+      await expect.poll(() => payloads.length).toBe(1);
+
+      const submitAnother = page.getByRole("button", { name: "Submit Another Inquiry" });
+      if (await submitAnother.isVisible()) {
+        await submitAnother.click();
+        form = page.locator(formCase.selector).first();
+        await expect(form).toBeVisible();
+      }
+
+      await prepareValidCompletionForm(form);
+      await form.locator('input[type="email"]').first().fill("repeat@example.com");
+      await completionSubmitButton(form).click();
+      await expect.poll(() => payloads.length).toBe(2);
+      expect(payloads.map((payload) => payload[emailPayloadKey ?? ""])).toEqual([
+        "repeat@example.com",
+        "repeat@example.com",
+      ]);
+    });
+  }
+});
+
+test("@completion FORM-012 Enter submits once and focuses the result on mobile and desktop", async ({
+  page,
+}) => {
+  test.setTimeout(300_000);
+
+  for (const viewport of [
+    { name: "mobile", width: 390, height: 844, forms: mainCompletionFormCases },
+    { name: "desktop", width: 1366, height: 900, forms: completionFormCases },
+  ]) {
+    for (const formCase of viewport.forms) {
+      await test.step(`${viewport.name}: ${formCase.name}`, async () => {
+        await page.setViewportSize({ width: viewport.width, height: viewport.height });
+        await page.unrouteAll({ behavior: "ignoreErrors" });
+        let requestCount = 0;
+        await page.route(`**${formCase.endpoint}`, async (route) => {
+          requestCount += 1;
+          await route.fulfill({
+            status: 200,
+            contentType: "application/json",
+            body: JSON.stringify({ success: true, message: "Mock accepted." }),
+          });
+        });
+
+        const form = await openCompletionForm(page, formCase);
+        await prepareValidCompletionForm(form);
+        await form.locator('input[type="email"]').first().press("Enter");
+
+        await expectCompletionSuccess(page);
+        expect(requestCount).toBe(1);
+        await expect(page.locator('[role="status"][tabindex="-1"]').last()).toBeFocused();
+      });
+    }
+  }
+});
 
 test("@completion FORM-LINKS Work With Us validates the shared portfolio/résumé field and remains upload-free", async ({
   page,
@@ -226,8 +376,12 @@ for (const formCase of completionFormCases) {
           const { inputName, textareaName } = await fillReturnMarkers(form, marker);
 
           if (destination === "privacy") {
-            await form.getByRole("link", { name: "Privacy Policy" }).click();
-            await expect(stepPage).toHaveURL(/\/privacy-policy$/);
+            await Promise.all([
+              stepPage.waitForURL(/\/privacy-policy$/, {
+                waitUntil: "domcontentloaded",
+              }),
+              form.getByRole("link", { name: "Privacy Policy" }).click(),
+            ]);
           } else {
             await stepPage.goto("/terms-of-use");
           }

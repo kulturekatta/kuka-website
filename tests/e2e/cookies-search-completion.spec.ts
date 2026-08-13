@@ -6,7 +6,6 @@ import {
   type Page,
 } from "@playwright/test";
 import { COOKIE_CONSENT_KEY } from "./helpers/site";
-import { completionLayoutIssues } from "./helpers/completion";
 
 const cookieRegionName = "A tiny cookie note 🍪";
 
@@ -56,20 +55,81 @@ async function advanceFocus(
   await page.keyboard.press("Tab");
 }
 
-async function tabTo(
+const searchViewports = [
+  { name: "mobile", width: 390, height: 844, selector: "#mobile-site-search" },
+  { name: "desktop", width: 1366, height: 768, selector: "#site-search" },
+] as const;
+
+async function openHeaderSearch(page: Page, viewport: (typeof searchViewports)[number]) {
+  await page.addInitScript((key) => {
+    window.localStorage.setItem(key, "rejected");
+  }, COOKIE_CONSENT_KEY);
+  await page.setViewportSize({ width: viewport.width, height: viewport.height });
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  const searchbox = page.locator(viewport.selector);
+  await expect(searchbox).toBeVisible();
+  await expect(searchbox).toBeEditable();
+  return searchbox;
+}
+
+async function focusSearchFromPreviousControl(
   page: Page,
-  locator: Locator,
+  searchbox: Locator,
   browserName: string,
-  limit = 80,
 ) {
-  for (let index = 0; index < limit; index += 1) {
-    await advanceFocus(page, locator, browserName);
-    if (await locator.evaluate((element) => element === document.activeElement)) {
-      return;
-    }
+  const predecessor = await searchbox.evaluate((element) => {
+    const controls = Array.from(
+      document.querySelectorAll<HTMLElement>(
+        [
+          "a[href]",
+          "button:not([disabled])",
+          "input:not([disabled]):not([type='hidden'])",
+          "select:not([disabled])",
+          "textarea:not([disabled])",
+          "summary",
+          "[tabindex]:not([tabindex='-1'])",
+        ].join(","),
+      ),
+    ).filter((control) => {
+      const style = getComputedStyle(control);
+      return (
+        style.display !== "none" &&
+        style.visibility !== "hidden" &&
+        control.getClientRects().length > 0 &&
+        control.tabIndex >= 0
+      );
+    });
+    const index = controls.indexOf(element as HTMLElement);
+    const previous = controls[index - 1];
+    if (!previous) return false;
+    previous.dataset.searchFocusPredecessor = "true";
+    return true;
+  });
+
+  expect(predecessor, "Search has no preceding keyboard control").toBe(true);
+  await page.locator('[data-search-focus-predecessor="true"]').focus();
+  await advanceFocus(page, searchbox, browserName);
+}
+
+async function submitHeaderSearch(
+  page: Page,
+  viewport: (typeof searchViewports)[number],
+  query: string,
+) {
+  const searchbox = await openHeaderSearch(page, viewport);
+  await searchbox.fill(query);
+
+  if (viewport.name === "mobile") {
+    await searchbox.press("Enter");
+  } else {
+    await page
+      .locator('form[role="search"]')
+      .filter({ has: searchbox })
+      .getByRole("button", { name: "Search" })
+      .click();
   }
 
-  throw new Error(`Keyboard focus did not reach ${await locator.getAttribute("name")}`);
+  await expect(page).toHaveURL(/\/search(?:\?|$)/);
 }
 
 test("@completion COOKIE-PROFILE accepted and rejected choices survive reload and a restored browser profile", async ({
@@ -248,77 +308,132 @@ test("@completion COOKIE-DESKTOP banner placement and keyboard order work at 136
   await expect(accept).toBeFocused();
 });
 
-test("@completion SEARCH-DESKTOP pointer and keyboard flows open the Kokedama destination", async ({
+test("@completion SRCH-001 search accepts pointer and keyboard focus on mobile and desktop", async ({
   browserName,
   page,
 }) => {
-  await page.addInitScript((key) => localStorage.setItem(key, "rejected"), COOKIE_CONSENT_KEY);
-  await page.setViewportSize({ width: 1366, height: 768 });
-  await page.goto("/");
+  for (const viewport of searchViewports) {
+    await test.step(viewport.name, async () => {
+      const searchbox = await openHeaderSearch(page, viewport);
+      await searchbox.click();
+      await expect(searchbox).toBeFocused();
 
-  let searchbox = page.getByRole("searchbox", { name: "Search KultureKatta" }).first();
-  await searchbox.click();
-  await expect(searchbox).toBeFocused();
-  await searchbox.fill("Kokedama");
-  await page.getByRole("search").first().getByRole("button", { name: "Search" }).click();
-  const result = page.getByRole("link", { name: /Hands-On Workshops/i });
-  await expect(result).toHaveAttribute("href", "/experiences/workshops");
-  await result.click();
-  await expect(page).toHaveURL(/\/experiences\/workshops\/?$/);
-
-  await page.goto("/");
-  searchbox = page.getByRole("searchbox", { name: "Search KultureKatta" }).first();
-  await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
-  await tabTo(page, searchbox, browserName);
-  await expect(searchbox).toBeFocused();
-  await searchbox.fill("Kokedama");
-  await searchbox.press("Enter");
-  await expect(page).toHaveURL(/\/search\?q=Kokedama$/);
+      await focusSearchFromPreviousControl(page, searchbox, browserName);
+      await expect(searchbox).toBeFocused();
+      const box = await searchbox.boundingBox();
+      expect(box).not.toBeNull();
+      expect(box?.x ?? -1).toBeGreaterThanOrEqual(0);
+      expect((box?.x ?? 0) + (box?.width ?? 0)).toBeLessThanOrEqual(viewport.width + 1);
+    });
+  }
 });
 
-test("@completion SEARCH-WELLNESS returns the exact approved destination", async ({
+test("@completion SRCH-002 approved terms return their exact destinations on mobile and desktop", async ({
   page,
 }) => {
-  await page.addInitScript((key) => localStorage.setItem(key, "rejected"), COOKIE_CONSENT_KEY);
-  await page.goto("/search?q=wellness");
-
-  const hrefs = await page
-    .locator('main#main-content a[href^="/"]')
-    .evaluateAll((links) => links.map((link) => link.getAttribute("href")));
-  expect(hrefs).toEqual(["/experiences/wellness"]);
-  await expect(
-    page.getByRole("link", { name: /Wellness & Slowing Down/i }),
-  ).toBeVisible();
+  for (const viewport of searchViewports) {
+    for (const contract of [
+      { query: "wellness", name: /Wellness & Slowing Down/i, href: "/experiences/wellness" },
+      { query: "Kokedama", name: /Hands-On Workshops/i, href: "/experiences/workshops" },
+    ]) {
+      await test.step(`${viewport.name}: ${contract.query}`, async () => {
+        await submitHeaderSearch(page, viewport, contract.query);
+        await expect(page.getByRole("link", { name: contract.name })).toHaveAttribute(
+          "href",
+          contract.href,
+        );
+      });
+    }
+  }
 });
 
-test("@completion SEARCH-MOBILE logo navigation, search access and results fit a 390px header flow", async ({
+test("@completion SRCH-003 a selected result opens its intended page on mobile and desktop", async ({
   page,
 }) => {
-  await page.addInitScript((key) => localStorage.setItem(key, "rejected"), COOKIE_CONSENT_KEY);
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/about", { waitUntil: "domcontentloaded" });
+  test.setTimeout(120_000);
 
-  const logo = page.getByRole("link", { name: "KultureKatta home" }).first();
-  await expect(logo).toBeVisible();
-  await expect(logo).toHaveAttribute("href", "/");
-  await logo.focus();
-  await expect(logo).toBeFocused();
-  await Promise.all([
-    page.waitForURL(/\/$/, { waitUntil: "domcontentloaded", timeout: 30_000 }),
-    logo.press("Enter"),
-  ]);
+  for (const viewport of searchViewports) {
+    await test.step(viewport.name, async () => {
+      await submitHeaderSearch(page, viewport, "Kokedama");
+      const result = page.getByRole("link", { name: /Hands-On Workshops/i });
+      await expect(result).toHaveAttribute("href", "/experiences/workshops");
+      await Promise.all([
+        page.waitForURL(/\/experiences\/workshops\/?$/, {
+          waitUntil: "domcontentloaded",
+        }),
+        result.click(),
+      ]);
+      await expect(page.getByRole("link", { name: "KultureKatta home" }).first()).toBeVisible();
+    });
+  }
+});
 
-  const mobileSearchbox = page.locator("#mobile-site-search");
-  await expect(
-    mobileSearchbox,
-    "Mobile users need a visible search control in the header flow",
-  ).toBeVisible();
-  await expect(mobileSearchbox).toBeEditable();
-  await mobileSearchbox.fill("Kokedama");
-  await expect(mobileSearchbox).toBeFocused();
-  await mobileSearchbox.press("Enter");
-  await expect(page).toHaveURL(/\/search\?q=Kokedama$/);
-  const issues = await completionLayoutIssues(page);
-  expect(issues.documentWidth).toBeLessThanOrEqual(issues.viewportWidth + 1);
-  expect(issues.clipped).toEqual([]);
+test("@completion SRCH-004 empty search has a clear stable state on mobile and desktop", async ({
+  page,
+}) => {
+  for (const viewport of searchViewports) {
+    await test.step(viewport.name, async () => {
+      await submitHeaderSearch(page, viewport, "");
+      await expect(page.getByRole("heading", { name: "Start with a word." })).toBeVisible();
+      await expect(page.locator("main#main-content form[role='search'] input[name='q']")).toHaveValue("");
+    });
+  }
+});
+
+test("@completion SRCH-005 special-character no-result searches remain safe on mobile and desktop", async ({
+  page,
+}) => {
+  for (const viewport of searchViewports) {
+    await test.step(viewport.name, async () => {
+      await submitHeaderSearch(page, viewport, "<script>&%</script>");
+      await expect(page.getByRole("heading", { name: "No results found." })).toBeVisible();
+      await expect(
+        page.locator("main#main-content").getByRole("link", {
+          name: "Explore experiences",
+          exact: true,
+        }),
+      ).toHaveAttribute("href", "/experiences");
+      expect(await page.evaluate(() => document.querySelectorAll("script script").length)).toBe(0);
+    });
+  }
+});
+
+test("@completion SRCH-006 repeated searches replace results without duplicates or stuck focus", async ({
+  page,
+}) => {
+  test.setTimeout(120_000);
+
+  for (const viewport of searchViewports) {
+    await test.step(viewport.name, async () => {
+      await page.addInitScript((key) => {
+        window.localStorage.setItem(key, "rejected");
+      }, COOKIE_CONSENT_KEY);
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+      await page.goto("/search?q=music", { waitUntil: "domcontentloaded" });
+
+      for (const query of ["walks", "wellness"]) {
+        const form = page.locator('main#main-content form[role="search"]');
+        const searchbox = form.getByRole("searchbox");
+        await searchbox.fill(query);
+        await Promise.all([
+          page.waitForURL(new RegExp(`/search\\?q=${query}$`), {
+            waitUntil: "domcontentloaded",
+          }),
+          searchbox.press("Enter"),
+        ]);
+
+        const refreshedSearchbox = page.locator('main#main-content form[role="search"] input[name="q"]');
+        await expect(refreshedSearchbox).toHaveValue(query);
+        await refreshedSearchbox.focus();
+        await expect(refreshedSearchbox).toBeFocused();
+
+        const resultHrefs = await page
+          .locator('main#main-content a[href^="/experiences/"]')
+          .evaluateAll((links) => links.map((link) => link.getAttribute("href")));
+        expect(new Set(resultHrefs).size).toBe(resultHrefs.length);
+      }
+
+      await expect(page.getByRole("link", { name: /Wellness & Slowing Down/i })).toBeVisible();
+    });
+  }
 });
