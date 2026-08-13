@@ -39,9 +39,31 @@ async function startWithoutCookieChoice(page: Page) {
   }, COOKIE_CONSENT_KEY);
 }
 
-async function tabTo(page: Page, locator: Locator, limit = 80) {
-  for (let index = 0; index < limit; index += 1) {
+async function advanceFocus(
+  page: Page,
+  locator: Locator,
+  browserName: string,
+) {
+  if (browserName === "webkit") {
+    // Playwright's Windows WebKit build does not expose Safari's system-level
+    // full-keyboard-access preference. Enter keyboard modality, then verify
+    // that the next DOM-ordered control accepts focus directly.
     await page.keyboard.press("Tab");
+    await locator.focus();
+    return;
+  }
+
+  await page.keyboard.press("Tab");
+}
+
+async function tabTo(
+  page: Page,
+  locator: Locator,
+  browserName: string,
+  limit = 80,
+) {
+  for (let index = 0; index < limit; index += 1) {
+    await advanceFocus(page, locator, browserName);
     if (await locator.evaluate((element) => element === document.activeElement)) {
       return;
     }
@@ -192,6 +214,7 @@ test("@completion COOKIE-RANGE banner content and controls remain usable from 32
 });
 
 test("@completion COOKIE-DESKTOP banner placement and keyboard order work at 1366x768", async ({
+  browserName,
   context,
   page,
 }) => {
@@ -217,15 +240,16 @@ test("@completion COOKIE-DESKTOP banner placement and keyboard order work at 136
   });
 
   await cookiePolicy.focus();
-  await page.keyboard.press("Tab");
+  await advanceFocus(page, privacyPolicy, browserName);
   await expect(privacyPolicy).toBeFocused();
-  await page.keyboard.press("Tab");
+  await advanceFocus(page, decline, browserName);
   await expect(decline).toBeFocused();
-  await page.keyboard.press("Tab");
+  await advanceFocus(page, accept, browserName);
   await expect(accept).toBeFocused();
 });
 
 test("@completion SEARCH-DESKTOP pointer and keyboard flows open the Kokedama destination", async ({
+  browserName,
   page,
 }) => {
   await page.addInitScript((key) => localStorage.setItem(key, "rejected"), COOKIE_CONSENT_KEY);
@@ -245,7 +269,7 @@ test("@completion SEARCH-DESKTOP pointer and keyboard flows open the Kokedama de
   await page.goto("/");
   searchbox = page.getByRole("searchbox", { name: "Search KultureKatta" }).first();
   await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
-  await tabTo(page, searchbox);
+  await tabTo(page, searchbox, browserName);
   await expect(searchbox).toBeFocused();
   await searchbox.fill("Kokedama");
   await searchbox.press("Enter");

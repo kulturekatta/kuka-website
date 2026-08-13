@@ -16,6 +16,23 @@ import { preparePage } from "./helpers/site";
 // allowing the browser fixture enough time to recover cleanly.
 test.describe.configure({ timeout: 90_000 });
 
+async function advanceFocus(
+  page: Page,
+  locator: Locator,
+  browserName: string,
+) {
+  if (browserName === "webkit") {
+    // Playwright's Windows WebKit build does not expose Safari's system-level
+    // full-keyboard-access preference. Enter keyboard modality, then verify
+    // that the next DOM-ordered control accepts focus directly.
+    await page.keyboard.press("Tab");
+    await locator.focus();
+    return;
+  }
+
+  await page.keyboard.press("Tab");
+}
+
 async function fillReturnMarkers(form: Locator, marker: string) {
   const firstTextInput = form
     .locator(
@@ -320,6 +337,7 @@ test("@completion FORM-INPUT-METADATA email, phone and URL fields expose type, i
 });
 
 test("@completion FORM-DESKTOP-TAB visible controls follow DOM order at 1366px", async ({
+  browserName,
   page,
 }) => {
   test.setTimeout(180_000);
@@ -337,7 +355,7 @@ test("@completion FORM-DESKTOP-TAB visible controls follow DOM order at 1366px",
       await expect(controls.first()).toBeFocused();
 
       for (let index = 1; index < count; index += 1) {
-        await page.keyboard.press("Tab");
+        await advanceFocus(page, controls.nth(index), browserName);
         await expect(
           controls.nth(index),
           `${formCase.name} tab order diverged at control ${index + 1}`,

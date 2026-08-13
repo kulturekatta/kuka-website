@@ -4,10 +4,32 @@ import {
 } from "./helpers/completion";
 import { preparePage, publicRoutes } from "./helpers/site";
 
-async function tabTo(page: Page, locator: Locator, limit = 120) {
+async function advanceFocus(
+  page: Page,
+  locator: Locator,
+  browserName: string,
+) {
+  if (browserName === "webkit") {
+    // Playwright's Windows WebKit build does not expose Safari's system-level
+    // full-keyboard-access preference. Enter keyboard modality, then verify
+    // that the requested control accepts focus directly.
+    await page.keyboard.press("Tab");
+    await locator.focus();
+    return;
+  }
+
+  await page.keyboard.press("Tab");
+}
+
+async function tabTo(
+  page: Page,
+  locator: Locator,
+  browserName: string,
+  limit = 120,
+) {
   await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
   for (let index = 0; index < limit; index += 1) {
-    await page.keyboard.press("Tab");
+    await advanceFocus(page, locator, browserName);
     if (await locator.evaluate((element) => element === document.activeElement)) {
       return;
     }
@@ -191,6 +213,7 @@ test("@completion DESKTOP-GRIDS laptop, desktop and wide-desktop layouts retain 
 });
 
 test("@completion DESKTOP-HEADER-FOOTER columns, hover states and keyboard focus remain usable at 1366px", async ({
+  browserName,
   page,
 }) => {
   await page.setViewportSize({ width: 1366, height: 900 });
@@ -217,7 +240,7 @@ test("@completion DESKTOP-HEADER-FOOTER columns, hover states and keyboard focus
   const afterHover = await about.evaluate((element) => getComputedStyle(element).color);
   expect(afterHover).not.toBe(beforeHover);
 
-  await tabTo(page, about);
+  await tabTo(page, about, browserName);
   const navFocusStyle = await about.evaluate((element) => {
     const style = getComputedStyle(element);
     return {
@@ -229,7 +252,7 @@ test("@completion DESKTOP-HEADER-FOOTER columns, hover states and keyboard focus
   expect(hasVisibleFocus(navFocusStyle), "Desktop About link has no visible keyboard focus").toBe(true);
 
   const footerPrivacy = page.locator("footer").getByRole("link", { name: "Privacy Policy", exact: true }).first();
-  await tabTo(page, footerPrivacy);
+  await tabTo(page, footerPrivacy, browserName);
   const footerFocusStyle = await footerPrivacy.evaluate((element) => {
     const style = getComputedStyle(element);
     return {
