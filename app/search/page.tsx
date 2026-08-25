@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import SemanticIcon from "../components/SemanticIcon";
 
 export const metadata: Metadata = {
   title: "Search KultureKatta",
@@ -22,6 +23,7 @@ type SearchPageProps = {
 
 const searchableItems = [
   {
+    icon: "🏠",
     title: "Home",
     href: "/",
     type: "Page",
@@ -30,6 +32,7 @@ const searchableItems = [
     keywords: ["home", "kulturekatta", "kuka", "culture", "events"],
   },
   {
+    icon: "📖",
     title: "About",
     href: "/about",
     type: "Page",
@@ -38,6 +41,7 @@ const searchableItems = [
     keywords: ["about", "story", "manifesto", "purpose", "culture"],
   },
   {
+    icon: "🎪",
     title: "Experiences",
     href: "/experiences",
     type: "Page",
@@ -58,6 +62,7 @@ const searchableItems = [
     ],
   },
   {
+    icon: "🎨",
     title: "Hands-On Workshops",
     href: "/experiences/workshops",
     type: "Experience Category",
@@ -78,6 +83,7 @@ const searchableItems = [
     ],
   },
   {
+    icon: "🥾",
     title: "Walks & Trails",
     href: "/experiences/walks",
     type: "Experience Category",
@@ -95,6 +101,7 @@ const searchableItems = [
     ],
   },
   {
+    icon: "💬",
     title: "Talks & Conversations",
     href: "/experiences/talks",
     type: "Experience Category",
@@ -112,6 +119,7 @@ const searchableItems = [
     ],
   },
   {
+    icon: "🎵",
     title: "Music & Sound",
     href: "/experiences/sound",
     type: "Experience Category",
@@ -128,6 +136,7 @@ const searchableItems = [
     ],
   },
   {
+    icon: "🎬",
     title: "Theatre & Films",
     href: "/experiences/stories",
     type: "Experience Category",
@@ -144,6 +153,7 @@ const searchableItems = [
     ],
   },
   {
+    icon: "🎲",
     title: "Games & Play",
     href: "/experiences/games",
     type: "Experience Category",
@@ -159,6 +169,7 @@ const searchableItems = [
     ],
   },
   {
+    icon: "🌿",
     title: "Wellness & Slowing Down",
     href: "/experiences/wellness",
     type: "Experience Category",
@@ -175,6 +186,7 @@ const searchableItems = [
     ],
   },
   {
+    icon: "🏢",
     title: "For Organizations",
     href: "/for-organizations",
     type: "Page",
@@ -192,6 +204,7 @@ const searchableItems = [
     ],
   },
   {
+    icon: "🧰",
     title: "Katta Studio",
     href: "/katta-studio",
     type: "Page",
@@ -207,6 +220,7 @@ const searchableItems = [
     ],
   },
   {
+    icon: "🎭",
     title: "Stories & Screen",
     href: "/experiences/stories",
     type: "Experience Category",
@@ -223,6 +237,7 @@ const searchableItems = [
     ],
   },
   {
+    icon: "✉️",
     title: "Contact",
     href: "/contact",
     type: "Page",
@@ -264,6 +279,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     <div className="kk-page-root min-h-screen kk-section-light">
       <section className="kk-section-light px-6 py-16">
         <div className="mx-auto max-w-6xl">
+          <div className="mb-6 flex justify-start">
+            <SemanticIcon icon="🔎" label="Search KultureKatta" size="page" />
+          </div>
+
           <p className="kk-page-label text-[var(--kk-accent)]">
             Search KultureKatta
           </p>
@@ -280,6 +299,13 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             role="search"
             className="mt-10 flex max-w-3xl flex-col gap-4 sm:flex-row"
           >
+            <SemanticIcon
+              icon="⌨️"
+              label="Search query"
+              size="compact"
+              className="self-start sm:self-center"
+            />
+
             <label htmlFor="search-page-query" className="sr-only">
               Search KultureKatta
             </label>
@@ -306,7 +332,9 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         <div className="mx-auto max-w-6xl">
           {query.length === 0 ? (
             <div className="kk-panel">
-              <h2 className="kk-section-heading">Start with a word.</h2>
+              <SemanticIcon icon="💡" label="Start with a word" size="section" />
+
+              <h2 className="kk-section-heading mt-5">Start with a word.</h2>
 
               <p className="kk-body mt-4 max-w-2xl">
                 Try searching for pottery, music, walks, games, schools,
@@ -328,8 +356,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                     className="kk-card kk-card--compact kk-card--interactive group"
                   >
                     <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-                      <div>
-                        <p className="kk-eyebrow mb-2">{item.type}</p>
+                      <div className="flex min-w-0 flex-col items-start">
+                        <SemanticIcon
+                          icon={item.icon}
+                          label={item.title}
+                          size="card"
+                        />
+
+                        <p className="kk-eyebrow mb-2 mt-5">{item.type}</p>
 
                         <h2 className="kk-card-title transition group-hover:underline group-hover:underline-offset-8">
                           {item.title}
@@ -350,7 +384,9 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             </>
           ) : (
             <div className="kk-panel">
-              <h2 className="kk-section-heading">No results found.</h2>
+              <SemanticIcon icon="🕵️" label="No results" size="section" />
+
+              <h2 className="kk-section-heading mt-5">No results found.</h2>
 
               <p className="kk-body mt-4 max-w-2xl">
                 We could not find anything for{" "}

@@ -1,6 +1,6 @@
 # KultureKatta completion QA layer
 
-This layer adds **54 active Playwright tests in six specification files**. It
+This layer contains **71 active Playwright tests in seven specification files**. It
 incorporates the automatable, not-previously-covered cases from:
 
 - `Missing Test Cases.docx`
@@ -8,30 +8,28 @@ incorporates the automatable, not-previously-covered cases from:
 - `TCs - Yet to run(1).docx`
 - `Remaining Test Case Suite.docx`
 
-The earlier baseline and exhaustive files remain unchanged. With their 254
-logical tests, the active suite now contains **308 logical tests per browser**.
+Together with 196 baseline and 57 exhaustive tests, the active suite contains
+**324 logical tests per browser**.
 
 ## What was added
 
 | Document area | Completion test IDs | Coverage added |
 | --- | --- | --- |
 | Cookies | `COOKIE-PROFILE`, `COOKIE-DECISION-FOCUS`, `COOKIE-RANGE`, `COOKIE-DESKTOP` | Accepted/rejected `storageState`, post-decision focus, the complete 320/360/390/430 range, and desktop placement/tab order |
-| Search | `SEARCH-DESKTOP`, `SEARCH-WELLNESS`, `SEARCH-MOBILE` | Pointer plus keyboard flow, an exact approved Wellness destination, and narrow mobile-header/results behavior |
-| Contact/content/runtime | `CONTACT-EXACT`, `CONTENT-LEGACY`, `RUNTIME-DATA` | Cross-surface approved contact values, expanded obsolete/placeholder/link checks, and failed or repeated fetch/XHR detection |
+| Search | `SRCH-001` through `SRCH-006` | Separate mobile and desktop pointer/keyboard, known-term, destination, empty, special-character, and repeated-search flows |
+| Contact/content/runtime | `CONTACT-EXACT`, `NAV-004`/`NAV-013`/`NAV-014`/`NAV-015`, `CONTENT-LEGACY`, `RUNTIME-DATA` | Cross-viewport contact/footer contracts, expanded obsolete/placeholder/link checks, and failed or repeated fetch/XHR detection |
 | Desktop/laptop | `DESKTOP-GRIDS`, `DESKTOP-HEADER-FOOTER`, `DESKTOP-FIXED` | 1024/1366/1920 layout structure, header/footer alignment and interaction, fixed-control placement |
-| Forms | `FORM-PHONE`, `FORM-LINKS`, `FORM-LONG`, `FORM-ABORT-RETRY`, `FORM-RETURN`, `FORM-VALIDATION`, `FORM-MOBILE`, `FORM-INPUT-METADATA`, `FORM-DESKTOP-TAB`, `FORM-LIVE-REGIONS` | Phone/URL correction, exact complex payloads, aborted retry, state after legal-page visits, validation focus/associations, 390px flows, semantic attributes, tab order and live regions across all five forms |
+| Forms | `FORM-002`, `FORM-004`, `FORM-011`, `FORM-012`, `FORM-LINKS`, `FORM-LONG`, `FORM-ABORT-RETRY`, `FORM-RETURN`, `FORM-VALIDATION`, `FORM-MOBILE`, `FORM-INPUT-METADATA`, `FORM-DESKTOP-TAB`, `FORM-LIVE-REGIONS` | Email/phone/URL correction, mandatory consent, legitimate sequential submission, Enter submission, exact complex payloads, retry/return state, validation, 390px flows, semantic attributes, tab order, and live regions across all five forms |
 | Consolidated navigation | `NAV-DEEP-CRAWL`, `NAV-MOBILE-ACTIVE`, `NAV-REDIRECT-ONCE`, `NAV-ANCHORS`, `NAV-HISTORY`, `MOBILE-MENU-SHORT` | Every-page link crawling, mobile active states, one-hop legacy redirects, anchored-section visibility, Back/Forward restoration and short-screen menu scrolling |
-| Mobile/responsive | `RESP-VIEWPORT-MATRIX`, `MOBILE-NAV-ARIA`, `MOBILE-FIXED-HIDDEN`, `MOBILE-TARGETS`, `MOBILE-OVERLAP` | Every public route at all remaining required viewports, explicit menu state, hidden mobile contact/social/Go-to-Top controls, expanded target-size and collision checks |
-| Form/SEO completion | `FORM-MOBILE-BOUNDARIES`, `SEO-NOINDEX` | Every enabled form at 320px and 430px, and explicit noindex/sitemap exclusion for Search and custom 404 pages |
-| Accessibility | `A11Y-AXE`, `A11Y-AXE-STATES`, `A11Y-KEYBOARD`, `A11Y-FOCUS-VISIBLE` | Axe and landmark checks on every public page, open-state scans, every-page keyboard traversal and visible focus |
+| Mobile/responsive | `RESP-VIEWPORT-MATRIX`, `MOBILE-NAV-ARIA`, `MOBILE-FIXED-HIDDEN`, `MOB-012`, `MOBILE-TARGETS`, `MOBILE-OVERLAP`, `LAY-012`, `OVR-005` | Every public route at required viewports, explicit menu state, approved fixed-control behavior, blocker hit-testing, target/collision checks, the Organizations label, and desktop Go to Top by mouse and keyboard |
+| Form/SEO completion | `FORM-MOBILE-BOUNDARIES`, `SEO-008`/`SEO-NOINDEX` | Every enabled form at 320px and 430px, noindex handling, and exact sitemap-inventory equality |
+| Accessibility | `A11Y-AXE`, `A11Y-AXE-STATES`, `A11Y-KEYBOARD`, `A11Y-002`, `A11Y-012`, `A11Y-FOCUS-VISIBLE` | Axe and landmark checks, open-state scans, desktop/mobile keyboard traversal, ID/ARIA-reference integrity, and visible focus |
 
-Several requested cases already exist in the `@exhaustive` layer and are not
-duplicated here: fresh-cookie/settings flows; empty, special-character,
-no-result and repeated searches; exact footer/homepage/KuKa Universe/external
-link contracts; image/metadata/heading/runtime checks; invalid-email and
-floating-form loading/error/duplicate-submit checks; 320px, orientation,
-text-resize, every mobile-menu destination, outside-click and one-column card
-order checks.
+Several requested cases remain primarily in the `@exhaustive` layer and are not
+duplicated here: fresh-cookie/settings flows; homepage/KuKa Universe contracts;
+image, metadata, heading, and runtime checks; floating-form loading/error and
+duplicate-submit checks; 320px, orientation, text-resize, every mobile-menu
+destination, outside-click, and one-column card-order checks.
 
 ## Approved contact interpretation
 
@@ -89,7 +87,7 @@ npm run test:e2e:completion -- --project=firefox --workers=1
 npm run test:e2e:completion -- --project=webkit --workers=1
 ```
 
-Finally run all 308 logical tests across the configured projects:
+Finally run all 324 logical tests across the configured projects:
 
 ```powershell
 npm run test:e2e:all -- --workers=1

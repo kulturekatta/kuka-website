@@ -1,0 +1,31 @@
+{
+  "package": "KultureKatta global icon system final",
+  "files": [
+    "ICON-SYSTEM.md",
+    "ICON-SYSTEM-AUDIT-REPORT.txt",
+    "INSTALL_ICON_SYSTEM.txt",
+    "app/components/ExperienceCategoryPage.tsx",
+    "app/components/IconLead.tsx",
+    "app/components/KattaStudioWorkWithUs.tsx",
+    "app/components/LegalPageLayout.tsx",
+    "app/components/SemanticIcon.tsx",
+    "app/components/SequenceMarker.tsx",
+    "app/components/verticals/VerticalAudience.tsx",
+    "app/components/verticals/VerticalCTA.tsx",
+    "app/components/verticals/VerticalExperienceGrid.tsx",
+    "app/components/verticals/VerticalFormats.tsx",
+    "app/components/verticals/VerticalHero.tsx",
+    "app/components/verticals/VerticalIntro.tsx",
+    "app/components/verticals/VerticalProcess.tsx",
+    "app/data/semanticIconRegistry.ts",
+    "app/experiences/[slug]/page.tsx",
+    "app/globals.css",
+    "app/kuka-universe/explore/page.tsx",
+    "app/kuka-universe/wellness/page.tsx",
+    "app/page.tsx",
+    "package.json",
+    "scripts/icon-audit.cjs",
+    "tests/e2e/icon-system-completion.spec.ts"
+  ],
+  "file_count": 25
+}

@@ -1,6 +1,7 @@
 export const experienceCategories = [
   {
     slug: "workshops",
+    icon: "🎨",
     label: "Workshops",
     title: "Hands-On Workshops",
     titleLines: ["Hands-On", "Workshops"],
@@ -33,6 +34,7 @@ export const experienceCategories = [
   },
   {
     slug: "food",
+    icon: "🍲",
     label: "Food",
     title: "Food & Senses",
     titleLines: ["Food", "& Senses"],
@@ -64,6 +66,7 @@ export const experienceCategories = [
   },
   {
     slug: "walks",
+    icon: "🥾",
     label: "Walks",
     title: "Walks & Trails",
     titleLines: ["Walks", "& Trails"],
@@ -95,6 +98,7 @@ export const experienceCategories = [
   },
   {
     slug: "talks",
+    icon: "💬",
     label: "Talks",
     title: "Talks & Salons",
     titleLines: ["Talks", "& Salons"],
@@ -126,6 +130,7 @@ export const experienceCategories = [
   },
   {
     slug: "words",
+    icon: "🎙️",
     label: "Words",
     title: "Words & Open Mics",
     titleLines: ["Words", "& Open Mics"],
@@ -157,6 +162,7 @@ export const experienceCategories = [
   },
   {
     slug: "sound",
+    icon: "🎵",
     label: "Sound",
     title: "Music & Sound",
     titleLines: ["Music", "& Sound"],
@@ -188,6 +194,7 @@ export const experienceCategories = [
   },
   {
     slug: "stories",
+    icon: "🎬",
     label: "Stories",
     title: "Stories & Screen",
     titleLines: ["Stories", "& Screen"],
@@ -219,6 +226,7 @@ export const experienceCategories = [
   },
   {
     slug: "movement",
+    icon: "💃",
     label: "Movement",
     title: "Dance & Movement",
     titleLines: ["Dance", "& Movement"],
@@ -250,6 +258,7 @@ export const experienceCategories = [
   },
   {
     slug: "games",
+    icon: "🎲",
     label: "Games",
     title: "Games & Play",
     titleLines: ["Games", "& Play"],

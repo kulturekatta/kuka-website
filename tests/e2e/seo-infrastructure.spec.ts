@@ -31,10 +31,17 @@ test("sitemap.xml contains every intended public sitemap route without duplicate
   expect(locations.length).toBeGreaterThan(0);
   expect(new Set(locations).size).toBe(locations.length);
 
-  const paths = locations.map((location) => new URL(location).pathname);
-  for (const route of sitemapRoutes) {
-    expect(paths, `Sitemap is missing ${route}`).toContain(route);
-  }
+  const parsedLocations = locations.map((location) => new URL(location));
+  expect(
+    [...new Set(parsedLocations.map((location) => location.origin))],
+    "Sitemap must use only the approved production origin",
+  ).toEqual(["https://kulturekatta.com"]);
+
+  const paths = parsedLocations.map((location) => location.pathname).sort();
+  const expectedPaths = [...new Set(sitemapRoutes)].sort();
+  expect(paths, "Sitemap differs from the approved indexable route inventory").toEqual(
+    expectedPaths,
+  );
 });
 
 for (const route of representativeRoutes) {

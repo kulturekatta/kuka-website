@@ -1,4 +1,5 @@
 import Link from "next/link";
+import IconLead from "../IconLead";
 
 type VerticalCTAProps = {
   label?: string;
@@ -23,6 +24,8 @@ export default function VerticalCTA({
     <section className="kk-section-cream kk-section-padding">
       <div className="kk-container text-center">
         <div className="kk-panel mx-auto max-w-5xl">
+          <IconLead icon="📩" label={label} align="center" />
+
           <p className="kk-section-label">{label}</p>
           <h2 className="kk-section-heading mx-auto mt-5 max-w-4xl">
             {title}

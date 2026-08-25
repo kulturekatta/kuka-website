@@ -1,5 +1,9 @@
 # QA completion validation
 
+> Historical record for the 54-test completion layer validated on 2026-08-11.
+> For the current 71-test layer and catalogue audit, see
+> `AUTOMATED_TEST_COVERAGE.md`.
+
 Validation date: 2026-08-11
 
 ## Passed

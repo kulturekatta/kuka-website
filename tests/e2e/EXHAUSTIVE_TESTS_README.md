@@ -1,12 +1,14 @@
 # KultureKatta exhaustive QA suite
 
-This folder contains 254 logical Playwright tests in 20 specification files.
-The configured Chromium, Firefox, and WebKit projects create 762 browser
-executions in a complete run.
+The baseline and exhaustive packs contain 253 logical Playwright tests. The
+configured 71-test completion layer brings the complete suite to 324 logical
+tests per browser, or 972 browser executions across Chromium, Firefox, and
+WebKit.
 
 ## Scope
 
-- The original 197-test stabilization baseline remains intact.
+- The stabilization baseline contains 196 tests; the desktop Go to Top case is
+  now tagged for the completion gate because it maps directly to OVR-005.
 - Tests tagged `@exhaustive` add 57 objective cases for cookies, search,
   content/contact contracts, form edge cases, API defenses, 320px and 390px
   layouts, mobile navigation, runtime/network health, images, metadata, and
@@ -44,7 +46,7 @@ After Chromium triage, run the exhaustive layer in all three browsers:
 npm run test:e2e:exhaustive -- --workers=1
 ```
 
-Run the complete 254-test suite in all three browsers:
+Run the complete 324-test suite in all three browsers:
 
 ```powershell
 npm run test:e2e:all -- --workers=1

@@ -37,7 +37,7 @@ const experiences = [
     text: "Blend outdoor observation, gentle movement, mindful making, plant work, sensory rest, reflective writing, and screen-light shared time.",
   },
   {
-    icon: "🪔",
+    icon: "🔔",
     title: "Celebrate + Explore",
     text: "Build a festival or occasion around food, craft, music, stories, regional traditions, games, rituals, and a theme meaningful to your group.",
   },

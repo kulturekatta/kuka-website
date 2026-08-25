@@ -1,4 +1,5 @@
 import Link from "next/link";
+import IconLead from "./IconLead";
 
 export default function KattaStudioWorkWithUs() {
   return (
@@ -10,6 +11,8 @@ export default function KattaStudioWorkWithUs() {
         <div className="kk-panel kk-panel--flush">
           <div className="grid lg:grid-cols-[1.2fr_0.8fr]">
             <div className="p-8 sm:p-12 lg:p-16">
+              <IconLead icon="👔" label="Work with Katta Studio" />
+
               <p className="kk-eyebrow">Work With Katta Studio</p>
 
               <h2

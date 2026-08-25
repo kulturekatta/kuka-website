@@ -6,6 +6,7 @@ import VerticalFormats from "../../components/verticals/VerticalFormats";
 import VerticalHero from "../../components/verticals/VerticalHero";
 import VerticalIntro from "../../components/verticals/VerticalIntro";
 import VerticalProcess from "../../components/verticals/VerticalProcess";
+import SemanticIcon from "../../components/SemanticIcon";
 import { getKukaVertical } from "../../data/kukaVerticals";
 
 export const metadata: Metadata = {
@@ -51,7 +52,7 @@ const pathways = [
       "Emotional literacy, quiet making, observation, journaling, seasons, symbols, and age-appropriate reflection.",
   },
   {
-    icon: "🧩",
+    icon: "🔀",
     title: "Connect the Dots",
     description:
       "Interdisciplinary experiences where art meets science, history meets play, and the neighborhood becomes a classroom.",
@@ -114,6 +115,7 @@ export default function KukaCirclePage() {
     <div className="kk-page-root min-h-screen">
       <VerticalHero
         name={vertical.name}
+        mark={vertical.mark}
         tagline="Childhood is not preparation for life. It is life itself."
         description="Screen-light, hands-on cultural learning where children make, move, play, question, reflect, and belong."
         logoSrc={vertical.logoSrc}
@@ -152,6 +154,14 @@ export default function KukaCirclePage() {
       <section className="kk-section-light kk-section-padding">
         <div className="kk-container">
           <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon
+                icon="🛑"
+                label="What KuKa Circle is not"
+                size="section"
+              />
+            </div>
+
             <p className="kk-section-label">What KuKa Circle is not</p>
             <h2 className="kk-section-heading mt-5">
               We protect curiosity by being clear about what we will not become.
@@ -169,9 +179,13 @@ export default function KukaCirclePage() {
               "Not culture as decoration",
               "Not one-size-fits-all",
               "Not rushing childhood",
-            ].map((item) => (
+            ].map((item, index) => (
               <article key={item} className="kk-card kk-card--centered">
-                <p className="text-3xl" aria-hidden="true">
+                <p
+                  className="text-3xl"
+                  aria-hidden="true"
+                  data-kk-sequence={`not-${index + 1}`}
+                >
                   ×
                 </p>
                 <h3 className="kk-card-title mt-4">{item}</h3>

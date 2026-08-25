@@ -55,10 +55,13 @@ test.beforeEach(async ({ page }) => {
 test("@completion CONTACT-EXACT approved email, phone and WhatsApp targets stay consistent across surfaces", async ({
   page,
 }) => {
-  await page.setViewportSize({ width: 1366, height: 768 });
-
-  for (const route of ["/", "/contact"]) {
-    await test.step(route, async () => {
+  for (const viewport of [
+    { name: "mobile", width: 390, height: 844 },
+    { name: "desktop", width: 1366, height: 768 },
+  ]) {
+    await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    for (const route of ["/", "/contact"]) {
+      await test.step(`${viewport.name}: ${route}`, async () => {
       await page.goto(route);
       const mailTargets = await page.locator('a[href^="mailto:"]').evaluateAll((links) => [
         ...new Set(
@@ -85,6 +88,75 @@ test("@completion CONTACT-EXACT approved email, phone and WhatsApp targets stay 
       ).toBe(true);
       await expect(page.getByText(/\+91[- ]?97302[- ]?44996/).first()).toBeAttached();
       await expect(page.getByText("hey@kulturekatta.com").first()).toBeAttached();
+      });
+    }
+  }
+});
+
+test("@completion NAV-004 NAV-013 NAV-014 NAV-015 footer contracts are exact on mobile and desktop", async ({
+  page,
+}) => {
+  const internalLinks: Array<[string, string]> = [
+    ["All Experiences", "/experiences"],
+    ["Explore by Mood", "/moods"],
+    ["For Organizations", "/for-organizations"],
+    ["Private Experiences", "/private-experiences"],
+    ["KuKa Universe", "/kuka-universe"],
+    ["KuKa Explore", "/kuka-universe/explore"],
+    ["KuKa Circle", "/kuka-universe/circle"],
+    ["About Us", "/about"],
+    ["About Katta Studio", "/katta-studio"],
+    ["Website Development", "/katta-studio#websites-and-digital-presence"],
+    ["Brand Positioning & Visual Identity", "/katta-studio#brand-positioning-and-visual-identity"],
+    ["Social Media Presence", "/katta-studio#social-media-and-content"],
+    ["Privacy Policy", "/privacy-policy"],
+    ["Terms of Use", "/terms-of-use"],
+    ["Cookie Policy", "/cookie-policy"],
+  ];
+  const externalLinks: Array<[string, string]> = [
+    ["Instagram", "https://www.instagram.com/kulturekatta/"],
+    ["LinkedIn", "https://www.linkedin.com/company/kulturekatta/"],
+    ["WhatsApp/Phone", "https://wa.me/919730244996"],
+    ["Email", "mailto:hey@kulturekatta.com"],
+  ];
+
+  for (const viewport of [
+    { name: "mobile", width: 390, height: 844 },
+    { name: "desktop", width: 1366, height: 900 },
+  ]) {
+    await test.step(viewport.name, async () => {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+      await page.goto("/", { waitUntil: "domcontentloaded" });
+      const footer = page.locator("footer");
+      await footer.scrollIntoViewIfNeeded();
+
+      for (const heading of [
+        "Experiences",
+        "KuKa Universe",
+        "Studio Services",
+        "Connect",
+        "Legal",
+      ]) {
+        await expect(footer.getByRole("heading", { name: heading, exact: true })).toBeVisible();
+      }
+
+      for (const [name, href] of internalLinks) {
+        await expect(footer.getByRole("link", { name, exact: true }).first()).toHaveAttribute(
+          "href",
+          href,
+        );
+      }
+
+      for (const [name, href] of externalLinks) {
+        const link = footer.getByRole("link", { name, exact: true });
+        await expect(link).toHaveAttribute("href", href);
+        await expect(link).toHaveAccessibleName(name);
+        if (!href.startsWith("mailto:")) {
+          await expect(link).toHaveAttribute("target", "_blank");
+          await expect(link).toHaveAttribute("rel", /noopener/);
+          await expect(link).toHaveAttribute("rel", /noreferrer/);
+        }
+      }
     });
   }
 });

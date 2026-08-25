@@ -153,6 +153,7 @@ export default function KukaFiveSensesPage() {
     <div className="kk-page-root min-h-screen">
       <VerticalHero
         name={vertical.name}
+        mark={vertical.mark}
         tagline="Culture you can taste, touch, smell, hear, and see."
         description="Multisensory gatherings that connect perception with craft, memory, place, ritual, stories, and human connection."
         logoSrc={vertical.logoSrc}
@@ -196,6 +197,7 @@ export default function KukaFiveSensesPage() {
 
       <VerticalExperienceGrid
         label="Sample combinations"
+        sectionIcon="💫"
         title="The most interesting experiences often cross senses and subjects."
         items={combinations}
       />

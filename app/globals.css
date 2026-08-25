@@ -145,6 +145,36 @@
   --kk-form-label-size: 0.9rem;
   --kk-form-label-color: var(--kk-text);
 
+  /* 12. ICON SYSTEM
+     SemanticIcon owns rendering; the registry owns meaning; tests own occurrence/order. */
+  --kk-icon-background: var(--kk-surface);
+  --kk-icon-border-color: rgba(33, 26, 23, 0.1);
+  --kk-icon-border-width: 1px;
+  --kk-icon-radius: 1rem;
+  --kk-icon-shadow: 0 4px 14px rgba(33, 26, 23, 0.06);
+  --kk-icon-font:
+    "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+
+  --kk-icon-page-size: 5rem;
+  --kk-icon-page-glyph-size: 2.875rem;
+  --kk-icon-page-compound-size: 1.7rem;
+
+  --kk-icon-section-size: 4rem;
+  --kk-icon-section-glyph-size: 2.25rem;
+  --kk-icon-section-compound-size: 1.35rem;
+
+  --kk-icon-card-size: 3.5rem;
+  --kk-icon-card-glyph-size: 1.9rem;
+  --kk-icon-card-compound-size: 1.15rem;
+
+  --kk-icon-compact-size: 2.75rem;
+  --kk-icon-compact-glyph-size: 1.5rem;
+  --kk-icon-compact-compound-size: 0.95rem;
+
+  --kk-icon-compound-gap: 0.125rem;
+  --kk-icon-page-lead-gap: 1.5rem;
+  --kk-icon-section-lead-gap: 1.25rem;
+
   /* Backwards-compatible aliases used by older page code */
   --background: var(--kk-background);
   --foreground: var(--kk-text);
@@ -305,6 +335,158 @@ select {
     background: var(--kk-background);
     color: var(--kk-text);
     border-bottom: 1px solid var(--kk-border);
+  }
+
+  /* ICON SYSTEM
+     Visual styling lives here. Semantic assignment lives in
+     app/data/semanticIconRegistry.ts. Occurrence and ordering are
+     enforced by the source audit and Playwright icon contract. */
+  .kk-icon {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: var(--kk-icon-size);
+    height: var(--kk-icon-size);
+    border: var(--kk-icon-border-width) solid var(--kk-icon-border-color);
+    border-radius: var(--kk-icon-radius);
+    background: var(--kk-icon-background);
+    box-shadow: var(--kk-icon-shadow);
+    font-family: var(--kk-icon-font);
+    font-size: var(--kk-icon-glyph-size);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .kk-icon--page {
+    --kk-icon-size: var(--kk-icon-page-size);
+    --kk-icon-glyph-size: var(--kk-icon-page-glyph-size);
+  }
+
+  .kk-icon--section {
+    --kk-icon-size: var(--kk-icon-section-size);
+    --kk-icon-glyph-size: var(--kk-icon-section-glyph-size);
+  }
+
+  .kk-icon--card {
+    --kk-icon-size: var(--kk-icon-card-size);
+    --kk-icon-glyph-size: var(--kk-icon-card-glyph-size);
+  }
+
+  .kk-icon--compact {
+    --kk-icon-size: var(--kk-icon-compact-size);
+    --kk-icon-glyph-size: var(--kk-icon-compact-glyph-size);
+  }
+
+  .kk-icon--compound.kk-icon--page {
+    --kk-icon-glyph-size: var(--kk-icon-page-compound-size);
+  }
+
+  .kk-icon--compound.kk-icon--section {
+    --kk-icon-glyph-size: var(--kk-icon-section-compound-size);
+  }
+
+  .kk-icon--compound.kk-icon--card {
+    --kk-icon-glyph-size: var(--kk-icon-card-compound-size);
+  }
+
+  .kk-icon--compound.kk-icon--compact {
+    --kk-icon-glyph-size: var(--kk-icon-compact-compound-size);
+  }
+
+  .kk-icon__compound {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--kk-icon-compound-gap);
+    white-space: nowrap;
+  }
+
+  .kk-icon__part {
+    display: inline-block;
+    line-height: 1;
+  }
+
+  .kk-icon-lead {
+    display: flex;
+    align-items: center;
+  }
+
+  .kk-icon-lead--start {
+    justify-content: flex-start;
+  }
+
+  .kk-icon-lead--center {
+    justify-content: center;
+  }
+
+  .kk-icon-lead--page {
+    margin-bottom: var(--kk-icon-page-lead-gap);
+  }
+
+  .kk-icon-lead--section {
+    margin-bottom: var(--kk-icon-section-lead-gap);
+  }
+
+  .kk-sequence-marker {
+    display: inline-flex;
+    width: var(--kk-icon-card-size);
+    height: var(--kk-icon-card-size);
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border: var(--kk-icon-border-width) solid var(--kk-icon-border-color);
+    border-radius: var(--kk-icon-radius);
+    background: var(--kk-icon-background);
+    box-shadow: var(--kk-icon-shadow);
+    color: var(--kk-accent);
+    font-size: 1.125rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.08em;
+  }
+
+  @media (min-width: 48rem) {
+    .kk-icon--page {
+      --kk-icon-size: 6rem;
+      --kk-icon-glyph-size: 3.375rem;
+    }
+
+    .kk-icon--section {
+      --kk-icon-size: 5rem;
+      --kk-icon-glyph-size: 2.75rem;
+    }
+
+    .kk-icon--card {
+      --kk-icon-size: 4rem;
+      --kk-icon-glyph-size: 2.2rem;
+    }
+
+    .kk-icon--compact {
+      --kk-icon-size: 3rem;
+      --kk-icon-glyph-size: 1.65rem;
+    }
+
+    .kk-icon--compound.kk-icon--page {
+      --kk-icon-glyph-size: 1.95rem;
+    }
+
+    .kk-icon--compound.kk-icon--section {
+      --kk-icon-glyph-size: 1.55rem;
+    }
+
+    .kk-icon--compound.kk-icon--card {
+      --kk-icon-glyph-size: 1.3rem;
+    }
+
+    .kk-icon--compound.kk-icon--compact {
+      --kk-icon-glyph-size: 1.05rem;
+    }
+
+    .kk-sequence-marker {
+      width: 4rem;
+      height: 4rem;
+    }
   }
 
   /* TYPOGRAPHY ROLES */

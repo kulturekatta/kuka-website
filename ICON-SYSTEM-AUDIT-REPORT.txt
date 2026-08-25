@@ -1,0 +1,72 @@
+KULTUREKATTA — GLOBAL ICON SYSTEM / SECOND-PASS AUDIT
+Date: 2026-08-15
+
+WHAT WAS AUDITED
+- app/ and shared components
+- dynamic experience category data
+- Katta Studio
+- KuKa Universe verticals
+- forms and legal layouts
+- homepage/about/contact/moods/moments/private experiences
+- search states, including empty and no-results behavior
+- 404 state
+- semantic registry
+- section/card/panel visual placement
+- sequence-marker alternatives
+- direct semantic icon usage
+
+SOURCE-LEVEL RESULTS
+- 443 registered semantic labels
+- 440 rendered semantic visuals
+- 2 intentional alias visuals (same meaning/key, alternate wording)
+- 0 visuals assigned to different semantic meanings
+- 0 reversed two-icon near-duplicates
+- 0 unregistered literal SemanticIcon/IconLead labels
+- 0 unregistered icon-bearing data labels
+- 98 explicit sections with H1/H2 audited: 0 missing leading visuals
+- 90 explicit kk-card/kk-panel blocks audited: 0 missing visuals
+- 0 source-order issues where a section/card visual appears after its first heading
+- Explore/Wellness standalone × markers are now explicitly tracked as intentional sequence visuals
+
+USER-REPORTED COLLISIONS
+- NGOs, Foundations & Social Enterprises -> 🤲 🌱
+- Co-create / Host with KuKa context -> 🌱
+- Artists (stat) -> 🎭
+- Artists & facilitators / Artists and facilitators -> 🎨 🤝
+- Experience formats -> 🧰 🎭
+
+ARCHITECTURE
+1. app/data/semanticIconRegistry.ts
+   Owns semantic meaning -> rendered visual.
+
+2. app/components/SemanticIcon.tsx
+   Owns accessible rendering and data attributes.
+
+3. app/components/IconLead.tsx
+   Standardizes page/major-section leading icon placement in shared templates.
+
+4. app/globals.css
+   Owns all icon sizes, compound-icon sizing, borders, radius, background,
+   shadow, emoji font stack, lead spacing, and sequence-marker styling.
+
+5. scripts/icon-audit.cjs
+   Source-level contract.
+
+6. tests/e2e/icon-system-completion.spec.ts
+   Rendered-site contract: uniqueness, conditional states, presence, and order.
+
+IMPORTANT
+The uploaded Code(7).zip intentionally did not include node_modules. Therefore I could
+run the dependency-free source audit and TypeScript syntax parsing, but I could not
+run the actual Next.js build or Playwright browser suite in this environment.
+Run the commands below locally after replacing the files.
+
+LOCAL VALIDATION
+1. npm run audit:icons
+2. npm run lint
+3. npm run build
+4. npm run start
+5. In a second PowerShell window:
+   npx playwright test "tests/e2e/icon-system-completion.spec.ts" --project=chromium --workers=1 --reporter=list
+
+Expected icon-test target: 3 passed.

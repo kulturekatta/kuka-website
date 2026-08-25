@@ -1,5 +1,9 @@
 # KultureKatta corrected website and Playwright files
 
+> Historical installation record for the August 10 correction pack. For the
+> current 324-test inventory and execution order, see
+> `AUTOMATED_TEST_COVERAGE.md`.
+
 Prepared: August 10, 2026
 
 This package contains 47 replacement or new files. Their paths are relative to

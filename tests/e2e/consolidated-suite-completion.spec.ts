@@ -11,6 +11,7 @@ import {
   preparePage,
   publicRoutes,
   redirectCases,
+  sitemapRoutes,
 } from "./helpers/site";
 
 test.beforeEach(async ({ page }) => {
@@ -306,7 +307,7 @@ test("@completion FORM-MOBILE-BOUNDARIES every enabled mobile form submits and k
   }
 });
 
-test("@completion SEO-NOINDEX search and custom 404 pages are excluded from indexing and the sitemap", async ({
+test("@completion SEO-008 SEO-NOINDEX sitemap exactly matches indexable routes and excludes utility pages", async ({
   page,
   request,
 }) => {
@@ -324,4 +325,14 @@ test("@completion SEO-NOINDEX search and custom 404 pages are excluded from inde
   const sitemap = await sitemapResponse.text();
   expect(sitemap).not.toContain("/search");
   expect(sitemap).not.toContain("should-not-exist-kuka-noindex-check");
+
+  const locations = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((match) => match[1]);
+  expect(new Set(locations).size).toBe(locations.length);
+  const parsedLocations = locations.map((location) => new URL(location));
+  expect([...new Set(parsedLocations.map((location) => location.origin))]).toEqual([
+    "https://kulturekatta.com",
+  ]);
+  expect(parsedLocations.map((location) => location.pathname).sort()).toEqual(
+    [...new Set(sitemapRoutes)].sort(),
+  );
 });

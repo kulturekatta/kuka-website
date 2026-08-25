@@ -1,3 +1,6 @@
+import IconLead from "../IconLead";
+import SequenceMarker from "../SequenceMarker";
+
 export type VerticalProcessItem = {
   title: string;
   description: string;
@@ -20,6 +23,8 @@ export default function VerticalProcess({
     <section className="kk-section-light kk-section-padding">
       <div className="kk-container">
         <div className="mx-auto max-w-3xl text-center">
+          <IconLead icon="⚙️" label={label} align="center" />
+
           <p className="kk-section-label">{label}</p>
           <h2 className="kk-section-heading mt-5">{title}</h2>
           {description ? (
@@ -30,9 +35,7 @@ export default function VerticalProcess({
         <div className="mt-14 grid gap-6 md:grid-cols-3">
           {items.map((item, index) => (
             <article key={item.title} className="kk-card">
-              <p className="kk-card-number">
-                {String(index + 1).padStart(2, "0")}
-              </p>
+              <SequenceMarker index={index} label={item.title} />
               <h3 className="kk-card-title mt-5">{item.title}</h3>
               <p className="kk-card-body mt-4">{item.description}</p>
             </article>

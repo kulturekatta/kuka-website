@@ -57,26 +57,26 @@ const footerSections: FooterSection[] = [
     ],
   },
   {
-  title: "Studio Services",
-  links: [
-    {
-      label: "About Katta Studio",
-      href: "/katta-studio",
-    },
-    {
-      label: "Website Development",
-      href: "/katta-studio#websites-and-digital-presence",
-    },
-    {
-      label: "Brand Positioning & Visual Identity",
-      href: "/katta-studio#brand-positioning-and-visual-identity",
-    },
-    {
-      label: "Social Media Presence",
-      href: "/katta-studio#social-media-and-content",
-    },
-  ],
-},
+    title: "Studio Services",
+    links: [
+      {
+        label: "About Katta Studio",
+        href: "/katta-studio",
+      },
+      {
+        label: "Website Development",
+        href: "/katta-studio#websites-and-digital-presence",
+      },
+      {
+        label: "Brand Identity",
+        href: "/katta-studio#brand-positioning-and-visual-identity",
+      },
+      {
+        label: "Social Media Presence",
+        href: "/katta-studio#social-media-and-content",
+      },
+    ],
+  },
   {
     title: "Connect",
     links: [
@@ -129,61 +129,65 @@ export default function Footer() {
         {/* MAIN FOOTER CONTENT */}
         <div
           className="
-            grid w-full items-start gap-x-8 gap-y-12
-            sm:grid-cols-2
+            grid w-full grid-cols-2 items-start gap-x-6 gap-y-10
+            sm:gap-x-8 sm:gap-y-12
             md:grid-cols-3
             xl:grid-cols-[minmax(220px,1.3fr)_repeat(5,minmax(0,1fr))]
             xl:gap-x-6
           "
         >
           {/* BRAND */}
-            <div className="min-w-0 xl:pr-2">
-              <Link
-                href="/"
-                className="inline-flex min-h-11 min-w-11 items-center text-2xl font-semibold tracking-tight text-white"
-                aria-label="KultureKatta home"
-              >
-                KultureKatta
-              </Link>
+          <div className="col-span-2 min-w-0 md:col-span-1 xl:pr-2">
+            <Link
+              href="/"
+              className="inline-flex min-h-11 min-w-11 items-center text-2xl font-semibold tracking-tight text-white"
+              aria-label="KultureKatta home"
+            >
+              KultureKatta
+            </Link>
 
-              <div
-                className="
-                  mt-5
-                  xl:grid
-                  xl:grid-rows-[repeat(4,24px)]
-                  xl:gap-y-3
-                "
-              >
-                <p className="max-w-[280px] text-base leading-7 text-white/70 xl:row-span-3 xl:leading-6">
-                  Culture-led experiences, thoughtfully designed for organizations, teams,
-                  private groups, celebrations, and curious people.
-                </p>
+            <div className="mt-5">
+              <p className="max-w-[280px] text-base leading-7 text-white/70 xl:leading-6">
+                Culture-led experiences, thoughtfully designed for organizations, teams,
+                private groups, celebrations, and curious people.
+              </p>
 
-                <p className="mt-5 text-sm font-semibold uppercase tracking-[0.16em] text-white/50 xl:row-start-4 xl:mt-0 xl:self-center">
-                  Come. Hang. Play. Learn.
-                </p>
-              </div>
+              <p className="mt-5 text-sm font-semibold uppercase tracking-[0.16em] text-white/50">
+                Come. Hang. Play. Learn.
+              </p>
             </div>
+          </div>
 
           {/* FOOTER NAVIGATION */}
           <nav className="contents" aria-label="Footer navigation">
-              {footerSections.map((section) => {
+            {footerSections.map((section) => {
               const totalItems =
                 section.links.length + (section.showCookieSettings ? 1 : 0);
+              const isMobileFullWidth = section.showCookieSettings;
 
               return (
-                <div key={section.title} className="min-w-0 xl:pt-[10px]">
+                <div
+                  key={section.title}
+                  className={`min-w-0 xl:pt-[10px] ${
+                    isMobileFullWidth ? "col-span-2 md:col-span-1" : ""
+                  }`}
+                >
                   <h2 className="break-words text-sm font-semibold uppercase leading-5 tracking-[0.16em] text-white">
                     {section.title}
                   </h2>
 
                   <ul
-                    className="
-                      mt-5 flex flex-col gap-3
-                      xl:grid
-                      xl:grid-rows-[repeat(4,24px)]
-                      xl:gap-y-3
-                    "
+                    className={`
+                      mt-3 gap-y-0 md:mt-5 md:flex md:flex-col md:gap-3
+                      xl:grid xl:grid-cols-1
+                      xl:grid-rows-[repeat(4,minmax(44px,auto))]
+                      xl:gap-y-0
+                      ${
+                        isMobileFullWidth
+                          ? "grid grid-cols-2 gap-x-6"
+                          : "flex flex-col"
+                      }
+                    `}
                   >
                     {section.links.map((link, index) => {
                       const isLastItem = index === section.links.length - 1;
@@ -201,7 +205,7 @@ export default function Footer() {
                             href={link.href}
                             target={link.external ? "_blank" : undefined}
                             rel={link.external ? "noopener noreferrer" : undefined}
-                            className="inline-flex min-h-11 min-w-11 max-w-full items-center break-words text-sm font-normal leading-6 text-white/65 transition-colors duration-200 hover:text-white"
+                            className="inline-flex min-h-11 min-w-11 max-w-full items-center break-words text-sm font-normal leading-6 text-white/65 transition-colors duration-200 hover:text-white xl:whitespace-nowrap"
                           >
                             {link.label}
                           </Link>
@@ -215,18 +219,18 @@ export default function Footer() {
                           totalItems < 4 ? "xl:row-start-4" : undefined
                         }
                       >
-                        <CookieSettingsButton className="inline-flex min-h-11 min-w-11 max-w-full items-center break-words text-left !text-sm !font-normal font-[inherit] leading-6 text-white/65 transition-colors duration-200 hover:text-white" />
+                        <CookieSettingsButton className="inline-flex min-h-11 min-w-11 max-w-full items-center break-words text-left !text-sm !font-normal font-[inherit] leading-6 text-white/65 transition-colors duration-200 hover:text-white xl:whitespace-nowrap" />
                       </li>
                     )}
                   </ul>
                 </div>
               );
             })}
-          </nav>  
+          </nav>
         </div>
 
         {/* BOTTOM BAR */}
-        <div className="mt-12 border-t border-white/15 pt-6 md:mt-16">
+        <div className="mt-10 border-t border-white/15 pt-6 md:mt-16">
           <div className="flex flex-col gap-6 md:flex-row md:flex-wrap md:items-end md:justify-between">
             <div className="min-w-0">
               <p className="text-sm text-white/60">
@@ -243,7 +247,7 @@ export default function Footer() {
               </p>
             </div>
 
-            <div className="flex min-w-0 max-w-full flex-wrap items-center gap-x-5 gap-y-3">
+            <div className="hidden min-w-0 max-w-full flex-wrap items-center gap-x-5 gap-y-3 md:flex">
               <Link
                 href="/privacy-policy"
                 className="inline-flex min-h-11 min-w-11 max-w-full items-center break-words text-sm font-normal leading-6 text-white/60 transition-colors duration-200 hover:text-white"

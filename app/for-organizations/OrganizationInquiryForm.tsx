@@ -7,6 +7,7 @@ import {
   useAccessibleFormValidation,
   useFormDraft,
 } from "../components/formEnhancements";
+import SemanticIcon from "../components/SemanticIcon";
 
 const organizationTypes = [
   "Company or corporate team",
@@ -218,12 +219,11 @@ export default function OrganizationInquiryForm() {
         {/* FORM INTRODUCTION */}
         <div className="mx-auto max-w-3xl text-center">
           <div className="mb-5 flex justify-center">
-            <div
-              className="flex h-20 w-20 items-center justify-center rounded-2xl border border-black/10 bg-white text-[2.875rem] shadow-sm md:h-24 md:w-24 md:text-[3.375rem]"
-              aria-hidden="true"
-            >
-              📝
-            </div>
+            <SemanticIcon
+              icon="📝"
+              label="Organization inquiry form"
+              size="page"
+            />
           </div>
 
           <p className="kk-section-label">Work with KuKa</p>
@@ -321,12 +321,7 @@ export default function OrganizationInquiryForm() {
               {/* ABOUT YOU */}
               <fieldset>
                 <div className="flex items-start gap-4">
-                  <div
-                    className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[var(--kk-accent)]/10 text-2xl"
-                    aria-hidden="true"
-                  >
-                    👤
-                  </div>
+                  <SemanticIcon icon="👤" label="About you" size="card" />
 
                   <div>
                     <legend className={sectionHeadingClass}>
@@ -419,12 +414,11 @@ export default function OrganizationInquiryForm() {
               {/* ABOUT YOUR ORGANIZATION */}
               <fieldset>
                 <div className="flex items-start gap-4">
-                  <div
-                    className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[var(--kk-accent)]/10 text-2xl"
-                    aria-hidden="true"
-                  >
-                    🏢
-                  </div>
+                  <SemanticIcon
+                    icon="📇"
+                    label="About your organization"
+                    size="card"
+                  />
 
                   <div>
                     <legend className={sectionHeadingClass}>
@@ -532,12 +526,11 @@ export default function OrganizationInquiryForm() {
               {/* WHAT ARE YOU PLANNING */}
               <fieldset>
                 <div className="flex items-start gap-4">
-                  <div
-                    className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[var(--kk-accent)]/10 text-2xl"
-                    aria-hidden="true"
-                  >
-                    ✨
-                  </div>
+                  <SemanticIcon
+                    icon="🗓️"
+                    label="What you are planning"
+                    size="card"
+                  />
 
                   <div>
                     <legend className={sectionHeadingClass}>
@@ -667,12 +660,11 @@ export default function OrganizationInquiryForm() {
                 </legend>
 
                 <div className="flex items-start gap-4">
-                  <div
-                    className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[var(--kk-accent)]/10 text-2xl"
-                    aria-hidden="true"
-                  >
-                    🎯
-                  </div>
+                  <SemanticIcon
+                    icon="🎯"
+                    label="Areas of interest"
+                    size="card"
+                  />
 
                   <div>
                     <h3 className={sectionHeadingClass}>
@@ -712,12 +704,11 @@ export default function OrganizationInquiryForm() {
               {/* PRACTICAL DETAILS */}
               <fieldset>
                 <div className="flex items-start gap-4">
-                  <div
-                    className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[var(--kk-accent)]/10 text-2xl"
-                    aria-hidden="true"
-                  >
-                    📋
-                  </div>
+                  <SemanticIcon
+                    icon="📋"
+                    label="Practical details"
+                    size="card"
+                  />
 
                   <div>
                     <legend className={sectionHeadingClass}>
@@ -804,26 +795,45 @@ export default function OrganizationInquiryForm() {
               <div className="my-10 border-t border-black/10 md:my-12" />
 
               {/* CONSENT */}
-              <label className="mt-7 flex cursor-pointer items-start gap-3">
-                <input
-                  type="checkbox"
-                  name="consent"
-                  required
-                  className="mt-1.5 h-5 w-5 shrink-0 accent-[var(--kk-accent)]"
-                />
+              <fieldset>
+                <legend className="sr-only">Privacy and consent</legend>
 
-                <span className="text-base leading-7 text-black/65">
-                  I agree that KultureKatta may use the information
-                  submitted here to respond to this inquiry as described in the{" "}
-                  <Link
-                    href="/privacy-policy"
-                    className="font-semibold underline decoration-black/30 underline-offset-2 hover:decoration-black"
-                  >
-                    Privacy Policy
-                  </Link>.{" "}
-                  <span aria-hidden="true">*</span>
-                </span>
-              </label>
+                <div className="flex items-start gap-4">
+                  <SemanticIcon
+                    icon="🛡️"
+                    label="Privacy and consent"
+                    size="card"
+                  />
+
+                  <div>
+                    <h3 className={sectionHeadingClass}>Privacy and Consent</h3>
+                    <p className="mt-1 text-base leading-7 text-black/55">
+                      Please confirm that we may respond to your inquiry.
+                    </p>
+                  </div>
+                </div>
+
+                <label className="mt-7 flex cursor-pointer items-start gap-3">
+                  <input
+                    type="checkbox"
+                    name="consent"
+                    required
+                    className="mt-1.5 h-5 w-5 shrink-0 accent-[var(--kk-accent)]"
+                  />
+
+                  <span className="text-base leading-7 text-black/65">
+                    I agree that KultureKatta may use the information
+                    submitted here to respond to this inquiry as described in the{" "}
+                    <Link
+                      href="/privacy-policy"
+                      className="font-semibold underline decoration-black/30 underline-offset-2 hover:decoration-black"
+                    >
+                      Privacy Policy
+                    </Link>.{" "}
+                    <span aria-hidden="true">*</span>
+                  </span>
+                </label>
+              </fieldset>
 
               {/* ERROR MESSAGE */}
               {status === "error" && errorMessage ? (

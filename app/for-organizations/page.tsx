@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import SemanticIcon from "../components/SemanticIcon";
 import OrganizationInquiryForm from "./OrganizationInquiryForm";
 
 export const metadata: Metadata = {
@@ -150,30 +151,6 @@ const process: ProcessItem[] = [
   },
 ];
 
-function IconBox({
-  icon,
-  size = "card",
-}: {
-  icon: string;
-  size?: "hero" | "section" | "card";
-}) {
-  const sizeClasses =
-    size === "hero"
-      ? "h-16 w-16 text-[2rem] md:h-20 md:w-20 md:text-[2.5rem]"
-      : size === "section"
-        ? "h-20 w-20 text-[2.875rem] md:h-24 md:w-24 md:text-[3.375rem]"
-        : "h-14 w-14 text-3xl";
-
-  return (
-    <div
-      aria-hidden="true"
-      className={`flex shrink-0 items-center justify-center rounded-2xl border border-black/10 bg-white shadow-sm ${sizeClasses}`}
-    >
-      <span className="leading-none">{icon}</span>
-    </div>
-  );
-}
-
 function SectionHeader({
   label,
   title,
@@ -183,7 +160,7 @@ function SectionHeader({
   return (
     <div className="mx-auto max-w-3xl text-center">
       <div className="mb-5 flex justify-center">
-        <IconBox icon={icon} size="section" />
+        <SemanticIcon icon={icon} label={label} size="section" />
       </div>
 
       <p className={sectionLabelClass}>{label}</p>
@@ -204,7 +181,11 @@ export default function ForOrganizationsPage() {
       <section className="kk-section-light overflow-hidden">
         <div className="kk-container text-center">
           <div className="mb-3 flex justify-center">
-            <IconBox icon="🤝" size="hero" />
+            <SemanticIcon
+              icon="🤝"
+              label="KuKa for Organizations"
+              size="page"
+            />
           </div>
 
           <p className="kk-page-label text-[var(--kk-accent)]">
@@ -259,7 +240,11 @@ export default function ForOrganizationsPage() {
                 className="group kk-card kk-card--interactive"
               >
                 <div className="transition-transform duration-300 group-hover:-translate-y-1">
-                  <IconBox icon={item.icon} />
+                  <SemanticIcon
+                    icon={item.icon}
+                    label={item.title}
+                    size="card"
+                  />
                 </div>
 
                 <h3 className="kk-card-title mt-6">{item.title}</h3>
@@ -278,7 +263,7 @@ export default function ForOrganizationsPage() {
             label="What we design"
             title="From team days to cultural immersions."
             description="Every experience is shaped around your people, purpose, setting, time, and budget—not pulled from a fixed catalog."
-            icon="🪄"
+            icon="📐"
           />
 
           <div className="mt-14 grid gap-6 md:grid-cols-2">
@@ -288,7 +273,11 @@ export default function ForOrganizationsPage() {
                 className="group kk-card kk-card--interactive"
               >
                 <div className="transition-transform duration-300 group-hover:-translate-y-1">
-                  <IconBox icon={item.icon} />
+                  <SemanticIcon
+                    icon={item.icon}
+                    label={item.title}
+                    size="card"
+                  />
                 </div>
 
                 <h3 className="kk-card-title mt-6">{item.title}</h3>
@@ -317,7 +306,11 @@ export default function ForOrganizationsPage() {
                 className="group kk-card kk-card--interactive"
               >
                 <div className="transition-transform duration-300 group-hover:-translate-y-1">
-                  <IconBox icon={item.icon} />
+                  <SemanticIcon
+                    icon={item.icon}
+                    label={item.title}
+                    size="card"
+                  />
                 </div>
 
                 <h3 className="kk-card-title mt-6">{item.title}</h3>
@@ -349,7 +342,11 @@ export default function ForOrganizationsPage() {
                   <p className="kk-card-number">{item.step}</p>
 
                   <div className="transition-transform duration-300 group-hover:-translate-y-1">
-                    <IconBox icon={item.icon} />
+                    <SemanticIcon
+                      icon={item.icon}
+                      label={item.title}
+                      size="card"
+                    />
                   </div>
                 </div>
 
@@ -367,7 +364,11 @@ export default function ForOrganizationsPage() {
         <div className="kk-container">
           <div className="kk-panel mx-auto max-w-4xl text-center">
             <div className="mb-5 flex justify-center">
-              <IconBox icon="📩" size="section" />
+              <SemanticIcon
+                icon="📩"
+                label="Organization inquiry"
+                size="section"
+              />
             </div>
 
             <p className={sectionLabelClass}>Start here</p>

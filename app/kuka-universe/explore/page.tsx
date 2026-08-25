@@ -6,6 +6,7 @@ import VerticalFormats from "../../components/verticals/VerticalFormats";
 import VerticalHero from "../../components/verticals/VerticalHero";
 import VerticalIntro from "../../components/verticals/VerticalIntro";
 import VerticalProcess from "../../components/verticals/VerticalProcess";
+import SemanticIcon from "../../components/SemanticIcon";
 import { getKukaVertical } from "../../data/kukaVerticals";
 
 export const metadata: Metadata = {
@@ -45,7 +46,7 @@ const experiencePathways = [
       "Street art, studios, built environments, design histories, public spaces, architecture, and creative neighborhoods.",
   },
   {
-    icon: "🧳",
+    icon: "👣",
     title: "People & Everyday Life",
     description:
       "Local knowledge, occupations, languages, rituals, migration, transport, markets, and the ordinary details that make a place distinct.",
@@ -114,6 +115,7 @@ export default function KukaExplorePage() {
     <div className="kk-page-root min-h-screen">
       <VerticalHero
         name={vertical.name}
+        mark={vertical.mark}
         tagline={vertical.tagline}
         description="Walks, trails, city discoveries, day trips, getaways, and culturally rooted journeys that make the nearby newly visible—and the unfamiliar more human."
         logoSrc={vertical.logoSrc}
@@ -153,6 +155,13 @@ export default function KukaExplorePage() {
         <div className="kk-container">
           <div className="kk-panel grid gap-8 lg:grid-cols-2 lg:gap-14">
             <div>
+              <SemanticIcon
+                icon="🚫"
+                label="What KuKa Explore is not"
+                size="section"
+                className="mb-5"
+              />
+
               <p className="kk-section-label">What it is not</p>
               <h2 className="kk-section-heading mt-5">
                 Not tourism with a KuKa sticker on it.
@@ -166,11 +175,18 @@ export default function KukaExplorePage() {
                 "Not extractive cultural display",
                 "Not adventure without safety",
                 "Not identical in every city",
-              ].map((item) => (
+              ].map((item, index) => (
                 <div
                   key={item}
                   className="rounded-2xl border border-black/10 bg-white px-5 py-4 text-lg font-semibold leading-7"
                 >
+                  <span
+                    className="mr-3 text-2xl"
+                    aria-hidden="true"
+                    data-kk-sequence={`not-${index + 1}`}
+                  >
+                    ×
+                  </span>
                   {item}
                 </div>
               ))}

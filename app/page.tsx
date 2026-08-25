@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import IconLead from "./components/IconLead";
+import SemanticIcon from "./components/SemanticIcon";
 
 export const metadata: Metadata = {
   title:
@@ -25,18 +27,11 @@ function IllustratedIcon({
 }: IllustratedIconProps) {
   return (
     <div className="flex flex-col items-center gap-3 text-center">
-      <span
-        aria-hidden="true"
-        className={`block leading-none drop-shadow-sm ${
-          compact ? "text-[2.6rem]" : "text-[3.35rem]"
-        }`}
-        style={{
-          fontFamily:
-            '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif',
-        }}
-      >
-        {icon}
-      </span>
+      <SemanticIcon
+        icon={icon}
+        label={label}
+        size={compact ? "compact" : "card"}
+      />
 
       <span className="inline-flex rounded-full bg-[#2a1b16] px-4 py-2 text-[0.68rem] font-extrabold uppercase tracking-[0.18em] text-white">
         {label}
@@ -48,32 +43,21 @@ function IllustratedIcon({
 type SectionHeaderIconProps = {
   icon: string;
   label: string;
-  compact?: boolean;
+  page?: boolean;
 };
 
 function SectionHeaderIcon({
   icon,
   label,
-  compact = false,
+  page = false,
 }: SectionHeaderIconProps) {
   return (
-    <div className="mb-5 flex justify-center">
-      <span
-        role="img"
-        aria-label={label}
-        className={`flex items-center justify-center rounded-[1.4rem] border border-black/10 bg-white leading-none shadow-sm ${
-          compact
-            ? "h-14 w-14 text-[1.85rem]"
-            : "h-16 w-16 text-[2.15rem]"
-        }`}
-        style={{
-          fontFamily:
-            '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif',
-        }}
-      >
-        {icon}
-      </span>
-    </div>
+    <IconLead
+      icon={icon}
+      label={label}
+      size={page ? "page" : "section"}
+      align="center"
+    />
   );
 }
 
@@ -215,7 +199,7 @@ const experienceTypes = [
 
 const discoveryLayers = [
   {
-    icon: "🧭",
+    icon: "🧠",
     iconLabel: "Mood and intent",
     eyebrow: "Start with what you want",
     title: "Mood & Intent Taxonomy",
@@ -289,21 +273,21 @@ const pastExperiences = [
 },
   {
     icon: "♟️",
-    iconLabel: "Games",
+    iconLabel: "Historic games",
     title: "Medieval Indian Games",
     place: "Pune",
     text: "A playful dive into traditional and historic Indian games, strategy, and social play.",
   },
   {
     icon: "☕",
-    iconLabel: "Senses",
+    iconLabel: "Coffee brewing",
     title: "Coffee Brewing Katta",
     place: "Pune",
     text: "A slow, sensory session exploring coffee, brewing techniques, taste, and ritual.",
   },
   {
     icon: "🔎",
-    iconLabel: "Stories",
+    iconLabel: "Forensic storytelling",
     title: "Storytelling, but Forensics",
     place: "Pune",
     text: "A gripping expert-led session that turned forensic science into an accessible story.",
@@ -317,7 +301,7 @@ const pastExperiences = [
   },
   {
     icon: "🤹",
-    iconLabel: "Movement",
+    iconLabel: "Juggling",
     title: "Juggling Workshop",
     place: "Mumbai",
     text: "A movement-based, playful workshop exploring rhythm, coordination, and flow.",
@@ -326,7 +310,7 @@ const pastExperiences = [
 
 const verticals = [
   {
-    icon: "🧭",
+    icon: "🗺️",
     iconLabel: "Place and discovery",
     eyebrow: "Travel, place and discovery",
     title: "KuKa Explore",
@@ -335,7 +319,7 @@ const verticals = [
     cta: "Discover KuKa Explore",
   },
   {
-    icon: "🪁",
+    icon: "🎈",
     iconLabel: "Childhood and learning",
     eyebrow: "Childhood and learning",
     title: "KuKa Circle",
@@ -446,18 +430,22 @@ const howItWorks = [
 
 const proofItems = [
   {
+    icon: "🗂️",
     number: "50+",
     label: "Curated experiences",
   },
   {
+    icon: "🏙️",
     number: "3",
     label: "Cities and growing",
   },
   {
+    icon: "🎭",
     number: "25+",
     label: "Artists and facilitators",
   },
   {
+    icon: "👥",
     number: "400+",
     label: "Participants so far",
   },
@@ -488,7 +476,7 @@ export default function HomePage() {
       {/* HERO */}
       <section className="kk-section-light relative overflow-hidden pt-16 pb-20 md:pt-14 md:pb-24">
         <div className="mx-auto flex max-w-7xl flex-col items-center px-6 text-center sm:px-10 lg:px-16">
-          <SectionHeaderIcon icon="🪔" label="KultureKatta" />
+          <SectionHeaderIcon icon="🕯️" label="KultureKatta" page />
 
           <p className="kk-page-label text-[var(--kk-accent)]">
             Kulture Katta
@@ -707,6 +695,13 @@ export default function HomePage() {
           </div>
 
           <div className="kk-panel mx-auto mt-8 max-w-5xl text-center">
+            <SemanticIcon
+              icon="➕"
+              label="Mood plus moment"
+              size="card"
+              className="mb-5"
+            />
+
             <p className="kk-card-label">Mood + Moment</p>
 
             <h3 className="kk-card-title mt-4">
@@ -850,7 +845,13 @@ export default function HomePage() {
                 key={item.label}
                 className="kk-card kk-card--centered"
               >
-                <p className="kk-card-number">{item.number}</p>
+                <SemanticIcon
+                  icon={item.icon}
+                  label={item.label}
+                  size="compact"
+                />
+
+                <p className="kk-card-number mt-5">{item.number}</p>
 
                 <p className="kk-card-meta mt-3 uppercase tracking-[0.18em]">
                   {item.label}
@@ -902,7 +903,7 @@ export default function HomePage() {
           <section className="kk-section-cream pt-10 pb-20 md:pt-8 md:pb-24">
             <div className="kk-container">
               <div className="mx-auto max-w-4xl text-center">
-                <SectionHeaderIcon icon="🪐" label="The KuKa Universe" />
+                <SectionHeaderIcon icon="🌠" label="The KuKa Universe" />
 
                 <p className="kk-section-label mb-5">The KuKa Universe</p>
 
@@ -994,16 +995,11 @@ export default function HomePage() {
               >
                 <div className="grid items-center gap-8 text-center md:grid-cols-[auto_1fr_auto] md:text-left">
                   <div className="flex justify-center">
-                    <span
-                      aria-hidden="true"
-                      className="block text-[4rem] leading-none drop-shadow-sm md:text-[5rem]"
-                      style={{
-                        fontFamily:
-                          '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif',
-                      }}
-                    >
-                      🌌
-                    </span>
+                    <SemanticIcon
+                      icon="🌌"
+                      label="Explore the KuKa Universe"
+                      size="section"
+                    />
                   </div>
 
                   <div>
@@ -1035,7 +1031,7 @@ export default function HomePage() {
       {/* FINAL CTA */}
       <section className="kk-section-light pt-10 pb-20 md:pt-6 md:pb-24">
         <div className="kk-container text-center">
-          <SectionHeaderIcon icon="🧭" label="Find your next Katta" />
+          <SectionHeaderIcon icon="📍" label="Find your next Katta" />
 
           <p className="kk-section-label mb-5">Find your next Katta</p>
 

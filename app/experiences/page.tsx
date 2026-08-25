@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import SemanticIcon from "../components/SemanticIcon";
 
 const experienceTypes = [
   {
@@ -70,15 +71,24 @@ const experienceTypes = [
 ];
 
 const moodCards = [
-  "I want to make something with my hands",
-  "I want to meet people without networking",
-  "I want to leave my house but not my personality",
-  "I want to learn something strange and specific",
-  "I want a slow Sunday with meaning",
-  "I want culture without the stiff-chair energy",
-  "I want to walk, notice, and eavesdrop on history",
-  "I want to eat my way into knowledge",
-  "I want to feel like a child, but with better coffee",
+  { icon: "👐", title: "I want to make something with my hands" },
+  { icon: "🤝", title: "I want to meet people without networking" },
+  { icon: "🏠", title: "I want to leave my house but not my personality" },
+  { icon: "💡", title: "I want to learn something strange and specific" },
+  { icon: "🌿", title: "I want a slow Sunday with meaning" },
+  { icon: "🎟️", title: "I want culture without the stiff-chair energy" },
+  { icon: "👣", title: "I want to walk, notice, and eavesdrop on history" },
+  { icon: "🍽️", title: "I want to eat my way into knowledge" },
+  { icon: "🎈", title: "I want to feel like a child, but with better coffee" },
+];
+
+const possiblePersonalities = [
+  { icon: "🌆", title: "urban explorer" },
+  { icon: "🏺", title: "clay philosopher" },
+  { icon: "☕", title: "coffee archaeologist" },
+  { icon: "📚", title: "bookish goblin" },
+  { icon: "🔎", title: "heritage detective" },
+  { icon: "🌱", title: "plant parent in training" },
 ];
 
 const curiousPrompts = [
@@ -92,31 +102,37 @@ const curiousPrompts = [
 
 const sampleKattas = [
   {
+    icon: "🛠️",
     eyebrow: "Workshops",
     title: "Make something with your hands",
     text: "Hands-on cultural workshops where you learn by doing — pottery, kokedama, kirigami, textiles, paper crafts, art forms, maker labs and other tactile experiences.",
   },
   {
+    icon: "🗺️",
     eyebrow: "Walks",
     title: "Step into the story of a place",
     text: "Heritage walks, food trails, nature walks, neighbourhood routes and city explorations that make familiar places feel layered, alive and full of gossip.",
   },
   {
+    icon: "💬",
     eyebrow: "Talks",
     title: "Sit with an idea for a while",
     text: "Intimate talks, salons and expert-led conversations around culture, science, books, art, philosophy, ecology, history and the strange beauty of everyday life.",
   },
   {
+    icon: "👃",
     eyebrow: "The Senses",
     title: "Taste, smell, listen, notice",
     text: "Food stories, coffee rituals, tasting tables, sound-led gatherings, scent-based sessions and sensory experiences where culture is felt, not just understood.",
   },
   {
+    icon: "♟️",
     eyebrow: "Games",
     title: "Play your way into culture",
     text: "Traditional games, puzzles, juggling, playful challenges, strategy sessions and interactive formats that bring people together without making it awkward.",
   },
   {
+    icon: "📖",
     eyebrow: "Stories",
     title: "Listen, remember, retell",
     text: "Storytelling nights, oral histories, poetry circles, book-led gatherings, memory sessions and narrative experiences that stay with you after you leave.",
@@ -150,6 +166,10 @@ export default function ExperiencesPage() {
           className="mx-auto grid w-[calc(100vw-3rem)] min-w-0 max-w-7xl gap-12 sm:w-[calc(100vw-5rem)] lg:w-full lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-center"
         >
           <div data-testid="experiences-hero-copy" className="mt-0 w-full min-w-0 max-w-full">
+            <div className="mb-6 flex justify-start">
+              <SemanticIcon icon="🌀" label="Explore experiences" size="page" />
+            </div>
+
             <p className="kk-page-label text-[var(--kk-accent)]">
               Explore Experiences
             </p>
@@ -186,19 +206,19 @@ export default function ExperiencesPage() {
               <p className="kk-eyebrow">Today’s possible personality</p>
 
               <div className="mt-6 space-y-4">
-                {[
-                  "urban explorer",
-                  "clay philosopher",
-                  "coffee archaeologist",
-                  "bookish goblin",
-                  "heritage detective",
-                  "plant parent in training",
-                ].map((item) => (
+                {possiblePersonalities.map((item) => (
                   <div
-                    key={item}
-                    className="kk-card kk-card--compact kk-card-title min-w-0 break-words"
+                    key={item.title}
+                    className="kk-card kk-card--compact min-w-0 break-words"
                   >
-                    {item}
+                    <div className="flex items-center gap-4">
+                      <SemanticIcon
+                        icon={item.icon}
+                        label={item.title}
+                        size="compact"
+                      />
+                      <span className="kk-card-title">{item.title}</span>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -216,6 +236,10 @@ export default function ExperiencesPage() {
       <section className="kk-section-light px-6 py-24 sm:px-10 lg:px-16">
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="🚪" label="Doors into KuKa" size="section" />
+            </div>
+
             <p className="kk-section-label">Doors into KuKa</p>
 
             <h2 className="kk-section-heading mt-4">
@@ -237,7 +261,11 @@ export default function ExperiencesPage() {
                 className="kk-card kk-card--centered kk-card--interactive group"
               >
                 <div className="flex flex-col items-center justify-center gap-4">
-                  <span className="text-5xl">{item.emoji}</span>
+                  <SemanticIcon
+                    icon={item.emoji}
+                    label={item.label}
+                    size="card"
+                  />
 
                   <span className="kk-badge rounded-full bg-[var(--kk-dark)] px-4 py-2">
                     {item.label}
@@ -261,6 +289,10 @@ export default function ExperiencesPage() {
       <section className="kk-section-cream px-6 py-24 sm:px-10 lg:px-16">
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="🌈" label="Explore by mood" size="section" />
+            </div>
+
             <p className="kk-section-label">Explore by mood</p>
 
             <h2 className="kk-section-heading mt-4">
@@ -276,12 +308,14 @@ export default function ExperiencesPage() {
           <div className="mt-14 grid gap-5 md:grid-cols-3">
             {moodCards.map((mood, index) => (
               <div
-                key={mood}
+                key={mood.title}
                 className="kk-card kk-card--compact kk-card--centered kk-card--interactive"
               >
-                <p className="kk-card-number">0{index + 1}</p>
+                <SemanticIcon icon={mood.icon} label={mood.title} size="card" />
 
-                <h3 className="kk-card-title mt-4">{mood}</h3>
+                <p className="kk-card-number mt-5">0{index + 1}</p>
+
+                <h3 className="kk-card-title mt-4">{mood.title}</h3>
               </div>
             ))}
           </div>
@@ -295,6 +329,14 @@ export default function ExperiencesPage() {
       >
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div>
+            <div className="mb-5 flex justify-start">
+              <SemanticIcon
+                icon="🎰"
+                label="Curiosity generator"
+                size="section"
+              />
+            </div>
+
             <p className="kk-section-label">Tiny chaos machine</p>
 
             <h2 className="kk-section-heading mt-4">
@@ -316,7 +358,9 @@ export default function ExperiencesPage() {
           </div>
 
           <div className="kk-card">
-            <p className="kk-card-label">Your KuKa prescription</p>
+            <SemanticIcon icon="🧪" label="KuKa prescription" size="card" />
+
+            <p className="kk-card-label mt-5">Your KuKa prescription</p>
 
             <h3 className="kk-card-title mt-6">{curiousPick}</h3>
 
@@ -333,6 +377,14 @@ export default function ExperiencesPage() {
       <section className="kk-section-light px-6 py-24 sm:px-10 lg:px-16">
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon
+                icon="📋"
+                label="Sample Kattas"
+                size="section"
+              />
+            </div>
+
             <p className="kk-section-label">What you’ll find here</p>
 
             <h2 className="kk-section-heading mt-4">
@@ -345,7 +397,9 @@ export default function ExperiencesPage() {
           <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {sampleKattas.map((item) => (
               <div key={item.title} className="kk-card kk-card--centered">
-                <p className="kk-card-label">{item.eyebrow}</p>
+                <SemanticIcon icon={item.icon} label={item.title} size="card" />
+
+                <p className="kk-card-label mt-5">{item.eyebrow}</p>
 
                 <h3 className="kk-card-title mt-4">{item.title}</h3>
 
@@ -361,6 +415,10 @@ export default function ExperiencesPage() {
       {/* CTA */}
       <section className="kk-section-cream px-6 py-24 sm:px-10 lg:px-16">
         <div className="kk-panel mx-auto max-w-5xl text-center">
+          <div className="mb-5 flex justify-center">
+            <SemanticIcon icon="📅" label="Coming alive soon" size="section" />
+          </div>
+
           <p className="kk-section-label">Coming alive soon</p>
 
           <h2 className="kk-section-heading mt-4">The calendar is brewing.</h2>

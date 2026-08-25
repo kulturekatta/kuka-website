@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { KukaVertical } from "../../data/kukaVerticals";
+import SemanticIcon from "../SemanticIcon";
 import UniverseStatusBadge from "./UniverseStatusBadge";
 
 export default function UniverseVerticalCard({
@@ -26,9 +27,11 @@ export default function UniverseVerticalCard({
           <h2 className="kk-card-title mt-3">{vertical.name}</h2>
         </div>
 
-        <span aria-hidden="true" className="text-3xl leading-none">
-          {vertical.mark}
-        </span>
+        <SemanticIcon
+          icon={vertical.mark}
+          label={vertical.name}
+          size="compact"
+        />
       </div>
 
       <p className="mt-4 text-lg font-semibold leading-7 text-[var(--kk-text)]">

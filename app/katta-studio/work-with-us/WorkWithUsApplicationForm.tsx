@@ -7,6 +7,7 @@ import {
   useAccessibleFormValidation,
   useFormDraft,
 } from "../../components/formEnhancements";
+import SemanticIcon from "../../components/SemanticIcon";
 
 const opportunityOptions = [
   "Full-time role",
@@ -29,18 +30,21 @@ const workArrangementOptions = [
 const applicationTips = [
   {
     number: "01",
+    icon: "🔗",
     title: "Share relevant work",
     description:
       "Add a portfolio, résumé, LinkedIn profile, Google Drive folder or links to work samples.",
   },
   {
     number: "02",
+    icon: "🗓️",
     title: "State your availability",
     description:
       "Tell us when you can begin and how many hours or days you can commit.",
   },
   {
     number: "03",
+    icon: "💰",
     title: "Mention your expectations",
     description:
       "Share your expected salary, stipend, hourly rate or project fee wherever possible.",
@@ -163,6 +167,10 @@ export default function WorkWithUsApplicationForm() {
       <div className="kk-container">
         {/* FORM INTRODUCTION */}
         <div className="mx-auto max-w-3xl text-center">
+          <div className="mb-5 flex justify-center">
+            <SemanticIcon icon="📝" label="Application form" size="section" />
+          </div>
+
           <p className="kk-section-label text-[var(--kk-accent)]">
             Apply to Work With Us
           </p>
@@ -188,6 +196,13 @@ export default function WorkWithUsApplicationForm() {
               />
 
               <div className="relative">
+                <SemanticIcon
+                  icon="📌"
+                  label="Before you apply"
+                  size="card"
+                  className="mb-5"
+                />
+
                 <p className="kk-section-label">Before You Apply</p>
 
                 <h3 className="kk-card-title mt-4 max-w-sm">
@@ -206,6 +221,12 @@ export default function WorkWithUsApplicationForm() {
                       className="rounded-2xl border border-black/10 bg-white/75 p-5 backdrop-blur-sm"
                     >
                       <div className="flex gap-4">
+                        <SemanticIcon
+                          icon={tip.icon}
+                          label={tip.title}
+                          size="compact"
+                        />
+
                         <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--kk-accent)] text-xs font-bold tracking-[0.08em] text-white">
                           {tip.number}
                         </span>
@@ -250,6 +271,13 @@ export default function WorkWithUsApplicationForm() {
             >
               <div className="mb-10 flex flex-col gap-2 border-b border-black/10 pb-6 sm:flex-row sm:items-end sm:justify-between">
                 <div>
+                  <SemanticIcon
+                    icon="📨"
+                    label="Application form details"
+                    size="compact"
+                    className="mb-3"
+                  />
+
                   <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--kk-accent)]">
                     Application Form
                   </p>
@@ -268,6 +296,8 @@ export default function WorkWithUsApplicationForm() {
               {/* STEP 1 */}
               <fieldset>
                 <legend className="mb-6 flex items-center gap-3">
+                  <SemanticIcon icon="👤" label="About you" size="compact" />
+
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--kk-text)] text-sm font-bold text-white">
                     1
                   </span>
@@ -351,6 +381,12 @@ export default function WorkWithUsApplicationForm() {
               {/* STEP 2 */}
               <fieldset className="mt-10 border-t border-black/10 pt-10">
                 <legend className="mb-6 flex items-center gap-3">
+                  <SemanticIcon
+                    icon="🧭"
+                    label="The opportunity"
+                    size="compact"
+                  />
+
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--kk-text)] text-sm font-bold text-white">
                     2
                   </span>
@@ -451,6 +487,12 @@ export default function WorkWithUsApplicationForm() {
               {/* STEP 3 */}
               <fieldset className="mt-10 border-t border-black/10 pt-10">
                 <legend className="mb-6 flex items-center gap-3">
+                  <SemanticIcon
+                    icon="🗃️"
+                    label="Your work and interests"
+                    size="compact"
+                  />
+
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--kk-text)] text-sm font-bold text-white">
                     3
                   </span>
@@ -520,6 +562,8 @@ export default function WorkWithUsApplicationForm() {
               {/* STEP 4 */}
               <fieldset className="mt-10 border-t border-black/10 pt-10">
                 <legend className="mb-6 flex items-center gap-3">
+                  <SemanticIcon icon="✅" label="Final check" size="compact" />
+
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--kk-text)] text-sm font-bold text-white">
                     4
                   </span>

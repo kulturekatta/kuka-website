@@ -6,6 +6,7 @@ import {
   PHONE_PATTERN,
   useAccessibleFormValidation,
 } from "../components/formEnhancements";
+import SemanticIcon from "../components/SemanticIcon";
 
 const contactOptions = [
   {
@@ -60,16 +61,19 @@ const contactOptions = [
 
 const quickLinks = [
   {
+    icon: "✉️",
     title: "Email",
     value: "hey@kulturekatta.com",
     href: "mailto:hey@kulturekatta.com",
   },
   {
+    icon: "📱",
     title: "WhatsApp / Call",
     value: "+91 97302 44996",
     href: "https://wa.me/919730244996",
   },
   {
+    icon: "📸",
     title: "Instagram",
     value: "@kulturekatta",
     href: "https://www.instagram.com/kulturekatta",
@@ -240,6 +244,10 @@ export default function ContactPage() {
       {/* HERO SECTION */}
       <section className="kk-section-light relative overflow-hidden">
         <div className="mx-auto flex max-w-7xl flex-col items-center px-6 text-center sm:px-10 lg:px-16">
+          <div className="mb-6 flex justify-center">
+            <SemanticIcon icon="👋" label="Contact KultureKatta" size="page" />
+          </div>
+
           <p className="kk-page-label text-[var(--kk-accent)]">
             Contact KultureKatta
           </p>
@@ -288,6 +296,10 @@ export default function ContactPage() {
 
         <div className="mx-auto max-w-6xl px-6 sm:px-10 lg:px-16">
           <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="🚪" label="Choose your doorway" size="section" />
+            </div>
+
             <p className="kk-section-label mb-5">Choose your doorway</p>
 
             <h2 className="kk-section-heading">
@@ -309,12 +321,7 @@ export default function ContactPage() {
                 href={item.href}
                 className="group kk-card kk-card--interactive flex min-h-[360px] flex-col"
               >
-                <div
-                  className="flex h-20 w-20 items-center justify-center rounded-[1.5rem] bg-[var(--kk-accent)]/10 text-4xl md:h-24 md:w-24 md:text-5xl"
-                  aria-hidden="true"
-                >
-                  {item.icon}
-                </div>
+                <SemanticIcon icon={item.icon} label={item.title} size="card" />
 
                 <p className="kk-card-label mt-6">{item.label}</p>
 
@@ -338,6 +345,10 @@ export default function ContactPage() {
       <section className="kk-section-light px-6 py-24 sm:px-10 lg:px-16">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="📇" label="Direct contact" size="section" />
+            </div>
+
             <p className="kk-section-label mb-5">Direct contact</p>
 
             <h2 className="kk-section-heading">
@@ -364,7 +375,9 @@ export default function ContactPage() {
                 }
                 className="kk-card kk-card--interactive text-left"
               >
-                <p className="kk-card-title">{item.title}</p>
+                <SemanticIcon icon={item.icon} label={item.title} size="card" />
+
+                <p className="kk-card-title mt-5">{item.title}</p>
 
                 <p className="kk-card-value mt-3 break-words">{item.value}</p>
               </Link>
@@ -377,6 +390,10 @@ export default function ContactPage() {
       <section className="kk-section-light px-6 py-24 sm:px-10 lg:px-16">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="📝" label="Enquiry form" size="section" />
+            </div>
+
             <p className="kk-section-label mb-5">Enquiry form</p>
 
             <h2 className="kk-section-heading">
@@ -403,6 +420,13 @@ export default function ContactPage() {
                 />
 
                 <div className="relative flex h-full flex-col">
+                  <SemanticIcon
+                    icon="🧩"
+                    label="Shape of your idea"
+                    size="card"
+                    className="mb-5"
+                  />
+
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] !text-white">
                     A good place to begin
                   </p>
@@ -461,6 +485,13 @@ export default function ContactPage() {
               >
                 <div className="flex min-w-0 flex-col items-start gap-2 border-b border-black/10 pb-7 sm:flex-row sm:justify-between sm:gap-5">
                   <div>
+                    <SemanticIcon
+                      icon="✍️"
+                      label="Start the conversation"
+                      size="compact"
+                      className="mb-3"
+                    />
+
                     <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--kk-accent)]">
                       Your enquiry
                     </p>
@@ -656,6 +687,10 @@ export default function ContactPage() {
       {/* CLOSING CTA */}
       <section className="kk-section-light px-6 py-24 sm:px-10 lg:px-16">
         <div className="mx-auto max-w-5xl text-center">
+          <div className="mb-5 flex justify-center">
+            <SemanticIcon icon="☕" label="Start with hello" size="section" />
+          </div>
+
           <p className="kk-section-label mb-5">Start with hello</p>
 
           <h2 className="kk-section-heading">

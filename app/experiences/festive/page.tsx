@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 const experiences = [
   {
-    icon: "🪔",
+    icon: "🕯️",
     title: "Festivals & Rituals",
     text: "Participatory programs that explore the meaning, making, symbols, practices, and living traditions connected with festivals and shared rituals.",
   },
@@ -64,7 +64,7 @@ const process = [
 export default function FestiveExperiencesPage() {
   return (
     <ExperienceCategoryPage
-      icon="🪔"
+      icon="🎊"
       iconLabel="Festive and seasonal experiences"
       eyebrow="Festive & seasonal experiences"
       title="Celebrate with meaning, not just decoration."

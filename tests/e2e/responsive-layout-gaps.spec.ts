@@ -71,7 +71,7 @@ for (const viewport of exactViewports) {
   });
 }
 
-test("@gap RESP-GOTOTOP-01 Go to Top appears after desktop scrolling, is tappable and returns the page to top", async ({
+test("@gap @completion OVR-005 Go to Top appears after desktop scrolling and works by mouse and keyboard", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1366, height: 768 });
@@ -88,6 +88,13 @@ test("@gap RESP-GOTOTOP-01 Go to Top appears after desktop scrolling, is tappabl
   expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
 
   await button.click();
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(50);
+
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+  await expect(button).toBeVisible();
+  await button.focus();
+  await expect(button).toBeFocused();
+  await button.press("Enter");
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(50);
 });
 
@@ -219,4 +226,34 @@ test("@gap RESP-HEADER-01 fixed or sticky header does not cover the page heading
   if (result) {
     expect(result.covered, JSON.stringify(result)).toBe(false);
   }
+});
+
+test("@gap @completion LAY-012 mobile KuKa for Organizations label keeps its approved two-line treatment", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/for-organizations", { waitUntil: "domcontentloaded" });
+
+  const label = page.locator("main#main-content .kk-page-label").first();
+  const mobileLines = label.locator("span.sm\\:hidden");
+  await expect(mobileLines).toHaveCount(2);
+  await expect(mobileLines.nth(0)).toBeVisible();
+  await expect(mobileLines.nth(0)).toHaveText("KuKa");
+  await expect(mobileLines.nth(1)).toBeVisible();
+  await expect(mobileLines.nth(1)).toHaveText("for Organizations");
+  await expect(label.locator("span.sm\\:inline")).toBeHidden();
+
+  const positions = await mobileLines.evaluateAll((lines) =>
+    lines.map((line) => {
+      const rect = line.getBoundingClientRect();
+      return {
+        top: Math.round(rect.top),
+        fontSize: getComputedStyle(line).fontSize,
+        right: Math.round(rect.right),
+      };
+    }),
+  );
+  expect(positions[1].top).toBeGreaterThan(positions[0].top);
+  expect(positions[1].fontSize).toBe(positions[0].fontSize);
+  expect(positions.every((position) => position.right <= 391)).toBe(true);
 });

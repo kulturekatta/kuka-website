@@ -7,6 +7,7 @@ import {
   useAccessibleFormValidation,
   useFormDraft,
 } from "../components/formEnhancements";
+import SemanticIcon from "../components/SemanticIcon";
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
 const GROWTH_CLINIC_DRAFT_KEY =
@@ -145,6 +146,10 @@ export default function GrowthClinicContactForm() {
 
       {/* FORM INTRODUCTION */}
       <div className="border-b border-black/[0.07] bg-[var(--kk-accent)]/[0.055] px-6 py-10 text-center sm:px-10 sm:py-12">
+        <div className="mb-5 flex justify-center">
+          <SemanticIcon icon="🌡️" label="Growth Clinic enquiry" size="section" />
+        </div>
+
         <p className="kk-page-label text-[var(--kk-accent)]">
           Get in touch
         </p>
@@ -164,6 +169,8 @@ export default function GrowthClinicContactForm() {
         <section className={sectionClass}>
           <div className="mb-6 flex items-start gap-4">
             <span className={sectionNumberClass}>1</span>
+
+            <SemanticIcon icon="🏷️" label="About your brand" size="compact" />
 
             <div>
               <h3 className="text-xl font-bold text-[var(--kk-text)]">
@@ -216,6 +223,12 @@ export default function GrowthClinicContactForm() {
           <div className="mb-6 flex items-start gap-4">
             <span className={sectionNumberClass}>2</span>
 
+            <SemanticIcon
+              icon="🚧"
+              label="Where you are feeling stuck"
+              size="compact"
+            />
+
             <div>
               <h3 className="text-xl font-bold text-[var(--kk-text)]">
                 Where are you feeling stuck?
@@ -252,6 +265,8 @@ export default function GrowthClinicContactForm() {
         <section className={sectionClass}>
           <div className="mb-6 flex items-start gap-4">
             <span className={sectionNumberClass}>3</span>
+
+            <SemanticIcon icon="☎️" label="Contact details" size="compact" />
 
             <div>
               <h3 className="text-xl font-bold text-[var(--kk-text)]">
@@ -320,6 +335,12 @@ export default function GrowthClinicContactForm() {
             </div>
 
             <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-black/10 bg-white p-4 md:col-span-2">
+              <SemanticIcon
+                icon="🛡️"
+                label="Privacy consent"
+                size="compact"
+              />
+
               <input
                 type="checkbox"
                 name="consent"

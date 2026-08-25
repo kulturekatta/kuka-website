@@ -1,9 +1,12 @@
 import Link from "next/link";
+import SemanticIcon from "./components/SemanticIcon";
 
 export default function NotFound() {
   return (
     <section className="mx-auto flex min-h-[60vh] max-w-4xl flex-col items-center justify-center px-6 py-20 text-center">
-      <p className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--kk-accent)]">
+      <SemanticIcon icon="🔍" label="Page not found" size="page" />
+
+      <p className="mb-4 mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--kk-accent)]">
         404
       </p>
 

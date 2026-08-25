@@ -16,6 +16,7 @@ import {
   useAccessibleFormValidation,
   useFormDraft,
 } from "./formEnhancements";
+import SemanticIcon from "./SemanticIcon";
 
 const inputClassName =
   "mt-2 w-full rounded-xl border border-black/15 bg-white px-4 py-3 text-sm text-[var(--kk-text)] outline-none transition placeholder:text-black/35 hover:border-black/25 focus:border-[var(--kk-accent)] focus:ring-4 focus:ring-black/5";
@@ -364,6 +365,13 @@ export default function FloatingContactDrawer() {
                 <div className="relative">
                   <div className="flex items-start justify-between gap-5">
                     <div>
+                      <SemanticIcon
+                        icon="💌"
+                        label="Contact KultureKatta"
+                        size="card"
+                        className="mb-4"
+                      />
+
                       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white">
                         Contact KultureKatta
                       </p>
