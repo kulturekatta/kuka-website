@@ -1,7 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type FormEvent,
+} from "react";
 import {
   PHONE_PATTERN,
   useAccessibleFormValidation,
@@ -89,6 +95,10 @@ const labelClassName =
 type FormStatus = "idle" | "submitting" | "success" | "error";
 const CONTACT_DRAFT_KEY = "kuka-contact-form-draft-v1";
 
+const subscribeToClientReady = () => () => {};
+const getClientReadySnapshot = () => true;
+const getServerReadySnapshot = () => false;
+
 type ContactDraft = {
   name: string;
   email: string;
@@ -99,6 +109,11 @@ type ContactDraft = {
 };
 
 export default function ContactPage() {
+  const isClientReady = useSyncExternalStore(
+    subscribeToClientReady,
+    getClientReadySnapshot,
+    getServerReadySnapshot,
+  );
   const [status, setStatus] = useState<FormStatus>("idle");
   const [statusMessage, setStatusMessage] = useState("");
   const startedAtRef = useRef(0);
@@ -666,7 +681,7 @@ export default function ContactPage() {
 
                     <button
                       type="submit"
-                      disabled={status === "submitting"}
+                      disabled={!isClientReady || status === "submitting"}
                       className="kk-button-dark w-full justify-center disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                     >
                       {status === "submitting" ? "Sending enquiry..." : "Send enquiry"}

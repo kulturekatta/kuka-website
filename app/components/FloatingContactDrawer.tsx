@@ -7,6 +7,7 @@ import {
   useEffect,
   useRef,
   useState,
+  useSyncExternalStore,
   type FormEvent,
 } from "react";
 import { createPortal } from "react-dom";
@@ -82,8 +83,17 @@ const FLOATING_CONTACT_DRAFT_KEY =
 const FLOATING_CONTACT_RESUME_PATH_KEY =
   "kuka-floating-contact-resume-path-v1";
 
+const subscribeToClientReady = () => () => {};
+const getClientReadySnapshot = () => true;
+const getServerReadySnapshot = () => false;
+
 export default function FloatingContactDrawer() {
   const pathname = usePathname();
+  const isClientReady = useSyncExternalStore(
+    subscribeToClientReady,
+    getClientReadySnapshot,
+    getServerReadySnapshot,
+  );
   const [isOpen, setIsOpen] = useState(false);
   const [status, setStatus] = useState<FormStatus>("idle");
   const [statusMessage, setStatusMessage] = useState("");
@@ -652,11 +662,13 @@ export default function FloatingContactDrawer() {
 
   return (
     <>
-      <FloatingContactButton
-        buttonRef={triggerButtonRef}
-        expanded={isOpen}
-        onClick={openDrawer}
-      />
+      {isClientReady && (
+        <FloatingContactButton
+          buttonRef={triggerButtonRef}
+          expanded={isOpen}
+          onClick={openDrawer}
+        />
+      )}
 
       {drawerPortal}
     </>

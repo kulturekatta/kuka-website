@@ -82,6 +82,7 @@ export default function OrganizationInquiryForm() {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const startedAtRef = useRef(0);
+  const successMessageRef = useRef<HTMLParagraphElement>(null);
   const statusMessageRef = useRef<HTMLDivElement>(null);
   const isSubmittingRef = useRef(false);
   const { formRef, saveDraft, clearDraft } = useFormDraft(
@@ -95,7 +96,11 @@ export default function OrganizationInquiryForm() {
   }, []);
 
   useEffect(() => {
-    if (status === "success" || status === "error") {
+    if (status === "success") {
+      successMessageRef.current?.focus();
+    }
+
+    if (status === "error") {
       statusMessageRef.current?.focus();
     }
   }, [status, errorMessage]);
@@ -242,8 +247,6 @@ export default function OrganizationInquiryForm() {
         <div className="mx-auto mt-10 max-w-5xl rounded-[2rem] border border-black/10 bg-white p-5 shadow-[0_24px_70px_rgba(0,0,0,0.07)] sm:p-8 md:mt-14 md:p-10">
           {status === "success" ? (
             <div
-              ref={statusMessageRef}
-              tabIndex={-1}
               className="rounded-[1.75rem] border border-green-200 bg-green-50 px-6 py-10 text-center md:px-10"
               role="status"
               aria-live="polite"
@@ -260,6 +263,8 @@ export default function OrganizationInquiryForm() {
               </h3>
 
               <p
+                ref={successMessageRef}
+                tabIndex={-1}
                 className="mx-auto mt-4 max-w-xl text-base leading-7 text-black/65 md:text-lg"
               >
                 Thank you for telling us about your organization and

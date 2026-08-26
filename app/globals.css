@@ -207,7 +207,14 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
   background: var(--kk-background);
+}
+
+@media (min-width: 64rem) {
+  html {
+    scroll-padding-top: 9rem;
+  }
 }
 
 /* Keyboard-only shortcut to bypass repeated navigation. */

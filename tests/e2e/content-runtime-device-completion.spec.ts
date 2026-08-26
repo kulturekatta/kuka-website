@@ -107,7 +107,7 @@ test("@completion NAV-004 NAV-013 NAV-014 NAV-015 footer contracts are exact on 
     ["About Us", "/about"],
     ["About Katta Studio", "/katta-studio"],
     ["Website Development", "/katta-studio#websites-and-digital-presence"],
-    ["Brand Positioning & Visual Identity", "/katta-studio#brand-positioning-and-visual-identity"],
+    ["Brand Identity", "/katta-studio#brand-positioning-and-visual-identity"],
     ["Social Media Presence", "/katta-studio#social-media-and-content"],
     ["Privacy Policy", "/privacy-policy"],
     ["Terms of Use", "/terms-of-use"],

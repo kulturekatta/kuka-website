@@ -63,6 +63,21 @@ async function expectReturnMarkers(
   );
 }
 
+async function expectFocusWithin(locator: Locator, message: string) {
+  await expect(locator).toBeVisible();
+  await expect
+    .poll(
+      () =>
+        locator.evaluate(
+          (element) =>
+            element === document.activeElement ||
+            element.contains(document.activeElement),
+        ),
+      { message },
+    )
+    .toBe(true);
+}
+
 test.beforeEach(async ({ page }) => {
   await preparePage(page);
 });
@@ -247,7 +262,11 @@ test("@completion FORM-012 Enter submits once and focuses the result on mobile a
 
         await expectCompletionSuccess(page);
         expect(requestCount).toBe(1);
-        await expect(page.locator('[role="status"][tabindex="-1"]').last()).toBeFocused();
+        const result = page.locator('[role="status"]').last();
+        await expectFocusWithin(
+          result,
+          `${formCase.name} success result did not receive focus`,
+        );
       });
     }
   }
@@ -548,9 +567,12 @@ test("@completion FORM-LIVE-REGIONS every form exposes assertive errors and poli
       await expect(alert).toBeFocused();
 
       await completionSubmitButton(form).click();
-      const status = page.locator('[role="status"][tabindex="-1"]').last();
+      const status = page.locator('[role="status"]').last();
       await expect(status).toHaveAttribute("aria-live", "polite");
-      await expect(status).toBeFocused();
+      await expectFocusWithin(
+        status,
+        `${formCase.name} polite success region did not contain focus`,
+      );
       await page.unroute(`**${formCase.endpoint}`);
     });
   }

@@ -19,7 +19,7 @@ const isWebKitRscPrefetchAccessControlError = (message: string, currentPageUrl: 
   try {
     const reportedHost = reportedUrl.slice(0, pathSeparator);
     const parsedReportedUrl = new URL(`https://${reportedUrl}`);
-    const currentHost = new URL(currentPageUrl).hostname;
+    const currentHost = new URL(currentPageUrl).host;
 
     return reportedHost === currentHost && parsedReportedUrl.searchParams.has("_rsc");
   } catch {
@@ -130,26 +130,40 @@ test("@exhaustive RUNTIME-02 every rendered image loads with non-zero intrinsic 
   for (const route of publicRoutes) {
     await test.step(route, async () => {
       await page.goto(route, { waitUntil: "domcontentloaded" });
-      const images = page.locator("main#main-content img, header img, footer img");
+      await page.waitForLoadState("load");
+
+      const images = page.locator(
+        "main#main-content img, header img, footer img",
+      );
 
       for (let index = 0; index < (await images.count()); index += 1) {
         const image = images.nth(index);
-        await image.scrollIntoViewIfNeeded();
-        await expect
-          .poll(() => image.evaluate((element: HTMLImageElement) => ({
-            complete: element.complete,
-            width: element.naturalWidth,
-            height: element.naturalHeight,
-          })))
-          .toMatchObject({ complete: true });
 
-        const dimensions = await image.evaluate((element: HTMLImageElement) => ({
+        const identity = await image.evaluate((element: HTMLImageElement) => ({
           source: element.currentSrc || element.src,
-          width: element.naturalWidth,
-          height: element.naturalHeight,
+          alt: element.alt,
         }));
-        expect(dimensions.width, `${route}: ${dimensions.source} has no width`).toBeGreaterThan(0);
-        expect(dimensions.height, `${route}: ${dimensions.source} has no height`).toBeGreaterThan(0);
+
+        await image.scrollIntoViewIfNeeded();
+
+        // Give WebKit a rendering cycle to initiate native lazy loading.
+        await page.waitForTimeout(250);
+
+        await expect
+          .poll(
+            () =>
+              image.evaluate(
+                (element: HTMLImageElement) =>
+                  element.complete &&
+                  element.naturalWidth > 0 &&
+                  element.naturalHeight > 0,
+              ),
+            {
+              timeout: 15_000,
+              message: `${route}: image did not load — ${identity.source} (${identity.alt})`,
+            },
+          )
+          .toBe(true);
       }
     });
   }
