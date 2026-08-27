@@ -1,17 +1,31 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import SemanticIcon from "../components/SemanticIcon";
+
+export const metadata: Metadata = {
+  title: "About KultureKatta | Culture Made Participatory",
+  description:
+    "Meet KultureKatta, learn why it exists, and discover its neighborhood-first approach to participatory cultural experiences.",
+  alternates: {
+    canonical: "/about",
+  },
+};
 
 const problemItems = [
   {
+    icon: "⏰",
     title: "Timing",
     description:
       "People want to show up, but modern life is crowded. KuKa creates experiences that feel worth making time for.",
   },
   {
+    icon: "🗺️",
     title: "Distance",
     description:
       "Culture often feels too far away — physically, emotionally, or socially. We bring it closer to everyday neighbourhoods.",
   },
   {
+    icon: "🏡",
     title: "Space",
     description:
       "Cities need spaces where people can gather with intention, curiosity, and a little bit of wonder.",
@@ -20,16 +34,19 @@ const problemItems = [
 
 const whatWeDoItems = [
   {
+    icon: "🎪",
     title: "We create experiences",
     description:
       "Workshops, walks, salons, circles, games, screenings, listening rooms, food experiences, and cultural gatherings.",
   },
   {
+    icon: "📍",
     title: "We bring culture closer",
     description:
       "Into cafés, studios, homes, parks, libraries, schools, workplaces, and everyday neighbourhood spaces.",
   },
   {
+    icon: "🙌",
     title: "We make participation easy",
     description:
       "People do not just watch. They make, ask, taste, move, reflect, share, and try.",
@@ -38,21 +55,25 @@ const whatWeDoItems = [
 
 const universeItems = [
   {
+    icon: "🥾",
     title: "KuKa Explore",
     description:
       "Walks, trails, city discoveries, day trips, and culture-led journeys rooted in place.",
   },
   {
+    icon: "🎈",
     title: "KuKa Circle",
     description:
       "Screen-light, hands-on cultural learning for children, families, schools, and learning communities.",
   },
   {
+    icon: "👁️",
     title: "KuKa 5 Senses",
     description:
       "Multisensory experiences built around taste, touch, scent, sound, sight, memory, and culture.",
   },
   {
+    icon: "🌿",
     title: "KuKa Wellness",
     description:
       "Creative, embodied, nature-based, and community-centered experiences for wellbeing and connection.",
@@ -61,16 +82,19 @@ const universeItems = [
 
 const communityItems = [
   {
+    icon: "🎨",
     title: "Artists & facilitators",
     description:
       "We collaborate with creators, practitioners, educators, performers, thinkers, makers, and cultural hosts.",
   },
   {
+    icon: "🏠",
     title: "Venues & spaces",
     description:
       "We activate cafés, studios, homes, terraces, parks, libraries, schools, workplaces, and neighbourhood corners.",
   },
   {
+    icon: "👥",
     title: "Participants & communities",
     description:
       "We bring together curious people who want to learn, make, meet, move, slow down, explore, and belong.",
@@ -79,22 +103,27 @@ const communityItems = [
 
 const impactStats = [
   {
+    icon: "📅",
     number: "50+",
     label: "Events Hosted",
   },
   {
+    icon: "🙋",
     number: "350+",
     label: "Participants",
   },
   {
+    icon: "🎭",
     number: "25+",
     label: "Artists",
   },
   {
+    icon: "🌐",
     number: "3",
     label: "Cities",
   },
   {
+    icon: "⭐",
     number: "4.8/5",
     label: "Average Rating",
   },
@@ -102,24 +131,28 @@ const impactStats = [
 
 const timeline = [
   {
+    icon: "💡",
     year: "2024",
     title: "KultureKatta begins",
     description:
       "What started as a question about culture became a platform for participatory cultural experiences.",
   },
   {
+    icon: "🔥",
     year: "2024",
     title: "The first kattas come alive",
     description:
       "Games, books, music, pottery, coffee, films, conversations, and workshops begin shaping the KuKa language.",
   },
   {
+    icon: "🌱",
     year: "2025",
     title: "The universe expands",
     description:
       "KuKa grows across cities, formats, collaborators, neighbourhoods, schools, workplaces, and community spaces.",
   },
   {
+    icon: "🚀",
     year: "Now",
     title: "Building an ecosystem",
     description:
@@ -150,10 +183,18 @@ const teamMembers = [
 
 export default function AboutPage() {
   return (
-    <main className="kk-page-root kk-section-light min-h-screen">
+    <div className="kk-page-root kk-section-light min-h-screen">
       {/* HERO */}
       <section className="kk-section-light kk-hero-padding">
         <div className="kk-container text-center">
+          <div className="mb-6 flex justify-center">
+            <SemanticIcon
+              icon="🏘️"
+              label="About KultureKatta"
+              size="page"
+            />
+          </div>
+
           <p className="kk-page-label text-[var(--kk-accent)]">
             About KultureKatta
           </p>
@@ -183,6 +224,10 @@ export default function AboutPage() {
       <section className="kk-section-light kk-section-padding">
         <div className="kk-container">
           <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="❓" label="Why we exist" size="section" />
+            </div>
+
             <p className="kk-section-label">Why We Exist</p>
 
             <h2 className="kk-section-heading mt-6">
@@ -203,7 +248,9 @@ export default function AboutPage() {
                 key={item.title}
                 className="kk-card kk-card--centered kk-card--interactive"
               >
-                <h3 className="kk-card-title">{item.title}</h3>
+                <SemanticIcon icon={item.icon} label={item.title} size="card" />
+
+                <h3 className="kk-card-title mt-5">{item.title}</h3>
 
                 <p className="kk-card-body mt-4">{item.description}</p>
               </article>
@@ -215,6 +262,10 @@ export default function AboutPage() {
       {/* WHAT KATTA MEANS */}
       <section className="kk-section-light kk-section-padding">
         <div className="kk-container text-center">
+          <div className="mb-5 flex justify-center">
+            <SemanticIcon icon="☕" label="What katta means" size="section" />
+          </div>
+
           <p className="kk-section-label">What Katta Means</p>
 
           <h2 className="kk-section-heading mx-auto mt-6 max-w-3xl">
@@ -241,6 +292,10 @@ export default function AboutPage() {
       <section className="kk-section-light kk-section-padding">
         <div className="kk-container">
           <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="🛠️" label="What we do" size="section" />
+            </div>
+
             <p className="kk-section-label">What We Do</p>
 
             <h2 className="kk-section-heading mt-6">
@@ -261,7 +316,9 @@ export default function AboutPage() {
                 key={item.title}
                 className="kk-card kk-card--centered kk-card--interactive"
               >
-                <h3 className="kk-card-title">{item.title}</h3>
+                <SemanticIcon icon={item.icon} label={item.title} size="card" />
+
+                <h3 className="kk-card-title mt-5">{item.title}</h3>
 
                 <p className="kk-card-body mt-4">{item.description}</p>
               </article>
@@ -274,6 +331,10 @@ export default function AboutPage() {
       <section className="kk-section-light kk-section-padding">
         <div className="kk-container">
           <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="🌌" label="The KuKa Universe" size="section" />
+            </div>
+
             <p className="kk-section-label">The KuKa Universe</p>
 
             <h2 className="kk-section-heading mt-6">
@@ -293,7 +354,9 @@ export default function AboutPage() {
                 key={item.title}
                 className="kk-card kk-card--centered kk-card--interactive"
               >
-                <h3 className="kk-card-title">{item.title}</h3>
+                <SemanticIcon icon={item.icon} label={item.title} size="card" />
+
+                <h3 className="kk-card-title mt-5">{item.title}</h3>
 
                 <p className="kk-card-body mt-4">{item.description}</p>
               </article>
@@ -312,6 +375,14 @@ export default function AboutPage() {
       <section className="kk-section-light kk-section-padding">
         <div className="kk-container">
           <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon
+                icon="🤝"
+                label="How we build community"
+                size="section"
+              />
+            </div>
+
             <p className="kk-section-label">How We Build Community</p>
 
             <h2 className="kk-section-heading mt-6">
@@ -331,7 +402,9 @@ export default function AboutPage() {
                 key={item.title}
                 className="kk-card kk-card--centered kk-card--interactive"
               >
-                <h3 className="kk-card-title">{item.title}</h3>
+                <SemanticIcon icon={item.icon} label={item.title} size="card" />
+
+                <h3 className="kk-card-title mt-5">{item.title}</h3>
 
                 <p className="kk-card-body mt-4">{item.description}</p>
               </article>
@@ -343,6 +416,10 @@ export default function AboutPage() {
       {/* KUKA SO FAR */}
       <section className="kk-section-light kk-section-padding">
         <div className="kk-container text-center">
+          <div className="mb-5 flex justify-center">
+            <SemanticIcon icon="📈" label="KuKa so far" size="section" />
+          </div>
+
           <p className="kk-section-label">KuKa So Far</p>
 
           <h2 className="kk-section-heading mx-auto mt-6 max-w-3xl">
@@ -361,7 +438,9 @@ export default function AboutPage() {
                 key={stat.label}
                 className="kk-card kk-card--centered kk-card--interactive"
               >
-                <p className="kk-card-number">{stat.number}</p>
+                <SemanticIcon icon={stat.icon} label={stat.label} size="card" />
+
+                <p className="kk-card-number mt-5">{stat.number}</p>
 
                 <p className="kk-card-meta mt-3 uppercase tracking-[0.18em]">
                   {stat.label}
@@ -376,6 +455,10 @@ export default function AboutPage() {
       <section className="kk-section-light kk-section-padding">
         <div className="kk-container">
           <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="📖" label="Our story" size="section" />
+            </div>
+
             <p className="kk-section-label">Our Story</p>
 
             <h2 className="kk-section-heading mt-6">
@@ -396,7 +479,9 @@ export default function AboutPage() {
                 key={`${item.year}-${item.title}`}
                 className="kk-card kk-card--centered kk-card--interactive"
               >
-                <p className="kk-card-year">{item.year}</p>
+                <SemanticIcon icon={item.icon} label={item.title} size="card" />
+
+                <p className="kk-card-year mt-5">{item.year}</p>
 
                 <h3 className="kk-card-title mt-4">{item.title}</h3>
 
@@ -411,6 +496,10 @@ export default function AboutPage() {
       <section className="kk-section-light kk-section-padding">
         <div className="kk-container">
           <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="💛" label="People behind KuKa" size="section" />
+            </div>
+
             <p className="kk-section-label">People Behind KuKa</p>
 
             <h2 className="kk-section-heading mt-6">
@@ -451,6 +540,10 @@ export default function AboutPage() {
       <section className="kk-section-light kk-section-padding">
         <div className="kk-container text-center">
           <div className="kk-panel mx-auto max-w-4xl">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="🚪" label="Join the Katta" size="section" />
+            </div>
+
             <p className="kk-section-label">Join the Katta</p>
 
             <h2 className="kk-section-heading mx-auto mt-6 max-w-3xl">
@@ -474,6 +567,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

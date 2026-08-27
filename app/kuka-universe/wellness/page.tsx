@@ -6,12 +6,16 @@ import VerticalFormats from "../../components/verticals/VerticalFormats";
 import VerticalHero from "../../components/verticals/VerticalHero";
 import VerticalIntro from "../../components/verticals/VerticalIntro";
 import VerticalProcess from "../../components/verticals/VerticalProcess";
+import SemanticIcon from "../../components/SemanticIcon";
 import { getKukaVertical } from "../../data/kukaVerticals";
 
 export const metadata: Metadata = {
   title: "KuKa Wellness | Creative, Cultural & Community Wellbeing",
   description:
     "KuKa Wellness brings together rest, movement, creativity, nature, reflection, sound, food, and community through thoughtful participatory experiences.",
+  alternates: {
+    canonical: "/kuka-universe/wellness",
+  },
 };
 
 const vertical = getKukaVertical("wellness")!;
@@ -36,7 +40,7 @@ const pathways = [
       "Gentle movement, rhythm, dance, mobility, breath, body awareness, and culturally rooted practices delivered by suitable facilitators.",
   },
   {
-    icon: "🌿",
+    icon: "🍃",
     title: "Nature Connection",
     description:
       "Gardens, plants, walking, observation, outdoor time, seasonal awareness, ecology, and restorative contact with the living world.",
@@ -120,9 +124,10 @@ const process = [
 
 export default function KukaWellnessPage() {
   return (
-    <main className="kk-page-root min-h-screen">
+    <div className="kk-page-root min-h-screen">
       <VerticalHero
         name={vertical.name}
+        mark={vertical.mark}
         tagline="Slow down without switching off from life."
         description="Creative, cultural, embodied, and community-based experiences that make room for rest, attention, movement, expression, nature, and connection."
         logoSrc={vertical.logoSrc}
@@ -161,6 +166,13 @@ export default function KukaWellnessPage() {
         <div className="kk-container">
           <div className="kk-panel grid gap-9 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-14">
             <div>
+              <SemanticIcon
+                icon="🛡️"
+                label="KuKa Wellness boundaries"
+                size="section"
+                className="mb-5"
+              />
+
               <p className="kk-section-label">What it is not</p>
               <h2 className="kk-section-heading mt-5">
                 Careful promises. Clear boundaries.
@@ -180,11 +192,18 @@ export default function KukaWellnessPage() {
                 "Not productivity disguised as wellness",
                 "Not one-size-fits-all",
                 "Not compulsory positivity",
-              ].map((item) => (
+              ].map((item, index) => (
                 <div
                   key={item}
                   className="rounded-2xl border border-black/10 bg-white px-5 py-4 text-lg font-semibold leading-7"
                 >
+                  <span
+                    className="mr-3 text-2xl"
+                    aria-hidden="true"
+                    data-kk-sequence={`not-${index + 1}`}
+                  >
+                    ×
+                  </span>
                   {item}
                 </div>
               ))}
@@ -220,6 +239,6 @@ export default function KukaWellnessPage() {
         secondaryLabel="Private Experiences"
         secondaryHref="/private-experiences"
       />
-    </main>
+    </div>
   );
 }

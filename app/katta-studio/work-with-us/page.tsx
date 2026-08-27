@@ -1,16 +1,21 @@
 import WorkWithUsApplicationForm from "./WorkWithUsApplicationForm";
 import type { Metadata } from "next";
 import Link from "next/link";
+import SemanticIcon from "../../components/SemanticIcon";
 
 export const metadata: Metadata = {
   title: "Work With Us | Katta Studio",
   description:
     "Explore employment, internship, freelance and project-based opportunities with Katta Studio.",
+  alternates: {
+    canonical: "/katta-studio/work-with-us",
+  },
 };
 
 const opportunityTypes = [
   {
     number: "01",
+    icon: "🎨",
     title: "Design & Visual Communication",
     text: "Create thoughtful visual communication for brands, websites, social media, brochures, presentations and digital campaigns.",
     roles: [
@@ -22,6 +27,7 @@ const opportunityTypes = [
   },
   {
     number: "02",
+    icon: "✍️",
     title: "Content & Communication",
     text: "Help businesses communicate clearly through useful, audience-aware content across websites, social platforms and campaigns.",
     roles: [
@@ -33,6 +39,7 @@ const opportunityTypes = [
   },
   {
     number: "03",
+    icon: "💻",
     title: "Websites & Digital Presence",
     text: "Design, build and improve practical digital experiences that help small businesses become more visible and generate enquiries.",
     roles: [
@@ -44,6 +51,7 @@ const opportunityTypes = [
   },
   {
     number: "04",
+    icon: "🔍",
     title: "Research, Outreach & Growth",
     text: "Support prospect research, business audits, lead qualification, outreach preparation and client coordination.",
     roles: [
@@ -55,6 +63,7 @@ const opportunityTypes = [
   },
   {
     number: "05",
+    icon: "🧠",
     title: "Specialist Collaborators",
     text: "Bring specialised expertise into selected assignments where a client or project requires additional capabilities.",
     roles: [
@@ -66,6 +75,7 @@ const opportunityTypes = [
   },
   {
     number: "06",
+    icon: "🎓",
     title: "Internships & Early-Career Roles",
     text: "Learn through real business projects while developing practical skills, professional discipline and a strong body of work.",
     roles: [
@@ -79,26 +89,32 @@ const opportunityTypes = [
 
 const qualities = [
   {
+    icon: "💬",
     title: "Clarity",
     text: "You communicate clearly, ask useful questions and keep people informed.",
   },
   {
+    icon: "⏰",
     title: "Reliability",
     text: "You respect timelines, take ownership and do not disappear when something becomes difficult.",
   },
   {
+    icon: "💡",
     title: "Curiosity",
     text: "You are willing to learn new tools, understand the client and explore better ways of working.",
   },
   {
+    icon: "❤️",
     title: "Thoughtfulness",
     text: "You care about the purpose behind the work, not only how the final output looks.",
   },
   {
+    icon: "👂",
     title: "Openness",
     text: "You can receive feedback, discuss disagreements respectfully and improve your work.",
   },
   {
+    icon: "🛡️",
     title: "Professionalism",
     text: "You respect clients, collaborators, confidential information and agreed ways of working.",
   },
@@ -107,21 +123,25 @@ const qualities = [
 const collaborationSteps = [
   {
     step: "01",
+    icon: "👋",
     title: "Tell us about yourself",
     text: "Share your experience, interests, availability and the kind of opportunity you are looking for.",
   },
   {
     step: "02",
+    icon: "📁",
     title: "Show us your work",
     text: "Send relevant samples, case studies, links or self-initiated work that helps us understand your abilities.",
   },
   {
     step: "03",
+    icon: "🗣️",
     title: "Have a conversation",
     text: "If there appears to be a fit, we will discuss the work, expectations, availability and compensation clearly.",
   },
   {
     step: "04",
+    icon: "📋",
     title: "Start with clarity",
     text: "Every engagement should begin with an agreed role, scope, timeline, responsibilities and payment structure.",
   },
@@ -133,6 +153,10 @@ export default function WorkWithKattaStudioPage() {
       {/* HERO */}
       <section className="kk-section-light relative overflow-hidden pb-20 pt-16 md:pb-24 md:pt-14">
         <div className="mx-auto flex max-w-7xl flex-col items-center px-6 text-center sm:px-10 lg:px-16">
+          <div className="mb-6 flex justify-center">
+            <SemanticIcon icon="💼" label="Work with us" size="page" />
+          </div>
+
           <p className="kk-page-label text-[var(--kk-accent)]">Katta Studio</p>
 
           <h1 className="kk-page-heading max-w-5xl">Work With Us</h1>
@@ -159,6 +183,10 @@ export default function WorkWithKattaStudioPage() {
       <section className="kk-section-light pb-20 pt-12 md:pb-24 md:pt-2">
         <div className="kk-container">
           <div className="mx-auto max-w-4xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="🤝" label="How we work" size="section" />
+            </div>
+
             <p className="kk-section-label mb-5">How We Work</p>
 
             <h2 className="kk-section-heading mt-4">
@@ -191,6 +219,10 @@ export default function WorkWithKattaStudioPage() {
       <section className="kk-section-cream pb-20 pt-10 md:pb-24 md:pt-14">
         <div className="kk-container">
           <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="🚪" label="Opportunities" size="section" />
+            </div>
+
             <p className="kk-section-label mb-5">Opportunities</p>
 
             <h2 className="kk-section-heading">
@@ -210,7 +242,13 @@ export default function WorkWithKattaStudioPage() {
                 key={opportunity.title}
                 className="kk-card kk-card--interactive min-h-[470px]"
               >
-                <p className="kk-card-number">{opportunity.number}</p>
+                <SemanticIcon
+                  icon={opportunity.icon}
+                  label={opportunity.title}
+                  size="card"
+                />
+
+                <p className="kk-card-number mt-5">{opportunity.number}</p>
 
                 <h3 className="kk-card-title mt-5">{opportunity.title}</h3>
 
@@ -242,6 +280,10 @@ export default function WorkWithKattaStudioPage() {
       <section className="kk-section-light pb-16 pt-8 md:pb-20 md:pt-6">
         <div className="kk-container">
           <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="⭐" label="What we appreciate" size="section" />
+            </div>
+
             <p className="kk-section-label mb-5">What We Appreciate</p>
 
             <h2 className="kk-section-heading">
@@ -261,7 +303,13 @@ export default function WorkWithKattaStudioPage() {
                 key={quality.title}
                 className="kk-card kk-card--interactive min-h-[220px]"
               >
-                <h3 className="kk-card-title">{quality.title}</h3>
+                <SemanticIcon
+                  icon={quality.icon}
+                  label={quality.title}
+                  size="card"
+                />
+
+                <h3 className="kk-card-title mt-5">{quality.title}</h3>
 
                 <p className="kk-card-body mt-5">{quality.text}</p>
               </article>
@@ -274,6 +322,14 @@ export default function WorkWithKattaStudioPage() {
       <section className="kk-section-cream pb-20 pt-10 md:pb-24 md:pt-6">
         <div className="kk-container">
           <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon
+                icon="🔄"
+                label="Collaboration process"
+                size="section"
+              />
+            </div>
+
             <p className="kk-section-label mb-5">The Process</p>
 
             <h2 className="kk-section-heading">
@@ -290,7 +346,9 @@ export default function WorkWithKattaStudioPage() {
           <div className="mt-14 grid gap-6 md:grid-cols-2">
             {collaborationSteps.map((item) => (
               <article key={item.step} className="kk-card kk-card--interactive">
-                <p className="kk-card-number">{item.step}</p>
+                <SemanticIcon icon={item.icon} label={item.title} size="card" />
+
+                <p className="kk-card-number mt-5">{item.step}</p>
 
                 <h3 className="kk-card-title mt-5">{item.title}</h3>
 
@@ -306,7 +364,13 @@ export default function WorkWithKattaStudioPage() {
         <div className="kk-container">
           <div className="grid gap-8 md:grid-cols-2">
             <article className="kk-card">
-              <p className="kk-card-label mb-5">Employment & Internships</p>
+              <SemanticIcon
+                icon="🏢"
+                label="Employment and internships"
+                size="card"
+              />
+
+              <p className="kk-card-label mb-5 mt-5">Employment & Internships</p>
 
               <h2 className="kk-card-title">Join the working team.</h2>
 
@@ -324,7 +388,13 @@ export default function WorkWithKattaStudioPage() {
             </article>
 
             <article className="kk-card">
-              <p className="kk-card-label mb-5">Freelance & Project Work</p>
+              <SemanticIcon
+                icon="🧩"
+                label="Freelance and project work"
+                size="card"
+              />
+
+              <p className="kk-card-label mb-5 mt-5">Freelance & Project Work</p>
 
               <h2 className="kk-card-title">
                 Collaborate when your skills fit.

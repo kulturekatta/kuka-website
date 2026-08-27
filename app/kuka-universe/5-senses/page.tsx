@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   title: "KuKa 5 Senses | Multisensory Cultural Experiences",
   description:
     "KuKa 5 Senses creates participatory experiences through taste, touch, scent, sound, and sight for individuals, private groups, organizations, and institutions.",
+  alternates: {
+    canonical: "/kuka-universe/5-senses",
+  },
 };
 
 const vertical = getKukaVertical("5-senses")!;
@@ -147,9 +150,10 @@ const process = [
 
 export default function KukaFiveSensesPage() {
   return (
-    <main className="kk-page-root min-h-screen">
+    <div className="kk-page-root min-h-screen">
       <VerticalHero
         name={vertical.name}
+        mark={vertical.mark}
         tagline="Culture you can taste, touch, smell, hear, and see."
         description="Multisensory gatherings that connect perception with craft, memory, place, ritual, stories, and human connection."
         logoSrc={vertical.logoSrc}
@@ -193,6 +197,7 @@ export default function KukaFiveSensesPage() {
 
       <VerticalExperienceGrid
         label="Sample combinations"
+        sectionIcon="💫"
         title="The most interesting experiences often cross senses and subjects."
         items={combinations}
       />
@@ -217,6 +222,6 @@ export default function KukaFiveSensesPage() {
         secondaryLabel="Private Experiences"
         secondaryHref="/private-experiences"
       />
-    </main>
+    </div>
   );
 }

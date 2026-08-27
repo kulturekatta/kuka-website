@@ -1,0 +1,30 @@
+KULTUREKATTA ICON SYSTEM — INSTALL
+
+1. Extract this ZIP into:
+   C:\kulture-katta-site
+
+2. Choose Replace/Overwrite when Windows asks.
+
+3. Do not delete any other project files.
+
+4. In PowerShell:
+   cd C:\kulture-katta-site
+   npm run audit:icons
+
+5. Then:
+   npm run lint
+
+6. Then:
+   npm run build
+
+7. If the build passes:
+   npm run start
+
+8. Leave that window running. In a second PowerShell window:
+   cd C:\kulture-katta-site
+   npx playwright test "tests/e2e/icon-system-completion.spec.ts" --project=chromium --workers=1 --reporter=list
+
+Target:
+   3 passed
+
+The ZIP contains only files that should be added/replaced for this icon-system update.

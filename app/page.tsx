@@ -1,5 +1,18 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import IconLead from "./components/IconLead";
+import SemanticIcon from "./components/SemanticIcon";
+
+export const metadata: Metadata = {
+  title:
+    "KultureKatta | Culture-Led Experiences for Organizations & Private Groups",
+  description:
+    "KultureKatta designs culture-led workshops, city trails, creative sessions, festive experiences, and custom gatherings for organizations, teams, and private groups.",
+  alternates: {
+    canonical: "/",
+  },
+};
 
 type IllustratedIconProps = {
   icon: string;
@@ -14,18 +27,11 @@ function IllustratedIcon({
 }: IllustratedIconProps) {
   return (
     <div className="flex flex-col items-center gap-3 text-center">
-      <span
-        aria-hidden="true"
-        className={`block leading-none drop-shadow-sm ${
-          compact ? "text-[2.6rem]" : "text-[3.35rem]"
-        }`}
-        style={{
-          fontFamily:
-            '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif',
-        }}
-      >
-        {icon}
-      </span>
+      <SemanticIcon
+        icon={icon}
+        label={label}
+        size={compact ? "compact" : "card"}
+      />
 
       <span className="inline-flex rounded-full bg-[#2a1b16] px-4 py-2 text-[0.68rem] font-extrabold uppercase tracking-[0.18em] text-white">
         {label}
@@ -37,32 +43,21 @@ function IllustratedIcon({
 type SectionHeaderIconProps = {
   icon: string;
   label: string;
-  compact?: boolean;
+  page?: boolean;
 };
 
 function SectionHeaderIcon({
   icon,
   label,
-  compact = false,
+  page = false,
 }: SectionHeaderIconProps) {
   return (
-    <div className="mb-5 flex justify-center">
-      <span
-        role="img"
-        aria-label={label}
-        className={`flex items-center justify-center rounded-[1.4rem] border border-black/10 bg-white leading-none shadow-sm ${
-          compact
-            ? "h-14 w-14 text-[1.85rem]"
-            : "h-16 w-16 text-[2.15rem]"
-        }`}
-        style={{
-          fontFamily:
-            '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif',
-        }}
-      >
-        {icon}
-      </span>
-    </div>
+    <IconLead
+      icon={icon}
+      label={label}
+      size={page ? "page" : "section"}
+      align="center"
+    />
   );
 }
 
@@ -204,7 +199,7 @@ const experienceTypes = [
 
 const discoveryLayers = [
   {
-    icon: "🧭",
+    icon: "🧠",
     iconLabel: "Mood and intent",
     eyebrow: "Start with what you want",
     title: "Mood & Intent Taxonomy",
@@ -278,21 +273,21 @@ const pastExperiences = [
 },
   {
     icon: "♟️",
-    iconLabel: "Games",
+    iconLabel: "Historic games",
     title: "Medieval Indian Games",
     place: "Pune",
     text: "A playful dive into traditional and historic Indian games, strategy, and social play.",
   },
   {
     icon: "☕",
-    iconLabel: "Senses",
+    iconLabel: "Coffee brewing",
     title: "Coffee Brewing Katta",
     place: "Pune",
     text: "A slow, sensory session exploring coffee, brewing techniques, taste, and ritual.",
   },
   {
     icon: "🔎",
-    iconLabel: "Stories",
+    iconLabel: "Forensic storytelling",
     title: "Storytelling, but Forensics",
     place: "Pune",
     text: "A gripping expert-led session that turned forensic science into an accessible story.",
@@ -306,7 +301,7 @@ const pastExperiences = [
   },
   {
     icon: "🤹",
-    iconLabel: "Movement",
+    iconLabel: "Juggling",
     title: "Juggling Workshop",
     place: "Mumbai",
     text: "A movement-based, playful workshop exploring rhythm, coordination, and flow.",
@@ -315,7 +310,7 @@ const pastExperiences = [
 
 const verticals = [
   {
-    icon: "🧭",
+    icon: "🗺️",
     iconLabel: "Place and discovery",
     eyebrow: "Travel, place and discovery",
     title: "KuKa Explore",
@@ -324,7 +319,7 @@ const verticals = [
     cta: "Discover KuKa Explore",
   },
   {
-    icon: "🪁",
+    icon: "🎈",
     iconLabel: "Childhood and learning",
     eyebrow: "Childhood and learning",
     title: "KuKa Circle",
@@ -334,11 +329,13 @@ const verticals = [
   },
   {
   icon: "👁️",
-  iconLabel: "Sensory Culture",
+  iconLabel: "Sensory culture",
+  eyebrow: "Taste, touch, scent, sound and sight",
   title: "KuKa 5 Senses",
   text: "Multisensory experiences through taste, touch, scent, sound, sight, memory, and culture.",
   href: "/kuka-universe/5-senses",
-  },
+  cta: "Discover KuKa 5 Senses",
+},
   {
     icon: "🌿",
     iconLabel: "Wellbeing and slowness",
@@ -354,8 +351,9 @@ const verticals = [
     eyebrow: "Nature and adventure",
     title: "The Ground by KuKa",
     text: "Outdoor learning, hiking, adventure, ecology, field skills, nature immersion, and experiences that bring people closer to the living world.",
-    href: "/kuka-universe/the-ground",
-    cta: "Discover The Ground",
+    href: "/kuka-universe#verticals",
+    cta: "Coming soon",
+    isPlanned: true,
   },
   {
     icon: "📜",
@@ -363,8 +361,9 @@ const verticals = [
     eyebrow: "Stories, memory and archives",
     title: "KuKa Chronicles",
     text: "Stories, oral histories, cultural memory, archives, conversations, publications, and documentation that preserve how people and places live.",
-    href: "/kuka-universe/chronicles",
-    cta: "Discover KuKa Chronicles",
+    href: "/kuka-universe#verticals",
+    cta: "Coming soon",
+    isPlanned: true,
   },
   {
     icon: "💻",
@@ -372,8 +371,9 @@ const verticals = [
     eyebrow: "Digital participation",
     title: "KuKa Digital",
     text: "Online and hybrid cultural experiences, digital storytelling, learning, archives, and new ways for people to participate across distance.",
-    href: "/kuka-universe/digital",
-    cta: "Discover KuKa Digital",
+    href: "/kuka-universe#verticals",
+    cta: "Coming soon",
+    isPlanned: true,
   },
   {
     icon: "🌍",
@@ -381,8 +381,9 @@ const verticals = [
     eyebrow: "Local and global exchange",
     title: "KuKa Exchange",
     text: "Cultural exchanges, residencies, visiting groups, collaborative programs, and encounters that connect local knowledge with the wider world.",
-    href: "/kuka-universe/exchange",
-    cta: "Discover KuKa Exchange",
+    href: "/kuka-universe#verticals",
+    cta: "Coming soon",
+    isPlanned: true,
   },
   {
     icon: "🤲",
@@ -390,8 +391,9 @@ const verticals = [
     eyebrow: "Culture-led impact",
     title: "KuKa Impact",
     text: "Programs that widen access, support creative livelihoods, strengthen communities, encourage inclusion, and connect culture with meaningful action.",
-    href: "/kuka-universe/impact",
-    cta: "Discover KuKa Impact",
+    href: "/kuka-universe#verticals",
+    cta: "Coming soon",
+    isPlanned: true,
   },
 ];
 
@@ -428,18 +430,22 @@ const howItWorks = [
 
 const proofItems = [
   {
+    icon: "🗂️",
     number: "50+",
     label: "Curated experiences",
   },
   {
+    icon: "🏙️",
     number: "3",
     label: "Cities and growing",
   },
   {
+    icon: "🎭",
     number: "25+",
     label: "Artists and facilitators",
   },
   {
+    icon: "👥",
     number: "400+",
     label: "Participants so far",
   },
@@ -466,11 +472,11 @@ const whatWeCreate = [
 
 export default function HomePage() {
   return (
-    <main className="kk-page-root kk-site-bg min-h-screen">
+    <div className="kk-page-root kk-site-bg min-h-screen">
       {/* HERO */}
       <section className="kk-section-light relative overflow-hidden pt-16 pb-20 md:pt-14 md:pb-24">
         <div className="mx-auto flex max-w-7xl flex-col items-center px-6 text-center sm:px-10 lg:px-16">
-          <SectionHeaderIcon icon="🪔" label="KultureKatta" />
+          <SectionHeaderIcon icon="🕯️" label="KultureKatta" page />
 
           <p className="kk-page-label text-[var(--kk-accent)]">
             Kulture Katta
@@ -689,6 +695,13 @@ export default function HomePage() {
           </div>
 
           <div className="kk-panel mx-auto mt-8 max-w-5xl text-center">
+            <SemanticIcon
+              icon="➕"
+              label="Mood plus moment"
+              size="card"
+              className="mb-5"
+            />
+
             <p className="kk-card-label">Mood + Moment</p>
 
             <h3 className="kk-card-title mt-4">
@@ -832,7 +845,13 @@ export default function HomePage() {
                 key={item.label}
                 className="kk-card kk-card--centered"
               >
-                <p className="kk-card-number">{item.number}</p>
+                <SemanticIcon
+                  icon={item.icon}
+                  label={item.label}
+                  size="compact"
+                />
+
+                <p className="kk-card-number mt-5">{item.number}</p>
 
                 <p className="kk-card-meta mt-3 uppercase tracking-[0.18em]">
                   {item.label}
@@ -884,7 +903,7 @@ export default function HomePage() {
           <section className="kk-section-cream pt-10 pb-20 md:pt-8 md:pb-24">
             <div className="kk-container">
               <div className="mx-auto max-w-4xl text-center">
-                <SectionHeaderIcon icon="🪐" label="The KuKa Universe" />
+                <SectionHeaderIcon icon="🌠" label="The KuKa Universe" />
 
                 <p className="kk-section-label mb-5">The KuKa Universe</p>
 
@@ -908,35 +927,64 @@ export default function HomePage() {
               </div>
 
               <div className="mt-16 grid items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {verticals.map((item) => (
-                  <Link
-                    key={item.title}
-                    href={item.href}
-                    aria-label={item.cta}
-                    className="kk-card kk-card--interactive group min-h-[350px]"
-                  >
-                    <IllustratedIcon
-                      icon={item.icon}
-                      label={item.iconLabel}
-                    />
+                {verticals.map((item) => {
+                  const cardContent = (
+                    <>
+                      <IllustratedIcon
+                        icon={item.icon}
+                        label={item.iconLabel}
+                      />
 
-                    <p className="kk-card-label mt-6 text-center">
-                      {item.eyebrow}
-                    </p>
+                      <div className="mt-6 flex min-h-[3.75rem] items-center justify-center">
+                        <p className="kk-card-label text-center">
+                          {item.eyebrow}
+                        </p>
+                      </div>
 
-                    <h3 className="kk-card-title mt-4 text-center">
-                      {item.title}
-                    </h3>
+                      <div className="mt-3 flex min-h-[3.5rem] items-center justify-center">
+                        <h3 className="kk-card-title text-center">
+                          {item.title}
+                        </h3>
+                      </div>
 
-                    <p className="kk-card-body mt-5 flex-1 text-center">
-                      {item.text}
-                    </p>
+                      <p className="kk-card-body mt-4 flex-1 text-center">
+                        {item.text}
+                      </p>
 
-                    <span className="kk-link-dark mt-8 self-center">
-                      {item.cta}
-                    </span>
-                  </Link>
-                ))}
+                      {item.isPlanned ? (
+                        <span className="mt-8 self-center text-xs font-semibold uppercase tracking-[0.16em] text-black/65">
+                          Coming soon
+                        </span>
+                      ) : (
+                        <span className="kk-link-dark mt-8 self-center">
+                          {item.cta}
+                        </span>
+                      )}
+                    </>
+                  );
+
+                  if (item.isPlanned) {
+                    return (
+                      <article
+                        key={item.title}
+                        className="kk-card min-h-[350px]"
+                      >
+                        {cardContent}
+                      </article>
+                    );
+                  }
+
+                  return (
+                    <Link
+                      key={item.title}
+                      href={item.href}
+                      aria-label={item.cta}
+                      className="kk-card kk-card--interactive group min-h-[350px]"
+                    >
+                      {cardContent}
+                    </Link>
+                  );
+                })}
               </div>
 
               {/* EXPLORE THE UNIVERSE CARD */}
@@ -947,16 +995,11 @@ export default function HomePage() {
               >
                 <div className="grid items-center gap-8 text-center md:grid-cols-[auto_1fr_auto] md:text-left">
                   <div className="flex justify-center">
-                    <span
-                      aria-hidden="true"
-                      className="block text-[4rem] leading-none drop-shadow-sm md:text-[5rem]"
-                      style={{
-                        fontFamily:
-                          '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif',
-                      }}
-                    >
-                      🌌
-                    </span>
+                    <SemanticIcon
+                      icon="🌌"
+                      label="Explore the KuKa Universe"
+                      size="section"
+                    />
                   </div>
 
                   <div>
@@ -976,7 +1019,7 @@ export default function HomePage() {
                   </div>
 
                   <div className="flex justify-center md:justify-end">
-                    <span className="kk-button-dark whitespace-nowrap">
+                    <span className="kk-button-dark">
                       Explore the Universe
                     </span>
                   </div>
@@ -988,7 +1031,7 @@ export default function HomePage() {
       {/* FINAL CTA */}
       <section className="kk-section-light pt-10 pb-20 md:pt-6 md:pb-24">
         <div className="kk-container text-center">
-          <SectionHeaderIcon icon="🧭" label="Find your next Katta" />
+          <SectionHeaderIcon icon="📍" label="Find your next Katta" />
 
           <p className="kk-section-label mb-5">Find your next Katta</p>
 
@@ -1068,6 +1111,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

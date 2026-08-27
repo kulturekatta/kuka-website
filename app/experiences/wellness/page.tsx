@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Wellness & Slowing Down Experiences | KultureKatta",
   description:
     "Culture-led wellness experiences through mindful making, nature connection, gentle movement, reflection, sensory rest, and screen-light pauses.",
+  alternates: {
+    canonical: "/experiences/wellness",
+  },
 };
 
 const experiences = [
@@ -52,7 +55,7 @@ const process = [
     text: "The experience is adapted to the setting, group size, accessibility needs, available time, energy level, and desired depth.",
   },
   {
-    icon: "🌿",
+    icon: "🍃",
     title: "Create breathing room",
     text: "Participants leave with more than a wellness activity: a practice, object, reflection, memory, or small ritual they can carry forward.",
   },
@@ -61,7 +64,7 @@ const process = [
 export default function WellnessExperiencesPage() {
   return (
     <ExperienceCategoryPage
-      icon="🌿"
+      icon="☮️"
       iconLabel="Wellness and slowing down"
       eyebrow="Wellness & slowing down"
       title="Breathing room, made human."

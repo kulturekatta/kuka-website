@@ -1,7 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type FormEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type FormEvent,
+} from "react";
+import {
+  PHONE_PATTERN,
+  useAccessibleFormValidation,
+} from "../components/formEnhancements";
+import SemanticIcon from "../components/SemanticIcon";
 
 const contactOptions = [
   {
@@ -18,7 +29,7 @@ const contactOptions = [
     title: "Ask us anything",
     text: "Have a question about KultureKatta, our events, cities, formats, or upcoming plans? Start here.",
     buttonText: "Email us",
-    href: "mailto:hello@kulturekatta.com?subject=General%20Enquiry%20for%20KultureKatta",
+    href: "mailto:hey@kulturekatta.com?subject=General%20Enquiry%20for%20KultureKatta",
   },
   {
     icon: "🤝",
@@ -26,7 +37,7 @@ const contactOptions = [
     title: "Work / Partner with KultureKatta",
     text: "For venues, cafés, studios, cultural spaces, brands, collectives, and collaborators who want to create something meaningful with us.",
     buttonText: "Partner with us",
-    href: "mailto:hello@kulturekatta.com?subject=Partnership%20Enquiry%20for%20KultureKatta",
+    href: "mailto:hey@kulturekatta.com?subject=Partnership%20Enquiry%20for%20KultureKatta",
   },
   {
     icon: "🙌",
@@ -34,7 +45,7 @@ const contactOptions = [
     title: "Volunteer with KultureKatta",
     text: "Want to help at events, support artists, assist with community building, documentation, research, or on-ground coordination?",
     buttonText: "Volunteer with us",
-    href: "mailto:hello@kulturekatta.com?subject=Volunteer%20with%20KultureKatta",
+    href: "mailto:hey@kulturekatta.com?subject=Volunteer%20with%20KultureKatta",
   },
   {
     icon: "🎤",
@@ -42,7 +53,7 @@ const contactOptions = [
     title: "Host a Katta",
     text: "Are you an artist, facilitator, storyteller, maker, teacher, performer, chef, walker, thinker, or curious human with something to share?",
     buttonText: "Become a host",
-    href: "mailto:hello@kulturekatta.com?subject=Host%20a%20Katta",
+    href: "mailto:hey@kulturekatta.com?subject=Host%20a%20Katta",
   },
   {
     icon: "📰",
@@ -50,22 +61,25 @@ const contactOptions = [
     title: "Media, stories and features",
     text: "For interviews, media features, press enquiries, cultural stories, founder conversations, and documentation requests.",
     buttonText: "Contact for media",
-    href: "mailto:hello@kulturekatta.com?subject=Media%20Enquiry%20for%20KultureKatta",
+    href: "mailto:hey@kulturekatta.com?subject=Media%20Enquiry%20for%20KultureKatta",
   },
 ];
 
 const quickLinks = [
   {
+    icon: "✉️",
     title: "Email",
     value: "hey@kulturekatta.com",
     href: "mailto:hey@kulturekatta.com",
   },
   {
+    icon: "📱",
     title: "WhatsApp / Call",
     value: "+91 97302 44996",
     href: "https://wa.me/919730244996",
   },
   {
+    icon: "📸",
     title: "Instagram",
     value: "@kulturekatta",
     href: "https://www.instagram.com/kulturekatta",
@@ -78,32 +92,177 @@ const inputClassName =
 const labelClassName =
   "kk-form-label block text-sm font-semibold tracking-[0.01em] text-[var(--kk-text)]";
 
+type FormStatus = "idle" | "submitting" | "success" | "error";
+const CONTACT_DRAFT_KEY = "kuka-contact-form-draft-v1";
+
+const subscribeToClientReady = () => () => {};
+const getClientReadySnapshot = () => true;
+const getServerReadySnapshot = () => false;
+
+type ContactDraft = {
+  name: string;
+  email: string;
+  phone: string;
+  interest: string;
+  message: string;
+  consent: boolean;
+};
+
 export default function ContactPage() {
-  const [captcha, setCaptcha] = useState("");
-  const [captchaError, setCaptchaError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const isClientReady = useSyncExternalStore(
+    subscribeToClientReady,
+    getClientReadySnapshot,
+    getServerReadySnapshot,
+  );
+  const [status, setStatus] = useState<FormStatus>("idle");
+  const [statusMessage, setStatusMessage] = useState("");
+  const startedAtRef = useRef(0);
+  const statusMessageRef = useRef<HTMLParagraphElement>(null);
+  const isSubmittingRef = useRef(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  const { handleInvalid, handleValidationInput } =
+    useAccessibleFormValidation();
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  useEffect(() => {
+    startedAtRef.current = Date.now();
 
-    setCaptchaError("");
-    setSuccessMessage("");
+    const savedDraft = window.sessionStorage.getItem(CONTACT_DRAFT_KEY);
 
-    if (captcha.trim() !== "14") {
-      setCaptchaError("Please solve the captcha correctly.");
+    if (!savedDraft || !formRef.current) {
       return;
     }
 
-    setSuccessMessage(
-      "Thank you. Your captcha has been verified. The form can be submitted once the form backend is connected.",
-    );
+    try {
+      const draft = JSON.parse(savedDraft) as Partial<ContactDraft>;
+      const form = formRef.current;
+      const setValue = (name: keyof Omit<ContactDraft, "consent">) => {
+        const control = form.elements.namedItem(name);
+
+        if (
+          control instanceof HTMLInputElement ||
+          control instanceof HTMLSelectElement ||
+          control instanceof HTMLTextAreaElement
+        ) {
+          control.value = typeof draft[name] === "string" ? draft[name] : "";
+        }
+      };
+
+      setValue("name");
+      setValue("email");
+      setValue("phone");
+      setValue("interest");
+      setValue("message");
+
+      const consent = form.elements.namedItem("consent");
+      if (consent instanceof HTMLInputElement) {
+        consent.checked = draft.consent === true;
+      }
+    } catch {
+      window.sessionStorage.removeItem(CONTACT_DRAFT_KEY);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (status === "success" || status === "error") {
+      statusMessageRef.current?.focus();
+    }
+  }, [status]);
+
+  const saveContactDraft = () => {
+    const form = formRef.current;
+
+    if (!form) {
+      return;
+    }
+
+    const formData = new FormData(form);
+    const draft: ContactDraft = {
+      name: String(formData.get("name") ?? ""),
+      email: String(formData.get("email") ?? ""),
+      phone: String(formData.get("phone") ?? ""),
+      interest: String(formData.get("interest") ?? ""),
+      message: String(formData.get("message") ?? ""),
+      consent: formData.get("consent") === "on",
+    };
+
+    window.sessionStorage.setItem(CONTACT_DRAFT_KEY, JSON.stringify(draft));
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (isSubmittingRef.current) {
+      return;
+    }
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    const payload = {
+      name: String(formData.get("name") ?? ""),
+      email: String(formData.get("email") ?? ""),
+      phone: String(formData.get("phone") ?? ""),
+      interest: String(formData.get("interest") ?? ""),
+      message: String(formData.get("message") ?? ""),
+      consent: formData.get("consent") === "on",
+      formGuard: String(formData.get("formGuard") ?? ""),
+      startedAt: startedAtRef.current,
+      sourcePage: "/contact",
+    };
+
+    isSubmittingRef.current = true;
+    setStatus("submitting");
+    setStatusMessage("");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = (await response.json()) as {
+        success?: boolean;
+        message?: string;
+      };
+
+      if (!response.ok || !result.success) {
+        throw new Error(
+          result.message ||
+            "Your enquiry could not be sent. Please try again.",
+        );
+      }
+
+      form.reset();
+      window.sessionStorage.removeItem(CONTACT_DRAFT_KEY);
+      startedAtRef.current = Date.now();
+      setStatus("success");
+      setStatusMessage(
+        "Thank you. Your enquiry has been sent, and a confirmation email is on its way.",
+      );
+    } catch (error) {
+      setStatus("error");
+      setStatusMessage(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again.",
+      );
+    } finally {
+      isSubmittingRef.current = false;
+    }
   };
 
   return (
-    <main className="kk-page-root kk-contact-page kk-section-light min-h-screen">
+    <div className="kk-page-root kk-contact-page kk-section-light min-h-screen">
       {/* HERO SECTION */}
       <section className="kk-section-light relative overflow-hidden">
         <div className="mx-auto flex max-w-7xl flex-col items-center px-6 text-center sm:px-10 lg:px-16">
+          <div className="mb-6 flex justify-center">
+            <SemanticIcon icon="👋" label="Contact KultureKatta" size="page" />
+          </div>
+
           <p className="kk-page-label text-[var(--kk-accent)]">
             Contact KultureKatta
           </p>
@@ -152,6 +311,10 @@ export default function ContactPage() {
 
         <div className="mx-auto max-w-6xl px-6 sm:px-10 lg:px-16">
           <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="🚪" label="Choose your doorway" size="section" />
+            </div>
+
             <p className="kk-section-label mb-5">Choose your doorway</p>
 
             <h2 className="kk-section-heading">
@@ -173,12 +336,7 @@ export default function ContactPage() {
                 href={item.href}
                 className="group kk-card kk-card--interactive flex min-h-[360px] flex-col"
               >
-                <div
-                  className="flex h-20 w-20 items-center justify-center rounded-[1.5rem] bg-[var(--kk-accent)]/10 text-4xl md:h-24 md:w-24 md:text-5xl"
-                  aria-hidden="true"
-                >
-                  {item.icon}
-                </div>
+                <SemanticIcon icon={item.icon} label={item.title} size="card" />
 
                 <p className="kk-card-label mt-6">{item.label}</p>
 
@@ -202,6 +360,10 @@ export default function ContactPage() {
       <section className="kk-section-light px-6 py-24 sm:px-10 lg:px-16">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="📇" label="Direct contact" size="section" />
+            </div>
+
             <p className="kk-section-label mb-5">Direct contact</p>
 
             <h2 className="kk-section-heading">
@@ -228,7 +390,9 @@ export default function ContactPage() {
                 }
                 className="kk-card kk-card--interactive text-left"
               >
-                <p className="kk-card-title">{item.title}</p>
+                <SemanticIcon icon={item.icon} label={item.title} size="card" />
+
+                <p className="kk-card-title mt-5">{item.title}</p>
 
                 <p className="kk-card-value mt-3 break-words">{item.value}</p>
               </Link>
@@ -241,6 +405,10 @@ export default function ContactPage() {
       <section className="kk-section-light px-6 py-24 sm:px-10 lg:px-16">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="📝" label="Enquiry form" size="section" />
+            </div>
+
             <p className="kk-section-label mb-5">Enquiry form</p>
 
             <h2 className="kk-section-heading">
@@ -255,8 +423,8 @@ export default function ContactPage() {
           </div>
 
           <div className="mx-auto mt-14 max-w-5xl overflow-hidden rounded-[2rem] border border-black/10 bg-white shadow-[0_24px_70px_rgba(45,35,25,0.10)]">
-            <div className="grid lg:grid-cols-[0.78fr_1.22fr]">
-              <aside className="relative overflow-hidden bg-[var(--kk-text)] px-7 py-10 text-white sm:px-10 lg:px-11 lg:py-12">
+            <div className="grid min-w-0 lg:grid-cols-[0.78fr_1.22fr]">
+              <aside className="relative min-w-0 overflow-hidden bg-[var(--kk-text)] px-7 py-10 text-white sm:px-10 lg:px-11 lg:py-12">
                 <div
                   aria-hidden="true"
                   className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full border border-white/10"
@@ -267,7 +435,14 @@ export default function ContactPage() {
                 />
 
                 <div className="relative flex h-full flex-col">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--kk-accent)]">
+                  <SemanticIcon
+                    icon="🧩"
+                    label="Shape of your idea"
+                    size="card"
+                    className="mb-5"
+                  />
+
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] !text-white">
                     A good place to begin
                   </p>
 
@@ -275,7 +450,7 @@ export default function ContactPage() {
                     Tell us the shape of your idea.
                   </h3>
 
-                  <p className="mt-5 leading-7 text-white/70">
+                  <p className="mt-5 leading-7 !text-white">
                     It does not need to be perfectly formed. These three details
                     give us enough to start a useful conversation.
                   </p>
@@ -298,7 +473,7 @@ export default function ContactPage() {
                   </ul>
 
                   <div className="mt-10 border-t border-white/15 pt-7 lg:mt-auto">
-                    <p className="text-sm text-white/60">
+                    <p className="text-sm !text-white">
                       Prefer a quick conversation?
                     </p>
                     <Link
@@ -314,11 +489,24 @@ export default function ContactPage() {
               </aside>
 
               <form
+                ref={formRef}
                 onSubmit={handleSubmit}
-                className="px-7 py-10 sm:px-10 lg:px-12 lg:py-12"
+                onInvalid={handleInvalid}
+                onInput={(event) => {
+                  handleValidationInput(event);
+                  saveContactDraft();
+                }}
+                className="min-w-0 px-7 py-10 sm:px-10 lg:px-12 lg:py-12"
               >
-                <div className="flex items-start justify-between gap-5 border-b border-black/10 pb-7">
+                <div className="flex min-w-0 flex-col items-start gap-2 border-b border-black/10 pb-7 sm:flex-row sm:justify-between sm:gap-5">
                   <div>
+                    <SemanticIcon
+                      icon="✍️"
+                      label="Start the conversation"
+                      size="compact"
+                      className="mb-3"
+                    />
+
                     <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--kk-accent)]">
                       Your enquiry
                     </p>
@@ -327,7 +515,7 @@ export default function ContactPage() {
                     </h3>
                   </div>
 
-                  <p className="shrink-0 pt-1 text-xs text-black/45">
+                  <p className="pt-1 text-xs text-black/65 sm:shrink-0">
                     * Required
                   </p>
                 </div>
@@ -358,6 +546,7 @@ export default function ContactPage() {
                       id="email"
                       name="email"
                       type="email"
+                      inputMode="email"
                       autoComplete="email"
                       placeholder="you@example.com"
                       required
@@ -374,7 +563,10 @@ export default function ContactPage() {
                       id="phone"
                       name="phone"
                       type="tel"
+                      inputMode="tel"
                       autoComplete="tel"
+                      pattern={PHONE_PATTERN}
+                      title="Use 7–20 digits with an optional +, spaces, parentheses, or hyphens."
                       placeholder="+91 98765 43210"
                       className={inputClassName}
                     />
@@ -428,81 +620,77 @@ export default function ContactPage() {
                     />
                   </div>
 
-                  <div className="sm:col-span-2">
-                    <div className="rounded-2xl border border-black/10 bg-[var(--kk-surface-alt)] p-5">
-                      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-                        <div>
-                          <label htmlFor="captcha" className={labelClassName}>
-                            Quick check{" "}
-                            <span className="text-[var(--kk-accent)]">*</span>
-                          </label>
-                          <p className="mt-2 text-sm text-black/55">
-                            What is{" "}
-                            <span className="font-semibold text-[var(--kk-text)]">
-                              9 + 5
-                            </span>
-                            ?
-                          </p>
-                        </div>
-
-                        <input
-                          id="captcha"
-                          name="captcha"
-                          type="text"
-                          inputMode="numeric"
-                          pattern="[0-9]*"
-                          value={captcha}
-                          onChange={(event) => {
-                            setCaptcha(event.target.value);
-                            setCaptchaError("");
-                            setSuccessMessage("");
-                          }}
-                          placeholder="Answer"
-                          required
-                          aria-describedby={
-                            captchaError ? "captcha-error" : undefined
-                          }
-                          className={`${inputClassName} mt-0 sm:w-36`}
-                        />
-                      </div>
-
-                      {captchaError && (
-                        <p
-                          id="captcha-error"
-                          role="alert"
-                          className="kk-small-text mt-3 font-semibold text-red-700"
-                        >
-                          {captchaError}
-                        </p>
-                      )}
-                    </div>
+                  <div
+                    className="absolute -left-[10000px] top-auto h-px w-px overflow-hidden"
+                    aria-hidden="true"
+                  >
+                    <label htmlFor="contact-form-guard">
+                      Leave this field empty
+                    </label>
+                    <input
+                      id="contact-form-guard"
+                      name="formGuard"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="new-password"
+                    />
                   </div>
 
-                  {successMessage && (
+                  <label className="flex cursor-pointer items-start gap-3 sm:col-span-2">
+                    <input
+                      type="checkbox"
+                      name="consent"
+                      required
+                      className="mt-1 h-5 w-5 shrink-0 accent-[var(--kk-accent)]"
+                    />
+                    <span className="text-sm leading-6 text-black/60">
+                      I agree that KultureKatta may use the information submitted
+                      here to respond to my enquiry as described in the{" "}
+                      <Link
+                        href="/privacy-policy"
+                        className="font-semibold underline decoration-black/30 underline-offset-2 hover:decoration-black"
+                      >
+                        Privacy Policy
+                      </Link>.{" "}
+                      <span className="text-[var(--kk-accent)]" aria-hidden="true">
+                        *
+                      </span>
+                    </span>
+                  </label>
+
+                  {statusMessage && (
                     <p
-                      role="status"
-                      className="kk-small-text rounded-2xl border border-green-200 bg-green-50 px-5 py-4 font-semibold text-green-800 sm:col-span-2"
+                      ref={statusMessageRef}
+                      tabIndex={-1}
+                      role={status === "error" ? "alert" : "status"}
+                      aria-live={status === "error" ? "assertive" : "polite"}
+                      className={`kk-small-text rounded-2xl px-5 py-4 font-semibold sm:col-span-2 ${
+                        status === "error"
+                          ? "border border-red-200 bg-red-50 text-red-800"
+                          : "border border-green-200 bg-green-50 text-green-800"
+                      }`}
                     >
-                      {successMessage}
+                      {statusMessage}
                     </p>
                   )}
 
                   <div className="flex flex-col gap-4 border-t border-black/10 pt-7 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
-                    <p className="max-w-xs text-xs leading-5 text-black/50">
+                    <p className="max-w-xs text-xs leading-5 text-black/65">
                       We will use your details only to respond to your enquiry.
                     </p>
 
                     <button
                       type="submit"
-                      className="kk-button-dark w-full justify-center sm:w-auto"
+                      disabled={!isClientReady || status === "submitting"}
+                      className="kk-button-dark w-full justify-center disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                     >
-                      Send enquiry
+                      {status === "submitting" ? "Sending enquiry..." : "Send enquiry"}
                     </button>
                   </div>
 
-                  <p className="text-xs leading-5 text-black/45 sm:col-span-2">
-                    Online submissions are currently being connected. Until
-                    then, email or WhatsApp us for an immediate enquiry.
+                  <p className="text-xs leading-5 text-black/65 sm:col-span-2">
+                    You will receive an automatic confirmation after a successful
+                    submission.
                   </p>
                 </div>
               </form>
@@ -514,6 +702,10 @@ export default function ContactPage() {
       {/* CLOSING CTA */}
       <section className="kk-section-light px-6 py-24 sm:px-10 lg:px-16">
         <div className="mx-auto max-w-5xl text-center">
+          <div className="mb-5 flex justify-center">
+            <SemanticIcon icon="☕" label="Start with hello" size="section" />
+          </div>
+
           <p className="kk-section-label mb-5">Start with hello</p>
 
           <h2 className="kk-section-heading">
@@ -543,6 +735,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

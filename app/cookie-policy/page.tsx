@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "Cookie Policy | KultureKatta",
   description:
     "Learn how KultureKatta uses cookies, local storage, and similar browser technologies.",
+  alternates: {
+    canonical: "/cookie-policy",
+  },
 };
 
 const linkClass =

@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { experienceCategories } from "@/data/experienceCategories";
+import IconLead from "@/app/components/IconLead";
+import SemanticIcon from "@/app/components/SemanticIcon";
+import SequenceMarker from "@/app/components/SequenceMarker";
 
 type ExperienceCategoryPageProps = {
   params: Promise<{
@@ -28,6 +31,9 @@ export async function generateMetadata({ params }: ExperienceCategoryPageProps) 
   return {
     title: `${category.heroTitle} | KultureKatta`,
     description: category.heroSubtitle,
+    alternates: {
+      canonical: `/experiences/${slug}`,
+    },
   };
 }
 
@@ -52,9 +58,15 @@ export default async function ExperienceCategoryPage({
       : null;
 
   return (
-    <main className="kk-page-root kk-section-light">
+    <div className="kk-page-root kk-section-light">
       <section className="kk-section-light px-6 py-24">
         <div className="mx-auto max-w-6xl">
+          <IconLead
+            icon={category.icon}
+            label={category.title}
+            size="page"
+          />
+
           <p className="kk-page-label">{category.eyebrow}</p>
 
           <h1 className="kk-page-heading mt-6 max-w-4xl">
@@ -80,6 +92,8 @@ export default async function ExperienceCategoryPage({
       <section className="kk-section-light px-6 py-20">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
+            <IconLead icon="📖" label="What this experience means" />
+
             <p className="kk-section-label">What this means</p>
 
             <h2 className="kk-section-heading mt-5 max-w-3xl">
@@ -94,7 +108,9 @@ export default async function ExperienceCategoryPage({
           </div>
 
           <div className="kk-card">
-            <p className="kk-card-label">Includes</p>
+            <SemanticIcon icon="📋" label="Includes" size="card" />
+
+            <p className="kk-card-label mt-5">Includes</p>
 
             <ul className="mt-6 space-y-4">
               {category.includes.map((item) => (
@@ -110,6 +126,8 @@ export default async function ExperienceCategoryPage({
 
       <section className="kk-section-cream px-6 py-20">
         <div className="mx-auto max-w-6xl">
+          <IconLead icon="🧰" label="Possible formats" />
+
           <p className="kk-section-label">Possible formats</p>
 
           <h2 className="kk-section-heading mt-5 max-w-3xl">
@@ -117,12 +135,14 @@ export default async function ExperienceCategoryPage({
           </h2>
 
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {category.formats.map((format) => (
+            {category.formats.map((format, index) => (
               <div
                 key={format}
                 className="kk-card kk-card--compact kk-card--soft"
               >
-                <p className="kk-card-title">{format}</p>
+                <SequenceMarker index={index} label={format} />
+
+                <p className="kk-card-title mt-4">{format}</p>
               </div>
             ))}
           </div>
@@ -131,6 +151,8 @@ export default async function ExperienceCategoryPage({
 
       <section className="kk-section-light px-6 py-20">
         <div className="mx-auto max-w-6xl">
+          <IconLead icon="🌐" label="Explore more experiences" />
+
           <p className="kk-section-label">Explore more</p>
 
           <h2 className="kk-section-heading mt-5">
@@ -144,7 +166,13 @@ export default async function ExperienceCategoryPage({
                 href={item.href}
                 className="kk-card kk-card--compact kk-card--interactive group"
               >
-                <p className="kk-card-title">
+                <SemanticIcon
+                  icon={item.icon}
+                  label={item.title}
+                  size="card"
+                />
+
+                <p className="kk-card-title mt-5">
                   {item.titleLines.map((line) => (
                     <span key={line} className="block">
                       {line}
@@ -164,6 +192,6 @@ export default async function ExperienceCategoryPage({
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

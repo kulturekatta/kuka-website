@@ -1,10 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { VerticalStatus } from "../../data/kukaVerticals";
+import IconLead from "../IconLead";
 import UniverseStatusBadge from "./UniverseStatusBadge";
 
 type VerticalHeroProps = {
   name: string;
+  mark: string;
   tagline: string;
   description: string;
   logoSrc: string;
@@ -18,6 +20,7 @@ type VerticalHeroProps = {
 
 export default function VerticalHero({
   name,
+  mark,
   tagline,
   description,
   logoSrc,
@@ -33,7 +36,7 @@ export default function VerticalHero({
       <div className="kk-container">
         <nav
           aria-label="Breadcrumb"
-          className="mb-8 flex flex-wrap items-center gap-2 text-sm font-semibold text-black/50"
+          className="mb-8 flex flex-wrap items-center gap-2 text-sm font-semibold text-[var(--kk-text-muted)]"
         >
           <Link href="/" className="transition hover:text-[var(--kk-accent)]">
             Home
@@ -51,6 +54,8 @@ export default function VerticalHero({
 
         <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(280px,0.7fr)] lg:gap-16">
           <div>
+            <IconLead icon={mark} label={name} size="page" />
+
             <div className="flex flex-wrap items-center gap-4">
               <p className="kk-page-label">{name}</p>
               <UniverseStatusBadge status={status} />

@@ -18,7 +18,13 @@ function InstagramIcon(props: IconProps) {
     >
       <rect x="3" y="3" width="18" height="18" rx="5" />
       <circle cx="12" cy="12" r="4" />
-      <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none" />
+      <circle
+        cx="17.5"
+        cy="6.5"
+        r="0.8"
+        fill="currentColor"
+        stroke="none"
+      />
     </svg>
   );
 }
@@ -103,7 +109,7 @@ export default function FloatingSocialBar() {
   return (
     <nav
       aria-label="KultureKatta social and contact links"
-      className="fixed bottom-5 left-3 z-[70] flex overflow-visible rounded-2xl border border-white/10 bg-[var(--kk-text)] p-1.5 text-white shadow-[0_14px_40px_rgba(0,0,0,0.22)] md:bottom-auto md:left-0 md:top-1/2 md:-translate-y-1/2 md:flex-col md:rounded-l-none md:rounded-r-2xl md:px-1.5 md:py-2"
+      className="fixed left-0 top-1/2 z-[70] hidden -translate-y-1/2 flex-col overflow-visible rounded-r-2xl border border-white/10 bg-[var(--kk-text)] px-1.5 py-2 text-white shadow-[0_14px_40px_rgba(0,0,0,0.22)] md:flex"
     >
       {socialLinks.map((item) => {
         const Icon = item.icon;
@@ -120,7 +126,7 @@ export default function FloatingSocialBar() {
           >
             <Icon className="h-5 w-5" />
 
-            <span className="pointer-events-none absolute left-full ml-3 hidden whitespace-nowrap rounded-lg bg-[var(--kk-text)] px-3 py-2 text-xs font-semibold text-white opacity-0 shadow-lg transition group-hover:opacity-100 group-focus-visible:opacity-100 md:block">
+            <span className="pointer-events-none absolute left-full ml-3 whitespace-nowrap rounded-lg bg-[var(--kk-text)] px-3 py-2 text-xs font-semibold text-white opacity-0 shadow-lg transition group-hover:opacity-100 group-focus-visible:opacity-100">
               {item.label}
             </span>
           </a>

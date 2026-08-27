@@ -1,22 +1,37 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import SemanticIcon from "../components/SemanticIcon";
+
+export const metadata: Metadata = {
+  title: "Private Cultural Experiences | KultureKatta",
+  description:
+    "Create warm, hands-on private experiences for birthdays, families, friends, couples, visiting guests, and intimate celebrations.",
+  alternates: {
+    canonical: "/private-experiences",
+  },
+};
 
 const sampleExperiences = [
-  "Pottery celebration",
-  "Food and storytelling evening",
-  "Creative bachelorette",
-  "Family heritage walk",
-  "Parent-child art session",
-  "Couple’s creative date",
-  "Curated half-day Pune trail",
-  "Private music baithak",
+  { icon: "🏺", title: "Pottery celebration" },
+  { icon: "🍲", title: "Food and storytelling evening" },
+  { icon: "💃", title: "Creative bachelorette" },
+  { icon: "🗺️", title: "Family heritage walk" },
+  { icon: "🎨", title: "Parent-child art session" },
+  { icon: "💞", title: "Couple’s creative date" },
+  { icon: "🧭", title: "Curated half-day Pune trail" },
+  { icon: "🎵", title: "Private music baithak" },
 ];
 
 export default function PrivateExperiencesPage() {
   return (
-    <main className="kk-page-root kk-site-bg min-h-screen">
+    <div className="kk-page-root kk-site-bg min-h-screen">
       {/* HERO */}
       <section className="kk-section-light kk-hero-padding">
         <div className="kk-container text-center">
+          <div className="mb-6 flex justify-center">
+            <SemanticIcon icon="🎉" label="Private experiences" size="page" />
+          </div>
+
           <p className="kk-page-label text-[var(--kk-accent)]">
             KuKa Private Experiences
           </p>
@@ -43,6 +58,10 @@ export default function PrivateExperiencesPage() {
       <section className="kk-section-cream kk-section-padding">
         <div className="kk-container">
           <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="💡" label="Experience ideas" size="section" />
+            </div>
+
             <p className="kk-section-label">Experience Ideas</p>
 
             <h2 className="kk-section-heading mt-4">
@@ -58,10 +77,12 @@ export default function PrivateExperiencesPage() {
           <div className="kk-grid-3 mt-12">
             {sampleExperiences.map((item) => (
               <article
-                key={item}
+                key={item.title}
                 className="kk-card kk-card--centered kk-card--interactive min-h-[150px]"
               >
-                <h3 className="kk-card-title">{item}</h3>
+                <SemanticIcon icon={item.icon} label={item.title} size="card" />
+
+                <h3 className="kk-card-title mt-5">{item.title}</h3>
               </article>
             ))}
 
@@ -71,7 +92,13 @@ export default function PrivateExperiencesPage() {
               className="kk-card kk-card--centered kk-card--interactive min-h-[150px] border-2 border-[var(--kk-accent)]"
             >
               <div className="text-center">
-                <h3 className="kk-card-title">
+                <SemanticIcon
+                  icon="🧩"
+                  label="Custom private experience"
+                  size="card"
+                />
+
+                <h3 className="kk-card-title mt-5">
                   Something entirely your own
                 </h3>
 
@@ -88,6 +115,14 @@ export default function PrivateExperiencesPage() {
       <section className="kk-section-light kk-section-padding">
         <div className="kk-container text-center">
           <div className="kk-panel mx-auto max-w-4xl">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon
+                icon="💰"
+                label="Starting investment"
+                size="section"
+              />
+            </div>
+
             <p className="kk-section-label">Starting Investment</p>
 
             <h2 className="kk-section-heading mx-auto mt-4 max-w-3xl">
@@ -107,6 +142,6 @@ export default function PrivateExperiencesPage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

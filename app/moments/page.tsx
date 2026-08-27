@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import SemanticIcon from "../components/SemanticIcon";
 
 export const metadata: Metadata = {
   title: "Moments, Seasons & Conditions | KultureKatta",
   description:
     "Discover KuKa possibilities shaped by season, weather, time of day, cultural calendars, natural windows, and the time you have available.",
+  alternates: {
+    canonical: "/moments",
+  },
 };
 
 const momentCards = [
@@ -16,7 +20,7 @@ const momentCards = [
     examples: ["monsoon", "summer", "cooler months", "flowering"],
   },
   {
-    icon: "🌦️",
+    icon: "☔",
     title: "Weather conditions",
     question: "What becomes possible because of the weather?",
     text: "Rain-enhanced, heat-safe, clear-sky, windy, misty, indoor, outdoor, or weather-sensitive experiences with appropriate alternatives.",
@@ -30,7 +34,7 @@ const momentCards = [
     examples: ["before breakfast", "after work", "at sunset", "after dark"],
   },
   {
-    icon: "🪔",
+    icon: "🕯️",
     title: "Calendar and cultural moments",
     question: "What is the calendar asking us to notice?",
     text: "Festivals, regional calendars, new year, year-end, heritage weeks, local fairs, graduation, wedding season, and other shared occasions.",
@@ -91,18 +95,21 @@ const weatherRelationships = [
 
 const discoveryExamples = [
   {
+    icon: "☕",
     mood: "I want to slow down",
     moment: "It is raining and I have Sunday afternoon free",
     result:
       "A rain listening session, monsoon poetry and chai, mindful making, cloud journaling, or an indoor sensory table.",
   },
   {
+    icon: "👣",
     mood: "I want to explore",
     moment: "The morning is cool and I have three hours",
     result:
       "A sunrise heritage walk, birding trail, neighborhood breakfast route, market-awakening walk, or city sketch expedition.",
   },
   {
+    icon: "🎉",
     mood: "I want to celebrate",
     moment: "A festival is approaching and several generations are gathering",
     result:
@@ -110,26 +117,18 @@ const discoveryExamples = [
   },
 ];
 
-function PageIcon({ icon, label }: { icon: string; label: string }) {
-  return (
-    <div className="mb-6 flex justify-center">
-      <span
-        role="img"
-        aria-label={label}
-        className="flex h-20 w-20 items-center justify-center rounded-[1.6rem] border border-black/10 bg-white text-[2.7rem] leading-none shadow-sm"
-      >
-        {icon}
-      </span>
-    </div>
-  );
-}
-
 export default function MomentsPage() {
   return (
-    <main className="kk-page-root min-h-screen">
+    <div className="kk-page-root min-h-screen">
       <section className="kk-section-light kk-hero-padding">
         <div className="kk-container text-center">
-          <PageIcon icon="🌦️" label="Moments, seasons and conditions" />
+          <div className="mb-6 flex justify-center">
+            <SemanticIcon
+              icon="🌦️"
+              label="Moments, seasons and conditions"
+              size="page"
+            />
+          </div>
 
           <p className="kk-page-label">Moments, Seasons & Conditions</p>
 
@@ -166,6 +165,10 @@ export default function MomentsPage() {
       >
         <div className="kk-container">
           <div className="mx-auto max-w-4xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="📅" label="Made for this moment" size="section" />
+            </div>
+
             <p className="kk-section-label">Made for this moment</p>
             <h2 className="kk-section-heading mt-5">
               Eight ways context can shape a KuKa experience.
@@ -184,12 +187,11 @@ export default function MomentsPage() {
                 key={moment.title}
                 className="kk-card kk-card--interactive min-h-[450px]"
               >
-                <span
-                  aria-hidden="true"
-                  className="text-center text-5xl leading-none"
-                >
-                  {moment.icon}
-                </span>
+                <SemanticIcon
+                  icon={moment.icon}
+                  label={moment.title}
+                  size="card"
+                />
 
                 <h3 className="kk-card-title mt-6 text-center">
                   {moment.title}
@@ -219,6 +221,10 @@ export default function MomentsPage() {
       <section className="kk-section-light kk-section-padding">
         <div className="kk-container">
           <div className="mx-auto max-w-4xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="➕" label="Mood plus moment" size="section" />
+            </div>
+
             <p className="kk-section-label">Mood + Moment</p>
             <h2 className="kk-section-heading mt-5">
               One tells us what you want. The other tells us what fits now.
@@ -228,7 +234,9 @@ export default function MomentsPage() {
           <div className="mt-14 grid gap-6 lg:grid-cols-3">
             {discoveryExamples.map((example) => (
               <article key={example.mood} className="kk-card">
-                <p className="kk-card-label">Mood</p>
+                <SemanticIcon icon={example.icon} label={example.mood} size="card" />
+
+                <p className="kk-card-label mt-5">Mood</p>
                 <h3 className="kk-card-title mt-3">{example.mood}</h3>
 
                 <p className="kk-card-label mt-7">Moment</p>
@@ -247,6 +255,14 @@ export default function MomentsPage() {
       <section className="kk-section-cream kk-section-padding">
         <div className="kk-container">
           <div className="mx-auto max-w-4xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon
+                icon="⚠️"
+                label="Weather relationship"
+                size="section"
+              />
+            </div>
+
             <p className="kk-section-label">Weather relationship</p>
             <h2 className="kk-section-heading mt-5">
               “Seasonal” does not mean careless about conditions.
@@ -264,9 +280,11 @@ export default function MomentsPage() {
                 key={relationship.title}
                 className="kk-card kk-card--interactive"
               >
-                <span aria-hidden="true" className="text-4xl leading-none">
-                  {relationship.icon}
-                </span>
+                <SemanticIcon
+                  icon={relationship.icon}
+                  label={relationship.title}
+                  size="card"
+                />
                 <h3 className="kk-card-title mt-5">
                   {relationship.title}
                 </h3>
@@ -276,6 +294,13 @@ export default function MomentsPage() {
           </div>
 
           <div className="kk-panel mx-auto mt-8 max-w-5xl">
+            <SemanticIcon
+              icon="🤞"
+              label="Our promise"
+              size="card"
+              className="mb-5"
+            />
+
             <p className="kk-card-label">Our promise</p>
             <h3 className="kk-card-title mt-4">
               We promise the guided act of looking, learning, making, and
@@ -295,7 +320,9 @@ export default function MomentsPage() {
       <section className="kk-section-light kk-section-padding">
         <div className="kk-container">
           <div className="kk-panel mx-auto max-w-5xl text-center">
-            <PageIcon icon="✨" label="Best experienced now" />
+            <div className="mb-6 flex justify-center">
+              <SemanticIcon icon="✨" label="Best experienced now" size="section" />
+            </div>
             <p className="kk-section-label">Here briefly</p>
             <h2 className="kk-section-heading mx-auto mt-5 max-w-4xl">
               Ask KuKa what may be especially meaningful right now.
@@ -320,6 +347,6 @@ export default function MomentsPage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

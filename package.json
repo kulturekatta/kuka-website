@@ -6,7 +6,22 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "audit:icons": "node scripts/icon-audit.cjs",
+    "test:e2e": "playwright test --project=chromium",
+    "test:e2e:all": "playwright test",
+    "test:e2e:baseline": "playwright test --grep-invert \"@(?:exhaustive|completion)\"",
+    "test:e2e:exhaustive": "playwright test --grep @exhaustive",
+    "test:e2e:completion": "playwright test --grep @completion",
+    "test:e2e:headed": "playwright test --project=chromium --headed",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:report": "playwright show-report",
+    "test:e2e:real": "playwright test tests/e2e/real-form-smoke.spec.ts --project=chromium",
+    "test:visual": "playwright test --config=playwright.visual.config.ts",
+    "test:visual:update": "playwright test --config=playwright.visual.config.ts --update-snapshots",
+    "test:lighthouse:mobile": "node scripts/lighthouse-completion.mjs mobile",
+    "test:lighthouse:desktop": "node scripts/lighthouse-completion.mjs desktop",
+    "test:lighthouse:all": "npm run test:lighthouse:mobile && npm run test:lighthouse:desktop"
   },
   "dependencies": {
     "lucide-react": "^1.27.0",
@@ -16,12 +31,16 @@
     "resend": "^6.18.1"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "chrome-launcher": "^1.2.1",
     "eslint": "^9",
     "eslint-config-next": "^16.2.11",
+    "lighthouse": "^13.0.3",
     "tailwindcss": "^4.3.3",
     "typescript": "^5"
   },

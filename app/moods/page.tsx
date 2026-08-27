@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import SemanticIcon from "../components/SemanticIcon";
 
 export const metadata: Metadata = {
   title: "Explore by Mood & Intent | KultureKatta",
   description:
     "Discover KuKa experiences by what you feel like doing, experiencing, or gaining right now.",
+  alternates: {
+    canonical: "/moods",
+  },
 };
 
 const moodCards = [
@@ -72,7 +76,7 @@ const moodCards = [
     cta: "Explore reflective experiences",
   },
   {
-    icon: "🫖",
+    icon: "☕",
     title: "Taste and sense",
     description:
       "Taste, cook, brew, smell, listen, touch, notice atmosphere, explore sensory memory, or experience food, sound, poetry, and place together.",
@@ -81,7 +85,7 @@ const moodCards = [
     cta: "Explore sensory experiences",
   },
   {
-    icon: "🧭",
+    icon: "🗺️",
     title: "Explore the city and outdoors",
     description:
       "Discover a neighborhood, follow a heritage or food trail, enter nature, see a familiar place differently, host a visitor, or travel with purpose.",
@@ -141,26 +145,14 @@ const supportingFilters = [
   },
 ];
 
-function PageIcon({ icon, label }: { icon: string; label: string }) {
-  return (
-    <div className="mb-6 flex justify-center">
-      <span
-        role="img"
-        aria-label={label}
-        className="flex h-20 w-20 items-center justify-center rounded-[1.6rem] border border-black/10 bg-white text-[2.7rem] leading-none shadow-sm"
-      >
-        {icon}
-      </span>
-    </div>
-  );
-}
-
 export default function ExploreByMoodPage() {
   return (
-    <main className="kk-page-root min-h-screen">
+    <div className="kk-page-root min-h-screen">
       <section className="kk-section-light kk-hero-padding">
         <div className="kk-container text-center">
-          <PageIcon icon="🧭" label="Mood and intent" />
+          <div className="mb-6 flex justify-center">
+            <SemanticIcon icon="🧭" label="Mood and intent" size="page" />
+          </div>
 
           <p className="kk-page-label">Mood & Intent Taxonomy</p>
 
@@ -196,6 +188,14 @@ export default function ExploreByMoodPage() {
       >
         <div className="kk-container">
           <div className="mx-auto max-w-4xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon
+                icon="🌈"
+                label="Choose a mood or intent"
+                size="section"
+              />
+            </div>
+
             <p className="kk-section-label">Choose your starting point</p>
             <h2 className="kk-section-heading mt-5">
               Browse by intention, not by a heroic mega-list.
@@ -213,12 +213,7 @@ export default function ExploreByMoodPage() {
                 key={mood.title}
                 className="kk-card kk-card--interactive min-h-[430px]"
               >
-                <span
-                  aria-hidden="true"
-                  className="text-center text-5xl leading-none"
-                >
-                  {mood.icon}
-                </span>
+                <SemanticIcon icon={mood.icon} label={mood.title} size="card" />
 
                 <h3 className="kk-card-title mt-6 text-center">
                   {mood.title}
@@ -251,6 +246,14 @@ export default function ExploreByMoodPage() {
       <section className="kk-section-light kk-section-padding">
         <div className="kk-container">
           <div className="mx-auto max-w-4xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon
+                icon="🔎"
+                label="Refine the result"
+                size="section"
+              />
+            </div>
+
             <p className="kk-section-label">Refine the result</p>
             <h2 className="kk-section-heading mt-5">
               Your mood is a doorway, not the whole decision.
@@ -268,9 +271,11 @@ export default function ExploreByMoodPage() {
                 key={filter.title}
                 className="kk-card kk-card--interactive"
               >
-                <span aria-hidden="true" className="text-4xl leading-none">
-                  {filter.icon}
-                </span>
+                <SemanticIcon
+                  icon={filter.icon}
+                  label={filter.title}
+                  size="card"
+                />
                 <h3 className="kk-card-title mt-5">{filter.title}</h3>
                 <p className="kk-card-body mt-4">{filter.text}</p>
               </article>
@@ -282,7 +287,13 @@ export default function ExploreByMoodPage() {
       <section className="kk-section-cream kk-section-padding">
         <div className="kk-container">
           <div className="kk-panel mx-auto max-w-5xl text-center">
-            <PageIcon icon="🌦️" label="Moments, seasons and conditions" />
+            <div className="mb-6 flex justify-center">
+              <SemanticIcon
+                icon="🌦️"
+                label="Moments, seasons and conditions"
+                size="section"
+              />
+            </div>
             <p className="kk-section-label">Add the moment</p>
             <h2 className="kk-section-heading mx-auto mt-5 max-w-4xl">
               What you want becomes more useful when KuKa also understands what
@@ -308,6 +319,6 @@ export default function ExploreByMoodPage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

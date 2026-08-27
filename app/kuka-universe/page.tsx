@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import SemanticIcon from "../components/SemanticIcon";
 import UniverseVerticalCard from "../components/verticals/UniverseVerticalCard";
 import { kukaVerticals } from "../data/kukaVerticals";
 
@@ -8,6 +9,9 @@ export const metadata: Metadata = {
   title: "The KuKa Universe | KultureKatta",
   description:
     "Discover the KuKa Universe, its nine connected verticals, and the Mood & Intent and Moments, Seasons & Conditions discovery layers.",
+  alternates: {
+    canonical: "/kuka-universe",
+  },
 };
 
 const sharedPrinciples = [
@@ -24,7 +28,7 @@ const sharedPrinciples = [
       "Every vertical creates approachable doorways into unfamiliar ideas, skills, places, and perspectives.",
   },
   {
-    icon: "🤝",
+    icon: "💞",
     title: "Connection",
     description:
       "Experiences are designed to bring people into meaningful contact with one another and their surroundings.",
@@ -51,7 +55,7 @@ const sharedPrinciples = [
 
 const discoveryLayers = [
   {
-    icon: "🧭",
+    icon: "🧠",
     label: "Mood & Intent Taxonomy",
     question: "What do I feel like doing?",
     description:
@@ -88,31 +92,37 @@ const discoveryLayers = [
 
 const combinations = [
   {
+    icon: "🍽️",
     title: "Explore × 5 Senses",
     description:
       "A neighborhood food trail combining local history, tasting, conversations, and sensory observation.",
   },
   {
+    icon: "🎒",
     title: "Circle × Impact",
     description:
       "Accessible, play-led cultural learning designed with schools, NGOs, or community organizations.",
   },
   {
+    icon: "🏕️",
     title: "Wellness × The Ground",
     description:
       "A nature-based day of walking, rest, reflection, practical outdoor learning, and shared meals.",
   },
   {
+    icon: "📬",
     title: "Chronicles × Exchange",
     description:
       "An international oral-history or creative documentation project connecting communities across places.",
   },
   {
+    icon: "🎧",
     title: "Digital × Chronicles",
     description:
       "An accessible digital archive, listening experience, field-note series, or participatory story collection.",
   },
   {
+    icon: "🧺",
     title: "Impact × 5 Senses",
     description:
       "A livelihood-centered program that supports local food, craft, material, or sensory practitioners.",
@@ -121,11 +131,18 @@ const combinations = [
 
 export default function KukaUniversePage() {
   return (
-    <main className="kk-page-root min-h-screen">
+    <div className="kk-page-root min-h-screen">
       <section className="kk-section-light kk-hero-padding overflow-hidden">
         <div className="kk-container">
           <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(300px,0.65fr)] lg:gap-16">
             <div>
+              <SemanticIcon
+                icon="🌌"
+                label="The KuKa Universe"
+                size="page"
+                className="mb-6"
+              />
+
               <p className="kk-page-label">The KuKa Universe</p>
               <h1 className="kk-page-heading mt-5 max-w-4xl">
                 One cultural ecosystem. Many ways to experience it.
@@ -172,6 +189,14 @@ export default function KukaUniversePage() {
       <section className="kk-section-cream kk-section-padding">
         <div className="kk-container">
           <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon
+                icon="🔗"
+                label="What connects the KuKa Universe"
+                size="section"
+              />
+            </div>
+
             <p className="kk-section-label">What connects it all</p>
             <h2 className="kk-section-heading mt-5">
               Different doorways. One KuKa way of working.
@@ -188,9 +213,11 @@ export default function KukaUniversePage() {
                 key={principle.title}
                 className="kk-card kk-card--interactive"
               >
-                <span aria-hidden="true" className="text-4xl leading-none">
-                  {principle.icon}
-                </span>
+                <SemanticIcon
+                  icon={principle.icon}
+                  label={principle.title}
+                  size="card"
+                />
                 <h3 className="kk-card-title mt-6">{principle.title}</h3>
                 <p className="kk-card-body mt-4">
                   {principle.description}
@@ -208,6 +235,14 @@ export default function KukaUniversePage() {
       >
         <div className="kk-container">
           <div className="mx-auto max-w-4xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon
+                icon="🚪"
+                label="KuKa discovery layers"
+                size="section"
+              />
+            </div>
+
             <p className="kk-section-label">How people enter the universe</p>
             <h2 className="kk-section-heading mt-5">
               Two discovery layers help people find what fits.
@@ -225,12 +260,7 @@ export default function KukaUniversePage() {
                 key={layer.label}
                 className="kk-card kk-card--interactive min-h-[500px]"
               >
-                <span
-                  aria-hidden="true"
-                  className="text-center text-5xl leading-none"
-                >
-                  {layer.icon}
-                </span>
+                <SemanticIcon icon={layer.icon} label={layer.label} size="card" />
 
                 <p className="kk-card-label mt-6 text-center">
                   Discovery layer
@@ -267,6 +297,13 @@ export default function KukaUniversePage() {
           </div>
 
           <div className="kk-panel mx-auto mt-8 max-w-5xl">
+            <SemanticIcon
+              icon="➕"
+              label="Mood plus moment"
+              size="card"
+              className="mb-5"
+            />
+
             <div className="grid gap-8 text-center md:grid-cols-[0.8fr_1.2fr] md:text-left">
               <div>
                 <p className="kk-card-label">A simple example</p>
@@ -302,6 +339,10 @@ export default function KukaUniversePage() {
       <section id="verticals" className="kk-section-light kk-section-padding scroll-mt-40">
         <div className="kk-container">
           <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="🌠" label="The nine verticals" size="section" />
+            </div>
+
             <p className="kk-section-label">The 9 verticals</p>
             <h2 className="kk-section-heading mt-5">
               Meet the wider KuKa ecosystem.
@@ -325,6 +366,14 @@ export default function KukaUniversePage() {
       <section className="kk-section-cream kk-section-padding">
         <div className="kk-container">
           <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon
+                icon="🔀"
+                label="Connected KuKa verticals"
+                size="section"
+              />
+            </div>
+
             <p className="kk-section-label">Designed to connect</p>
             <h2 className="kk-section-heading mt-5">
               The verticals can stand alone—or combine.
@@ -338,7 +387,13 @@ export default function KukaUniversePage() {
           <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {combinations.map((combination) => (
               <article key={combination.title} className="kk-card">
-                <h3 className="kk-card-title">{combination.title}</h3>
+                <SemanticIcon
+                  icon={combination.icon}
+                  label={combination.title}
+                  size="card"
+                />
+
+                <h3 className="kk-card-title mt-5">{combination.title}</h3>
                 <p className="kk-card-body mt-4">
                   {combination.description}
                 </p>
@@ -351,6 +406,10 @@ export default function KukaUniversePage() {
       <section className="kk-section-light kk-section-padding">
         <div className="kk-container text-center">
           <div className="kk-panel mx-auto max-w-5xl">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="📣" label="Find your doorway" size="section" />
+            </div>
+
             <p className="kk-section-label">Find your doorway</p>
             <h2 className="kk-section-heading mx-auto mt-5 max-w-4xl">
               Join an experience, commission a program, or build something new
@@ -361,20 +420,35 @@ export default function KukaUniversePage() {
               institutions, facilitators, cultural partners, and communities.
             </p>
 
-            <div className="mt-9 flex flex-wrap justify-center gap-4">
-              <Link href="/experiences" className="kk-button-dark">
+            <div className="mx-auto mt-9 grid max-w-3xl gap-4 sm:grid-cols-2 xl:max-w-none xl:grid-cols-4">
+              <Link
+                href="/experiences"
+                className="kk-button-dark w-full justify-center lg:w-auto"
+              >
                 Explore Experiences
               </Link>
-              <Link href="/for-organizations" className="kk-button-light">
+              <Link
+                href="/private-experiences"
+                className="kk-button-light w-full justify-center lg:w-auto"
+              >
+                Private Experiences
+              </Link>
+              <Link
+                href="/for-organizations"
+                className="kk-button-light w-full justify-center lg:w-auto"
+              >
                 For Organizations
               </Link>
-              <Link href="/contact" className="kk-button-light">
+              <Link
+                href="/contact"
+                className="kk-button-light w-full justify-center lg:w-auto"
+              >
                 Contact KuKa
               </Link>
             </div>
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

@@ -1,0 +1,299 @@
+import { expect, test } from "@playwright/test";
+import { preparePage, publicRoutes } from "./helpers/site";
+
+const criticalResourceTypes = new Set(["document", "script", "stylesheet", "font", "image"]);
+
+const isOptionalAnalyticsConsoleError = (message: string) =>
+  /^\[analytics\.js\] Failed to load Analytics\.js(?: Error)?$/.test(message.trim());
+
+const isWebKitRscPrefetchAccessControlError = (message: string, currentPageUrl: string) => {
+  const suffix = " due to access control checks.";
+  const normalized = message.trim();
+
+  if (!normalized.startsWith("/") || !normalized.endsWith(suffix)) return false;
+
+  const reportedUrl = normalized.slice(1, -suffix.length);
+  const pathSeparator = reportedUrl.indexOf("/");
+  if (pathSeparator < 1) return false;
+
+  try {
+    const reportedHost = reportedUrl.slice(0, pathSeparator);
+    const parsedReportedUrl = new URL(`https://${reportedUrl}`);
+    const currentHost = new URL(currentPageUrl).host;
+
+    return reportedHost === currentHost && parsedReportedUrl.searchParams.has("_rsc");
+  } catch {
+    return false;
+  }
+};
+
+const isWebKitCancelledNextChunkRequest = (
+  browserName: string,
+  resourceType: string,
+  requestUrl: string,
+  failure: string | undefined,
+  currentPageUrl: string,
+) => {
+  if (
+    browserName !== "webkit" ||
+    resourceType !== "script" ||
+    failure !== "Load request cancelled"
+  ) {
+    return false;
+  }
+
+  try {
+    const request = new URL(requestUrl);
+    const currentPage = new URL(currentPageUrl);
+
+    return (
+      request.origin === currentPage.origin &&
+      request.pathname.startsWith("/_next/static/chunks/") &&
+      request.pathname.endsWith(".js")
+    );
+  } catch {
+    return false;
+  }
+};
+
+test.beforeEach(async ({ page }) => {
+  await preparePage(page);
+});
+
+test("@exhaustive RUNTIME-01 public routes have no console errors, page errors, or failed critical resources", async ({
+  page,
+  browserName,
+}) => {
+  test.setTimeout(150_000);
+  let consoleErrors: string[] = [];
+  let pageErrors: string[] = [];
+  let failedResources: string[] = [];
+
+  page.on("console", (message) => {
+    if (message.type() === "error" && !isOptionalAnalyticsConsoleError(message.text())) {
+      consoleErrors.push(message.text());
+    }
+  });
+  page.on("pageerror", (error) => {
+    if (!isWebKitRscPrefetchAccessControlError(error.message, page.url())) {
+      pageErrors.push(error.message);
+    }
+  });
+  page.on("requestfailed", (request) => {
+    const failure = request.failure()?.errorText;
+    const isFirefoxNavigationCancellation = failure === "NS_BINDING_ABORTED";
+    const isWebKitNextChunkCancellation = isWebKitCancelledNextChunkRequest(
+      browserName,
+      request.resourceType(),
+      request.url(),
+      failure,
+      page.url(),
+    );
+
+    if (
+      criticalResourceTypes.has(request.resourceType()) &&
+      !isFirefoxNavigationCancellation &&
+      !isWebKitNextChunkCancellation
+    ) {
+      failedResources.push(`${request.resourceType()}: ${request.url()} — ${request.failure()?.errorText}`);
+    }
+  });
+  page.on("response", (response) => {
+    const type = response.request().resourceType();
+    if (criticalResourceTypes.has(type) && response.status() >= 400) {
+      failedResources.push(`${type}: ${response.status()} ${response.url()}`);
+    }
+  });
+
+  for (const route of publicRoutes) {
+    await test.step(route, async () => {
+      consoleErrors = [];
+      pageErrors = [];
+      failedResources = [];
+
+      await page.goto(route, { waitUntil: "domcontentloaded" });
+      await page.waitForLoadState("load");
+      await page.waitForTimeout(150);
+
+      expect(consoleErrors, `Console errors on ${route}`).toEqual([]);
+      expect(pageErrors, `Page errors on ${route}`).toEqual([]);
+      expect(failedResources, `Failed critical resources on ${route}`).toEqual([]);
+    });
+  }
+});
+
+test("@exhaustive RUNTIME-02 every rendered image loads with non-zero intrinsic dimensions", async ({
+  page,
+}) => {
+  test.setTimeout(150_000);
+
+  for (const route of publicRoutes) {
+    await test.step(route, async () => {
+      await page.goto(route, { waitUntil: "domcontentloaded" });
+      await page.waitForLoadState("load");
+
+      const images = page.locator(
+        "main#main-content img, header img, footer img",
+      );
+
+      for (let index = 0; index < (await images.count()); index += 1) {
+        const image = images.nth(index);
+
+        const identity = await image.evaluate((element: HTMLImageElement) => ({
+          source: element.currentSrc || element.src,
+          alt: element.alt,
+        }));
+
+        await image.scrollIntoViewIfNeeded();
+
+        // Give WebKit a rendering cycle to initiate native lazy loading.
+        await page.waitForTimeout(250);
+
+        await expect
+          .poll(
+            () =>
+              image.evaluate(
+                (element: HTMLImageElement) =>
+                  element.complete &&
+                  element.naturalWidth > 0 &&
+                  element.naturalHeight > 0,
+              ),
+            {
+              timeout: 15_000,
+              message: `${route}: image did not load — ${identity.source} (${identity.alt})`,
+            },
+          )
+          .toBe(true);
+      }
+    });
+  }
+});
+
+test("@exhaustive SEO-META every indexable route has unique metadata and a matching canonical", async ({
+  page,
+}) => {
+  test.setTimeout(150_000);
+  const routes = publicRoutes.filter((route) => !route.startsWith("/search"));
+  const records: Array<{
+    route: string;
+    title: string;
+    description: string;
+    canonical: string | null;
+  }> = [];
+
+  for (const route of routes) {
+    await page.goto(route, { waitUntil: "domcontentloaded" });
+    const description = page.locator('meta[name="description"]');
+    const canonical = page.locator('link[rel="canonical"]');
+    records.push({
+      route,
+      title: await page.title(),
+      description: (await description.count()) > 0
+        ? (await description.first().getAttribute("content")) || ""
+        : "",
+      canonical: (await canonical.count()) > 0
+        ? await canonical.first().getAttribute("href")
+        : null,
+    });
+  }
+
+  const missingOrWrongCanonical = records.flatMap((record) => {
+    if (!record.canonical) return [`${record.route}: missing canonical`];
+    const canonical = new URL(record.canonical, "https://kulturekatta.com");
+    const expectedPath = record.route === "/" ? "/" : record.route.replace(/\/$/, "");
+    const actualPath = canonical.pathname === "/" ? "/" : canonical.pathname.replace(/\/$/, "");
+    return canonical.origin === "https://kulturekatta.com" && actualPath === expectedPath
+      ? []
+      : [`${record.route}: ${record.canonical}`];
+  });
+
+  const duplicates = (field: "title" | "description") => {
+    const byValue = new Map<string, string[]>();
+    for (const record of records) {
+      const value = record[field].trim();
+      const routesForValue = byValue.get(value) || [];
+      routesForValue.push(record.route);
+      byValue.set(value, routesForValue);
+    }
+    return [...byValue.entries()]
+      .filter(([value, routesForValue]) => !value || routesForValue.length > 1)
+      .map(([value, routesForValue]) => ({ value, routes: routesForValue }));
+  };
+
+  expect(missingOrWrongCanonical, "Canonical metadata gaps").toEqual([]);
+  expect(duplicates("title"), "Duplicate or empty page titles").toEqual([]);
+  expect(duplicates("description"), "Duplicate or empty meta descriptions").toEqual([]);
+});
+
+test("@exhaustive A11Y-HEADINGS every public page has one H1 and no skipped heading level", async ({
+  page,
+}) => {
+  test.setTimeout(150_000);
+  const failures: Array<{ route: string; headings: Array<{ level: number; text: string }> }> = [];
+
+  for (const route of publicRoutes) {
+    await page.goto(route, { waitUntil: "domcontentloaded" });
+    const headings = await page.locator("main#main-content h1, main#main-content h2, main#main-content h3, main#main-content h4, main#main-content h5, main#main-content h6").evaluateAll(
+      (elements) => elements.map((element) => ({
+        level: Number(element.tagName.slice(1)),
+        text: element.textContent?.replace(/\s+/g, " ").trim().slice(0, 90) || "",
+      })),
+    );
+
+    const h1Count = headings.filter((heading) => heading.level === 1).length;
+    const skips = headings.some((heading, index) =>
+      index > 0 && heading.level > headings[index - 1].level + 1,
+    );
+    if (h1Count !== 1 || headings[0]?.level !== 1 || skips) {
+      failures.push({ route, headings });
+    }
+  }
+
+  expect(failures, "Heading hierarchy failures").toEqual([]);
+});
+
+test("@exhaustive A11Y-NAMES visible controls across public pages expose usable names and labels", async ({
+  page,
+}) => {
+  const failures: Array<{ route: string; controls: unknown[] }> = [];
+
+  for (const route of publicRoutes) {
+    await page.goto(route, { waitUntil: "domcontentloaded" });
+    const controls = await page.locator("a:visible, button:visible, input:visible, select:visible, textarea:visible").evaluateAll(
+      (elements) => elements.flatMap((element) => {
+        const html = element as HTMLElement;
+        const input = element as HTMLInputElement;
+        if (input.type === "hidden") return [];
+
+        const labelledBy = html.getAttribute("aria-labelledby");
+        const labelledText = labelledBy
+          ? labelledBy.split(/\s+/).map((id) => document.getElementById(id)?.textContent || "").join(" ")
+          : "";
+        const labelText = "labels" in input
+          ? Array.from(input.labels || []).map((label) => label.textContent || "").join(" ")
+          : "";
+        const imageAlt = html.querySelector("img")?.getAttribute("alt") || "";
+        const name = [
+          html.getAttribute("aria-label"),
+          labelledText,
+          labelText,
+          input.value && ["button", "submit", "reset"].includes(input.type) ? input.value : "",
+          html.textContent,
+          imageAlt,
+          html.getAttribute("title"),
+        ].filter(Boolean).join(" ").replace(/\s+/g, " ").trim();
+
+        return name ? [] : [{
+          tag: html.tagName.toLowerCase(),
+          type: input.type || "",
+          href: html.getAttribute("href"),
+          id: html.id,
+        }];
+      }),
+    );
+
+    if (controls.length > 0) failures.push({ route, controls });
+  }
+
+  expect(failures, "Unnamed visible controls").toEqual([]);
+});

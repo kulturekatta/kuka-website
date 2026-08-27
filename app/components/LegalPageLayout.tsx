@@ -1,5 +1,8 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import IconLead from "./IconLead";
+import SemanticIcon from "./SemanticIcon";
+import SequenceMarker from "./SequenceMarker";
 
 export type LegalSection = {
   id: string;
@@ -31,28 +34,6 @@ const legalPages = [
     href: "/terms-of-use",
   },
 ];
-
-function LegalIcon({
-  icon,
-  label,
-}: {
-  icon: string;
-  label: string;
-}) {
-  return (
-    <div
-      role="img"
-      aria-label={label}
-      className="flex h-20 w-20 items-center justify-center rounded-[1.6rem] border border-black/10 bg-white text-[2.6rem] leading-none shadow-sm md:h-24 md:w-24 md:text-[3rem]"
-      style={{
-        fontFamily:
-          '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif',
-      }}
-    >
-      {icon}
-    </div>
-  );
-}
 
 function ContentsLinks({
   sections,
@@ -93,13 +74,16 @@ export default function LegalPageLayout({
   );
 
   return (
-    <main className="kk-page-root kk-site-bg min-h-screen">
+    <div className="kk-page-root kk-site-bg min-h-screen">
       {/* HERO */}
       <section className="kk-section-light overflow-hidden">
         <div className="kk-container text-center">
-          <div className="flex justify-center">
-            <LegalIcon icon={icon} label={iconLabel} />
-          </div>
+          <IconLead
+            icon={icon}
+            label={iconLabel}
+            size="page"
+            align="center"
+          />
 
           <p className="kk-page-label mt-6">Legal</p>
 
@@ -122,10 +106,20 @@ export default function LegalPageLayout({
       {/* LEGAL CONTENT */}
       <section className="kk-section-cream kk-section-padding">
         <div className="kk-container">
+          <IconLead
+            icon="📚"
+            label="Legal sections"
+            align="center"
+            className="mb-8"
+          />
+
           {/* MOBILE CONTENTS */}
           <details className="kk-panel mb-8 lg:hidden">
             <summary className="cursor-pointer font-semibold text-[var(--kk-text)]">
-              On this page
+              <span className="inline-flex items-center gap-3">
+                <SemanticIcon icon="🗺️" label="On this page" size="compact" />
+                On this page
+              </span>
             </summary>
 
             <ContentsLinks sections={sections} />
@@ -135,21 +129,24 @@ export default function LegalPageLayout({
             {/* DESKTOP CONTENTS */}
             <aside className="sticky top-28 hidden lg:block">
               <div className="kk-card kk-card--compact">
-                <p className="kk-card-label">On this page</p>
+                <SemanticIcon icon="🗺️" label="On this page" size="compact" />
+                <p className="kk-card-label mt-5">On this page</p>
 
                 <ContentsLinks sections={sections} />
               </div>
             </aside>
 
             {/* SECTIONS */}
-            <div className="space-y-6">
+            <div className="min-w-0 space-y-6">
               {sections.map((section, index) => (
                 <section
                   key={section.id}
                   id={section.id}
                   className="kk-card scroll-mt-28"
                 >
-                  <p className="kk-card-label">
+                  <SequenceMarker index={index} label={section.title} />
+
+                  <p className="kk-card-label mt-5">
                     Section {String(index + 1).padStart(2, "0")}
                   </p>
 
@@ -171,11 +168,13 @@ export default function LegalPageLayout({
       <section className="kk-section-light kk-section-padding">
         <div className="kk-container">
           <div className="kk-panel mx-auto max-w-4xl text-center">
-            <div className="flex justify-center">
-              <LegalIcon icon="🗂️" label="Legal information" />
-            </div>
+            <IconLead
+              icon="🔖"
+              label="Legal information"
+              align="center"
+            />
 
-            <p className="kk-section-label mt-6">
+            <p className="kk-section-label">
               Legal information
             </p>
 
@@ -207,6 +206,6 @@ export default function LegalPageLayout({
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

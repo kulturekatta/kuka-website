@@ -43,3 +43,10 @@ next-env.d.ts
 
 # netlify
 .netlify
+# Playwright
+/playwright-report/
+/playwright-visual-report/
+/test-results/
+/blob-report/
+/playwright/.cache/
+/lighthouse-results/

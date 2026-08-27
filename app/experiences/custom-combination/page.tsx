@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Custom Combination Experiences | KultureKatta",
   description:
     "Combine KuKa workshops, food, walks, stories, music, games, movement, wellness, and seasonal culture into one custom group experience.",
+  alternates: {
+    canonical: "/experiences/custom-combination",
+  },
 };
 
 const experiences = [
@@ -34,7 +37,7 @@ const experiences = [
     text: "Blend outdoor observation, gentle movement, mindful making, plant work, sensory rest, reflective writing, and screen-light shared time.",
   },
   {
-    icon: "🪔",
+    icon: "🔔",
     title: "Celebrate + Explore",
     text: "Build a festival or occasion around food, craft, music, stories, regional traditions, games, rituals, and a theme meaningful to your group.",
   },

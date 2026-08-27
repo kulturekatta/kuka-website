@@ -1,0 +1,22 @@
+KultureKatta homepage duplicate-icon follow-up fix
+Date: 2026-08-15
+
+Replace these files in C:\kulture-katta-site:
+- app\page.tsx
+- app\data\semanticIconRegistry.ts
+
+Changes:
+- Past "Medieval Indian Games" visual: Historic games -> ♟️ 🏺
+- Past "Coffee Brewing Katta" visual: Coffee brewing -> ☕ 🧪
+- Past "Storytelling, but Forensics" visual: Forensic storytelling -> 🔎 📖
+- Past "Juggling Workshop" visual: Juggling -> 🤹
+
+Canonical category icons remain unchanged.
+Static checks performed:
+- 374 semantic registry entries checked
+- 0 exact icon collisions across different semantic keys
+- 0 duplicate iconLabel values on the homepage
+
+After replacing, rebuild/start the site and run:
+npx playwright test "tests/e2e/icon-system-completion.spec.ts" --project=chromium --workers=1 --reporter=list
+Expected: 3 passed.

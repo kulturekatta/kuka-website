@@ -1,80 +1,161 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 export const COOKIE_CONSENT_KEY = "kuka-cookie-consent-v1";
+const COOKIE_CONSENT_EVENT = "kuka:cookie-consent-changed";
 
 export type CookieConsentChoice = "accepted" | "rejected";
+type CookieConsentSnapshot = CookieConsentChoice | null | "loading";
 
 function isValidCookieChoice(
-  value: string | null
+  value: string | null,
 ): value is CookieConsentChoice {
   return value === "accepted" || value === "rejected";
 }
 
+function getCookieConsentSnapshot(): CookieConsentSnapshot {
+  if (typeof window === "undefined") {
+    return "loading";
+  }
+
+  const savedChoice = window.localStorage.getItem(COOKIE_CONSENT_KEY);
+  return isValidCookieChoice(savedChoice) ? savedChoice : null;
+}
+
+function getServerCookieConsentSnapshot(): CookieConsentSnapshot {
+  return "loading";
+}
+
+function subscribeToCookieConsent(onStoreChange: () => void) {
+  const handleStorage = (event: StorageEvent) => {
+    if (event.key === COOKIE_CONSENT_KEY) {
+      onStoreChange();
+    }
+  };
+
+  window.addEventListener("storage", handleStorage);
+  window.addEventListener(COOKIE_CONSENT_EVENT, onStoreChange);
+
+  return () => {
+    window.removeEventListener("storage", handleStorage);
+    window.removeEventListener(COOKIE_CONSENT_EVENT, onStoreChange);
+  };
+}
+
 export default function CookieBanner() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [canClose, setCanClose] = useState(false);
+  const savedChoice = useSyncExternalStore(
+    subscribeToCookieConsent,
+    getCookieConsentSnapshot,
+    getServerCookieConsentSnapshot,
+  );
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const firstChoiceButtonRef = useRef<HTMLButtonElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+  const hasSavedChoice = isValidCookieChoice(savedChoice);
+  const isOpen = savedChoice !== "loading" && (!hasSavedChoice || settingsOpen);
 
   useEffect(() => {
-    const savedChoice = window.localStorage.getItem(
-      COOKIE_CONSENT_KEY
-    );
-
-    if (isValidCookieChoice(savedChoice)) {
-      setCanClose(true);
-    } else {
-      setIsOpen(true);
-      setCanClose(false);
-    }
-
     const openCookieSettings = () => {
-      setCanClose(true);
-      setIsOpen(true);
+      previousFocusRef.current =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
+      setSettingsOpen(true);
     };
 
     window.addEventListener(
       "kuka:open-cookie-settings",
-      openCookieSettings
+      openCookieSettings,
     );
 
     return () => {
       window.removeEventListener(
         "kuka:open-cookie-settings",
-        openCookieSettings
+        openCookieSettings,
       );
     };
   }, []);
 
+  useEffect(() => {
+    if (!settingsOpen) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") {
+        return;
+      }
+
+      event.preventDefault();
+      setSettingsOpen(false);
+      window.requestAnimationFrame(() => {
+        previousFocusRef.current?.focus();
+      });
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.requestAnimationFrame(() => {
+      (closeButtonRef.current ?? firstChoiceButtonRef.current)?.focus();
+    });
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [settingsOpen]);
+
+  const closeSettings = () => {
+    setSettingsOpen(false);
+    window.requestAnimationFrame(() => {
+      previousFocusRef.current?.focus();
+    });
+  };
+
   const saveChoice = (choice: CookieConsentChoice) => {
     const previousChoice = window.localStorage.getItem(
-      COOKIE_CONSENT_KEY
+      COOKIE_CONSENT_KEY,
     );
 
     window.localStorage.setItem(COOKIE_CONSENT_KEY, choice);
+    window.dispatchEvent(new Event(COOKIE_CONSENT_EVENT));
+    setSettingsOpen(false);
 
-    window.dispatchEvent(
-      new CustomEvent<CookieConsentChoice>(
-        "kuka:cookie-consent-changed",
-        {
-          detail: choice,
-        }
-      )
-    );
-
-    setCanClose(true);
-    setIsOpen(false);
+    if (settingsOpen) {
+      window.requestAnimationFrame(() => {
+        previousFocusRef.current?.focus();
+      });
+    } else {
+      window.requestAnimationFrame(() => {
+        document
+          .querySelector<HTMLElement>("main#main-content")
+          ?.focus();
+      });
+    }
 
     // Reload when optional-cookie consent is withdrawn so that
     // any optional scripts already running are removed.
-    if (
-      previousChoice === "accepted" &&
-      choice === "rejected"
-    ) {
+    if (previousChoice === "accepted" && choice === "rejected") {
       window.location.reload();
     }
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.setAttribute("data-cookie-banner-open", "true");
+    } else {
+      document.body.removeAttribute("data-cookie-banner-open");
+    }
+
+    return () => {
+      document.body.removeAttribute("data-cookie-banner-open");
+    };
+  }, [isOpen]);
+
+  if (savedChoice === "loading") {
+    return null;
+  }
 
   if (!isOpen) {
     return null;
@@ -82,19 +163,21 @@ export default function CookieBanner() {
 
   return (
     <div
+      data-cookie-banner="true"
       className="fixed inset-x-0 bottom-0 z-[100] p-4 sm:p-6"
-      role="dialog"
-      aria-modal="true"
+      role="region"
+      aria-live="polite"
       aria-labelledby="cookie-banner-title"
       aria-describedby="cookie-banner-description"
     >
       <div className="relative mx-auto flex max-w-6xl flex-col gap-5 rounded-[1.75rem] border border-black/10 bg-white p-5 shadow-2xl sm:p-6 lg:flex-row lg:items-center lg:justify-between">
-        {canClose && (
+        {hasSavedChoice && (
           <button
+            ref={closeButtonRef}
             type="button"
-            onClick={() => setIsOpen(false)}
+            onClick={closeSettings}
             aria-label="Close cookie settings"
-            className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full text-xl leading-none text-black/50 transition hover:bg-black/5 hover:text-black focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+            className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full text-xl leading-none text-black/65 transition hover:bg-black/5 hover:text-black focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
           >
             ×
           </button>
@@ -121,14 +204,14 @@ export default function CookieBanner() {
           <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
             <Link
               href="/cookie-policy"
-              className="text-sm font-semibold text-[var(--kk-text)] underline decoration-black/30 underline-offset-4 transition hover:decoration-black"
+              className="inline-flex min-h-11 items-center text-sm font-semibold text-[var(--kk-text)] underline decoration-black/30 underline-offset-4 transition hover:decoration-black"
             >
               Cookie Policy
             </Link>
 
             <Link
               href="/privacy-policy"
-              className="text-sm font-semibold text-[var(--kk-text)] underline decoration-black/30 underline-offset-4 transition hover:decoration-black"
+              className="inline-flex min-h-11 items-center text-sm font-semibold text-[var(--kk-text)] underline decoration-black/30 underline-offset-4 transition hover:decoration-black"
             >
               Privacy Policy
             </Link>
@@ -137,6 +220,7 @@ export default function CookieBanner() {
 
         <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
           <button
+            ref={firstChoiceButtonRef}
             type="button"
             onClick={() => saveChoice("rejected")}
             className="min-h-12 rounded-full border border-black/20 bg-white px-6 text-sm font-semibold text-[var(--kk-text)] transition hover:bg-black/5 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
@@ -147,7 +231,7 @@ export default function CookieBanner() {
           <button
             type="button"
             onClick={() => saveChoice("accepted")}
-            className="min-h-12 rounded-full border border-[var(--kk-accent)] bg-[var(--kk-accent)] px-6 text-sm font-semibold text-[var(--kk-text)] transition hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+            className="min-h-12 rounded-full border border-[var(--kk-accent)] bg-[var(--kk-accent)] px-6 text-sm font-semibold text-white transition hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
           >
             Accept optional cookies
           </button>

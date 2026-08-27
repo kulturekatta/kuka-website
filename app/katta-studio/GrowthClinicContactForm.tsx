@@ -1,81 +1,155 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import {
+  PHONE_PATTERN,
+  useAccessibleFormValidation,
+  useFormDraft,
+} from "../components/formEnhancements";
+import SemanticIcon from "../components/SemanticIcon";
+
+type FormStatus = "idle" | "submitting" | "success" | "error";
+const GROWTH_CLINIC_DRAFT_KEY =
+  "kuka-growth-clinic-form-draft-v1";
 
 export default function GrowthClinicContactForm() {
-  const [brandName, setBrandName] = useState("");
-  const [brandLink, setBrandLink] = useState("");
-  const [painPoints, setPainPoints] = useState("");
-  const [email, setEmail] = useState("");
-  const [city, setCity] = useState("");
-  const [mobile, setMobile] = useState("");
-  const [captcha, setCaptcha] = useState("");
-  const [error, setError] = useState("");
+  const [status, setStatus] = useState<FormStatus>("idle");
+  const [statusMessage, setStatusMessage] = useState("");
+  const startedAtRef = useRef(0);
+  const statusMessageRef = useRef<HTMLDivElement>(null);
+  const isSubmittingRef = useRef(false);
+  const { formRef, saveDraft, clearDraft } = useFormDraft(
+    GROWTH_CLINIC_DRAFT_KEY,
+  );
+  const { handleInvalid, handleValidationInput } =
+    useAccessibleFormValidation();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  useEffect(() => {
+    startedAtRef.current = Date.now();
+  }, []);
 
-    if (
-      !brandName.trim() ||
-      !brandLink.trim() ||
-      !painPoints.trim() ||
-      !email.trim() ||
-      !city.trim() ||
-      !mobile.trim()
-    ) {
-      setError("Please fill in all the required fields.");
+  useEffect(() => {
+    if (status === "success" || status === "error") {
+      statusMessageRef.current?.focus();
+    }
+  }, [status, statusMessage]);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (isSubmittingRef.current) {
       return;
     }
 
-    if (captcha.trim() !== "9") {
-      setError("Please solve the captcha correctly.");
-      return;
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const getValue = (fieldName: string) =>
+      String(formData.get(fieldName) ?? "");
+
+    const payload = {
+      brandName: getValue("brandName"),
+      brandLink: getValue("brandLink"),
+      painPoints: getValue("painPoints"),
+      email: getValue("email"),
+      city: getValue("city"),
+      mobile: getValue("mobile"),
+      consent: formData.get("consent") === "on",
+      formGuard: String(formData.get("formGuard") ?? ""),
+      startedAt: startedAtRef.current,
+      sourcePage: "/katta-studio#growth-clinic-form",
+    };
+
+    isSubmittingRef.current = true;
+    setStatus("submitting");
+    setStatusMessage("");
+
+    try {
+      const response = await fetch("/api/growth-clinic", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = (await response.json()) as {
+        success?: boolean;
+        message?: string;
+      };
+
+      if (!response.ok || !result.success) {
+        throw new Error(
+          result.message ||
+            "Your enquiry could not be sent. Please try again.",
+        );
+      }
+
+      form.reset();
+      clearDraft();
+      startedAtRef.current = Date.now();
+      setStatus("success");
+      setStatusMessage(
+        "Thank you. Your Growth Clinic enquiry has been sent, and a confirmation email is on its way.",
+      );
+    } catch (error) {
+      setStatus("error");
+      setStatusMessage(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again.",
+      );
+    } finally {
+      isSubmittingRef.current = false;
     }
-
-    setError("");
-
-    const message = `
-New Growth Clinic Enquiry
-
-Brand name: ${brandName}
-Instagram / LinkedIn / Website: ${brandLink}
-
-3 pain points:
-${painPoints}
-
-Email: ${email}
-City: ${city}
-Mobile / WhatsApp: ${mobile}
-`;
-
-    const whatsappNumber = "919730244996";
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-      message,
-    )}`;
-
-    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
   };
 
   const inputClass =
-    "w-full rounded-xl border border-black/10 bg-white px-4 py-3.5 text-base text-[var(--kk-text)] outline-none transition duration-200 placeholder:text-black/35 hover:border-black/20 focus:border-[var(--kk-accent)] focus:ring-4 focus:ring-[var(--kk-accent)]/10";
+    "min-w-0 w-full rounded-xl border border-black/10 bg-white px-4 py-3.5 text-base text-[var(--kk-text)] outline-none transition duration-200 placeholder:text-black/35 hover:border-black/20 focus:border-[var(--kk-accent)] focus:ring-4 focus:ring-[var(--kk-accent)]/10";
 
   const labelClass =
     "mb-2 block text-sm font-semibold text-[var(--kk-text)] sm:text-base";
 
   const sectionClass =
-    "rounded-3xl border border-black/[0.07] bg-black/[0.018] p-5 sm:p-7";
+    "min-w-0 rounded-3xl border border-black/[0.07] bg-black/[0.018] p-5 sm:p-7";
 
   const sectionNumberClass =
     "flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--kk-accent)] text-sm font-bold text-white";
 
   return (
     <form
-      id="growth-clinic-form"
+      ref={formRef}
+      id="growth-clinic-contact-form"
       onSubmit={handleSubmit}
+      onInvalid={handleInvalid}
+      onInput={(event) => {
+        handleValidationInput(event);
+        saveDraft();
+      }}
       className="mx-auto max-w-5xl overflow-hidden rounded-[2rem] border border-black/10 bg-white shadow-[0_24px_70px_rgba(0,0,0,0.07)]"
     >
+      <div
+        className="absolute -left-[10000px] top-auto h-px w-px overflow-hidden"
+        aria-hidden="true"
+      >
+        <label htmlFor="growth-clinic-form-guard">
+          Leave this field empty
+        </label>
+        <input
+          id="growth-clinic-form-guard"
+          name="formGuard"
+          type="text"
+          tabIndex={-1}
+          autoComplete="new-password"
+        />
+      </div>
+
       {/* FORM INTRODUCTION */}
       <div className="border-b border-black/[0.07] bg-[var(--kk-accent)]/[0.055] px-6 py-10 text-center sm:px-10 sm:py-12">
+        <div className="mb-5 flex justify-center">
+          <SemanticIcon icon="🌡️" label="Growth Clinic enquiry" size="section" />
+        </div>
+
         <p className="kk-page-label text-[var(--kk-accent)]">
           Get in touch
         </p>
@@ -90,11 +164,13 @@ Mobile / WhatsApp: ${mobile}
         </p>
       </div>
 
-      <div className="grid gap-6 p-5 sm:p-8 lg:p-10">
+      <div className="grid min-w-0 grid-cols-1 gap-6 p-5 sm:p-8 lg:p-10">
         {/* SECTION 1 */}
         <section className={sectionClass}>
           <div className="mb-6 flex items-start gap-4">
             <span className={sectionNumberClass}>1</span>
+
+            <SemanticIcon icon="🏷️" label="About your brand" size="compact" />
 
             <div>
               <h3 className="text-xl font-bold text-[var(--kk-text)]">
@@ -107,7 +183,7 @@ Mobile / WhatsApp: ${mobile}
             </div>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-2">
+          <div className="grid min-w-0 grid-cols-1 gap-5 md:grid-cols-2">
             <div>
               <label htmlFor="brandName" className={labelClass}>
                 Brand name <span className="text-[var(--kk-accent)]">*</span>
@@ -117,8 +193,6 @@ Mobile / WhatsApp: ${mobile}
                 id="brandName"
                 name="brandName"
                 type="text"
-                value={brandName}
-                onChange={(e) => setBrandName(e.target.value)}
                 placeholder="Your brand name"
                 autoComplete="organization"
                 required
@@ -136,8 +210,6 @@ Mobile / WhatsApp: ${mobile}
                 id="brandLink"
                 name="brandLink"
                 type="text"
-                value={brandLink}
-                onChange={(e) => setBrandLink(e.target.value)}
                 placeholder="@yourhandle or website link"
                 required
                 className={inputClass}
@@ -150,6 +222,12 @@ Mobile / WhatsApp: ${mobile}
         <section className={sectionClass}>
           <div className="mb-6 flex items-start gap-4">
             <span className={sectionNumberClass}>2</span>
+
+            <SemanticIcon
+              icon="🚧"
+              label="Where you are feeling stuck"
+              size="compact"
+            />
 
             <div>
               <h3 className="text-xl font-bold text-[var(--kk-text)]">
@@ -171,8 +249,6 @@ Mobile / WhatsApp: ${mobile}
             <textarea
               id="painPoints"
               name="painPoints"
-              value={painPoints}
-              onChange={(e) => setPainPoints(e.target.value)}
               placeholder={`For example:\n1. Our website is not generating enquiries\n2. Our social media feels inconsistent\n3. We are unsure what to prioritise`}
               rows={6}
               required
@@ -190,6 +266,8 @@ Mobile / WhatsApp: ${mobile}
           <div className="mb-6 flex items-start gap-4">
             <span className={sectionNumberClass}>3</span>
 
+            <SemanticIcon icon="☎️" label="Contact details" size="compact" />
+
             <div>
               <h3 className="text-xl font-bold text-[var(--kk-text)]">
                 Your contact details
@@ -201,7 +279,7 @@ Mobile / WhatsApp: ${mobile}
             </div>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-2">
+          <div className="grid min-w-0 grid-cols-1 gap-5 md:grid-cols-2">
             <div>
               <label htmlFor="email" className={labelClass}>
                 Email address{" "}
@@ -212,8 +290,7 @@ Mobile / WhatsApp: ${mobile}
                 id="email"
                 name="email"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                inputMode="email"
                 placeholder="you@example.com"
                 autoComplete="email"
                 required
@@ -230,8 +307,6 @@ Mobile / WhatsApp: ${mobile}
                 id="city"
                 name="city"
                 type="text"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
                 placeholder="Your city"
                 autoComplete="address-level2"
                 required
@@ -249,45 +324,58 @@ Mobile / WhatsApp: ${mobile}
                 id="mobile"
                 name="mobile"
                 type="tel"
-                value={mobile}
-                onChange={(e) => setMobile(e.target.value)}
+                inputMode="tel"
                 placeholder="+91 98765 43210"
                 autoComplete="tel"
+                pattern={PHONE_PATTERN}
+                title="Use 7–20 digits with an optional +, spaces, parentheses, or hyphens."
                 required
                 className={inputClass}
               />
             </div>
 
-            <div>
-              <label htmlFor="captcha" className={labelClass}>
-                Quick check: What is 4 + 5?{" "}
-                <span className="text-[var(--kk-accent)]">*</span>
-              </label>
+            <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-black/10 bg-white p-4 md:col-span-2">
+              <SemanticIcon
+                icon="🛡️"
+                label="Privacy consent"
+                size="compact"
+              />
 
               <input
-                id="captcha"
-                name="captcha"
-                type="text"
-                inputMode="numeric"
-                value={captcha}
-                onChange={(e) => setCaptcha(e.target.value)}
-                placeholder="Enter the answer"
-                maxLength={2}
+                type="checkbox"
+                name="consent"
                 required
-                className={inputClass}
+                className="mt-1 h-5 w-5 shrink-0 accent-[var(--kk-accent)]"
               />
-            </div>
+              <span className="text-sm leading-6 text-[var(--kk-text-muted)]">
+                I agree that Katta Studio may use the information submitted
+                here to review and respond to my enquiry as described in the{" "}
+                <Link
+                  href="/privacy-policy"
+                  className="font-semibold underline decoration-black/30 underline-offset-2 hover:decoration-black"
+                >
+                  Privacy Policy
+                </Link>.{" "}
+                <span aria-hidden="true">*</span>
+              </span>
+            </label>
           </div>
         </section>
 
-        {/* ERROR MESSAGE */}
-        {error && (
+        {/* FORM STATUS */}
+        {statusMessage && (
           <div
-            role="alert"
-            aria-live="polite"
-            className="rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm font-medium text-red-700"
+            ref={statusMessageRef}
+            tabIndex={-1}
+            role={status === "error" ? "alert" : "status"}
+            aria-live={status === "error" ? "assertive" : "polite"}
+            className={`rounded-2xl px-5 py-4 text-sm font-medium ${
+              status === "error"
+                ? "border border-red-200 bg-red-50 text-red-700"
+                : "border border-emerald-200 bg-emerald-50 text-emerald-800"
+            }`}
           >
-            {error}
+            {statusMessage}
           </div>
         )}
 
@@ -295,15 +383,16 @@ Mobile / WhatsApp: ${mobile}
         <div className="rounded-3xl bg-[var(--kk-accent)]/[0.07] px-5 py-6 text-center sm:px-8 sm:py-8">
           <button
             type="submit"
-            className="kk-button-dark flex w-full items-center justify-center gap-3 px-8 py-4 sm:mx-auto sm:w-auto sm:min-w-80"
+            disabled={status === "submitting"}
+            className="kk-button-dark flex w-full items-center justify-center gap-3 px-8 py-4 disabled:cursor-not-allowed disabled:opacity-60 sm:mx-auto sm:w-auto sm:min-w-80"
           >
-            Send enquiry on WhatsApp
+            {status === "submitting" ? "Sending enquiry..." : "Send enquiry"}
             <span aria-hidden="true">→</span>
           </button>
 
           <p className="mt-4 text-sm leading-relaxed text-[var(--kk-text-muted)]">
-            Your answers will open as a pre-filled WhatsApp message to
-            <br className="hidden sm:block" /> +91 97302 44996.
+            You will receive an automatic confirmation after a successful
+            submission.
           </p>
         </div>
       </div>
