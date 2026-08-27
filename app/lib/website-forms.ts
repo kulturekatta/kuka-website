@@ -210,6 +210,10 @@ function getConfig(): WebsiteFormConfig {
     throw new Error("FORM_RECIPIENT_INVALID");
   }
 
+  if (!isValidEmail(senderEmail)) {
+    throw new Error("FORM_SENDER_INVALID");
+  }
+
   if (!isValidEmail(publicContactEmail)) {
     throw new Error("PUBLIC_CONTACT_INVALID");
   }
