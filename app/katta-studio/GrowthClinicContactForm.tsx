@@ -111,7 +111,7 @@ export default function GrowthClinicContactForm() {
     "mb-2 block text-sm font-semibold text-[var(--kk-text)] sm:text-base";
 
   const sectionClass =
-    "rounded-3xl border border-black/[0.07] bg-black/[0.018] p-5 sm:p-7";
+    "min-w-0 rounded-3xl border border-black/[0.07] bg-black/[0.018] p-5 sm:p-7";
 
   const sectionNumberClass =
     "flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--kk-accent)] text-sm font-bold text-white";
@@ -164,7 +164,7 @@ export default function GrowthClinicContactForm() {
         </p>
       </div>
 
-      <div className="grid gap-6 p-5 sm:p-8 lg:p-10">
+      <div className="grid min-w-0 grid-cols-1 gap-6 p-5 sm:p-8 lg:p-10">
         {/* SECTION 1 */}
         <section className={sectionClass}>
           <div className="mb-6 flex items-start gap-4">
@@ -183,7 +183,7 @@ export default function GrowthClinicContactForm() {
             </div>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-2">
+          <div className="grid min-w-0 grid-cols-1 gap-5 md:grid-cols-2">
             <div>
               <label htmlFor="brandName" className={labelClass}>
                 Brand name <span className="text-[var(--kk-accent)]">*</span>
@@ -279,7 +279,7 @@ export default function GrowthClinicContactForm() {
             </div>
           </div>
 
-          <div className="grid gap-5 md:grid-cols-2">
+          <div className="grid min-w-0 grid-cols-1 gap-5 md:grid-cols-2">
             <div>
               <label htmlFor="email" className={labelClass}>
                 Email address{" "}
