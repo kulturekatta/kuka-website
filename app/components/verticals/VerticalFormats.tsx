@@ -23,7 +23,7 @@ export default function VerticalFormats({
     <section className="kk-section-light kk-section-padding">
       <div className="kk-container">
         <div className="mx-auto max-w-3xl text-center">
-          <IconLead icon="🧰" label={label} align="center" />
+          <IconLead icon={"\u{1F9F0}"} label={label} align="center" />
 
           <p className="kk-section-label">{label}</p>
           <h2 className="kk-section-heading mt-5">{title}</h2>

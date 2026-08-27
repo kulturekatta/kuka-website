@@ -18,7 +18,7 @@ export default function VerticalIntro({
       <div className="kk-container">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16">
           <div>
-            <IconLead icon="📖" label={label} />
+            <IconLead icon={"\u{1F4D6}"} label={label} />
 
             <p className="kk-section-label">{label}</p>
             <h2 className="kk-section-heading mt-5">{title}</h2>

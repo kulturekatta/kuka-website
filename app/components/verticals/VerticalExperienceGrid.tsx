@@ -20,7 +20,7 @@ export default function VerticalExperienceGrid({
   title,
   description,
   items,
-  sectionIcon = "🎪",
+  sectionIcon = "\u{1F3AA}",
 }: VerticalExperienceGridProps) {
   return (
     <section className="kk-section-cream kk-section-padding">

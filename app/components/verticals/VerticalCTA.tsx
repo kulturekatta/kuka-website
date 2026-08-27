@@ -24,7 +24,7 @@ export default function VerticalCTA({
     <section className="kk-section-cream kk-section-padding">
       <div className="kk-container text-center">
         <div className="kk-panel mx-auto max-w-5xl">
-          <IconLead icon="📩" label={label} align="center" />
+          <IconLead icon={"\u{1F4E8}"} label={label} align="center" />
 
           <p className="kk-section-label">{label}</p>
           <h2 className="kk-section-heading mx-auto mt-5 max-w-4xl">
