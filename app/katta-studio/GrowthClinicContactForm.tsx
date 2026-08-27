@@ -105,7 +105,7 @@ export default function GrowthClinicContactForm() {
   };
 
   const inputClass =
-    "w-full rounded-xl border border-black/10 bg-white px-4 py-3.5 text-base text-[var(--kk-text)] outline-none transition duration-200 placeholder:text-black/35 hover:border-black/20 focus:border-[var(--kk-accent)] focus:ring-4 focus:ring-[var(--kk-accent)]/10";
+    "min-w-0 w-full rounded-xl border border-black/10 bg-white px-4 py-3.5 text-base text-[var(--kk-text)] outline-none transition duration-200 placeholder:text-black/35 hover:border-black/20 focus:border-[var(--kk-accent)] focus:ring-4 focus:ring-[var(--kk-accent)]/10";
 
   const labelClass =
     "mb-2 block text-sm font-semibold text-[var(--kk-text)] sm:text-base";
