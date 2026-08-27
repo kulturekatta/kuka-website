@@ -420,7 +420,7 @@ export default function KukaUniversePage() {
               institutions, facilitators, cultural partners, and communities.
             </p>
 
-            <div className="mx-auto mt-9 grid max-w-3xl gap-4 sm:grid-cols-2 lg:flex lg:max-w-none lg:flex-wrap lg:justify-center">
+            <div className="mx-auto mt-9 grid max-w-3xl gap-4 sm:grid-cols-2 xl:max-w-none xl:grid-cols-4">
               <Link
                 href="/experiences"
                 className="kk-button-dark w-full justify-center lg:w-auto"
