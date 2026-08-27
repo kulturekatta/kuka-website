@@ -66,16 +66,16 @@ export const kukaVerticals: KukaVertical[] = [
     themes: ["Play", "Making", "Culture", "Nature", "Stories", "Inquiry"],
   },
   {
-    slug: "5-senses",
-    name: "KuKa 5 Senses",
-    shortName: "5 Senses",
+    slug: "senses",
+    name: "KuKa Senses",
+    shortName: "Senses",
     tagline: "Culture you can sense.",
     description:
       "Multisensory experiences built around taste, touch, scent, sound, and sight—and the memories and meanings they carry.",
     status: "active",
     href: "/kuka-universe/senses",
-    logoSrc: "/images/verticals/kuka-5-senses-placeholder.svg",
-    logoAlt: "Temporary KuKa 5 Senses logo",
+    logoSrc: "/images/verticals/kuka-senses-placeholder.svg",
+    logoAlt: "Temporary KuKa Senses logo",
     mark: "✨",
     audiences: [
       "Individuals",

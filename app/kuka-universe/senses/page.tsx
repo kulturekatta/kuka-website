@@ -9,15 +9,15 @@ import VerticalProcess from "../../components/verticals/VerticalProcess";
 import { getKukaVertical } from "../../data/kukaVerticals";
 
 export const metadata: Metadata = {
-  title: "KuKa 5 Senses | Multisensory Cultural Experiences",
+  title: "KuKa Senses | Multisensory Cultural Experiences",
   description:
-    "KuKa 5 Senses creates participatory experiences through taste, touch, scent, sound, and sight for individuals, private groups, organizations, and institutions.",
+    "KuKa Senses creates participatory experiences through taste, touch, scent, sound, and sight for individuals, private groups, organizations, and institutions.",
   alternates: {
     canonical: "/kuka-universe/senses",
   },
 };
 
-const vertical = getKukaVertical("5-senses")!;
+const vertical = getKukaVertical("senses")!;
 
 const senses = [
   {
@@ -148,7 +148,7 @@ const process = [
   },
 ];
 
-export default function KukaFiveSensesPage() {
+export default function KukaSensesPage() {
   return (
     <div className="kk-page-root min-h-screen">
       <VerticalHero
@@ -166,10 +166,10 @@ export default function KukaFiveSensesPage() {
       />
 
       <VerticalIntro
-        label="What KuKa 5 Senses is"
+        label="What KuKa Senses is"
         title="The senses are not decoration. They are ways of knowing."
         paragraphs={[
-          "KuKa 5 Senses brings together food, beverages, fragrance, sound, texture, materials, color, light, and observation through participatory cultural experiences.",
+          "KuKa Senses brings together food, beverages, fragrance, sound, texture, materials, color, light, and observation through participatory cultural experiences.",
           "The purpose is not sensory spectacle for its own sake. Each experience connects what people perceive with memory, culture, craft, ecology, livelihood, identity, and place.",
         ]}
         principles={[
@@ -217,7 +217,7 @@ export default function KukaFiveSensesPage() {
       <VerticalCTA
         title="Tell us what you want people to notice, feel, make, or remember."
         description="We can design a tasting, sensory lab, private gathering, team program, school experience, story dinner, walk, or custom multisensory format."
-        primaryLabel="Plan a 5 Senses Experience"
+        primaryLabel="Plan a KuKa Senses Experience"
         primaryHref="/contact"
         secondaryLabel="Private Experiences"
         secondaryHref="/private-experiences"

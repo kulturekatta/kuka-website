@@ -21,7 +21,7 @@ USER-REPORTED DUPLICATES FIXED
 OTHER EXAMPLE FIXES
 - What we design => 📐
 - Architecture, Design & Professional Services => 📐 🏛️
-- KuKa 5 Senses => 👁️
+- KuKa Senses => 👁️
 - Senses => 👁️ 👃
 - How it works => ⚙️
 - Responsible design => 🛡️ ⚙️

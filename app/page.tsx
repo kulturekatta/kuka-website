@@ -331,10 +331,10 @@ const verticals = [
   icon: "👁️",
   iconLabel: "Sensory culture",
   eyebrow: "Taste, touch, scent, sound and sight",
-  title: "KuKa 5 Senses",
+  title: "KuKa Senses",
   text: "Multisensory experiences through taste, touch, scent, sound, sight, memory, and culture.",
   href: "/kuka-universe/senses",
-  cta: "Discover KuKa 5 Senses",
+  cta: "Discover KuKa Senses",
 },
   {
     icon: "🌿",

@@ -68,7 +68,7 @@ const universeItems = [
   },
   {
     icon: "👁️",
-    title: "KuKa 5 Senses",
+    title: "KuKa Senses",
     description:
       "Multisensory experiences built around taste, touch, scent, sound, sight, memory, and culture.",
   },

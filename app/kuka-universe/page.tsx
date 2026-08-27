@@ -93,7 +93,7 @@ const discoveryLayers = [
 const combinations = [
   {
     icon: "🍽️",
-    title: "Explore × 5 Senses",
+    title: "Explore × Senses",
     description:
       "A neighborhood food trail combining local history, tasting, conversations, and sensory observation.",
   },
@@ -123,7 +123,7 @@ const combinations = [
   },
   {
     icon: "🧺",
-    title: "Impact × 5 Senses",
+    title: "Impact × Senses",
     description:
       "A livelihood-centered program that supports local food, craft, material, or sensory practitioners.",
   },
