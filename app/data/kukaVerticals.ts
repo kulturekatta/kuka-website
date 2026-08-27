@@ -73,7 +73,7 @@ export const kukaVerticals: KukaVertical[] = [
     description:
       "Multisensory experiences built around taste, touch, scent, sound, and sight—and the memories and meanings they carry.",
     status: "active",
-    href: "/kuka-universe/5-senses",
+    href: "/kuka-universe/senses",
     logoSrc: "/images/verticals/kuka-5-senses-placeholder.svg",
     logoAlt: "Temporary KuKa 5 Senses logo",
     mark: "✨",

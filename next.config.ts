@@ -4,6 +4,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/kuka-universe/5-senses",
+        destination: "/kuka-universe/senses",
+        permanent: true,
+      },
+      {
         source: "/universe",
         destination: "/kuka-universe",
         permanent: true,

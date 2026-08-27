@@ -14,7 +14,7 @@ const staticRoutes = [
   "/for-organizations",
   "/private-experiences",
   "/kuka-universe",
-  "/kuka-universe/5-senses",
+  "/kuka-universe/senses",
   "/kuka-universe/circle",
   "/kuka-universe/explore",
   "/kuka-universe/wellness",

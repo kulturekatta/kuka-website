@@ -24,7 +24,7 @@ app/globals.css
 app/katta-studio/page.tsx
 app/katta-studio/work-with-us/WorkWithUsApplicationForm.tsx
 app/katta-studio/work-with-us/page.tsx
-app/kuka-universe/5-senses/page.tsx
+app/kuka-universe/senses/page.tsx
 app/kuka-universe/circle/page.tsx
 app/kuka-universe/explore/page.tsx
 app/kuka-universe/page.tsx
