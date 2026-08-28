@@ -118,7 +118,7 @@ const timeline = [
       "Games, books, music, pottery, coffee, films, conversations, and workshops begin shaping the KuKa language.",
   },
   {
-    icon: "🌱",
+    icon: "🪐",
     year: "2025",
     title: "The universe expands",
     description:
