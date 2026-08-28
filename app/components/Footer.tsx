@@ -36,26 +36,22 @@ const footerSections: FooterSection[] = [
     ],
   },
   {
-    title: "KuKa Universe",
-    links: [
-      {
-        label: "KuKa Universe",
-        href: "/kuka-universe",
-      },
-      {
-        label: "KuKa Explore",
-        href: "/kuka-universe/explore",
-      },
-      {
-        label: "KuKa Circle",
-        href: "/kuka-universe/circle",
-      },
-      {
-        label: "About Us",
-        href: "/about",
-      },
-    ],
-  },
+  title: "KultureKatta",
+  links: [
+    {
+      label: "Home",
+      href: "/",
+    },
+    {
+      label: "About Us",
+      href: "/about",
+    },
+    {
+      label: "Contact Us",
+      href: "/contact",
+    },
+  ],
+},
   {
     title: "Studio Services",
     links: [

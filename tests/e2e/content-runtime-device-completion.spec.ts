@@ -101,10 +101,9 @@ test("@completion NAV-004 NAV-013 NAV-014 NAV-015 footer contracts are exact on 
     ["Explore by Mood", "/moods"],
     ["For Organizations", "/for-organizations"],
     ["Private Experiences", "/private-experiences"],
-    ["KuKa Universe", "/kuka-universe"],
-    ["KuKa Explore", "/kuka-universe/explore"],
-    ["KuKa Circle", "/kuka-universe/circle"],
+    ["Home", "/"],
     ["About Us", "/about"],
+    ["Contact Us", "/contact"],
     ["About Katta Studio", "/katta-studio"],
     ["Website Development", "/katta-studio#websites-and-digital-presence"],
     ["Brand Identity", "/katta-studio#brand-positioning-and-visual-identity"],
@@ -132,7 +131,7 @@ test("@completion NAV-004 NAV-013 NAV-014 NAV-015 footer contracts are exact on 
 
       for (const heading of [
         "Experiences",
-        "KuKa Universe",
+        "KultureKatta",
         "Studio Services",
         "Connect",
         "Legal",

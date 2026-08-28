@@ -93,10 +93,6 @@ test("@exhaustive RESP-390 forms, legal pages, Moods, Moments and verticals fit 
     "/privacy-policy",
     "/cookie-policy",
     "/terms-of-use",
-    "/kuka-universe/5-senses",
-    "/kuka-universe/circle",
-    "/kuka-universe/explore",
-    "/kuka-universe/wellness",
     "/katta-studio/work-with-us",
   ];
 

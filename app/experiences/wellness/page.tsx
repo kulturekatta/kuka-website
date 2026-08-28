@@ -68,9 +68,9 @@ export default function WellnessExperiencesPage() {
       iconLabel="Wellness and slowing down"
       eyebrow="Wellness & slowing down"
       title="Breathing room, made human."
-      intro="KuKa wellness experiences bring together culture, creativity, nature, movement, reflection, and sensory awareness. They are designed as thoughtful pauses rather than clinical programs or productivity exercises — helping people slow down, reconnect, and spend time with greater attention."
+      intro="Wellness experiences at KultureKatta bring together culture, creativity, nature, movement, reflection, and sensory awareness. They are designed as thoughtful pauses rather than clinical programs or productivity exercises — helping people slow down, reconnect, and spend time with greater attention."
       firstSectionTitle="Rest can be creative, cultural, social, and alive."
-      firstSectionIntro="A KuKa wellness experience may be quiet or playful, solitary or shared, indoors or outside. The common thread is presence: less pressure, less performance, and more room to notice."
+      firstSectionIntro="A KultureKatta wellness experience may be quiet or playful, solitary or shared, indoors or outside. The common thread is presence: less pressure, less performance, and more room to notice."
       experiences={experiences}
       secondSectionTitle="Designed around the people in the room."
       secondSectionIntro="These experiences can be created for workplaces, private groups, schools and colleges, women’s groups, caregivers, communities, retreats, visiting groups, and special occasions."

@@ -15,7 +15,6 @@ const navLinks = [
   { href: "/", label: "Home" },
   { href: "/for-organizations", label: "For Organizations" },
   { href: "/private-experiences", label: "Private Experiences" },
-  { href: "/kuka-universe", label: "KuKa Universe" },
   { href: "/about", label: "About" },
   { href: "/katta-studio", label: "Katta Studio" },
 ];

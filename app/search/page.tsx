@@ -28,7 +28,7 @@ const searchableItems = [
     href: "/",
     type: "Page",
     description:
-      "Start here. Discover KultureKatta, our philosophy, featured experiences, and the KuKa universe.",
+      "Start here. Discover KultureKatta, our philosophy, featured experiences, and and ways to participate.",
     keywords: ["home", "kulturekatta", "kuka", "culture", "events"],
   },
   {

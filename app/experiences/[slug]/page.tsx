@@ -156,7 +156,7 @@ export default async function ExperienceCategoryPage({
           <p className="kk-section-label">Explore more</p>
 
           <h2 className="kk-section-heading mt-5">
-            Other ways to enter the KuKa universe.
+            Explore more KultureKatta experiences.
           </h2>
 
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

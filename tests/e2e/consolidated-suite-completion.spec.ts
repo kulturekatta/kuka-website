@@ -73,7 +73,6 @@ test("@completion NAV-MOBILE-ACTIVE every mobile primary route exposes its curre
     "/",
     "/for-organizations",
     "/private-experiences",
-    "/kuka-universe",
     "/about",
     "/katta-studio",
     "/experiences",
@@ -194,13 +193,19 @@ test("@completion NAV-HISTORY Back and Forward restore the page and active navig
   await page.setViewportSize({ width: 1366, height: 900 });
   await page.goto("/");
   const primary = page.getByRole("navigation", { name: "Primary navigation" });
-  await primary.getByRole("link", { name: "About", exact: true }).click();
-  await expect(page).toHaveURL(/\/about\/?$/);
-  await page
+
+await Promise.all([
+  page.waitForURL(/\/about\/?$/, { timeout: 30_000 }),
+  primary.getByRole("link", { name: "About", exact: true }).click(),
+]);
+
+await Promise.all([
+  page.waitForURL(/\/katta-studio\/?$/, { timeout: 30_000 }),
+  page
     .getByRole("navigation", { name: "Primary navigation" })
     .getByRole("link", { name: "Katta Studio", exact: true })
-    .click();
-  await expect(page).toHaveURL(/\/katta-studio\/?$/);
+    .click(),
+]);
 
   await page.goBack();
   await expect(page).toHaveURL(/\/about\/?$/);
