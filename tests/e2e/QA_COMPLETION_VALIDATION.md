@@ -25,7 +25,7 @@ Validation date: 2026-08-11
   flaky, 0 skipped** in approximately 5 minutes 12 seconds.
 - The all-route viewport matrix passed.
 - Axe and landmark checks passed on every public page after correcting the
-  KuKa Universe future-status and breadcrumb contrast.
+  Public-route future-status and breadcrumb contrast.
 - Every-page keyboard traversal passed.
 - The 15 visual cases were discovered but baselines were intentionally not
   generated; design approval is required first.

@@ -26,7 +26,7 @@ Together with 196 baseline and 57 exhaustive tests, the active suite contains
 | Accessibility | `A11Y-AXE`, `A11Y-AXE-STATES`, `A11Y-KEYBOARD`, `A11Y-002`, `A11Y-012`, `A11Y-FOCUS-VISIBLE` | Axe and landmark checks, open-state scans, desktop/mobile keyboard traversal, ID/ARIA-reference integrity, and visible focus |
 
 Several requested cases remain primarily in the `@exhaustive` layer and are not
-duplicated here: fresh-cookie/settings flows; homepage/KuKa Universe contracts;
+duplicated here: fresh-cookie/settings flows; homepage/content contracts;
 image, metadata, heading, and runtime checks; floating-form loading/error and
 duplicate-submit checks; 320px, orientation, text-resize, every mobile-menu
 destination, outside-click, and one-column card-order checks.

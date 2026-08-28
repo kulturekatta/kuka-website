@@ -31,7 +31,6 @@ test("@exhaustive CONTENT-02 footer exposes every required section and destinati
 
   const requiredHeadings = [
     "Experiences",
-    "KuKa Universe",
     "Studio Services",
     "Connect",
     "Legal",
@@ -45,9 +44,9 @@ test("@exhaustive CONTENT-02 footer exposes every required section and destinati
     ["Explore by Mood", "/moods"],
     ["For Organizations", "/for-organizations"],
     ["Private Experiences", "/private-experiences"],
-    ["KuKa Universe", "/kuka-universe"],
-    ["KuKa Explore", "/kuka-universe/explore"],
-    ["KuKa Circle", "/kuka-universe/circle"],
+    ["Home", "/"],
+    ["About Us", "/about"],
+    ["Contact Us", "/contact"],
     ["About Katta Studio", "/katta-studio"],
     ["Website Development", "/katta-studio#websites-and-digital-presence"],
     ["Brand Identity", "/katta-studio#brand-positioning-and-visual-identity"],
@@ -148,19 +147,19 @@ test("@exhaustive CONTENT-02B mobile footer uses a compact two-column layout", a
           .boundingBox();
 
       const experiencesBox = await sectionBox("Experiences");
-      const universeBox = await sectionBox("KuKa Universe");
+      const kultureKattaBox = await sectionBox("KultureKatta");
       const studioBox = await sectionBox("Studio Services");
       const connectBox = await sectionBox("Connect");
       const legalBox = await sectionBox("Legal");
 
       expect(experiencesBox).not.toBeNull();
-      expect(universeBox).not.toBeNull();
+      expect(kultureKattaBox).not.toBeNull();
       expect(studioBox).not.toBeNull();
       expect(connectBox).not.toBeNull();
       expect(legalBox).not.toBeNull();
 
-      expect(Math.abs(experiencesBox!.y - universeBox!.y)).toBeLessThanOrEqual(1);
-      expect(experiencesBox!.x).toBeLessThan(universeBox!.x);
+      expect(Math.abs(experiencesBox!.y - kultureKattaBox!.y)).toBeLessThanOrEqual(1);
+      expect(experiencesBox!.x).toBeLessThan(kultureKattaBox!.x);
       expect(Math.abs(studioBox!.y - connectBox!.y)).toBeLessThanOrEqual(1);
       expect(studioBox!.x).toBeLessThan(connectBox!.x);
       expect(legalBox!.width).toBeGreaterThan(experiencesBox!.width * 1.8);
@@ -226,68 +225,6 @@ test("@exhaustive CONTENT-04 homepage hero and primary destinations are exact", 
     "href",
     "/private-experiences",
   );
-  await expect(
-    page.getByRole("link", { name: "Explore the complete KuKa Universe" }),
-  ).toHaveAttribute("href", "/kuka-universe");
-});
-
-test("@exhaustive CONTENT-04A KuKa Universe ends with four responsive doorway CTAs", async ({
-  page,
-}) => {
-  const expectedDestinations: Array<[string, string]> = [
-    ["Explore Experiences", "/experiences"],
-    ["Private Experiences", "/private-experiences"],
-    ["For Organizations", "/for-organizations"],
-    ["Contact KuKa", "/contact"],
-  ];
-
-  for (const width of [390, 768, 1280]) {
-    await test.step(`${width}px viewport`, async () => {
-      await page.setViewportSize({ width, height: 844 });
-      await page.goto("/kuka-universe");
-
-      const doorwaySection = page
-        .locator("section")
-        .filter({ hasText: "Find your doorway" })
-        .last();
-      await doorwaySection.scrollIntoViewIfNeeded();
-
-      const buttons = expectedDestinations.map(([name]) =>
-        doorwaySection.getByRole("link", { name, exact: true }),
-      );
-      for (let index = 0; index < expectedDestinations.length; index += 1) {
-        const [, href] = expectedDestinations[index];
-        const button = buttons[index];
-        await expect(button).toBeVisible();
-        await expect(button).toHaveAttribute("href", href);
-      }
-      await expect(doorwaySection.getByRole("link")).toHaveCount(4);
-
-      const boxes = await Promise.all(buttons.map((button) => button.boundingBox()));
-      for (const box of boxes) expect(box).not.toBeNull();
-
-      if (width === 390) {
-        expect(boxes[0]!.y).toBeLessThan(boxes[1]!.y);
-        expect(boxes[1]!.y).toBeLessThan(boxes[2]!.y);
-        expect(boxes[2]!.y).toBeLessThan(boxes[3]!.y);
-      } else if (width === 768) {
-        expect(Math.abs(boxes[0]!.y - boxes[1]!.y)).toBeLessThanOrEqual(1);
-        expect(Math.abs(boxes[2]!.y - boxes[3]!.y)).toBeLessThanOrEqual(1);
-        expect(boxes[0]!.x).toBeLessThan(boxes[1]!.x);
-        expect(boxes[2]!.x).toBeLessThan(boxes[3]!.x);
-      } else {
-        for (const box of boxes.slice(1)) {
-          expect(Math.abs(boxes[0]!.y - box!.y)).toBeLessThanOrEqual(1);
-        }
-      }
-
-      const sectionWidth = await doorwaySection.evaluate((element) => ({
-        client: element.clientWidth,
-        scroll: element.scrollWidth,
-      }));
-      expect(sectionWidth.scroll).toBeLessThanOrEqual(sectionWidth.client);
-    });
-  }
 });
 
 test("@exhaustive CONTENT-05 every approved 'What can you do with KuKa?' card is linked", async ({

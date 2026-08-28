@@ -13,11 +13,7 @@ const staticRoutes = [
   "/experiences/wellness",
   "/for-organizations",
   "/private-experiences",
-  "/kuka-universe",
-  "/kuka-universe/5-senses",
-  "/kuka-universe/circle",
-  "/kuka-universe/explore",
-  "/kuka-universe/wellness",
+  "/moods",
   "/about",
   "/katta-studio",
   "/katta-studio/work-with-us",
@@ -43,14 +39,13 @@ export const representativeRoutes = [
   "/experiences/workshops",
   "/for-organizations",
   "/private-experiences",
-  "/kuka-universe",
+  "/moods",
   "/about",
   "/katta-studio",
   "/contact",
 ];
 
 export const redirectCases = [
-  ["/universe", "/kuka-universe"],
   ["/explore", "/experiences"],
   ["/explore/workshops", "/experiences/workshops"],
   ["/explore-talks", "/experiences/talks"],

@@ -53,33 +53,6 @@ const whatWeDoItems = [
   },
 ];
 
-const universeItems = [
-  {
-    icon: "🥾",
-    title: "KuKa Explore",
-    description:
-      "Walks, trails, city discoveries, day trips, and culture-led journeys rooted in place.",
-  },
-  {
-    icon: "🎈",
-    title: "KuKa Circle",
-    description:
-      "Screen-light, hands-on cultural learning for children, families, schools, and learning communities.",
-  },
-  {
-    icon: "👁️",
-    title: "KuKa 5 Senses",
-    description:
-      "Multisensory experiences built around taste, touch, scent, sound, sight, memory, and culture.",
-  },
-  {
-    icon: "🌿",
-    title: "KuKa Wellness",
-    description:
-      "Creative, embodied, nature-based, and community-centered experiences for wellbeing and connection.",
-  },
-];
-
 const communityItems = [
   {
     icon: "🎨",
@@ -323,50 +296,6 @@ export default function AboutPage() {
                 <p className="kk-card-body mt-4">{item.description}</p>
               </article>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* THE KUKA UNIVERSE */}
-      <section className="kk-section-light kk-section-padding">
-        <div className="kk-container">
-          <div className="mx-auto max-w-3xl text-center">
-            <div className="mb-5 flex justify-center">
-              <SemanticIcon icon="🌌" label="The KuKa Universe" size="section" />
-            </div>
-
-            <p className="kk-section-label">The KuKa Universe</p>
-
-            <h2 className="kk-section-heading mt-6">
-              KuKa is not one kind of event. It is a growing universe of
-              cultural experiences.
-            </h2>
-
-            <p className="kk-body-large mt-6">
-              Some you attend, some you learn through, some you travel for, and
-              some you bring into schools, workplaces, and communities.
-            </p>
-          </div>
-
-          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {universeItems.map((item) => (
-              <article
-                key={item.title}
-                className="kk-card kk-card--centered kk-card--interactive"
-              >
-                <SemanticIcon icon={item.icon} label={item.title} size="card" />
-
-                <h3 className="kk-card-title mt-5">{item.title}</h3>
-
-                <p className="kk-card-body mt-4">{item.description}</p>
-              </article>
-            ))}
-          </div>
-
-          <div className="mt-10 text-center">
-            <Link href="/kuka-universe" className="kk-button-dark">
-              Explore the Full KuKa Universe
-            </Link>
           </div>
         </div>
       </section>
