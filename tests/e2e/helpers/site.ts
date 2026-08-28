@@ -13,7 +13,6 @@ const staticRoutes = [
   "/experiences/wellness",
   "/for-organizations",
   "/private-experiences",
-  "/moods",
   "/about",
   "/katta-studio",
   "/katta-studio/work-with-us",
