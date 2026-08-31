@@ -133,27 +133,6 @@ const timeline = [
   },
 ];
 
-const teamMembers = [
-  {
-    name: "Vidula Tade",
-    role: "Founder",
-    description:
-      "Musician, traveller, writer, and culture-curious founder building KultureKatta as a neighbourhood-first cultural platform.",
-  },
-  {
-    name: "Anwesha",
-    role: "Team KultureKatta",
-    description:
-      "Part of the team supporting KuKa’s growing cultural universe across people, experiences, and collaborations.",
-  },
-  {
-    name: "Neha",
-    role: "Team KultureKatta",
-    description:
-      "Part of the team helping bring KuKa’s experiences, ideas, and community touchpoints to life.",
-  },
-];
-
 export default function AboutPage() {
   return (
     <div className="kk-page-root kk-section-light min-h-screen">
@@ -419,51 +398,7 @@ export default function AboutPage() {
             ))}
           </div>
         </div>
-      </section>
-
-      {/* PEOPLE BEHIND KUKA */}
-      <section className="kk-section-light kk-section-padding">
-        <div className="kk-container">
-          <div className="mx-auto max-w-3xl text-center">
-            <div className="mb-5 flex justify-center">
-              <SemanticIcon icon="💛" label="People behind KuKa" size="section" />
-            </div>
-
-            <p className="kk-section-label">People Behind KuKa</p>
-
-            <h2 className="kk-section-heading mt-6">
-              A small team building a big cultural playground.
-            </h2>
-
-            <p className="kk-body-large mt-6">
-              KultureKatta is shaped by people who care about culture,
-              community, creativity, and the tiny details that make gatherings
-              feel alive.
-            </p>
-          </div>
-
-          <div className="mt-14 grid gap-5 md:grid-cols-3">
-            {teamMembers.map((member) => (
-              <article
-                key={member.name}
-                className="kk-card kk-card--centered kk-card--interactive"
-              >
-                <div className="kk-card-avatar mx-auto mb-5">
-                  {member.name.charAt(0)}
-                </div>
-
-                <h3 className="kk-card-title">{member.name}</h3>
-
-                <p className="kk-card-meta mt-2 uppercase tracking-[0.16em]">
-                  {member.role}
-                </p>
-
-                <p className="kk-card-body mt-4">{member.description}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+      </section>    
 
       {/* JOIN THE KATTA */}
       <section className="kk-section-light kk-section-padding">

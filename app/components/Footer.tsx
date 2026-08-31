@@ -47,6 +47,10 @@ const footerSections: FooterSection[] = [
       href: "/about",
     },
     {
+      label: "Our Team",
+      href: "/our-team",
+    },
+    {
       label: "Contact Us",
       href: "/contact",
     },

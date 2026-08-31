@@ -61,178 +61,42 @@ function SectionHeaderIcon({
   );
 }
 
-const experienceTypes = [
-  {
-    label: "01",
-    icon: "🎨",
-    iconLabel: "Making",
-    title: "Hands-On Workshops",
-    titleLines: ["Hands-On", "Workshops"],
-    text: "Art, craft, pottery, gardening, textiles, paper, DIY, making, building, and slow creative experiences where your hands are very much part of the conversation.",
-    href: "/experiences/workshops",
-    cta: "Explore workshops",
-    ctaLines: ["Explore", "workshops"],
-  },
-  {
-    label: "02",
-    icon: "🍲",
-    iconLabel: "Senses",
-    title: "Food & Senses",
-    titleLines: ["Food", "& Senses"],
-    text: "Cooking, baking, coffee, tea, tastings, food stories, fermentation, regional cuisines, and shared tables where culture is experienced through flavor.",
-    href: "/experiences/food",
-    cta: "Explore food",
-    ctaLines: ["Explore", "food"],
-  },
-  {
-    label: "03",
-    icon: "🥾",
-    iconLabel: "Explore",
-    title: "Walks & Trails",
-    titleLines: ["Walks", "& Trails"],
-    text: "Heritage walks, food trails, nature walks, neighborhood explorations, and place-based experiences rooted in people, places, and stories.",
-    href: "/experiences/walks",
-    cta: "Explore walks",
-    ctaLines: ["Explore", "walks"],
-  },
-  {
-    label: "04",
-    icon: "💬",
-    iconLabel: "Ideas",
-    title: "Talks & Salons",
-    titleLines: ["Talks", "& Salons"],
-    text: "Expert talks, intimate salons, storytelling sessions, discussions, and idea-led gatherings that make learning social.",
-    href: "/experiences/talks",
-    cta: "Explore talks",
-    ctaLines: ["Explore", "talks"],
-  },
-  {
-    label: "05",
-    icon: "🎙️",
-    iconLabel: "Words",
-    title: "Words & Open Mics",
-    titleLines: ["Words", "& Open Mics"],
-    text: "Book clubs, writing circles, literature, poetry, storytelling, spoken word, open mics, and language-led gatherings for readers, writers, and listeners.",
-    href: "/experiences/words",
-    cta: "Explore words",
-    ctaLines: ["Explore", "words"],
-  },
-  {
-    label: "06",
-    icon: "🎼",
-    iconLabel: "Sound",
-    title: "Music & Sound",
-    titleLines: ["Music", "& Sound"],
-    text: "Live music, jam sessions, singing circles, sound journeys, listening rooms, and experiences that invite you to hear, feel, notice, and reflect.",
-    href: "/experiences/sound",
-    cta: "Explore sound",
-    ctaLines: ["Explore", "sound"],
-  },
-  {
-    label: "07",
-    icon: "🎬",
-    iconLabel: "Stories",
-    title: "Stories & Screen",
-    titleLines: ["Stories", "& Screen"],
-    text: "Theatre, acting, improv, movie screenings, documentaries, short films, visual storytelling, and post-screening conversations that bring stories alive.",
-    href: "/experiences/stories",
-    cta: "Explore stories",
-    ctaLines: ["Explore", "stories"],
-  },
-  {
-    label: "08",
-    icon: "💃",
-    iconLabel: "Movement",
-    title: "Dance & Movement",
-    titleLines: ["Dance", "& Movement"],
-    text: "Dance, movement, rhythm, body-led expression, performance, flow, and embodied experiences that bring culture into motion.",
-    href: "/experiences/movement",
-    cta: "Explore movement",
-    ctaLines: ["Explore", "movement"],
-  },
-  {
-    label: "09",
-    icon: "🎲",
-    iconLabel: "Games",
-    title: "Games & Play",
-    titleLines: ["Games", "& Play"],
-    text: "Traditional games, board games, puzzles, ancient and medieval games, playful challenges, and interactive experiences that bring people together through strategy, laughter, and curiosity.",
-    href: "/experiences/games",
-    cta: "Explore games",
-    ctaLines: ["Explore", "games"],
-  },
-  {
-    label: "10",
-    icon: "🌾",
-    iconLabel: "Wellness",
-    title: "Wellness & Slowing Down",
-    titleLines: ["Wellness", "& Slowing Down"],
-    text: "Mindful making, nature connection, gentle movement, reflection, sensory rest, digital well-being, and screen-light experiences that create breathing room.",
-    href: "/experiences/wellness",
-    cta: "Explore wellness",
-    ctaLines: ["Explore", "wellness"],
-  },
-  {
-    label: "11",
-    icon: "🎊",
-    iconLabel: "Seasonal",
-    title: "Festive & Seasonal Experiences",
-    titleLines: ["Festive & Seasonal", "Experiences"],
-    text: "Culture-led programs around festivals, seasons, rituals, food, stories, crafts, music, masks, calendars, and regional traditions.",
-    href: "/experiences/festive",
-    cta: "Explore festive experiences",
-    ctaLines: ["Explore festive", "experiences"],
-  },
-  {
-    label: "12",
-    icon: "🧩",
-    iconLabel: "Custom",
-    title: "Want a Custom Combination?",
-    titleLines: ["Want a Custom", "Combination?"],
-    text: "Blend two or more KuKa doorways into one experience shaped around your people, purpose, occasion, location, group size, and available time — from craft and food to stories, music, games, walks, and wellness.",
-    href: "/experiences/custom-combination",
-    cta: "Build your combination",
-    ctaLines: ["Build your", "combination"],
-  },
-];
-
-
 const discoveryLayers = [
   {
-    icon: "🧠",
-    iconLabel: "Mood and intent",
-    eyebrow: "Start with what you want",
-    title: "Mood & Intent Taxonomy",
-    question: "What do I feel like doing?",
-    text: "Begin with your current desire, energy, intention, or hoped-for experience — whether you want to create, learn, play, connect, move, slow down, explore, celebrate, reflect, contribute, or be surprised.",
+    icon: "🧭",
+    iconLabel: "Mood",
+    eyebrow: "Start with how you feel",
+    title: "Browse by Mood",
+    question: "How do you feel—or how would you like to feel?",
+    text: "Begin with your energy, desire, or emotional state and discover experiences that can meet you there.",
     examples: [
-      "Create",
-      "Learn",
-      "Play",
-      "Connect",
-      "Slow down",
-      "Surprise me",
+      "Curious",
+      "Playful",
+      "Reflective",
+      "Social",
+      "Restless",
+      "In need of calm",
     ],
     href: "/moods",
-    cta: "Explore by mood & intent",
+    cta: "Explore All Moods",
   },
   {
-    icon: "🌦️",
-    iconLabel: "Moments and conditions",
-    eyebrow: "Start with what suits now",
-    title: "Moments, Seasons & Conditions",
-    question: "What suits this particular time and situation?",
-    text: "Discover possibilities shaped by the season, weather, time of day, cultural calendar, natural rhythms, available time, location, and what may be especially meaningful right now.",
+    icon: "⏳",
+    iconLabel: "Moment",
+    eyebrow: "Start with what is happening",
+    title: "Browse by Moment",
+    question: "What is happening in your life or around you?",
+    text: "Find experiences suited to an occasion, season, relationship, transition, time of day, or meaningful chapter.",
     examples: [
-      "This season",
-      "Rainy days",
-      "After work",
-      "At sunset",
-      "This weekend",
-      "Best right now",
+      "A rainy afternoon",
+      "A birthday",
+      "A slow Sunday",
+      "A team milestone",
+      "A new beginning",
+      "Time with family",
     ],
     href: "/moments",
-    cta: "Explore by moment",
+    cta: "Explore All Moments",
   },
 ];
 
@@ -262,6 +126,7 @@ const upcomingExperiences = [
     meta: "Collaborations open",
   },
 ];
+
 
 const pastExperiences = [
   {
@@ -366,20 +231,28 @@ const proofItems = [
 
 const whatWeCreate = [
   {
-    icon: "🏢",
-    iconLabel: "Organizations",
-    title: "KuKa for Organizations",
-    text: "Employee engagement, team workshops, offsite add-ons, faculty and staff programs, city-based activities, and creative cultural sessions for companies, startups, schools, colleges, NGOs, foundations, healthcare groups, and institutions. Designed for organizations that want their people to connect, create, reflect, celebrate, and experience culture together in a more human way.",
-    href: "/for-organizations",
-    cta: "Explore Organization Experiences",
+    icon: "🎟️",
+    iconLabel: "Open",
+    title: "Open Experiences",
+    text: "Discover upcoming workshops, walks, gatherings, performances, conversations, sensory sessions, and other cultural experiences that are open for anyone to join.",
+    href: "/experiences",
+    cta: "Explore Open Experiences",
   },
   {
     icon: "🎉",
     iconLabel: "Private",
-    title: "KuKa Private Experiences",
-    text: "Custom experiences for birthdays, bachelorettes, families, friends, couples, travelers, visiting guests, women’s groups and intimate celebrations. Designed for groups who want something warmer than a regular outing — hands-on, hosted, personal and shaped around the people, occasion, mood and pace of the gathering.",
+    title: "Private Experiences",
+    text: "Commission a thoughtful experience for birthdays, families, friends, couples, visiting guests, celebrations, or simply meaningful time together—shaped around your people, occasion, mood, and pace.",
     href: "/private-experiences",
-    cta: "Explore Private Experiences",
+    cta: "Plan a Private Experience",
+  },
+  {
+    icon: "🏢",
+    iconLabel: "Organizations",
+    title: "Experiences for Organizations",
+    text: "Explore one-time experiences, curated packages, and longer programmes for companies, schools, colleges, NGOs, institutions, communities, and teams that want to connect, create, learn, or celebrate together.",
+    href: "/for-organizations",
+    cta: "Explore for Organizations",
   },
 ];
 
@@ -429,35 +302,25 @@ export default function HomePage() {
       </section>
 
       {/* WHAT WE CREATE */}
-      <section className="kk-section-light pt-12 pb-20 md:pt-2 md:pb-24">
+            {/* PRIMARY EXPERIENCE PATHWAYS */}
+      <section className="kk-section-light pt-12 pb-20 md:pt-6 md:pb-24">
         <div className="kk-container">
           <div className="mx-auto max-w-4xl text-center">
-            <SectionHeaderIcon icon="🏗️" label="What we create" />
+            <SectionHeaderIcon icon="🚪" label="Pick your doorway" />
 
-            <p className="kk-section-label mb-5">What We Create</p>
+            <p className="kk-section-label mb-5">Pick Your Doorway</p>
 
             <h2 className="kk-section-heading mt-4">
-              Thoughtful cultural experiences for groups that want something
-              more meaningful.
+              How would you like to experience KuKa?
             </h2>
 
-            <div className="kk-body-large mx-auto mt-8 max-w-3xl space-y-6">
-              <p>
-                KuKa designs culture-led experiences for organizations,
-                private celebrations, visiting groups, wellness days, and
-                special occasions — thoughtful gatherings made around your
-                people.
-              </p>
-
-              <p className="text-[var(--kk-text)]">
-                The larger dream is a cultural ecosystem where people do not
-                just watch culture, but enter it, experience it, and feel part
-                of it.
-              </p>
-            </div>
+            <p className="kk-body mx-auto mt-6 max-w-3xl">
+              Join an experience open to everyone, create something for your
+              own group, or bring KuKa to your organization.
+            </p>
           </div>
 
-          <div className="mt-14 grid gap-8 md:grid-cols-2">
+          <div className="mt-14 grid items-stretch gap-8 md:grid-cols-2 lg:grid-cols-3">
             {whatWeCreate.map((item) => (
               <article
                 key={item.title}
@@ -476,7 +339,10 @@ export default function HomePage() {
                   {item.text}
                 </p>
 
-                <Link href={item.href} className="kk-button-dark mt-8 w-fit">
+                <Link
+                  href={item.href}
+                  className="kk-button-dark mt-8 self-center"
+                >
                   {item.cta}
                 </Link>
               </article>
@@ -485,80 +351,24 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* WHAT CAN YOU DO */}
-      <section className="kk-section-cream pt-10 pb-20 md:pt-6 md:pb-24">
-        <div className="kk-container">
-          <div className="mx-auto max-w-3xl text-center">
-            <SectionHeaderIcon icon="🚪" label="Explore KuKa experiences" />
-
-            <p className="kk-section-label mb-5">
-              What can you do with KuKa?
-            </p>
-
-            <h2 className="kk-section-heading">Pick your doorway.</h2>
-
-            <p className="kk-body mt-6">
-              Whether you want to make, taste, walk, discuss, write, listen,
-              watch, move, or simply try something new — there’s a Katta waiting
-              for you.
-            </p>
-          </div>
-
-          <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {experienceTypes.map((item) => (
-              <article
-                key={item.title}
-                className="kk-card kk-card--interactive min-h-[360px]"
-              >
-                <IllustratedIcon
-                  icon={item.icon}
-                  label={item.iconLabel}
-                />
-
-                <h3 className="kk-card-title mt-6 text-center">
-                  {item.titleLines.map((line) => (
-                    <span key={line} className="block">
-                      {line}
-                    </span>
-                  ))}
-                </h3>
-
-                <p className="kk-card-body mt-5 flex-1">{item.text}</p>
-
-                <Link href={item.href} className="kk-link-dark mt-8">
-                  <span>
-                    {item.ctaLines.map((line) => (
-                      <span key={line} className="block">
-                        {line}
-                      </span>
-                    ))}
-                  </span>
-                </Link>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-
       {/* DISCOVERY LAYERS */}
-      <section className="kk-section-light pt-8 pb-16 md:pt-6 md:pb-20">
+            {/* MOODS AND MOMENTS */}
+      <section className="kk-section-cream pt-10 pb-20 md:pt-14 md:pb-24">
         <div className="kk-container">
           <div className="mx-auto max-w-4xl text-center">
-            <SectionHeaderIcon icon="🧭" label="Find your way into KuKa" />
+            <SectionHeaderIcon icon="🧭" label="Moods and moments" />
 
             <p className="kk-section-label mb-5">
               Find your way into KuKa
             </p>
 
             <h2 className="kk-section-heading">
-              Begin with what you want — or what this moment makes possible.
+              Find an experience that meets you where you are.
             </h2>
 
             <p className="kk-body mx-auto mt-6 max-w-3xl">
-              KuKa has two complementary discovery layers. Mood & Intent starts
-              with you. Moments, Seasons & Conditions starts with the world,
-              calendar, weather, and time around you.
+              Start with how you feel, how you would like to feel, or what is
+              happening in your life and around you.
             </p>
           </div>
 
@@ -566,7 +376,7 @@ export default function HomePage() {
             {discoveryLayers.map((layer) => (
               <article
                 key={layer.title}
-                className="kk-card kk-card--interactive min-h-[520px]"
+                className="kk-card kk-card--interactive min-h-[500px]"
               >
                 <IllustratedIcon
                   icon={layer.icon}
@@ -605,27 +415,6 @@ export default function HomePage() {
                 </Link>
               </article>
             ))}
-          </div>
-
-          <div className="kk-panel mx-auto mt-8 max-w-5xl text-center">
-            <SemanticIcon
-              icon="➕"
-              label="Mood plus moment"
-              size="card"
-              className="mb-5"
-            />
-
-            <p className="kk-card-label">Mood + Moment</p>
-
-            <h3 className="kk-card-title mt-4">
-              The two layers become more useful when they work together.
-            </h3>
-
-            <p className="kk-body mx-auto mt-5 max-w-3xl">
-              “I want to slow down” + “It is a rainy Sunday afternoon” could
-              lead to a listening room, mindful making session, sensory table,
-              poetry-and-chai gathering, or an indoor nature experience.
-            </p>
           </div>
         </div>
       </section>

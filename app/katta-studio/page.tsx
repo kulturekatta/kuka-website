@@ -20,6 +20,7 @@ const businessOutcomes = [
   { icon: "📣", title: "Consistent digital presence" },
   { icon: "⚙️", title: "Organised business systems" },
   { icon: "📈", title: "Practical growth opportunities" },
+  { icon: "🎙️", title: "Find your voice" },
 ];
 
 const coreServiceAreas = [
@@ -296,7 +297,6 @@ const engagementStyles = [
   { icon: "⚡", title: "Short-term implementation engagements" },
   { icon: "📅", title: "Monthly support arrangements" },
   { icon: "📊", title: "Phased implementation projects" },
-  { icon: "🔌", title: "Specialist partner assignments" },
 ];
 
 const studioStrengths = [
@@ -385,11 +385,7 @@ export default function KattaStudioPage() {
             {businessOutcomes.map((outcome, index) => (
               <div
                 key={outcome.title}
-                className={`kk-card kk-card--compact ${
-                  index === businessOutcomes.length - 1
-                    ? "sm:col-span-2 lg:col-span-1"
-                    : ""
-                }`}
+                className="kk-card kk-card--compact"
               >
                 <SemanticIcon
                   icon={outcome.icon}
@@ -813,11 +809,7 @@ export default function KattaStudioPage() {
             {engagementStyles.map((style, index) => (
               <div
                 key={style.title}
-                className={`kk-card kk-card--compact kk-card--centered ${
-                  index === engagementStyles.length - 1
-                    ? "sm:col-span-2 lg:col-span-1"
-                    : ""
-                }`}
+                className="kk-card kk-card--compact kk-card--centered"
               >
                 <SemanticIcon icon={style.icon} label={style.title} size="card" />
 

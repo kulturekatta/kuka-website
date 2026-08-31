@@ -403,7 +403,7 @@ export async function sendWebsiteForm(
 
   const internalResult = await resend.emails.send({
     from: config.senderEmail,
-    to: [config.recipientEmail],
+    to: [...new Set([config.recipientEmail, config.publicContactEmail])],
     replyTo: submission.submitterEmail,
     subject: submission.internalSubject,
     html: buildInternalEmailHtml(submission, submittedAt),
