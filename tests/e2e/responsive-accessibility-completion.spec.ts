@@ -81,25 +81,25 @@ async function expectVisibleFocus(locator: Locator, label: string) {
   );
 }
 
-test("@completion RESP-VIEWPORT-MATRIX every public route fits all remaining required viewports", async ({
-  page,
-}) => {
-  test.setTimeout(1_200_000);
-  await preparePage(page);
-  const remainingViewports = [
-    { name: "standard phone", width: 375, height: 812 },
-    { name: "Android phone", width: 412, height: 915 },
-    { name: "large phone", width: 430, height: 932 },
-    { name: "mobile landscape", width: 812, height: 375 },
-    { name: "large mobile landscape", width: 932, height: 430 },
-    { name: "tablet", width: 768, height: 1024 },
-    { name: "laptop", width: 1024, height: 768 },
-    { name: "standard laptop", width: 1366, height: 768 },
-    { name: "desktop", width: 1440, height: 900 },
-    { name: "wide desktop", width: 1920, height: 1080 },
-  ];
+const remainingViewports = [
+  { name: "standard phone", width: 375, height: 812 },
+  { name: "Android phone", width: 412, height: 915 },
+  { name: "large phone", width: 430, height: 932 },
+  { name: "mobile landscape", width: 812, height: 375 },
+  { name: "large mobile landscape", width: 932, height: 430 },
+  { name: "tablet", width: 768, height: 1024 },
+  { name: "laptop", width: 1024, height: 768 },
+  { name: "standard laptop", width: 1366, height: 768 },
+  { name: "desktop", width: 1440, height: 900 },
+  { name: "wide desktop", width: 1920, height: 1080 },
+];
 
-  for (const viewport of remainingViewports) {
+for (const viewport of remainingViewports) {
+  test(`@completion RESP-VIEWPORT-MATRIX every public route fits the ${viewport.name} viewport`, async ({
+    page,
+  }) => {
+    test.setTimeout(240_000);
+    await preparePage(page);
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
 
     for (const route of publicRoutes) {
@@ -120,8 +120,8 @@ test("@completion RESP-VIEWPORT-MATRIX every public route fits all remaining req
         ).toEqual([]);
       });
     }
-  }
-});
+  });
+}
 
 test("@completion MOBILE-NAV-ARIA hamburger exposes synchronized accessible expanded state", async ({
   page,
