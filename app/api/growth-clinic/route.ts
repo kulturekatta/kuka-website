@@ -24,6 +24,14 @@ type GrowthClinicBody = {
   formGuard?: unknown;
   startedAt?: unknown;
   sourcePage?: unknown;
+  landingPage?: unknown;
+  firstVisitAt?: unknown;
+  utmSource?: unknown;
+  utmMedium?: unknown;
+  utmCampaign?: unknown;
+  utmContent?: unknown;
+  utmTerm?: unknown;
+  fbclid?: unknown;
 };
 
 export async function POST(request: Request) {
@@ -57,7 +65,15 @@ export async function POST(request: Request) {
     const email = cleanEmail(body.email);
     const city = cleanText(body.city, 120);
     const mobile = cleanText(body.mobile, 40);
-    const sourcePage = cleanText(body.sourcePage, 200) || "/katta-studio";
+    const sourcePage = cleanText(body.sourcePage, 500) || "/katta-studio";
+    const landingPage = cleanText(body.landingPage, 500);
+    const firstVisitAt = cleanText(body.firstVisitAt, 80);
+    const utmSource = cleanText(body.utmSource, 160);
+    const utmMedium = cleanText(body.utmMedium, 160);
+    const utmCampaign = cleanText(body.utmCampaign, 200);
+    const utmContent = cleanText(body.utmContent, 200);
+    const utmTerm = cleanText(body.utmTerm, 200);
+    const fbclid = cleanText(body.fbclid, 500);
 
     if (!brandName || !brandLink || !painPoints || !email || !city || !mobile) {
       return NextResponse.json(
@@ -98,7 +114,15 @@ export async function POST(request: Request) {
         { label: "Email", value: email },
         { label: "City", value: city },
         { label: "Mobile / WhatsApp", value: mobile },
-        { label: "Source page", value: sourcePage },
+        { label: "Submission page", value: sourcePage },
+        { label: "Original landing page", value: landingPage || "Direct / unavailable" },
+        { label: "First visit", value: firstVisitAt || "Unavailable" },
+        { label: "UTM source", value: utmSource || "Direct / unavailable" },
+        { label: "UTM medium", value: utmMedium || "Unavailable" },
+        { label: "UTM campaign", value: utmCampaign || "Unavailable" },
+        { label: "UTM content", value: utmContent || "Unavailable" },
+        { label: "UTM term", value: utmTerm || "Unavailable" },
+        { label: "Meta click ID", value: fbclid || "Unavailable" },
       ],
     });
 

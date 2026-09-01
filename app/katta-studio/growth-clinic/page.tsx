@@ -71,15 +71,42 @@ const projects = [
   },
 ];
 
-export default function GrowthClinicLandingPage() {
+type GrowthClinicLandingPageProps = {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
+
+const ATTRIBUTION_PARAMS = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_content",
+  "utm_term",
+  "fbclid",
+] as const;
+
+export default async function GrowthClinicLandingPage({
+  searchParams,
+}: GrowthClinicLandingPageProps) {
+  const incomingParams = await searchParams;
+  const studioParams = new URLSearchParams();
+
+  ATTRIBUTION_PARAMS.forEach((key) => {
+    const value = incomingParams[key];
+    const firstValue = Array.isArray(value) ? value[0] : value;
+    if (firstValue) studioParams.set(key, firstValue);
+  });
+
+  if (studioParams.size > 0) {
+    studioParams.set("landing_page", "/katta-studio/growth-clinic");
+  }
+
+  const studioHref = studioParams.size
+    ? `/katta-studio?${studioParams.toString()}`
+    : "/katta-studio";
+
   return (
     <div className="kk-page-root min-h-screen overflow-x-clip">
-      <section className="relative border-b border-black/[0.07] px-6 py-16 sm:py-20 lg:py-24">
-        <div
-          className="pointer-events-none absolute inset-y-0 right-0 hidden w-[38%] bg-[var(--kk-accent)]/[0.055] lg:block"
-          aria-hidden="true"
-        />
-
+      <section className="relative border-b border-black/[0.07] bg-[var(--kk-surface-alt)] px-6 py-16 sm:py-20 lg:py-24">
         <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.18fr_0.82fr] lg:gap-16">
           <div>
             <IconLead icon="🔬" label="Growth Clinic" size="page" />
@@ -146,13 +173,13 @@ export default function GrowthClinicLandingPage() {
         className="scroll-mt-24 bg-white px-6 py-16 sm:py-20"
       >
         <div className="mx-auto max-w-6xl">
-          <div className="max-w-3xl">
+          <div className="max-w-5xl">
             <IconLead icon="📋 🔎" label="Growth Clinic review" />
 
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-[var(--kk-accent)]">
               What we review
             </p>
-            <h2 className="mt-4 text-[clamp(2rem,4vw,3.4rem)] font-bold leading-[1.08] tracking-[-0.04em] text-[var(--kk-text)]">
+            <h2 className="mt-4 text-[clamp(2rem,4vw,3.4rem)] font-bold leading-[1.08] tracking-[-0.04em] text-[var(--kk-text)] lg:whitespace-nowrap">
               Five connected parts of your growth journey.
             </h2>
           </div>
@@ -178,10 +205,7 @@ export default function GrowthClinicLandingPage() {
       <section className="border-y border-black/[0.07] bg-[var(--kk-surface-alt)] px-6 py-16 sm:py-20">
         <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
           <div>
-            <IconLead
-              icon="🎯 👥"
-              label="Who the Growth Clinic is for"
-            />
+            <IconLead icon="🎯 👥" label="Who the Growth Clinic is for" />
 
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-[var(--kk-accent)]">
               Who this is for
@@ -216,13 +240,13 @@ export default function GrowthClinicLandingPage() {
 
       <section className="bg-white px-6 py-16 sm:py-20">
         <div className="mx-auto max-w-6xl">
-          <div className="max-w-3xl">
+          <div className="max-w-5xl">
             <IconLead icon="📁" label="Selected projects" />
 
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-[var(--kk-accent)]">
               Selected work
             </p>
-            <h2 className="mt-4 text-[clamp(2rem,4vw,3.35rem)] font-bold leading-[1.08] tracking-[-0.04em] text-[var(--kk-text)]">
+            <h2 className="mt-4 text-[clamp(2rem,4vw,3.35rem)] font-bold leading-[1.08] tracking-[-0.04em] text-[var(--kk-text)] lg:whitespace-nowrap">
               Different businesses. Clearer next steps.
             </h2>
           </div>
@@ -233,7 +257,7 @@ export default function GrowthClinicLandingPage() {
                 key={project.title}
                 className="flex flex-col rounded-[1.75rem] border border-black/10 bg-white p-7 shadow-[0_12px_36px_rgba(42,30,25,0.05)]"
               >
-                <p className="text-sm font-bold uppercase tracking-[0.14em] text-[var(--kk-accent)]">
+                <p className="text-sm font-bold uppercase tracking-[0.14em] text-[var(--kk-accent)] lg:min-h-[3.25rem]">
                   {project.category}
                 </p>
                 <h3 className="mt-4 text-2xl font-bold tracking-[-0.025em] text-[var(--kk-text)]">
@@ -280,10 +304,10 @@ export default function GrowthClinicLandingPage() {
               identify the most useful starting point.
             </p>
             <p className="mt-7 text-sm leading-6 text-[var(--kk-text-muted)]">
-              Want the broader picture first?{" "}
+              Want the broader picture first?
               <Link
-                href="/katta-studio"
-                className="font-bold text-[var(--kk-text)] underline decoration-black/25 underline-offset-4 hover:decoration-black"
+                href={studioHref}
+                className="mt-1 block w-fit font-bold text-[var(--kk-text)] underline decoration-black/25 underline-offset-4 hover:decoration-black"
               >
                 Explore Katta Studio
               </Link>

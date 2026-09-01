@@ -12,6 +12,80 @@ import SemanticIcon from "../components/SemanticIcon";
 type FormStatus = "idle" | "submitting" | "success" | "error";
 const GROWTH_CLINIC_DRAFT_KEY =
   "kuka-growth-clinic-form-draft-v1";
+const ATTRIBUTION_STORAGE_KEY = "kuka-growth-attribution-v1";
+const ATTRIBUTION_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
+
+type GrowthAttribution = {
+  utmSource: string;
+  utmMedium: string;
+  utmCampaign: string;
+  utmContent: string;
+  utmTerm: string;
+  fbclid: string;
+  landingPage: string;
+  firstVisitAt: string;
+  savedAt: number;
+};
+
+const emptyAttribution = (): GrowthAttribution => ({
+  utmSource: "",
+  utmMedium: "",
+  utmCampaign: "",
+  utmContent: "",
+  utmTerm: "",
+  fbclid: "",
+  landingPage: "",
+  firstVisitAt: "",
+  savedAt: Date.now(),
+});
+
+function readAndRememberAttribution(): GrowthAttribution {
+  const params = new URLSearchParams(window.location.search);
+  const hasCampaignData =
+    params.has("utm_source") ||
+    params.has("utm_medium") ||
+    params.has("utm_campaign") ||
+    params.has("utm_content") ||
+    params.has("utm_term") ||
+    params.has("fbclid");
+
+  if (hasCampaignData) {
+    const attribution: GrowthAttribution = {
+      utmSource: params.get("utm_source") ?? "",
+      utmMedium: params.get("utm_medium") ?? "",
+      utmCampaign: params.get("utm_campaign") ?? "",
+      utmContent: params.get("utm_content") ?? "",
+      utmTerm: params.get("utm_term") ?? "",
+      fbclid: params.get("fbclid") ?? "",
+      landingPage:
+        params.get("landing_page") ??
+        `${window.location.pathname}${window.location.search}`,
+      firstVisitAt: new Date().toISOString(),
+      savedAt: Date.now(),
+    };
+
+    window.localStorage.setItem(
+      ATTRIBUTION_STORAGE_KEY,
+      JSON.stringify(attribution),
+    );
+    return attribution;
+  }
+
+  try {
+    const savedValue = window.localStorage.getItem(ATTRIBUTION_STORAGE_KEY);
+    if (!savedValue) return emptyAttribution();
+
+    const saved = JSON.parse(savedValue) as GrowthAttribution;
+    if (!saved.savedAt || Date.now() - saved.savedAt > ATTRIBUTION_MAX_AGE_MS) {
+      window.localStorage.removeItem(ATTRIBUTION_STORAGE_KEY);
+      return emptyAttribution();
+    }
+    return saved;
+  } catch {
+    window.localStorage.removeItem(ATTRIBUTION_STORAGE_KEY);
+    return emptyAttribution();
+  }
+}
 
 export default function GrowthClinicContactForm() {
   const [status, setStatus] = useState<FormStatus>("idle");
@@ -27,6 +101,7 @@ export default function GrowthClinicContactForm() {
 
   useEffect(() => {
     startedAtRef.current = Date.now();
+    readAndRememberAttribution();
   }, []);
 
   useEffect(() => {
@@ -47,6 +122,7 @@ export default function GrowthClinicContactForm() {
     const getValue = (fieldName: string) =>
       String(formData.get(fieldName) ?? "");
 
+    const attribution = readAndRememberAttribution();
     const payload = {
       brandName: getValue("brandName"),
       brandLink: getValue("brandLink"),
@@ -57,7 +133,15 @@ export default function GrowthClinicContactForm() {
       consent: formData.get("consent") === "on",
       formGuard: String(formData.get("formGuard") ?? ""),
       startedAt: startedAtRef.current,
-      sourcePage: "/katta-studio#growth-clinic-form",
+      sourcePage: `${window.location.pathname}${window.location.search}#growth-clinic-form`,
+      landingPage: attribution.landingPage,
+      firstVisitAt: attribution.firstVisitAt,
+      utmSource: attribution.utmSource,
+      utmMedium: attribution.utmMedium,
+      utmCampaign: attribution.utmCampaign,
+      utmContent: attribution.utmContent,
+      utmTerm: attribution.utmTerm,
+      fbclid: attribution.fbclid,
     };
 
     isSubmittingRef.current = true;
@@ -92,6 +176,14 @@ export default function GrowthClinicContactForm() {
       setStatusMessage(
         "Thank you. Your Growth Clinic enquiry has been sent, and a confirmation email is on its way.",
       );
+
+      const metaWindow = window as typeof window & {
+        fbq?: (...args: unknown[]) => void;
+      };
+      metaWindow.fbq?.("track", "Lead", {
+        content_name: "Katta Studio Growth Clinic",
+        content_category: "Growth Clinic enquiry",
+      });
     } catch (error) {
       setStatus("error");
       setStatusMessage(

@@ -806,7 +806,7 @@ export default function KattaStudioPage() {
           </div>
 
           <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {engagementStyles.map((style, index) => (
+            {engagementStyles.map((style) => (
               <div
                 key={style.title}
                 className="kk-card kk-card--compact kk-card--centered"
