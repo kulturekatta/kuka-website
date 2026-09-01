@@ -112,7 +112,10 @@ export default function GrowthClinicLandingPage() {
           </div>
 
           <aside className="rounded-[2rem] border border-black/10 bg-[var(--kk-dark)] p-7 text-white shadow-[0_28px_80px_rgba(42,30,25,0.16)] sm:p-9">
-            <p className="text-sm font-bold uppercase tracking-[0.16em] text-white/55">
+            <p
+              className="text-sm font-bold uppercase tracking-[0.16em]"
+              style={{ color: "#ffffff" }}
+            >
               A useful starting point when
             </p>
             <ul className="mt-6 grid gap-5">
