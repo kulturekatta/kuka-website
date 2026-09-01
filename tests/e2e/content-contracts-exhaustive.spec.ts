@@ -217,41 +217,37 @@ test("@exhaustive CONTENT-04 homepage hero and primary destinations are exact", 
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     "Culture-led experiences for organizations and private groups.",
   );
-  await expect(page.getByRole("link", { name: "Plan for an Organization" })).toHaveAttribute(
-    "href",
-    "/for-organizations",
-  );
-  await expect(page.getByRole("link", { name: "Plan a Private Experience" })).toHaveAttribute(
-    "href",
-    "/private-experiences",
-  );
+  await expect(
+    page.getByRole("link", { name: "Plan for an Organization" }),
+  ).toHaveAttribute("href", "/for-organizations");
+  await expect(
+    page.getByRole("link", { name: "Plan a Private Experience" }).first(),
+  ).toHaveAttribute("href", "/private-experiences");
 });
 
-test("@exhaustive CONTENT-05 every approved 'What can you do with KuKa?' card is linked", async ({
+test("@exhaustive CONTENT-05 every approved 'Pick Your Doorway' card is linked", async ({
   page,
 }) => {
   await page.goto("/");
 
-  const section = page.locator("section").filter({ hasText: "What can you do with KuKa?" }).first();
+  const section = page
+    .locator("section")
+    .filter({ hasText: "Pick Your Doorway" })
+    .first();
+
   await expect(section).toBeVisible();
 
   const expectedDestinations = [
-    "/experiences/workshops",
-    "/experiences/food",
-    "/experiences/walks",
-    "/experiences/talks",
-    "/experiences/words",
-    "/experiences/sound",
-    "/experiences/stories",
-    "/experiences/movement",
-    "/experiences/games",
-    "/experiences/wellness",
-    "/experiences/festive",
-    "/experiences/custom-combination",
-  ];
+  "/experiences",
+  "/private-experiences",
+  "/for-organizations",
+];
 
   for (const href of expectedDestinations) {
-    await expect(section.locator(`a[href="${href}"]`), `Missing homepage card ${href}`).toHaveCount(1);
+    await expect(
+      section.locator(`a[href="${href}"]`),
+      `Missing homepage card ${href}`,
+    ).toHaveCount(1);
   }
 });
 

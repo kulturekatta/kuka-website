@@ -7,6 +7,7 @@ import {
   useAccessibleFormValidation,
   useFormDraft,
 } from "../../components/formEnhancements";
+import IconLead from "../../components/IconLead";
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
 
@@ -149,6 +150,8 @@ export default function GrowthClinicLandingForm() {
       </div>
 
       <div className="mb-7 border-b border-black/[0.07] pb-6">
+        <IconLead icon="📨 🔍" label="Growth Clinic form" />
+
         <p className="text-sm font-bold uppercase tracking-[0.16em] text-[var(--kk-accent)]">
           Request a Growth Clinic
         </p>

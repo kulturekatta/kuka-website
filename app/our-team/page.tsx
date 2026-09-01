@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import IconLead from "../components/IconLead";
 
 export const metadata: Metadata = {
   title: "Our Team | KultureKatta",
@@ -42,6 +43,13 @@ export default function OurTeamPage() {
       {/* HERO */}
       <section className="kk-section-light kk-hero-padding">
         <div className="kk-container text-center">
+          <IconLead
+            icon="👥 ✨"
+            label="Our Team"
+            size="page"
+            align="center"
+          />
+
           <p className="kk-page-label text-[var(--kk-accent)]">Our Team</p>
 
           <h1 className="kk-page-heading mx-auto mt-5 max-w-4xl">
@@ -125,6 +133,8 @@ export default function OurTeamPage() {
       <section className="kk-section-light kk-section-padding">
         <div className="kk-container">
           <div className="mx-auto max-w-3xl text-center">
+            <IconLead icon="🎨 👥" label="Creative Team" align="center" />
+
             <p className="kk-card-label">
               Creative Team
             </p>
@@ -175,6 +185,8 @@ export default function OurTeamPage() {
       <section className="kk-section-light kk-section-padding pt-0">
         <div className="kk-container">
           <div className="rounded-[2rem] border border-black/10 bg-white px-7 py-12 text-center shadow-sm sm:px-10 sm:py-14">
+            <IconLead icon="🕯️ 🤝" label="Shared belief" align="center" />
+
             <p className="kk-card-label">
               Small team. Many rabbit holes.
             </p>

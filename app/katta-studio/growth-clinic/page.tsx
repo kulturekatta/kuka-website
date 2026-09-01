@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import IconLead from "../../components/IconLead";
 import GrowthClinicLandingForm from "./GrowthClinicLandingForm";
 
 export const metadata: Metadata = {
@@ -81,6 +82,8 @@ export default function GrowthClinicLandingPage() {
 
         <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.18fr_0.82fr] lg:gap-16">
           <div>
+            <IconLead icon="🔬" label="Growth Clinic" size="page" />
+
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-[var(--kk-accent)]">
               Katta Studio · Growth Clinic
             </p>
@@ -141,6 +144,8 @@ export default function GrowthClinicLandingPage() {
       >
         <div className="mx-auto max-w-6xl">
           <div className="max-w-3xl">
+            <IconLead icon="📋 🔎" label="Growth Clinic review" />
+
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-[var(--kk-accent)]">
               What we review
             </p>
@@ -170,6 +175,11 @@ export default function GrowthClinicLandingPage() {
       <section className="border-y border-black/[0.07] bg-[var(--kk-surface-alt)] px-6 py-16 sm:py-20">
         <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
           <div>
+            <IconLead
+              icon="🎯 👥"
+              label="Who the Growth Clinic is for"
+            />
+
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-[var(--kk-accent)]">
               Who this is for
             </p>
@@ -204,6 +214,8 @@ export default function GrowthClinicLandingPage() {
       <section className="bg-white px-6 py-16 sm:py-20">
         <div className="mx-auto max-w-6xl">
           <div className="max-w-3xl">
+            <IconLead icon="📁" label="Selected projects" />
+
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-[var(--kk-accent)]">
               Selected work
             </p>
@@ -252,6 +264,8 @@ export default function GrowthClinicLandingPage() {
       >
         <div className="mx-auto grid max-w-6xl items-start gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
           <div className="lg:sticky lg:top-28">
+            <IconLead icon="🚧" label="Where you are feeling stuck" />
+
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-[var(--kk-accent)]">
               Start here
             </p>
