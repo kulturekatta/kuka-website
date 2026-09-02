@@ -7,7 +7,7 @@ import LegalPageLayout, {
 export const metadata: Metadata = {
   title: "Privacy Policy | KultureKatta",
   description:
-    "Learn how KultureKatta collects, uses, stores, and protects personal information.",
+    "Learn how KultureKatta collects, uses, stores, and protects information, including consent-based advertising measurement.",
   alternates: {
     canonical: "/privacy-policy",
   },
@@ -90,6 +90,10 @@ const sections: LegalSection[] = [
           <li>Pages visited</li>
           <li>Date and time of access</li>
           <li>
+            Campaign source information, such as UTM parameters,
+            Meta click identifiers, and the original landing page
+          </li>
+          <li>
             Approximate location derived from an Internet Protocol
             address
           </li>
@@ -124,6 +128,14 @@ const sections: LegalSection[] = [
           </li>
           <li>Maintain communication and business records</li>
           <li>Improve our website, forms, and services</li>
+          <li>
+            Understand which campaigns or pages generate Growth
+            Clinic inquiries
+          </li>
+          <li>
+            Measure website visits and successful inquiries where you
+            have accepted optional cookies
+          </li>
           <li>Prevent spam, fraud, misuse, or security incidents</li>
           <li>Comply with legal or regulatory obligations</li>
           <li>Establish, exercise, or defend legal claims</li>
@@ -162,6 +174,15 @@ const sections: LegalSection[] = [
         <p>
           Submitting an inquiry also does not automatically subscribe
           you to promotional or marketing communications.
+        </p>
+
+        <p>
+          A Growth Clinic inquiry may include campaign-attribution
+          information associated with your visit, such as UTM
+          parameters, a Meta click identifier where present, the
+          original landing page, and the date and time of the first
+          visit. We use this information to understand which campaign
+          or page generated the inquiry.
         </p>
       </>
     ),
@@ -202,24 +223,55 @@ const sections: LegalSection[] = [
     content: (
       <>
         <p>
-          Our website may use cookies, browser storage, or similar
-          technologies for essential website functions.
+          Our website uses browser storage to remember your cookie
+          preference. When campaign information is present, we may also
+          retain limited first-party attribution information so a
+          Growth Clinic inquiry can be connected to the campaign or
+          landing page that generated it.
         </p>
 
-        <p>These may be used to:</p>
+        <p>
+          With your permission, we use the Meta Pixel to measure visits
+          and successful Growth Clinic inquiries arising from Meta
+          advertising. The Pixel remains blocked until you accept
+          optional cookies.
+        </p>
+
+        <p>The Meta Pixel records:</p>
 
         <ul className={listClass}>
-          <li>Remember your cookie preferences</li>
-          <li>Maintain website functionality</li>
-          <li>Protect forms from spam or abuse</li>
-          <li>Support website security</li>
-          <li>Diagnose technical errors</li>
+          <li>A PageView event when an accepted page is viewed</li>
+          <li>
+            A Lead event after a Growth Clinic inquiry is successfully
+            submitted
+          </li>
+          <li>
+            Limited technical information such as page address,
+            browser and device information, Internet Protocol address,
+            event time, and Meta cookie or click identifiers where
+            available
+          </li>
         </ul>
 
         <p>
-          Optional analytics, advertising, or marketing technologies
-          will only be used where applicable and subject to the choices
-          made available through our cookie banner.
+          We do not deliberately include your form-field contents, such
+          as your name, email address, phone number, business details,
+          or message, in the Meta Lead event.
+        </p>
+
+        <p>
+          Meta may use information received through its business tools
+          for advertising, matching, measurement, and analytics in
+          accordance with the{" "}
+          <a
+            href="https://www.facebook.com/privacy/policy/"
+            className={linkClass}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Meta Privacy Policy
+          </a>
+          .
         </p>
 
         <p>
@@ -259,6 +311,10 @@ const sections: LegalSection[] = [
             Zoho Mail for receiving and managing business email
           </li>
           <li>
+            Meta for consent-based advertising measurement through the
+            Meta Pixel
+          </li>
+          <li>
             Other providers supporting security, analytics, storage,
             or technical operations
           </li>
@@ -288,6 +344,10 @@ const sections: LegalSection[] = [
           <li>
             Service providers supporting hosting, email,
             communications, security, storage, or technical operations
+          </li>
+          <li>
+            Advertising and measurement providers where you have
+            accepted the relevant optional technologies
           </li>
           <li>
             Facilitators, venues, collaborators, or partners where this
@@ -430,6 +490,15 @@ const sections: LegalSection[] = [
           delete, anonymize, or securely archive it, subject to
           applicable legal obligations.
         </p>
+
+        <p>
+          First-party Growth Clinic campaign-attribution information is
+          used for up to 30 days. Expired information is removed when
+          it is next checked and may also be cleared or replaced
+          earlier. Meta controls the retention of information it
+          receives through the Meta Pixel in accordance with its own
+          policies.
+        </p>
       </>
     ),
   },
@@ -548,7 +617,7 @@ const sections: LegalSection[] = [
         <p>
           This policy will also be reviewed when we introduce features
           such as online bookings, payments, user accounts, newsletters,
-          or additional analytics and advertising technologies.
+          or additional analytics or advertising technologies.
         </p>
 
         <p>
@@ -617,7 +686,7 @@ export default function PrivacyPolicyPage() {
       iconLabel="Privacy and personal information"
       title="Privacy Policy"
       description="How KultureKatta collects, uses, stores, and protects information when you visit our website or submit an inquiry."
-      lastUpdated="August 2, 2026"
+      lastUpdated="September 2, 2026"
       currentPath="/privacy-policy"
       sections={sections}
     />

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { COOKIE_CONSENT_KEY } from "../components/CookieBanner";
 import { useEffect, useRef, useState } from "react";
 import {
   PHONE_PATTERN,
@@ -177,13 +178,20 @@ export default function GrowthClinicContactForm() {
         "Thank you. Your Growth Clinic enquiry has been sent, and a confirmation email is on its way.",
       );
 
-      const metaWindow = window as typeof window & {
-        fbq?: (...args: unknown[]) => void;
-      };
-      metaWindow.fbq?.("track", "Lead", {
-        content_name: "Katta Studio Growth Clinic",
-        content_category: "Growth Clinic enquiry",
-      });
+      if (
+        window.localStorage.getItem(COOKIE_CONSENT_KEY) ===
+        "accepted"
+      ) {
+        const metaWindow = window as typeof window & {
+          fbq?: (...args: unknown[]) => void;
+        };
+
+        metaWindow.fbq?.("track", "Lead", {
+          content_name: "Katta Studio Growth Clinic",
+          content_category: "Growth Clinic enquiry",
+          form_location: "Katta Studio page",
+        });
+      }
     } catch (error) {
       setStatus("error");
       setStatusMessage(

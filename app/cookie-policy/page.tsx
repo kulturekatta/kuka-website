@@ -7,7 +7,7 @@ import LegalPageLayout, {
 export const metadata: Metadata = {
   title: "Cookie Policy | KultureKatta",
   description:
-    "Learn how KultureKatta uses cookies, local storage, and similar browser technologies.",
+    "Learn how KultureKatta uses cookies, local storage, the Meta Pixel, and similar browser technologies.",
   alternates: {
     canonical: "/cookie-policy",
   },
@@ -46,9 +46,11 @@ const sections: LegalSection[] = [
     content: (
       <>
         <p>
-          Based on the current website implementation, KultureKatta
-          uses browser local storage to remember whether you accepted
-          or declined optional cookies.
+          KultureKatta uses browser local storage to remember your
+          cookie preference and, when campaign information is present,
+          to retain limited first-party attribution information for
+          Growth Clinic inquiries. If you accept optional cookies, the
+          Meta Pixel may also set or use Meta browser identifiers.
         </p>
 
         <div className="overflow-x-auto rounded-2xl border border-black/10">
@@ -92,6 +94,48 @@ const sections: LegalSection[] = [
                   Until changed or cleared from the browser
                 </td>
               </tr>
+
+              <tr className="border-t border-black/10">
+                <td className="px-4 py-4 align-top font-mono text-xs">
+                  kuka-growth-attribution-v1
+                </td>
+
+                <td className="px-4 py-4 align-top">
+                  Browser local storage
+                </td>
+
+                <td className="px-4 py-4 align-top">
+                  Retains campaign source information, such as UTM
+                  parameters, a Meta click identifier where present,
+                  the original landing page, and first-visit time, so a
+                  Growth Clinic inquiry can be attributed after site
+                  navigation
+                </td>
+
+                <td className="px-4 py-4 align-top">
+                  Used for up to 30 days; expired information is removed
+                  when next checked, or earlier if cleared or replaced
+                </td>
+              </tr>
+
+              <tr className="border-t border-black/10">
+                <td className="px-4 py-4 align-top font-mono text-xs">
+                  _fbp and _fbc, where set
+                </td>
+
+                <td className="px-4 py-4 align-top">
+                  Meta cookies or browser identifiers
+                </td>
+
+                <td className="px-4 py-4 align-top">
+                  Help Meta identify browsers and associate website
+                  visits and successful inquiries with Meta advertising
+                </td>
+
+                <td className="px-4 py-4 align-top">
+                  Up to 90 days, subject to Meta and browser settings
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -103,9 +147,7 @@ const sections: LegalSection[] = [
     title: "Essential technologies",
     content: (
       <>
-        <p>
-          Essential technologies support functions such as:
-        </p>
+        <p>Essential technologies support functions such as:</p>
 
         <ul className={listClass}>
           <li>Remembering your cookie preference</li>
@@ -124,45 +166,82 @@ const sections: LegalSection[] = [
     ),
   },
   {
-    id: "optional-analytics",
-    title: "Optional analytics",
+    id: "first-party-attribution",
+    title: "First-party campaign attribution",
     content: (
       <>
         <p>
-          We may introduce optional analytics tools to understand
-          general website usage—for example, which pages are visited,
-          how visitors arrive at the site, or whether a page is
-          functioning effectively.
+          When campaign information is included in a website address,
+          we may store limited attribution information in your browser.
+          This can include UTM parameters, Meta&apos;s fbclid value, the
+          original landing page, and the date and time of the first
+          visit.
         </p>
 
         <p>
-          Optional analytics should not be loaded unless you choose to
-          accept optional cookies through the cookie banner.
-        </p>
-
-        <p>
-          If we add a specific analytics provider, this policy will be
-          updated to identify the provider, purpose, technologies used,
-          and expected duration.
+          This information helps us understand which campaign or page
+          generated a Growth Clinic inquiry if you move between pages
+          before submitting the form. The storage does not itself load
+          the Meta Pixel or send an event to Meta.
         </p>
       </>
     ),
   },
   {
-    id: "advertising-tracking",
-    title: "Advertising and behavioral tracking",
+    id: "meta-pixel",
+    title: "Meta Pixel and advertising measurement",
     content: (
       <>
         <p>
-          The current cookie-consent implementation does not by itself
-          activate advertising, behavioral-profiling, or cross-site
-          tracking technologies.
+          With your permission, KultureKatta uses the Meta Pixel to
+          understand visits arising from Meta advertising and measure
+          successful Growth Clinic inquiries.
+        </p>
+
+        <p>The Meta Pixel records:</p>
+
+        <ul className={listClass}>
+          <li>A PageView event when an accepted page is viewed</li>
+          <li>
+            A Lead event after a Growth Clinic inquiry is successfully
+            submitted
+          </li>
+          <li>
+            Limited technical information such as page address,
+            browser and device information, Internet Protocol address,
+            event time, and Meta cookie or click identifiers where
+            available
+          </li>
+        </ul>
+
+        <p>
+          We do not deliberately include your form-field contents, such
+          as your name, email address, phone number, business details,
+          or message, in the Meta Lead event.
         </p>
 
         <p>
-          If advertising or marketing technologies are introduced in
-          the future, they will be described here and managed through
-          the relevant consent controls where required.
+          Meta may use information received through its business tools
+          for advertising, matching, measurement, and analytics. You
+          can learn more in the{" "}
+          <a
+            href="https://www.facebook.com/privacy/policy/"
+            className={linkClass}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Meta Privacy Policy
+          </a>{" "}
+          and{" "}
+          <a
+            href="https://www.facebook.com/privacy/policies/cookies/"
+            className={linkClass}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Meta Cookies Policy
+          </a>
+          .
         </p>
       </>
     ),
@@ -175,12 +254,23 @@ const sections: LegalSection[] = [
         <p>When the cookie banner appears, you may:</p>
 
         <ul className={listClass}>
-          <li>Accept optional cookies</li>
-          <li>Decline optional cookies</li>
+          <li>
+            Accept optional cookies, which allows the Meta Pixel to load
+          </li>
+          <li>
+            Decline optional cookies, which keeps the Meta Pixel blocked
+          </li>
           <li>
             Read this policy before making or changing your choice
           </li>
         </ul>
+
+        <p>
+          You can use the website and submit an inquiry if you decline
+          optional cookies. No Meta PageView or Lead event will be sent
+          by our implementation while optional-cookie consent is absent
+          or rejected.
+        </p>
 
         <p>
           You can change your preference later by selecting{" "}
@@ -299,8 +389,8 @@ export default function CookiePolicyPage() {
       icon="🍪"
       iconLabel="Cookies and browser settings"
       title="Cookie Policy"
-      description="How KultureKatta uses cookies, browser storage, and related technologies to operate the website and remember your choices."
-      lastUpdated="August 2, 2026"
+      description="How KultureKatta uses cookies, browser storage, the Meta Pixel, and related technologies to operate the website, remember your choices, and measure advertising performance."
+      lastUpdated="September 2, 2026"
       currentPath="/cookie-policy"
       sections={sections}
     />
