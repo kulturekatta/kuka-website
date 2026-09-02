@@ -4,6 +4,7 @@ import Footer from "./components/Footer";
 import GoToTopButton from "./components/GoToTopButton";
 import CookieBanner from "./components/CookieBanner";
 import FloatingContactDrawer from "./components/FloatingContactDrawer";
+import MetaPixel from "./components/MetaPixel";
 
 import "./globals.css";
 
@@ -49,6 +50,7 @@ export default function RootLayout({
 
         <FloatingContactDrawer />
 
+        <MetaPixel />
         <CookieBanner />
 
         <GoToTopButton />

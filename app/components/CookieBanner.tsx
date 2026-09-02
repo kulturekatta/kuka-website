@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 export const COOKIE_CONSENT_KEY = "kuka-cookie-consent-v1";
-const COOKIE_CONSENT_EVENT = "kuka:cookie-consent-changed";
+export const COOKIE_CONSENT_EVENT =
+  "kuka:cookie-consent-changed";
 
 export type CookieConsentChoice = "accepted" | "rejected";
 type CookieConsentSnapshot = CookieConsentChoice | null | "loading";
@@ -196,9 +197,11 @@ export default function CookieBanner() {
             className="mt-2 text-sm leading-6 text-black/65"
           >
             We use essential cookies and browser storage to keep the
-            KultureKatta website working. With your permission, we may
-            also use optional analytics cookies to understand how people
-            use the site and improve their experience.
+            KultureKatta website working. With your permission, we also
+            use optional analytics and advertising technologies,
+            including the Meta Pixel, to understand how people use the
+            site, measure campaign performance and improve our
+            communications.
           </p>
 
           <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2">

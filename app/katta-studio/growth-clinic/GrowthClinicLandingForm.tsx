@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { COOKIE_CONSENT_KEY } from "../../components/CookieBanner";
 import { useEffect, useRef, useState } from "react";
 import {
   PHONE_PATTERN,
@@ -156,10 +157,16 @@ export default function GrowthClinicLandingForm() {
           detail: { sourcePage: payload.sourcePage },
         }),
       );
-      window.fbq?.("track", "Lead", {
-        content_name: "Growth Clinic enquiry",
-        content_category: "Katta Studio",
-      });
+      if (
+        window.localStorage.getItem(COOKIE_CONSENT_KEY) ===
+        "accepted"
+      ) {
+        window.fbq?.("track", "Lead", {
+          content_name: "Katta Studio Growth Clinic",
+          content_category: "Growth Clinic enquiry",
+          form_location: "Growth Clinic landing page",
+        });
+      }
     } catch (error) {
       setStatus("error");
       setStatusMessage(
