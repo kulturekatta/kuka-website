@@ -327,7 +327,7 @@ const studioStrengths = [
   },
   {
     "icon": "📋",
-    "title": "Business systems"
+    "title": "Business systems and operations"
   },
   {
     "icon": "🚀",
@@ -798,7 +798,8 @@ export default function KattaStudioPage() {
           <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {partnerLedServices.map((service) => (
               <li key={service} className="kk-card kk-card--compact">
-                <p className="kk-card-title">{service}</p>
+                <SemanticIcon icon="🧰" label={service} size="card" />
+                <p className="kk-card-title mt-5">{service}</p>
               </li>
             ))}
           </ul>
