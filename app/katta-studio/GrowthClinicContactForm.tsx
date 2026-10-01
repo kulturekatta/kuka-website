@@ -127,7 +127,9 @@ export default function GrowthClinicContactForm() {
     const payload = {
       brandName: getValue("brandName"),
       brandLink: getValue("brandLink"),
-      painPoints: getValue("painPoints"),
+      painPoints: getValue("serviceInterest")
+        ? `Support requested: ${getValue("serviceInterest")}\n\n${getValue("painPoints")}`
+        : getValue("painPoints"),
       email: getValue("email"),
       city: getValue("city"),
       mobile: getValue("mobile"),
@@ -175,7 +177,7 @@ export default function GrowthClinicContactForm() {
       startedAtRef.current = Date.now();
       setStatus("success");
       setStatusMessage(
-        "Thank you. Your Growth Clinic enquiry has been sent, and a confirmation email is on its way.",
+        "Thank you. Your Katta Studio enquiry has been sent, and a confirmation email is on its way.",
       );
 
       if (
@@ -247,7 +249,7 @@ export default function GrowthClinicContactForm() {
       {/* FORM INTRODUCTION */}
       <div className="border-b border-black/[0.07] bg-[var(--kk-accent)]/[0.055] px-6 py-10 text-center sm:px-10 sm:py-12">
         <div className="mb-5 flex justify-center">
-          <SemanticIcon icon="🌡️" label="Growth Clinic enquiry" size="section" />
+          <SemanticIcon icon="🌡️" label="Katta Studio enquiry" size="section" />
         </div>
 
         <p className="kk-page-label text-[var(--kk-accent)]">
@@ -255,12 +257,12 @@ export default function GrowthClinicContactForm() {
         </p>
 
         <h2 className="kk-section-heading mx-auto mt-3 max-w-3xl">
-          Let’s look at what is really blocking your growth.
+          Let’s talk about your next project.
         </h2>
 
         <p className="kk-body mx-auto mt-5 max-w-2xl">
-          Tell us about your brand, where you feel stuck, and what you are
-          trying to grow. We will review it and suggest the next step.
+          Tell us about your business, what you want to build or improve,
+          and the support you need. We will review your enquiry and suggest the next step.
         </p>
       </div>
 
@@ -325,31 +327,52 @@ export default function GrowthClinicContactForm() {
 
             <SemanticIcon
               icon="🚧"
-              label="Where you are feeling stuck"
+              label="Project and support requirements"
               size="compact"
             />
 
             <div>
               <h3 className="text-xl font-bold text-[var(--kk-text)]">
-                Where are you feeling stuck?
+                What support do you need?
               </h3>
 
               <p className="mt-1 text-sm leading-relaxed text-[var(--kk-text-muted)]">
-                Share the three most important problems you want to solve.
+                Share your project, priorities or the problems you want to solve.
               </p>
             </div>
           </div>
 
           <div>
+            <div className="mb-5">
+              <label htmlFor="serviceInterest" className={labelClass}>
+                Support you are interested in (optional)
+              </label>
+              <select id="serviceInterest" name="serviceInterest" defaultValue="" className={inputClass}>
+                <option value="">Select a service or tell us below</option>
+                <option value="Brand &amp; visual identity">Brand &amp; visual identity</option>
+                <option value="Graphic &amp; communication design">Graphic &amp; communication design</option>
+                <option value="Presentation &amp; pitch-deck design">Presentation &amp; pitch-deck design</option>
+                <option value="Packaging &amp; product communication">Packaging &amp; product communication</option>
+                <option value="Brand merchandise design">Brand merchandise design</option>
+                <option value="Creative merchandise design">Creative merchandise design</option>
+                <option value="Editorial &amp; publication design">Editorial &amp; publication design</option>
+                <option value="Websites &amp; digital presence">Websites &amp; digital presence</option>
+                <option value="Social media, content &amp; campaigns">Social media, content &amp; campaigns</option>
+                <option value="Growth Clinic &amp; strategic support">Growth Clinic &amp; strategic support</option>
+                <option value="Business systems">Business systems</option>
+                <option value="Ongoing Design Partner">Ongoing Design Partner</option>
+                <option value="Multiple services / not sure yet">Multiple services / not sure yet</option>
+              </select>
+            </div>
             <label htmlFor="painPoints" className={labelClass}>
-              Your three main pain points{" "}
+              Your project or priorities{" "}
               <span className="text-[var(--kk-accent)]">*</span>
             </label>
 
             <textarea
               id="painPoints"
               name="painPoints"
-              placeholder={`For example:\n1. Our website is not generating enquiries\n2. Our social media feels inconsistent\n3. We are unsure what to prioritise`}
+              placeholder={`For example: We need a brand refresh and brochure, packaging for a new product, a website, or ongoing monthly design support. Include any timeline you have in mind.`}
               rows={6}
               required
               className={`${inputClass} min-h-40 resize-y leading-relaxed`}
