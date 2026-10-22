@@ -141,6 +141,7 @@ export async function POST(request: Request) {
       acknowledgementMessage:
         "Thank you for contacting KuKa for Organizations. We have received your inquiry and the experience requirements you shared.",
       sourceTag: "organization_form",
+      routingEmail: "organizations@kulturekatta.com",
       fields: [
         { label: "Full name", value: fullName },
         { label: "Designation", value: designation },
@@ -174,7 +175,7 @@ export async function POST(request: Request) {
       {
         success: false,
         message:
-          "Your inquiry could not be sent. Please try again or email hey@kulturekatta.com.",
+          "Your inquiry could not be sent. Please try again or email organizations@kulturekatta.com.",
       },
       { status: 500 },
     );

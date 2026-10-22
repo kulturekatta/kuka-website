@@ -527,29 +527,15 @@ export default function FloatingContactDrawer() {
                       Choose one
                     </option>
 
-                    <option value="organization">
-                      Plan an experience for my organization
-                    </option>
-
-                    <option value="private">
-                      Plan a private experience
-                    </option>
-
-                    <option value="attend">Attend an experience</option>
-
-                    <option value="partner">
-                      Work or partner with KultureKatta
-                    </option>
-
-                    <option value="volunteer">
-                      Volunteer with KultureKatta
-                    </option>
-
-                    <option value="host">Host a Katta</option>
-
-                    <option value="media">Press or media enquiry</option>
-
-                    <option value="other">Something else</option>
+                                          <option value="organization">Plan an experience for my organization</option>
+                      <option value="private">Plan a private experience</option>
+                      <option value="studio">Work with Katta Studio</option>
+                      <option value="partner">Partner / volunteer with KultureKatta</option>
+                      <option value="host">Host a Katta</option>
+                      <option value="career">Work with KultureKatta</option>
+                      <option value="attend">Attend an experience</option>
+                      <option value="media">Press / media enquiry</option>
+                      <option value="other">Something else</option>
                   </select>
                 </div>
 

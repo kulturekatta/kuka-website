@@ -53,6 +53,45 @@ const whatWeDoItems = [
   },
 ];
 
+const whyKukaPrinciples = [
+  {
+    icon: "🌍",
+    title: "Culture is everyday life",
+    description:
+      "It lives in food, language, music, rituals, places, and the little things we do — not only on stages or in museums.",
+  },
+  {
+    icon: "🙌",
+    title: "Participation over spectatorship",
+    description:
+      "We believe culture becomes more meaningful when you make, taste, listen, question, move, and try it for yourself.",
+  },
+  {
+    icon: "💡",
+    title: "Curiosity over expertise",
+    description:
+      "You do not need to be an expert, an artist, or even particularly good at something to begin. Being curious is enough.",
+  },
+  {
+    icon: "🤝",
+    title: "Connection through doing",
+    description:
+      "Shared experiences give strangers something to talk about, neighbours something to build on, and communities room to grow.",
+  },
+  {
+    icon: "🏡",
+    title: "Small can be meaningful",
+    description:
+      "An intimate gathering, an unfamiliar skill, or an afternoon spent paying attention can stay with you long after it ends.",
+  },
+  {
+    icon: "🌿",
+    title: "The freedom to simply be",
+    description:
+      "No pressure to perform, prove yourself, or earn your place. Do something or do nothing. Join in or just be. What we do is culture — and what we choose not to do is part of it, too.",
+  },
+];
+
 const communityItems = [
   {
     icon: "🎨",
@@ -236,6 +275,62 @@ export default function AboutPage() {
               nostalgia, but as a living, breathing way to reconnect with
               culture, creativity, and each other.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* WHY KUKA */}
+      <section
+        id="why-kuka"
+        aria-labelledby="why-kuka-heading"
+        className="kk-section-light kk-section-padding scroll-mt-24"
+      >
+        <div className="kk-container">
+          <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="✨" label="Why KuKa" size="section" />
+            </div>
+
+            <p className="kk-section-label">Why KuKa?</p>
+
+            <h2
+              id="why-kuka-heading"
+              className="kk-section-heading mt-6"
+            >
+              Because culture isn&apos;t just something we watch. It&apos;s
+              something we do.
+            </h2>
+
+            <p className="kk-body-large mt-6">
+              We want to make more room for curiosity in everyday life — for
+              discovering something unfamiliar, sharing what we know, and
+              connecting with people through experiences that invite us in.
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {whyKukaPrinciples.map((principle) => (
+              <article
+                key={principle.title}
+                className="kk-card kk-card--centered kk-card--interactive !flex !flex-col !items-center !justify-start"
+              >
+                <div className="flex w-full shrink-0 justify-center">
+                  <SemanticIcon
+                    icon={principle.icon}
+                    label={principle.title}
+                    size="card"
+                  />
+                </div>
+
+                <h3 className="kk-card-title mt-5 flex min-h-[3.2em] w-full items-center justify-center text-center">
+                  {principle.title}
+                </h3>
+
+                <p className="kk-card-body mt-4 w-full text-center">
+                  {principle.description}
+                </p>
+              </article>
+            ))}
           </div>
         </div>
       </section>

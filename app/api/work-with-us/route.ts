@@ -19,6 +19,7 @@ type WorkWithUsBody = {
   city?: unknown;
   email?: unknown;
   phone?: unknown;
+  businessArea?: unknown;
   opportunityType?: unknown;
   workArrangement?: unknown;
   availability?: unknown;
@@ -61,6 +62,7 @@ export async function POST(request: Request) {
     const city = cleanText(body.city, 120);
     const email = cleanEmail(body.email);
     const phone = cleanText(body.phone, 40);
+    const businessArea = cleanText(body.businessArea, 50);
     const opportunityType = cleanText(body.opportunityType, 100);
     const workArrangement = cleanText(body.workArrangement, 100);
     const availability = cleanText(body.availability, 220);
@@ -75,6 +77,7 @@ export async function POST(request: Request) {
       !fullName ||
       !city ||
       !email ||
+      !businessArea ||
       !opportunityType ||
       !workArrangement ||
       !availability ||
@@ -84,6 +87,13 @@ export async function POST(request: Request) {
     ) {
       return NextResponse.json(
         { success: false, message: "Please complete all required fields." },
+        { status: 400 },
+      );
+    }
+
+    if (!["KultureKatta", "Katta Studio", "Both"].includes(businessArea)) {
+      return NextResponse.json(
+        { success: false, message: "Please select the part of KuKa that interests you." },
         { status: 400 },
       );
     }
@@ -116,25 +126,27 @@ export async function POST(request: Request) {
     }
 
     await sendWebsiteForm({
-      formName: "Katta Studio Work With Us Application",
-      internalSubject: `[Katta Studio] Work With Us Application — ${opportunityType} — ${fullName}`,
+      formName: "Work With KuKa Application",
+      internalSubject: `[${businessArea}] Work With KuKa — ${opportunityType} — ${fullName}`,
       submitterName: fullName,
       submitterEmail: email,
       acknowledgementMessage:
-        "Thank you for applying to work with Katta Studio. We have received your application and work-sample link.",
+        "Thank you for your interest in working with KuKa. We have received your application and work-sample link.",
       sourceTag: "work_with_us",
+      routingEmail: "careers@kulturekatta.com",
       fields: [
         { label: "Full name", value: fullName },
         { label: "Email", value: email },
         { label: "Phone / WhatsApp", value: phone },
         { label: "City", value: city },
+        { label: "Business area", value: businessArea },
         { label: "Opportunity type", value: opportunityType },
         { label: "Preferred work arrangement", value: workArrangement },
         { label: "Availability", value: availability },
         { label: "Expected compensation", value: compensation },
         { label: "Portfolio / résumé link", value: portfolioLink },
         { label: "Relevant skills and experience", value: experience },
-        { label: "Why Katta Studio", value: message },
+        { label: "Why KuKa", value: message },
         { label: "Source page", value: sourcePage },
       ],
     });
@@ -150,7 +162,7 @@ export async function POST(request: Request) {
       {
         success: false,
         message:
-          "Your application could not be sent. Please try again or email hey@kulturekatta.com.",
+          "Your application could not be sent. Please try again or email careers@kulturekatta.com.",
       },
       { status: 500 },
     );

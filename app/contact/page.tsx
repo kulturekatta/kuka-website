@@ -34,10 +34,10 @@ const contactOptions = [
   {
     icon: "🤝",
     label: "Partnerships",
-    title: "Work / Partner with KultureKatta",
+    title: "Partner with KultureKatta",
     text: "For venues, cafés, studios, cultural spaces, brands, collectives, and collaborators who want to create something meaningful with us.",
     buttonText: "Partner with us",
-    href: "mailto:hey@kulturekatta.com?subject=Partnership%20Enquiry%20for%20KultureKatta",
+    href: "/partner-with-us",
   },
   {
     icon: "🙌",
@@ -45,7 +45,7 @@ const contactOptions = [
     title: "Volunteer with KultureKatta",
     text: "Want to help at events, support artists, assist with community building, documentation, research, or on-ground coordination?",
     buttonText: "Volunteer with us",
-    href: "mailto:hey@kulturekatta.com?subject=Volunteer%20with%20KultureKatta",
+    href: "mailto:partners@kulturekatta.com?subject=Volunteer%20with%20KultureKatta",
   },
   {
     icon: "🎤",
@@ -53,7 +53,7 @@ const contactOptions = [
     title: "Host a Katta",
     text: "Are you an artist, facilitator, storyteller, maker, teacher, performer, chef, walker, thinker, or curious human with something to share?",
     buttonText: "Become a host",
-    href: "mailto:hey@kulturekatta.com?subject=Host%20a%20Katta",
+    href: "/partner-with-us",
   },
   {
     icon: "📰",
@@ -588,17 +588,13 @@ export default function ContactPage() {
                       <option value="" disabled>
                         Choose one
                       </option>
-                      <option value="organization">
-                        Plan an experience for my organization
-                      </option>
-                      <option value="attend">Attend an experience</option>
-                      <option value="partner">
-                        Work / partner with KultureKatta
-                      </option>
-                      <option value="volunteer">
-                        Volunteer with KultureKatta
-                      </option>
+                                            <option value="organization">Plan an experience for my organization</option>
+                      <option value="private">Plan a private experience</option>
+                      <option value="studio">Work with Katta Studio</option>
+                      <option value="partner">Partner / volunteer with KultureKatta</option>
                       <option value="host">Host a Katta</option>
+                      <option value="career">Work with KultureKatta</option>
+                      <option value="attend">Attend an experience</option>
                       <option value="media">Press / media enquiry</option>
                       <option value="other">Something else</option>
                     </select>
