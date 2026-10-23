@@ -39,7 +39,7 @@ export default function FestiveBusinessForm() {
   const [message, setMessage] = useState("");
   const [consentError, setConsentError] = useState(false);
   const [deadlineError, setDeadlineError] = useState(false);
-  const [minDeadline, setMinDeadline] = useState("");
+  const deadlineInput = useRef<HTMLInputElement>(null);
   const startedAt = useRef(0);
   const processing = useRef(false);
   const feedback = useRef<HTMLDivElement>(null);
@@ -47,7 +47,13 @@ export default function FestiveBusinessForm() {
   const { formRef, saveDraft, clearDraft } = useFormDraft(DRAFT_KEY);
   const { handleInvalid, handleValidationInput } = useAccessibleFormValidation();
 
-  useEffect(() => { startedAt.current = Date.now(); attribution.current = readAttribution(); setMinDeadline(earliestFutureDateInIndia()); }, []);
+  useEffect(() => {
+    startedAt.current = Date.now();
+    attribution.current = readAttribution();
+    if (deadlineInput.current) {
+      deadlineInput.current.min = earliestFutureDateInIndia();
+    }
+  }, []);
   useEffect(() => { if (status === "error" || status === "success") feedback.current?.focus(); }, [status, message]);
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
@@ -103,7 +109,7 @@ export default function FestiveBusinessForm() {
         <div><label className={labelClass} htmlFor="festive-city">City *</label><input className={inputClass} id="festive-city" name="city" autoComplete="address-level2" required /></div>
         <div><label className={labelClass} htmlFor="festive-link">Website or social profile (optional)</label><input className={inputClass} id="festive-link" name="businessLink" placeholder="Website URL or @handle" /></div>
         <fieldset className="sm:col-span-2"><legend className={labelClass}>What do you need? *</legend><div className="grid gap-3 sm:grid-cols-2">{serviceOptions.map((service) => <label key={service} className="flex items-start gap-2 text-sm leading-6"><input type="checkbox" name="services" value={service} className="mt-1 h-4 w-4 accent-[var(--kk-accent)]" /><span>{service}</span></label>)}</div><p className="mt-2 text-xs text-[var(--kk-text-muted)]">Choose one or more.</p></fieldset>
-        <div><label className={labelClass} htmlFor="festive-deadline">Required delivery date *</label><input className={inputClass} id="festive-deadline" name="deadline" type="date" min={minDeadline || undefined} required aria-invalid={deadlineError || undefined} aria-describedby={deadlineError ? "festive-deadline-error" : "festive-deadline-hint"} onFocus={(event) => { const earliest = earliestFutureDateInIndia(); event.currentTarget.min = earliest; setMinDeadline(earliest); }} onChange={(event) => setDeadlineError(Boolean(event.currentTarget.value) && !isFutureDateInIndia(event.currentTarget.value))} /><p id="festive-deadline-hint" className="mt-2 text-xs text-[var(--kk-text-muted)]">Choose tomorrow or a later date.</p>{deadlineError && <p id="festive-deadline-error" role="alert" className="mt-2 text-sm font-semibold leading-6 text-red-700">{FUTURE_DATE_ERROR}</p>}</div>
+        <div><label className={labelClass} htmlFor="festive-deadline">Required delivery date *</label><input className={inputClass} id="festive-deadline" name="deadline" type="date" ref={deadlineInput} required aria-invalid={deadlineError || undefined} aria-describedby={deadlineError ? "festive-deadline-error" : "festive-deadline-hint"} onFocus={(event) => { event.currentTarget.min = earliestFutureDateInIndia(); }} onChange={(event) => setDeadlineError(Boolean(event.currentTarget.value) && !isFutureDateInIndia(event.currentTarget.value))} /><p id="festive-deadline-hint" className="mt-2 text-xs text-[var(--kk-text-muted)]">Choose tomorrow or a later date.</p>{deadlineError && <p id="festive-deadline-error" role="alert" className="mt-2 text-sm font-semibold leading-6 text-red-700">{FUTURE_DATE_ERROR}</p>}</div>
         <div><label className={labelClass} htmlFor="festive-budget">Approximate budget</label><select className={inputClass} id="festive-budget" name="budget" defaultValue=""><option value="">Select a range (optional)</option><option value="Under ₹5,000">Under ₹5,000</option><option value="₹5,000–₹15,000">₹5,000–₹15,000</option><option value="₹15,000–₹30,000">₹15,000–₹30,000</option><option value="₹30,000+">₹30,000+</option><option value="Need guidance">Need guidance</option></select></div>
         <div className="sm:col-span-2"><label className={labelClass} htmlFor="festive-brief">Tell us about the project *</label><textarea className={`${inputClass} min-h-32 resize-y`} id="festive-brief" name="brief" rows={4} required maxLength={2500} placeholder="What needs designing, how many items, where will they be used, and what is already ready?" /></div>
         <div className="rounded-2xl border border-black/10 bg-black/[0.018] p-4 sm:col-span-2">
