@@ -1,5 +1,7 @@
 "use client";
 
+import { getInquiryAttributionPayload } from "../../lib/campaign-attribution";
+
 import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
@@ -130,7 +132,7 @@ export default function WorkWithUsApplicationForm({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...payload, ...getInquiryAttributionPayload() }),
       });
 
       const result = (await response.json()) as {

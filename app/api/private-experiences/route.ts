@@ -1,3 +1,4 @@
+import { attributionEmailFields } from "@/app/lib/website-attribution-email";
 import { NextResponse } from "next/server";
 import {
   cleanEmail, cleanText, hasValidConsent, isHoneypotTriggered,
@@ -59,7 +60,8 @@ export async function POST(request: Request) {
         { label: "Experience type", value: experienceType }, { label: "Occasion", value: occasion },
         { label: "Preferred date", value: preferredDate }, { label: "Participants", value: participants },
         { label: "Venue preference", value: venuePreference }, { label: "Approximate budget", value: budget },
-        { label: "Additional details", value: message }, { label: "Source page", value: "/private-experiences" },
+        { label: "Additional details", value: message },
+        ...attributionEmailFields(body),
       ],
     });
     return NextResponse.json({ success: true, message: "Private experience enquiry received." });

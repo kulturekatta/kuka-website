@@ -1,3 +1,4 @@
+import { attributionEmailFields } from "@/app/lib/website-attribution-email";
 import { NextResponse } from "next/server";
 import { FUTURE_DATE_ERROR, isFutureDateInIndia } from "@/app/lib/future-date";
 import {
@@ -42,15 +43,9 @@ export async function POST(request: Request) {
     }
     if (!hasValidConsent(body.consent)) return NextResponse.json({ success: false, message: "Please agree to the Privacy Policy before submitting." }, { status: 400 });
 
-    const trackingFields: Array<[string, string, number]> = [
-      ["Submission page", "sourcePage", 500], ["Original landing page", "landingPage", 500],
-      ["First visit", "firstVisitAt", 80], ["UTM source", "utmSource", 160],
-      ["UTM medium", "utmMedium", 160], ["UTM campaign", "utmCampaign", 200],
-      ["UTM content", "utmContent", 200], ["UTM term", "utmTerm", 200], ["Meta click ID", "fbclid", 500],
-    ];
     await sendWebsiteForm({
       formName: "Katta Studio Festive Business Enquiry",
-      internalSubject: `[Katta Studio] Festive Business Enquiry — ${businessName}`,
+      internalSubject: `[Katta Studio] Festive Business Inquiry — ${businessName}`,
       submitterName: contactName, submitterEmail: email,
       acknowledgementMessage: "Thank you for your Katta Studio project enquiry. We have received your brief and requested delivery date. Our team will review feasibility and respond with next steps. Submission does not confirm a booking or delivery timeline.",
       sourceTag: "festive_business",
@@ -61,7 +56,7 @@ export async function POST(request: Request) {
         { label: "City", value: city }, { label: "Website / social", value: businessLink },
         { label: "Services", value: services }, { label: "Required delivery date", value: deadline },
         { label: "Indicative budget", value: budget }, { label: "Project brief", value: brief },
-        ...trackingFields.map(([label, field, max]) => ({ label, value: cleanText(body[field], max) || "Unavailable" })),
+        ...attributionEmailFields(body),
       ],
     });
     return NextResponse.json({ success: true, message: "Your enquiry has been sent." });

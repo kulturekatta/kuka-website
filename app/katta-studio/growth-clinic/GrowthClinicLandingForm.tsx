@@ -1,5 +1,7 @@
 "use client";
 
+import { getInquiryAttributionPayload } from "../../lib/campaign-attribution";
+
 import Link from "next/link";
 import { COOKIE_CONSENT_KEY } from "../../components/CookieBanner";
 import { useEffect, useRef, useState } from "react";
@@ -19,65 +21,20 @@ declare global {
 }
 
 const DRAFT_KEY = "kuka-growth-clinic-landing-form-draft-v1";
-const ATTRIBUTION_STORAGE_KEY = "kuka-growth-attribution-v1";
-
-type GrowthAttribution = {
-  utmSource: string;
-  utmMedium: string;
-  utmCampaign: string;
-  utmContent: string;
-  utmTerm: string;
-  fbclid: string;
-  landingPage: string;
-  firstVisitAt: string;
-  savedAt: number;
-};
-
-function captureLandingAttribution(): GrowthAttribution {
-  const params = new URLSearchParams(window.location.search);
-  const attribution: GrowthAttribution = {
-    utmSource: params.get("utm_source") ?? "",
-    utmMedium: params.get("utm_medium") ?? "",
-    utmCampaign: params.get("utm_campaign") ?? "",
-    utmContent: params.get("utm_content") ?? "",
-    utmTerm: params.get("utm_term") ?? "",
-    fbclid: params.get("fbclid") ?? "",
-    landingPage: `${window.location.pathname}${window.location.search}`,
-    firstVisitAt: new Date().toISOString(),
-    savedAt: Date.now(),
-  };
-
-  const hasCampaignData = Boolean(
-    attribution.utmSource ||
-      attribution.utmMedium ||
-      attribution.utmCampaign ||
-      attribution.utmContent ||
-      attribution.utmTerm ||
-      attribution.fbclid,
-  );
-  if (hasCampaignData) {
-    window.localStorage.setItem(
-      ATTRIBUTION_STORAGE_KEY,
-      JSON.stringify(attribution),
-    );
-  }
-  return attribution;
-}
-
 export default function GrowthClinicLandingForm() {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [statusMessage, setStatusMessage] = useState("");
   const startedAtRef = useRef(0);
   const statusMessageRef = useRef<HTMLDivElement>(null);
   const isSubmittingRef = useRef(false);
-  const attributionRef = useRef<GrowthAttribution | null>(null);
+  const attributionRef = useRef<ReturnType<typeof getInquiryAttributionPayload> | null>(null);
   const { formRef, saveDraft, clearDraft } = useFormDraft(DRAFT_KEY);
   const { handleInvalid, handleValidationInput } =
     useAccessibleFormValidation();
 
   useEffect(() => {
     startedAtRef.current = Date.now();
-    attributionRef.current = captureLandingAttribution();
+    attributionRef.current = getInquiryAttributionPayload();
   }, []);
 
   useEffect(() => {
@@ -99,7 +56,7 @@ export default function GrowthClinicLandingForm() {
       String(formData.get(fieldName) ?? "");
 
     const attribution =
-      attributionRef.current ?? captureLandingAttribution();
+      attributionRef.current ?? getInquiryAttributionPayload();
     const payload = {
       brandName: getValue("brandName"),
       brandLink: getValue("brandLink"),
@@ -129,7 +86,7 @@ export default function GrowthClinicLandingForm() {
       const response = await fetch("/api/growth-clinic", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...payload, ...getInquiryAttributionPayload() }),
       });
 
       const result = (await response.json()) as {

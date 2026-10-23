@@ -1,3 +1,4 @@
+import { attributionEmailFields } from "@/app/lib/website-attribution-email";
 import { NextResponse } from "next/server";
 import {
   cleanEmail,
@@ -70,8 +71,7 @@ export async function POST(request: Request) {
     const portfolioLink = cleanText(body.portfolioLink, 500);
     const experience = cleanText(body.experience, 1800);
     const message = cleanText(body.message, 1800);
-    const sourcePage =
-      cleanText(body.sourcePage, 200) || "/katta-studio/work-with-us";
+
 
     if (
       !fullName ||
@@ -147,7 +147,7 @@ export async function POST(request: Request) {
         { label: "Portfolio / résumé link", value: portfolioLink },
         { label: "Relevant skills and experience", value: experience },
         { label: "Why KuKa", value: message },
-        { label: "Source page", value: sourcePage },
+        ...attributionEmailFields(body),
       ],
     });
 

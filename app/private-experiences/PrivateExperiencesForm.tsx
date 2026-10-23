@@ -1,5 +1,7 @@
 "use client";
 
+import { getInquiryAttributionPayload } from "../lib/campaign-attribution";
+
 import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import SemanticIcon from "../components/SemanticIcon";
@@ -34,6 +36,7 @@ export default function PrivateExperiencesForm() {
       const response = await fetch("/api/private-experiences", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          ...getInquiryAttributionPayload(),
           fullName: value("fullName"), email: value("email"), phone: value("phone"),
           city: value("city"), experienceType: value("experienceType"), occasion: value("occasion"),
           preferredDate: value("preferredDate"), participants: value("participants"),

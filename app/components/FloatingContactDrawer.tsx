@@ -1,5 +1,7 @@
 "use client";
 
+import { getInquiryAttributionPayload } from "../lib/campaign-attribution";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -295,7 +297,7 @@ export default function FloatingContactDrawer() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...payload, ...getInquiryAttributionPayload() }),
       });
 
       const result = (await response.json()) as {

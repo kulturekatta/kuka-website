@@ -1,5 +1,7 @@
 "use client";
 
+import { getInquiryAttributionPayload } from "../lib/campaign-attribution";
+
 import Link from "next/link";
 import { COOKIE_CONSENT_KEY } from "../components/CookieBanner";
 import { useEffect, useRef, useState } from "react";
@@ -13,81 +15,6 @@ import SemanticIcon from "../components/SemanticIcon";
 type FormStatus = "idle" | "submitting" | "success" | "error";
 const GROWTH_CLINIC_DRAFT_KEY =
   "kuka-growth-clinic-form-draft-v1";
-const ATTRIBUTION_STORAGE_KEY = "kuka-growth-attribution-v1";
-const ATTRIBUTION_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
-
-type GrowthAttribution = {
-  utmSource: string;
-  utmMedium: string;
-  utmCampaign: string;
-  utmContent: string;
-  utmTerm: string;
-  fbclid: string;
-  landingPage: string;
-  firstVisitAt: string;
-  savedAt: number;
-};
-
-const emptyAttribution = (): GrowthAttribution => ({
-  utmSource: "",
-  utmMedium: "",
-  utmCampaign: "",
-  utmContent: "",
-  utmTerm: "",
-  fbclid: "",
-  landingPage: "",
-  firstVisitAt: "",
-  savedAt: Date.now(),
-});
-
-function readAndRememberAttribution(): GrowthAttribution {
-  const params = new URLSearchParams(window.location.search);
-  const hasCampaignData =
-    params.has("utm_source") ||
-    params.has("utm_medium") ||
-    params.has("utm_campaign") ||
-    params.has("utm_content") ||
-    params.has("utm_term") ||
-    params.has("fbclid");
-
-  if (hasCampaignData) {
-    const attribution: GrowthAttribution = {
-      utmSource: params.get("utm_source") ?? "",
-      utmMedium: params.get("utm_medium") ?? "",
-      utmCampaign: params.get("utm_campaign") ?? "",
-      utmContent: params.get("utm_content") ?? "",
-      utmTerm: params.get("utm_term") ?? "",
-      fbclid: params.get("fbclid") ?? "",
-      landingPage:
-        params.get("landing_page") ??
-        `${window.location.pathname}${window.location.search}`,
-      firstVisitAt: new Date().toISOString(),
-      savedAt: Date.now(),
-    };
-
-    window.localStorage.setItem(
-      ATTRIBUTION_STORAGE_KEY,
-      JSON.stringify(attribution),
-    );
-    return attribution;
-  }
-
-  try {
-    const savedValue = window.localStorage.getItem(ATTRIBUTION_STORAGE_KEY);
-    if (!savedValue) return emptyAttribution();
-
-    const saved = JSON.parse(savedValue) as GrowthAttribution;
-    if (!saved.savedAt || Date.now() - saved.savedAt > ATTRIBUTION_MAX_AGE_MS) {
-      window.localStorage.removeItem(ATTRIBUTION_STORAGE_KEY);
-      return emptyAttribution();
-    }
-    return saved;
-  } catch {
-    window.localStorage.removeItem(ATTRIBUTION_STORAGE_KEY);
-    return emptyAttribution();
-  }
-}
-
 export default function GrowthClinicContactForm() {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [statusMessage, setStatusMessage] = useState("");
@@ -102,7 +29,7 @@ export default function GrowthClinicContactForm() {
 
   useEffect(() => {
     startedAtRef.current = Date.now();
-    readAndRememberAttribution();
+    getInquiryAttributionPayload();
   }, []);
 
   useEffect(() => {
@@ -123,7 +50,7 @@ export default function GrowthClinicContactForm() {
     const getValue = (fieldName: string) =>
       String(formData.get(fieldName) ?? "");
 
-    const attribution = readAndRememberAttribution();
+    const attribution = getInquiryAttributionPayload();
     const isGrowthClinic =
       getValue("serviceInterest") === "Growth Clinic & strategic support";
     const payload = {
@@ -160,7 +87,7 @@ export default function GrowthClinicContactForm() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...payload, ...getInquiryAttributionPayload() }),
       });
 
       const result = (await response.json()) as {

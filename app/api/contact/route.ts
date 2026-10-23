@@ -1,3 +1,4 @@
+import { attributionEmailFields } from "@/app/lib/website-attribution-email";
 import { NextResponse } from "next/server";
 import {
   cleanEmail,
@@ -69,7 +70,7 @@ export async function POST(request: Request) {
     const phone = cleanText(body.phone, 40);
     const interest = cleanText(body.interest, 60);
     const message = cleanText(body.message, 2500);
-    const sourcePage = cleanText(body.sourcePage, 200) || "/contact";
+
     const interestLabel = interestLabels[interest];
 
     if (!name || !email || !interestLabel || !message) {
@@ -112,7 +113,7 @@ export async function POST(request: Request) {
 
     await sendWebsiteForm({
       formName: "General Website Enquiry",
-      internalSubject: `[KuKa Website] ${interestLabel} — ${name}`,
+      internalSubject: `[KuKa Contact] ${interestLabel} — ${name}`,
       submitterName: name,
       submitterEmail: email,
       acknowledgementMessage: `Thank you for contacting KultureKatta. We have received your ${interestLabel.toLowerCase()}.`,
@@ -124,7 +125,7 @@ export async function POST(request: Request) {
         { label: "Phone / WhatsApp", value: phone },
         { label: "Enquiry type", value: interestLabel },
         { label: "Message", value: message },
-        { label: "Source page", value: sourcePage },
+        ...attributionEmailFields(body),
       ],
     });
 

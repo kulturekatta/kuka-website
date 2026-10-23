@@ -1,5 +1,7 @@
 "use client";
 
+import { getInquiryAttributionPayload } from "../lib/campaign-attribution";
+
 import Link from "next/link";
 import {
   useEffect,
@@ -220,7 +222,7 @@ export default function ContactPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...payload, ...getInquiryAttributionPayload() }),
       });
 
       const result = (await response.json()) as {

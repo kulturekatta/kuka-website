@@ -1,5 +1,7 @@
 "use client";
 
+import { getInquiryAttributionPayload } from "../../lib/campaign-attribution";
+
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { COOKIE_CONSENT_KEY } from "../../components/CookieBanner";
@@ -7,28 +9,7 @@ import { earliestFutureDateInIndia, FUTURE_DATE_ERROR, isFutureDateInIndia } fro
 import { PHONE_PATTERN, useAccessibleFormValidation, useFormDraft } from "../../components/formEnhancements";
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
-type Attribution = Record<"utmSource" | "utmMedium" | "utmCampaign" | "utmContent" | "utmTerm" | "fbclid" | "landingPage" | "firstVisitAt", string>;
-const ATTRIBUTION_STORAGE_KEY = "kuka-growth-attribution-v1";
 const DRAFT_KEY = "kuka-festive-business-form-draft-v1";
-
-function readAttribution(): Attribution {
-  const params = new URLSearchParams(window.location.search);
-  let previous: Partial<Attribution> = {};
-  try { previous = JSON.parse(window.localStorage.getItem(ATTRIBUTION_STORAGE_KEY) || "{}"); } catch { /* ignore invalid stored data */ }
-  const fields: Array<[keyof Attribution, string]> = [
-    ["utmSource", "utm_source"], ["utmMedium", "utm_medium"], ["utmCampaign", "utm_campaign"],
-    ["utmContent", "utm_content"], ["utmTerm", "utm_term"], ["fbclid", "fbclid"],
-  ];
-  const hasNewCampaign = fields.some(([, key]) => params.has(key));
-  const attribution = {} as Attribution;
-  fields.forEach(([field, key]) => { attribution[field] = params.get(key) || (hasNewCampaign ? "" : previous[field] || ""); });
-  attribution.landingPage = hasNewCampaign ? `${window.location.pathname}${window.location.search}` : (previous.landingPage || `${window.location.pathname}${window.location.search}`);
-  attribution.firstVisitAt = hasNewCampaign ? new Date().toISOString() : (previous.firstVisitAt || new Date().toISOString());
-  if (hasNewCampaign) {
-    try { window.localStorage.setItem(ATTRIBUTION_STORAGE_KEY, JSON.stringify({...attribution, savedAt: Date.now()})); } catch { /* storage may be disabled */ }
-  }
-  return attribution;
-}
 
 const serviceOptions = ["Social & digital campaigns", "Print & event collateral", "Packaging & gifting", "Retail & in-store design", "Brand design support", "Sales & business communication", "Merchandise & branded products", "Other"];
 const inputClass = "w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-base text-[var(--kk-text)] outline-none placeholder:text-[#59524c] focus:border-[var(--kk-accent)] focus:ring-4 focus:ring-[var(--kk-accent)]/10";
@@ -43,13 +24,13 @@ export default function FestiveBusinessForm() {
   const startedAt = useRef(0);
   const processing = useRef(false);
   const feedback = useRef<HTMLDivElement>(null);
-  const attribution = useRef<Attribution | null>(null);
+  const attribution = useRef<ReturnType<typeof getInquiryAttributionPayload> | null>(null);
   const { formRef, saveDraft, clearDraft } = useFormDraft(DRAFT_KEY);
   const { handleInvalid, handleValidationInput } = useAccessibleFormValidation();
 
   useEffect(() => {
     startedAt.current = Date.now();
-    attribution.current = readAttribution();
+    attribution.current = getInquiryAttributionPayload();
     if (deadlineInput.current) {
       deadlineInput.current.min = earliestFutureDateInIndia();
     }
@@ -69,18 +50,18 @@ export default function FestiveBusinessForm() {
       return;
     }
     setDeadlineError(false);
-    const tracking = attribution.current || readAttribution();
+    const tracking = attribution.current || getInquiryAttributionPayload();
     const payload = {
       businessName: val("businessName"), contactName: val("contactName"), email: val("email"), mobile: val("mobile"),
       city: val("city"), businessLink: val("businessLink"), services: data.getAll("services").map(String),
       brief: val("brief"), deadline: val("deadline"), budget: val("budget"),
       consent: data.get("consent") === "on", formGuard: val("formGuard"), startedAt: startedAt.current,
-      sourcePage: `${window.location.pathname}${window.location.search}`, ...tracking,
+      ...tracking,
     };
     processing.current = true;
     setStatus("submitting"); setMessage("");
     try {
-      const response = await fetch("/api/festive-business", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+      const response = await fetch("/api/festive-business", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...payload, ...getInquiryAttributionPayload() }) });
       const result = await response.json() as { success?: boolean; message?: string };
       if (!response.ok || !result.success) throw new Error(result.message || "We could not send your inquiry. Please try again.");
       form.reset(); clearDraft(); startedAt.current = Date.now(); setConsentError(false); setDeadlineError(false);

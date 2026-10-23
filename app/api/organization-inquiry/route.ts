@@ -1,3 +1,4 @@
+import { attributionEmailFields } from "@/app/lib/website-attribution-email";
 import { NextResponse } from "next/server";
 import {
   cleanEmail,
@@ -82,8 +83,7 @@ export async function POST(request: Request) {
     const budget = cleanText(body.budget, 120);
     const details = cleanText(body.details, 3000);
     const referralSource = cleanText(body.referralSource, 160);
-    const sourcePage =
-      cleanText(body.sourcePage, 200) || "/for-organizations";
+
 
     if (inquiryType !== "organization") {
       return NextResponse.json(
@@ -135,7 +135,7 @@ export async function POST(request: Request) {
 
     await sendWebsiteForm({
       formName: "Organization Inquiry",
-      internalSubject: `[KuKa Organizations] New Enquiry — ${subjectOrganizationName}`,
+      internalSubject: `[KuKa Organizations] New Inquiry — ${subjectOrganizationName}`,
       submitterName: fullName,
       submitterEmail: workEmail,
       acknowledgementMessage:
@@ -160,7 +160,7 @@ export async function POST(request: Request) {
         { label: "Approximate budget", value: budget },
         { label: "Additional details", value: details },
         { label: "Referral source", value: referralSource },
-        { label: "Source page", value: sourcePage },
+        ...attributionEmailFields(body),
       ],
     });
 

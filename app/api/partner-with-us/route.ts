@@ -1,3 +1,4 @@
+import { attributionEmailFields } from "@/app/lib/website-attribution-email";
 import { NextResponse } from "next/server";
 import {
   cleanEmail, cleanText, hasValidConsent, isHoneypotTriggered,
@@ -69,7 +70,8 @@ export async function POST(request: Request) {
         { label: "Organization / practice", value: organization }, { label: "Partner type", value: partnerType },
         { label: "Interested in", value: selectedInterests.join(", ") || "Not specified" },
         { label: "Profile / portfolio", value: portfolioLink },
-        { label: "Additional details / collaboration idea", value: message }, { label: "Source page", value: "/partner-with-us" },
+        { label: "Additional details / collaboration idea", value: message },
+        ...attributionEmailFields(body),
       ],
     });
     return NextResponse.json({ success: true, message: "Partnership enquiry sent." });

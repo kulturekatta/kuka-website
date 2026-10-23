@@ -329,54 +329,50 @@ type AcknowledgementCopy = {
 
 function getAcknowledgementCopy(
   submission: WebsiteFormSubmission,
-  contactEmail: string,
 ): AcknowledgementCopy {
-  const address = contactEmail.toLowerCase();
-    if (submission.sourceTag === "festive_business") {
-    return {
-      subject: "We've received your festive project enquiry — Katta Studio",
-      heading: "We've received your festive project enquiry.",
-    };
-  }
-  if (address === "partners@kulturekatta.com") {
-    return {
-      subject: "We've received your partnership enquiry — KultureKatta",
-      heading: "We've received your partnership enquiry.",
-    };
-  }
-  if (address === "careers@kulturekatta.com") {
-    return {
-      subject: "We've received your application — KultureKatta",
+  // Classify by the actual form, not the recipient address: multiple forms
+  // can share a mailbox without sharing an email subject.
+  const copies: Record<string, AcknowledgementCopy> = {
+    festive_business: {
+      subject: "Festive Business inquiry received | Katta Studio",
+      heading: "We've received your Festive Business inquiry.",
+    },
+    partner_with_us: {
+      subject: "Partnership inquiry received | KultureKatta",
+      heading: "We've received your partnership inquiry.",
+    },
+    work_with_us: {
+      subject: "Work With KuKa application received | KultureKatta",
       heading: "We've received your application.",
-    };
-  }
-  if (address === "studio@kulturekatta.com") {
-    const isGrowthClinic = submission.sourceTag.includes("growth");
-    return isGrowthClinic
-      ? {
-          subject: "We've received your Growth Clinic enquiry — Katta Studio",
-          heading: "We've received your Growth Clinic enquiry.",
-        }
-      : {
-          subject: "We've received your enquiry — Katta Studio",
-          heading: "We've received your Katta Studio enquiry.",
-        };
-  }
-  if (address === "organizations@kulturekatta.com") {
-    return {
-      subject: "We've received your organization enquiry — KultureKatta",
-      heading: "We've received your organization enquiry.",
-    };
-  }
-  if (address === "tailored@kulturekatta.com") {
-    return {
-      subject: "We've received your private experience enquiry — KultureKatta",
-      heading: "We've received your private experience enquiry.",
-    };
-  }
-  return {
-    subject: "We've received your enquiry — KultureKatta",
-    heading: "We've received your enquiry.",
+    },
+    growth_clinic: {
+      subject: "Growth Clinic inquiry received | Katta Studio",
+      heading: "We've received your Growth Clinic inquiry.",
+    },
+    studio_project: {
+      subject: "Katta Studio project inquiry received | Katta Studio",
+      heading: "We've received your Katta Studio project inquiry.",
+    },
+    organization_form: {
+      subject: "Organization experience inquiry received | KultureKatta",
+      heading: "We've received your organization inquiry.",
+    },
+    private_experiences: {
+      subject: "Private Experiences inquiry received | KultureKatta",
+      heading: "We've received your private experience inquiry.",
+    },
+    floating_contact: {
+      subject: "Quick Website inquiry received | KultureKatta",
+      heading: "We've received your quick website inquiry.",
+    },
+    contact_form: {
+      subject: "Contact page inquiry received | KultureKatta",
+      heading: "We've received your contact inquiry.",
+    },
+  };
+  return copies[submission.sourceTag] ?? {
+    subject: "Website inquiry received | KultureKatta",
+    heading: "We've received your inquiry.",
   };
 }
 
@@ -479,7 +475,7 @@ export async function sendWebsiteForm(
     throw new Error("FORM_RECIPIENT_INVALID");
   }
   const contactEmail = routingEmail || config.publicContactEmail;
-  const acknowledgementCopy = getAcknowledgementCopy(submission, contactEmail);
+  const acknowledgementCopy = getAcknowledgementCopy(submission);
   const submittedAt = new Intl.DateTimeFormat("en-IN", {
     dateStyle: "full",
     timeStyle: "short",

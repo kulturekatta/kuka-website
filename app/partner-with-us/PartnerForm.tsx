@@ -1,5 +1,7 @@
 "use client";
 
+import { getInquiryAttributionPayload } from "../lib/campaign-attribution";
+
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 
@@ -45,6 +47,7 @@ export default function PartnerForm() {
       const response = await fetch("/api/partner-with-us", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          ...getInquiryAttributionPayload(),
           fullName: get("fullName"), email: get("email"), phone: get("phone"),
           city: get("city"), organization: get("organization"),
           partnerType: get("partnerType"), interests: fd.getAll("interests").map(String),
