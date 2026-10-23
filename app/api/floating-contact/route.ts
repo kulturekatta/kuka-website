@@ -26,14 +26,17 @@ type FloatingContactBody = {
 };
 
 const interestLabels: Record<string, string> = {
-  organization: "Organization enquiry",
+  organization: "Organization experience enquiry",
   private: "Private experience enquiry",
-  attend: "Attend an experience",
-  partner: "Partnership enquiry",
-  volunteer: "Volunteer enquiry",
+  studio: "Work with Katta Studio enquiry",
+  partner: "Partnership or volunteering enquiry",
   host: "Host a Katta enquiry",
+  career: "Work with KultureKatta enquiry",
+  attend: "Attend an experience enquiry",
   media: "Press or media enquiry",
   other: "General enquiry",
+  // Retain support for older form drafts saved in visitors' browsers.
+  volunteer: "Volunteering enquiry",
 };
 
 export async function POST(request: Request) {
@@ -93,6 +96,20 @@ export async function POST(request: Request) {
       );
     }
 
+    const routingByInterest: Record<string, string> = {
+      organization: "organizations@kulturekatta.com",
+      private: "tailored@kulturekatta.com",
+      studio: "studio@kulturekatta.com",
+      partner: "partners@kulturekatta.com",
+      volunteer: "partners@kulturekatta.com",
+      host: "partners@kulturekatta.com",
+      career: "careers@kulturekatta.com",
+      attend: "hey@kulturekatta.com", // Until experiences@ is established.
+      media: "hey@kulturekatta.com",
+      other: "hey@kulturekatta.com",
+    };
+    const routingEmail = routingByInterest[interest] || "hey@kulturekatta.com";
+
     await sendWebsiteForm({
       formName: "Quick Website Enquiry",
       internalSubject: `[KuKa Website] Quick Enquiry — ${interestLabel} — ${name}`,
@@ -100,6 +117,7 @@ export async function POST(request: Request) {
       submitterEmail: email,
       acknowledgementMessage: `Thank you for contacting KultureKatta. We have received your ${interestLabel.toLowerCase()}.`,
       sourceTag: "floating_contact",
+      routingEmail,
       fields: [
         { label: "Name", value: name },
         { label: "Email", value: email },

@@ -168,12 +168,6 @@ export default function FloatingContactDrawer() {
     startedAtRef.current = Date.now();
   }, []);
 
-  const suspendDrawerForNavigation = () => {
-    setIsOpen(false);
-    setStatus("idle");
-    setStatusMessage("");
-  };
-
   useEffect(() => {
     if (!isOpen || !drawerRef.current || !portalRootRef.current) {
       return;
@@ -527,29 +521,15 @@ export default function FloatingContactDrawer() {
                       Choose one
                     </option>
 
-                    <option value="organization">
-                      Plan an experience for my organization
-                    </option>
-
-                    <option value="private">
-                      Plan a private experience
-                    </option>
-
-                    <option value="attend">Attend an experience</option>
-
-                    <option value="partner">
-                      Work or partner with KultureKatta
-                    </option>
-
-                    <option value="volunteer">
-                      Volunteer with KultureKatta
-                    </option>
-
-                    <option value="host">Host a Katta</option>
-
-                    <option value="media">Press or media enquiry</option>
-
-                    <option value="other">Something else</option>
+                                          <option value="organization">Plan an experience for my organization</option>
+                      <option value="private">Plan a private experience</option>
+                      <option value="studio">Work with Katta Studio</option>
+                      <option value="partner">Partner / volunteer with KultureKatta</option>
+                      <option value="host">Host a Katta</option>
+                      <option value="career">Work with KultureKatta</option>
+                      <option value="attend">Attend an experience</option>
+                      <option value="media">Press / media enquiry</option>
+                      <option value="other">Something else</option>
                   </select>
                 </div>
 
@@ -600,13 +580,14 @@ export default function FloatingContactDrawer() {
                   <span className="text-xs leading-5 text-black/55">
                     I agree that KultureKatta may use these details to respond
                     to my enquiry as described in the{" "}
-                    <Link
+                    <a
                       href="/privacy-policy"
-                      onClick={suspendDrawerForNavigation}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="font-semibold underline decoration-black/30 underline-offset-2 hover:decoration-black"
                     >
                       Privacy Policy
-                    </Link>
+                    </a>
                     . <span aria-hidden="true">*</span>
                   </span>
                 </label>
