@@ -1,5 +1,7 @@
 "use client";
 
+import { getInquiryAttributionPayload } from "../lib/campaign-attribution";
+
 import Link from "next/link";
 import {
   useEffect,
@@ -25,7 +27,7 @@ const contactOptions = [
   },
   {
     icon: "💬",
-    label: "General enquiry",
+    label: "General inquiry",
     title: "Ask us anything",
     text: "Have a question about KultureKatta, our events, cities, formats, or upcoming plans? Start here.",
     buttonText: "Email us",
@@ -34,10 +36,10 @@ const contactOptions = [
   {
     icon: "🤝",
     label: "Partnerships",
-    title: "Work / Partner with KultureKatta",
+    title: "Partner with KultureKatta",
     text: "For venues, cafés, studios, cultural spaces, brands, collectives, and collaborators who want to create something meaningful with us.",
     buttonText: "Partner with us",
-    href: "mailto:hey@kulturekatta.com?subject=Partnership%20Enquiry%20for%20KultureKatta",
+    href: "/partner-with-us",
   },
   {
     icon: "🙌",
@@ -45,7 +47,7 @@ const contactOptions = [
     title: "Volunteer with KultureKatta",
     text: "Want to help at events, support artists, assist with community building, documentation, research, or on-ground coordination?",
     buttonText: "Volunteer with us",
-    href: "mailto:hey@kulturekatta.com?subject=Volunteer%20with%20KultureKatta",
+    href: "mailto:partners@kulturekatta.com?subject=Volunteer%20with%20KultureKatta",
   },
   {
     icon: "🎤",
@@ -53,7 +55,7 @@ const contactOptions = [
     title: "Host a Katta",
     text: "Are you an artist, facilitator, storyteller, maker, teacher, performer, chef, walker, thinker, or curious human with something to share?",
     buttonText: "Become a host",
-    href: "mailto:hey@kulturekatta.com?subject=Host%20a%20Katta",
+    href: "/partner-with-us",
   },
   {
     icon: "📰",
@@ -220,7 +222,7 @@ export default function ContactPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...payload, ...getInquiryAttributionPayload() }),
       });
 
       const result = (await response.json()) as {
@@ -231,7 +233,7 @@ export default function ContactPage() {
       if (!response.ok || !result.success) {
         throw new Error(
           result.message ||
-            "Your enquiry could not be sent. Please try again.",
+            "Your inquiry could not be sent. Please try again.",
         );
       }
 
@@ -240,7 +242,7 @@ export default function ContactPage() {
       startedAtRef.current = Date.now();
       setStatus("success");
       setStatusMessage(
-        "Thank you. Your enquiry has been sent, and a confirmation email is on its way.",
+        "Thank you. Your inquiry has been sent, and a confirmation email is on its way.",
       );
     } catch (error) {
       setStatus("error");
@@ -401,15 +403,15 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* ENQUIRY FORM */}
+      {/* inquiry FORM */}
       <section className="kk-section-light px-6 py-24 sm:px-10 lg:px-16">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-3xl text-center">
             <div className="mb-5 flex justify-center">
-              <SemanticIcon icon="📝" label="Enquiry form" size="section" />
+              <SemanticIcon icon="📝" label="inquiry form" size="section" />
             </div>
 
-            <p className="kk-section-label mb-5">Enquiry form</p>
+            <p className="kk-section-label mb-5">inquiry form</p>
 
             <h2 className="kk-section-heading">
               <span className="block">Tell us what</span>
@@ -508,7 +510,7 @@ export default function ContactPage() {
                     />
 
                     <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--kk-accent)]">
-                      Your enquiry
+                      Your inquiry
                     </p>
                     <h3 className="mt-2 text-2xl font-semibold text-[var(--kk-text)]">
                       Start the conversation
@@ -588,18 +590,14 @@ export default function ContactPage() {
                       <option value="" disabled>
                         Choose one
                       </option>
-                      <option value="organization">
-                        Plan an experience for my organization
-                      </option>
-                      <option value="attend">Attend an experience</option>
-                      <option value="partner">
-                        Work / partner with KultureKatta
-                      </option>
-                      <option value="volunteer">
-                        Volunteer with KultureKatta
-                      </option>
+                                            <option value="organization">Plan an experience for my organization</option>
+                      <option value="private">Plan a private experience</option>
+                      <option value="studio">Work with Katta Studio</option>
+                      <option value="partner">Partner / volunteer with KultureKatta</option>
                       <option value="host">Host a Katta</option>
-                      <option value="media">Press / media enquiry</option>
+                      <option value="career">Work with KultureKatta</option>
+                      <option value="attend">Attend an experience</option>
+                      <option value="media">Press / media inquiry</option>
                       <option value="other">Something else</option>
                     </select>
                   </div>
@@ -645,7 +643,7 @@ export default function ContactPage() {
                     />
                     <span className="text-sm leading-6 text-black/60">
                       I agree that KultureKatta may use the information submitted
-                      here to respond to my enquiry as described in the{" "}
+                      here to respond to my inquiry as described in the{" "}
                       <Link
                         href="/privacy-policy"
                         className="font-semibold underline decoration-black/30 underline-offset-2 hover:decoration-black"
@@ -676,7 +674,7 @@ export default function ContactPage() {
 
                   <div className="flex flex-col gap-4 border-t border-black/10 pt-7 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
                     <p className="max-w-xs text-xs leading-5 text-black/65">
-                      We will use your details only to respond to your enquiry.
+                      We will use your details only to respond to your inquiry.
                     </p>
 
                     <button
@@ -684,7 +682,7 @@ export default function ContactPage() {
                       disabled={!isClientReady || status === "submitting"}
                       className="kk-button-dark w-full justify-center disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                     >
-                      {status === "submitting" ? "Sending enquiry..." : "Send enquiry"}
+                      {status === "submitting" ? "Sending inquiry..." : "Send inquiry"}
                     </button>
                   </div>
 

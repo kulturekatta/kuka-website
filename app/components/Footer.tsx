@@ -3,7 +3,7 @@ import CookieSettingsButton from "./CookieSettingsButton";
 
 type FooterLink = {
   label: string;
-  href: string;
+  href?: string;
   external?: boolean;
 };
 
@@ -13,110 +13,55 @@ type FooterSection = {
   showCookieSettings?: boolean;
 };
 
+// Keep five visible items in each section. Unpublished destinations are text, not dead links.
 const footerSections: FooterSection[] = [
   {
-    title: "Experiences",
+    title: "KultureKatta",
     links: [
-      {
-        label: "All Experiences",
-        href: "/experiences",
-      },
-      {
-        label: "Explore by Mood",
-        href: "/moods",
-      },
-      {
-        label: "For Organizations",
-        href: "/for-organizations",
-      },
-      {
-        label: "Private Experiences",
-        href: "/private-experiences",
-      },
+      { label: "Home", href: "/" },
+      { label: "About Us", href: "/about" },
+      { label: "Why KuKa?", href: "/about#why-kuka" },
+      { label: "Our Team", href: "/our-team" },
+      { label: "Partner With Us", href: "/partner-with-us" },
     ],
   },
   {
-  title: "KultureKatta",
-  links: [
-    {
-      label: "Home",
-      href: "/",
-    },
-    {
-      label: "About Us",
-      href: "/about",
-    },
-    {
-      label: "Our Team",
-      href: "/our-team",
-    },
-    {
-      label: "Contact Us",
-      href: "/contact",
-    },
-  ],
-},
-  {
-    title: "Studio Services",
+    title: "Experiences",
     links: [
-      {
-        label: "About Katta Studio",
-        href: "/katta-studio",
-      },
-      {
-        label: "Website Development",
-        href: "/katta-studio#websites-and-digital-presence",
-      },
-      {
-        label: "Brand Identity",
-        href: "/katta-studio#brand-positioning-and-visual-identity",
-      },
-      {
-        label: "Social Media Presence",
-        href: "/katta-studio#social-media-and-content",
-      },
+      { label: "All Experiences", href: "/experiences" },
+      { label: "Upcoming — Coming Soon" },
+      { label: "Explore by Mood", href: "/moods" },
+      { label: "For Organizations", href: "/for-organizations" },
+      { label: "Private Experiences", href: "/private-experiences" },
+    ],
+  },
+  {
+    title: "Katta Studio",
+    links: [
+      { label: "About Katta Studio", href: "/katta-studio" },
+      { label: "Digital Presence", href: "/katta-studio#websites-and-digital-presence" },
+      { label: "Growth Strategy", href: "/katta-studio#growth-clinic-and-strategic-support" },
+      { label: "Design & Branding", href: "/katta-studio#brand-and-design" },
+      { label: "Work With KuKa", href: "/work-with-us" },
     ],
   },
   {
     title: "Connect",
     links: [
-      {
-        label: "Instagram",
-        href: "https://www.instagram.com/kulturekatta/",
-        external: true,
-      },
-      {
-        label: "LinkedIn",
-        href: "https://www.linkedin.com/company/kulturekatta/",
-        external: true,
-      },
-      {
-        label: "WhatsApp/Phone",
-        href: "https://wa.me/919730244996",
-        external: true,
-      },
-      {
-        label: "Email",
-        href: "mailto:hey@kulturekatta.com",
-        external: true,
-      },
+      { label: "Instagram", href: "https://www.instagram.com/kulturekatta/", external: true },
+      { label: "LinkedIn", href: "https://www.linkedin.com/company/kulturekatta/", external: true },
+      { label: "WhatsApp", href: "https://wa.me/919730244996", external: true },
+      { label: "Email", href: "mailto:hey@kulturekatta.com" },
+      { label: "Connect", href: "/contact" },
     ],
   },
   {
     title: "Legal",
     links: [
-      {
-        label: "Privacy Policy",
-        href: "/privacy-policy",
-      },
-      {
-        label: "Terms of Use",
-        href: "/terms-of-use",
-      },
-      {
-        label: "Cookie Policy",
-        href: "/cookie-policy",
-      },
+      { label: "Privacy Policy", href: "/privacy-policy" },
+      { label: "Terms of Use", href: "/terms-of-use" },
+      { label: "Disclaimer — Coming Soon" },
+      { label: "Cookie Policy", href: "/cookie-policy" },
     ],
     showCookieSettings: true,
   },
@@ -161,8 +106,6 @@ export default function Footer() {
           {/* FOOTER NAVIGATION */}
           <nav className="contents" aria-label="Footer navigation">
             {footerSections.map((section) => {
-              const totalItems =
-                section.links.length + (section.showCookieSettings ? 1 : 0);
               const isMobileFullWidth = section.showCookieSettings;
 
               return (
@@ -180,7 +123,7 @@ export default function Footer() {
                     className={`
                       mt-3 gap-y-0 md:mt-5 md:flex md:flex-col md:gap-3
                       xl:grid xl:grid-cols-1
-                      xl:grid-rows-[repeat(4,minmax(44px,auto))]
+                      xl:grid-rows-[repeat(5,minmax(44px,auto))]
                       xl:gap-y-0
                       ${
                         isMobileFullWidth
@@ -189,36 +132,31 @@ export default function Footer() {
                       }
                     `}
                   >
-                    {section.links.map((link, index) => {
-                      const isLastItem = index === section.links.length - 1;
-                      const shouldUseLastRow =
-                        isLastItem &&
-                        !section.showCookieSettings &&
-                        totalItems < 4;
-
+                    {section.links.map((link) => {
                       return (
                         <li
                           key={`${section.title}-${link.label}`}
-                          className={shouldUseLastRow ? "xl:row-start-4" : undefined}
                         >
-                          <Link
-                            href={link.href}
-                            target={link.external ? "_blank" : undefined}
-                            rel={link.external ? "noopener noreferrer" : undefined}
-                            className="inline-flex min-h-11 min-w-11 max-w-full items-center break-words text-sm font-normal leading-6 text-white/65 transition-colors duration-200 hover:text-white xl:whitespace-nowrap"
-                          >
-                            {link.label}
-                          </Link>
+                          {link.href ? (
+                            <Link
+                              href={link.href}
+                              target={link.external ? "_blank" : undefined}
+                              rel={link.external ? "noopener noreferrer" : undefined}
+                              className="inline-flex min-h-11 min-w-11 max-w-full items-center break-words text-sm font-normal leading-6 text-white/65 transition-colors duration-200 hover:text-white"
+                            >
+                              {link.label}
+                            </Link>
+                          ) : (
+                            <span aria-disabled="true" className="inline-flex min-h-11 items-center text-sm leading-6 text-white/45">
+                              {link.label}
+                            </span>
+                          )}
                         </li>
                       );
                     })}
 
                     {section.showCookieSettings && (
-                      <li
-                        className={
-                          totalItems < 4 ? "xl:row-start-4" : undefined
-                        }
-                      >
+                      <li>
                         <CookieSettingsButton className="inline-flex min-h-11 min-w-11 max-w-full items-center break-words text-left !text-sm !font-normal font-[inherit] leading-6 text-white/65 transition-colors duration-200 hover:text-white xl:whitespace-nowrap" />
                       </li>
                     )}

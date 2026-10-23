@@ -14,6 +14,7 @@ type WebsiteFormSubmission = {
   acknowledgementMessage: string;
   fields: WebsiteFormField[];
   sourceTag: string;
+  routingEmail?: string;
 };
 
 type WebsiteFormConfig = {
@@ -296,16 +297,90 @@ function hasFieldValue(field: WebsiteFormField): boolean {
 function getAcknowledgementFields(
   submission: WebsiteFormSubmission,
 ): WebsiteFormField[] {
-  return submission.fields.filter(
-    (field) =>
-      field.label.toLowerCase() !== "source page" && hasFieldValue(field),
-  );
+  // Campaign attribution and routing details belong in the internal email only.
+  const internalOnlyLabels = new Set([
+    "source page",
+    "submission page",
+    "original landing page",
+    "referring page",
+    "referrer",
+    "first visit",
+    "first visit at",
+    "submission date and time",
+    "utm source",
+    "utm medium",
+    "utm campaign",
+    "utm content",
+    "utm term",
+    "meta click id",
+    "fbclid",
+  ]);
+
+  return submission.fields.filter((field) => {
+    const label = field.label.trim().toLowerCase().replace(/[_-]+/g, " ").replace(/\s+/g, " ");
+    return !internalOnlyLabels.has(label) && hasFieldValue(field);
+  });
+}
+
+type AcknowledgementCopy = {
+  subject: string;
+  heading: string;
+};
+
+function getAcknowledgementCopy(
+  submission: WebsiteFormSubmission,
+): AcknowledgementCopy {
+  // Classify by the actual form, not the recipient address: multiple forms
+  // can share a mailbox without sharing an email subject.
+  const copies: Record<string, AcknowledgementCopy> = {
+    festive_business: {
+      subject: "Festive Business inquiry received | Katta Studio",
+      heading: "We've received your Festive Business inquiry.",
+    },
+    partner_with_us: {
+      subject: "Partnership inquiry received | KultureKatta",
+      heading: "We've received your partnership inquiry.",
+    },
+    work_with_us: {
+      subject: "Work With KuKa application received | KultureKatta",
+      heading: "We've received your application.",
+    },
+    growth_clinic: {
+      subject: "Growth Clinic inquiry received | Katta Studio",
+      heading: "We've received your Growth Clinic inquiry.",
+    },
+    studio_project: {
+      subject: "Katta Studio project inquiry received | Katta Studio",
+      heading: "We've received your Katta Studio project inquiry.",
+    },
+    organization_form: {
+      subject: "Organization experience inquiry received | KultureKatta",
+      heading: "We've received your organization inquiry.",
+    },
+    private_experiences: {
+      subject: "Private Experiences inquiry received | KultureKatta",
+      heading: "We've received your private experience inquiry.",
+    },
+    floating_contact: {
+      subject: "Quick Website inquiry received | KultureKatta",
+      heading: "We've received your quick website inquiry.",
+    },
+    contact_form: {
+      subject: "Contact page inquiry received | KultureKatta",
+      heading: "We've received your contact inquiry.",
+    },
+  };
+  return copies[submission.sourceTag] ?? {
+    subject: "Website inquiry received | KultureKatta",
+    heading: "We've received your inquiry.",
+  };
 }
 
 function buildAcknowledgementHtml(
   submission: WebsiteFormSubmission,
-  publicContactEmail: string,
+  contactEmail: string,
   submittedAt: string,
+  heading: string,
 ): string {
   const acknowledgementFields = getAcknowledgementFields(submission);
 
@@ -315,7 +390,7 @@ function buildAcknowledgementHtml(
       <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>We received your message</title>
+        <title>${escapeHtml(heading)}</title>
       </head>
       <body style="margin:0;padding:0;background:#f7f3ed;font-family:Arial,Helvetica,sans-serif;color:#201d1b;">
         <div style="padding:30px 14px;">
@@ -325,7 +400,7 @@ function buildAcknowledgementHtml(
                 KultureKatta
               </div>
               <h1 style="margin:10px 0 0;font-size:28px;line-height:1.2;">
-                We received your message.
+                ${escapeHtml(heading)}
               </h1>
             </div>
             <div style="padding:28px;">
@@ -336,7 +411,7 @@ function buildAcknowledgementHtml(
                 ${escapeHtml(submission.acknowledgementMessage)}
               </p>
               <p style="margin:18px 0 0;font-size:16px;line-height:1.7;">
-                We will respond using the contact details you provided. For anything urgent, reply to this email or write to ${escapeHtml(publicContactEmail)}.
+                We will get back to you using the contact details you provided. If you would like to add anything, simply reply to this email or write to <a href="mailto:${escapeHtml(contactEmail)}" style="color:#7a4a23;text-decoration:underline;">${escapeHtml(contactEmail)}</a>.
               </p>
 
               <div style="margin:26px 0 14px;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#7a4a23;">
@@ -364,7 +439,7 @@ function buildAcknowledgementHtml(
 
 function buildAcknowledgementText(
   submission: WebsiteFormSubmission,
-  publicContactEmail: string,
+  contactEmail: string,
   submittedAt: string,
 ): string {
   const submissionCopy = getAcknowledgementFields(submission)
@@ -378,7 +453,7 @@ function buildAcknowledgementText(
 
 ${submission.acknowledgementMessage}
 
-We will respond using the contact details you provided. For anything urgent, reply to this email or write to ${publicContactEmail}.
+We will get back to you using the contact details you provided. If you would like to add anything, simply reply to this email or write to ${contactEmail}.
 
 COPY OF YOUR SUBMISSION
 Submitted on ${submittedAt}
@@ -395,6 +470,12 @@ export async function sendWebsiteForm(
 ): Promise<SendWebsiteFormResult> {
   const config = getConfig();
   const resend = new Resend(config.apiKey);
+  const routingEmail = submission.routingEmail?.trim() || "";
+  if (routingEmail && !isValidEmail(routingEmail)) {
+    throw new Error("FORM_RECIPIENT_INVALID");
+  }
+  const contactEmail = routingEmail || config.publicContactEmail;
+  const acknowledgementCopy = getAcknowledgementCopy(submission);
   const submittedAt = new Intl.DateTimeFormat("en-IN", {
     dateStyle: "full",
     timeStyle: "short",
@@ -403,7 +484,9 @@ export async function sendWebsiteForm(
 
   const internalResult = await resend.emails.send({
     from: config.senderEmail,
-    to: [...new Set([config.recipientEmail, config.publicContactEmail])],
+    to: routingEmail
+      ? [routingEmail]
+      : [...new Set([config.recipientEmail, config.publicContactEmail])],
     replyTo: submission.submitterEmail,
     subject: submission.internalSubject,
     html: buildInternalEmailHtml(submission, submittedAt),
@@ -429,16 +512,17 @@ export async function sendWebsiteForm(
   const acknowledgementResult = await resend.emails.send({
     from: config.senderEmail,
     to: [submission.submitterEmail],
-    replyTo: config.publicContactEmail,
-    subject: "We received your message — KultureKatta",
+    replyTo: contactEmail,
+    subject: acknowledgementCopy.subject,
     html: buildAcknowledgementHtml(
       submission,
-      config.publicContactEmail,
+      contactEmail,
       submittedAt,
+      acknowledgementCopy.heading,
     ),
     text: buildAcknowledgementText(
       submission,
-      config.publicContactEmail,
+      contactEmail,
       submittedAt,
     ),
     tags: [

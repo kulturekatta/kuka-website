@@ -13,10 +13,11 @@ import styles from "./Navbar.module.css";
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "/for-organizations", label: "For Organizations" },
+  { href: "/experiences", label: "Experiences" },
   { href: "/private-experiences", label: "Private Experiences" },
-  { href: "/about", label: "About" },
+  { href: "/for-organizations", label: "For Organizations" },
   { href: "/katta-studio", label: "Katta Studio" },
+  { href: "/about", label: "About" },
 ];
 
 export default function Navbar() {
@@ -273,13 +274,7 @@ export default function Navbar() {
               );
             })}
 
-            <Link
-              href="/experiences"
-              aria-current={isActive("/experiences") ? "page" : undefined}
-              className={styles.exploreButton}
-            >
-              Explore Experiences
-            </Link>
+
           </nav>
 
           {/* NATIVE MOBILE MENU */}
@@ -320,7 +315,7 @@ export default function Navbar() {
                     return (
                       <li key={item.href}>
                         <Link
-                          ref={index === 0 ? firstMobileLinkRef : undefined}
+                          ref={index === 0 ? firstMobileLinkRef : index === navLinks.length - 1 ? lastMobileLinkRef : undefined}
                           href={item.href}
                           aria-current={
                             active ? "page" : undefined
@@ -338,17 +333,7 @@ export default function Navbar() {
                     );
                   })}
 
-                  <li className={styles.mobileExploreItem}>
-                    <Link
-                      ref={lastMobileLinkRef}
-                      href="/experiences"
-                      aria-current={isActive("/experiences") ? "page" : undefined}
-                      className={styles.mobileExploreButton}
-                      onClick={() => closeMobileMenu()}
-                    >
-                      Explore Experiences
-                    </Link>
-                  </li>
+
                 </ul>
               </nav>
             </div>

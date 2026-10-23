@@ -28,7 +28,7 @@ const searchableItems = [
     href: "/",
     type: "Page",
     description:
-      "Start here. Discover KultureKatta, our philosophy, featured experiences, and and ways to participate.",
+      "Start here. Discover KultureKatta, our philosophy, featured experiences, and ways to participate.",
     keywords: ["home", "kulturekatta", "kuka", "culture", "events"],
   },
   {
@@ -88,7 +88,7 @@ const searchableItems = [
     href: "/experiences/walks",
     type: "Experience Category",
     description:
-      "Heritage walks, nature trails, city explorations, food walks, and neighbourhood discoveries.",
+      "Heritage walks, nature trails, city explorations, food walks, and neighborhood discoveries.",
     keywords: [
       "walks",
       "trails",
@@ -137,13 +137,13 @@ const searchableItems = [
   },
   {
     icon: "🎬",
-    title: "Theatre & Films",
+    title: "Theater & Films",
     href: "/experiences/stories",
     type: "Experience Category",
     description:
-      "Film screenings, theatre, acting, screen culture, storytelling, scripts, and performance.",
+      "Film screenings, theater, acting, screen culture, storytelling, scripts, and performance.",
     keywords: [
-      "theatre",
+      "theater",
       "films",
       "movies",
       "acting",
@@ -225,10 +225,10 @@ const searchableItems = [
     href: "/experiences/stories",
     type: "Experience Category",
     description:
-      "Explore theatre, film, oral histories, puppetry, visual storytelling, memoir, and screen-led culture.",
+      "Explore theater, film, oral histories, puppetry, visual storytelling, memoir, and screen-led culture.",
     keywords: [
       "stories",
-      "theatre",
+      "theater",
       "film",
       "cinema",
       "oral history",
@@ -248,7 +248,7 @@ const searchableItems = [
       "email",
       "whatsapp",
       "collaboration",
-      "enquiry",
+      "inquiry",
       "partnership",
     ],
   },
@@ -291,7 +291,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
           <p className="kk-page-intro mt-6 max-w-3xl">
             Search for workshops, walks, music, food, pottery, heritage,
-            stories, organisations, schools, and more.
+            stories, organizations, schools, and more.
           </p>
 
           <form
@@ -315,7 +315,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
               name="q"
               defaultValue={query}
               placeholder="Try pottery, walks, music, schools..."
-              className="w-full rounded-full border border-black/10 bg-white px-6 py-4 text-base text-[var(--kk-text)] outline-none transition placeholder:text-black/40 focus:border-[var(--kk-accent)]"
+              className="w-full rounded-full border border-black/10 bg-white px-6 py-4 text-base text-[var(--kk-text)] outline-none transition placeholder:text-[#59524c] focus:border-[var(--kk-accent)]"
             />
 
             <button
@@ -348,14 +348,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 for <span className="font-semibold text-black">“{query}”</span>
               </p>
 
-              <div className="grid gap-5">
+              <div className="grid gap-4 sm:grid-cols-2">
                 {results.map((item) => (
                   <Link
                     key={`${item.href}-${item.title}`}
                     href={item.href}
-                    className="kk-card kk-card--compact kk-card--interactive group"
+                    className="kk-card kk-card--compact kk-card--interactive group h-full"
                   >
-                    <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                    <div className="flex h-full flex-col gap-4">
                       <div className="flex min-w-0 flex-col items-start">
                         <SemanticIcon
                           icon={item.icon}
@@ -374,7 +374,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                         </p>
                       </div>
 
-                      <span className="kk-card-meta mt-2 uppercase tracking-[0.2em] transition group-hover:text-black">
+                      <span className="kk-card-meta mt-auto pt-3 font-semibold tracking-wide text-[var(--kk-accent)] transition group-hover:underline">
                         Open
                       </span>
                     </div>
@@ -396,10 +396,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
               </p>
 
               <Link
-                href="/experiences"
+                href="/private-experiences"
                 className="kk-rounded-button kk-button-dark mt-8"
               >
-                Explore experiences
+                Explore private experiences
               </Link>
             </div>
           )}

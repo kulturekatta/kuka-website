@@ -1,5 +1,7 @@
 "use client";
 
+import { getInquiryAttributionPayload } from "../lib/campaign-attribution";
+
 import Link from "next/link";
 import { COOKIE_CONSENT_KEY } from "../components/CookieBanner";
 import { useEffect, useRef, useState } from "react";
@@ -13,81 +15,6 @@ import SemanticIcon from "../components/SemanticIcon";
 type FormStatus = "idle" | "submitting" | "success" | "error";
 const GROWTH_CLINIC_DRAFT_KEY =
   "kuka-growth-clinic-form-draft-v1";
-const ATTRIBUTION_STORAGE_KEY = "kuka-growth-attribution-v1";
-const ATTRIBUTION_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
-
-type GrowthAttribution = {
-  utmSource: string;
-  utmMedium: string;
-  utmCampaign: string;
-  utmContent: string;
-  utmTerm: string;
-  fbclid: string;
-  landingPage: string;
-  firstVisitAt: string;
-  savedAt: number;
-};
-
-const emptyAttribution = (): GrowthAttribution => ({
-  utmSource: "",
-  utmMedium: "",
-  utmCampaign: "",
-  utmContent: "",
-  utmTerm: "",
-  fbclid: "",
-  landingPage: "",
-  firstVisitAt: "",
-  savedAt: Date.now(),
-});
-
-function readAndRememberAttribution(): GrowthAttribution {
-  const params = new URLSearchParams(window.location.search);
-  const hasCampaignData =
-    params.has("utm_source") ||
-    params.has("utm_medium") ||
-    params.has("utm_campaign") ||
-    params.has("utm_content") ||
-    params.has("utm_term") ||
-    params.has("fbclid");
-
-  if (hasCampaignData) {
-    const attribution: GrowthAttribution = {
-      utmSource: params.get("utm_source") ?? "",
-      utmMedium: params.get("utm_medium") ?? "",
-      utmCampaign: params.get("utm_campaign") ?? "",
-      utmContent: params.get("utm_content") ?? "",
-      utmTerm: params.get("utm_term") ?? "",
-      fbclid: params.get("fbclid") ?? "",
-      landingPage:
-        params.get("landing_page") ??
-        `${window.location.pathname}${window.location.search}`,
-      firstVisitAt: new Date().toISOString(),
-      savedAt: Date.now(),
-    };
-
-    window.localStorage.setItem(
-      ATTRIBUTION_STORAGE_KEY,
-      JSON.stringify(attribution),
-    );
-    return attribution;
-  }
-
-  try {
-    const savedValue = window.localStorage.getItem(ATTRIBUTION_STORAGE_KEY);
-    if (!savedValue) return emptyAttribution();
-
-    const saved = JSON.parse(savedValue) as GrowthAttribution;
-    if (!saved.savedAt || Date.now() - saved.savedAt > ATTRIBUTION_MAX_AGE_MS) {
-      window.localStorage.removeItem(ATTRIBUTION_STORAGE_KEY);
-      return emptyAttribution();
-    }
-    return saved;
-  } catch {
-    window.localStorage.removeItem(ATTRIBUTION_STORAGE_KEY);
-    return emptyAttribution();
-  }
-}
-
 export default function GrowthClinicContactForm() {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [statusMessage, setStatusMessage] = useState("");
@@ -102,7 +29,7 @@ export default function GrowthClinicContactForm() {
 
   useEffect(() => {
     startedAtRef.current = Date.now();
-    readAndRememberAttribution();
+    getInquiryAttributionPayload();
   }, []);
 
   useEffect(() => {
@@ -123,8 +50,11 @@ export default function GrowthClinicContactForm() {
     const getValue = (fieldName: string) =>
       String(formData.get(fieldName) ?? "");
 
-    const attribution = readAndRememberAttribution();
+    const attribution = getInquiryAttributionPayload();
+    const isGrowthClinic =
+      getValue("serviceInterest") === "Growth Clinic & strategic support";
     const payload = {
+      enquiryType: isGrowthClinic ? "growth_clinic" : "studio_project",
       brandName: getValue("brandName"),
       brandLink: getValue("brandLink"),
       painPoints: getValue("serviceInterest")
@@ -157,7 +87,7 @@ export default function GrowthClinicContactForm() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...payload, ...getInquiryAttributionPayload() }),
       });
 
       const result = (await response.json()) as {
@@ -168,7 +98,7 @@ export default function GrowthClinicContactForm() {
       if (!response.ok || !result.success) {
         throw new Error(
           result.message ||
-            "Your enquiry could not be sent. Please try again.",
+            "Your inquiry could not be sent. Please try again.",
         );
       }
 
@@ -177,7 +107,7 @@ export default function GrowthClinicContactForm() {
       startedAtRef.current = Date.now();
       setStatus("success");
       setStatusMessage(
-        "Thank you. Your Katta Studio enquiry has been sent, and a confirmation email is on its way.",
+        "Thank you. Your Katta Studio inquiry has been sent, and a confirmation email is on its way.",
       );
 
       if (
@@ -189,8 +119,8 @@ export default function GrowthClinicContactForm() {
         };
 
         metaWindow.fbq?.("track", "Lead", {
-          content_name: "Katta Studio Growth Clinic",
-          content_category: "Growth Clinic enquiry",
+          content_name: isGrowthClinic ? "Katta Studio Growth Clinic" : "Katta Studio Project inquiry",
+          content_category: isGrowthClinic ? "Growth Clinic inquiry" : "Project inquiry",
           form_location: "Katta Studio page",
         });
       }
@@ -249,7 +179,7 @@ export default function GrowthClinicContactForm() {
       {/* FORM INTRODUCTION */}
       <div className="border-b border-black/[0.07] bg-[var(--kk-accent)]/[0.055] px-6 py-10 text-center sm:px-10 sm:py-12">
         <div className="mb-5 flex justify-center">
-          <SemanticIcon icon="🌡️" label="Katta Studio enquiry" size="section" />
+          <SemanticIcon icon="🌡️" label="Katta Studio inquiry" size="section" />
         </div>
 
         <p className="kk-page-label text-[var(--kk-accent)]">
@@ -262,7 +192,7 @@ export default function GrowthClinicContactForm() {
 
         <p className="kk-body mx-auto mt-5 max-w-2xl">
           Tell us about your business, what you want to build or improve,
-          and the support you need. We will review your enquiry and suggest the next step.
+          and the support you need. We will review your inquiry and suggest the next step.
         </p>
       </div>
 
@@ -472,7 +402,7 @@ export default function GrowthClinicContactForm() {
               />
               <span className="text-sm leading-6 text-[var(--kk-text-muted)]">
                 I agree that Katta Studio may use the information submitted
-                here to review and respond to my enquiry as described in the{" "}
+                here to review and respond to my inquiry as described in the{" "}
                 <Link
                   href="/privacy-policy"
                   className="font-semibold underline decoration-black/30 underline-offset-2 hover:decoration-black"
@@ -509,7 +439,7 @@ export default function GrowthClinicContactForm() {
             disabled={status === "submitting"}
             className="kk-button-dark flex w-full items-center justify-center gap-3 px-8 py-4 disabled:cursor-not-allowed disabled:opacity-60 sm:mx-auto sm:w-auto sm:min-w-80"
           >
-            {status === "submitting" ? "Sending enquiry..." : "Send enquiry"}
+            {status === "submitting" ? "Sending inquiry..." : "Send inquiry"}
             <span aria-hidden="true">→</span>
           </button>
 
