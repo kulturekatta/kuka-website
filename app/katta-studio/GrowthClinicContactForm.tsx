@@ -124,7 +124,10 @@ export default function GrowthClinicContactForm() {
       String(formData.get(fieldName) ?? "");
 
     const attribution = readAndRememberAttribution();
+    const isGrowthClinic =
+      getValue("serviceInterest") === "Growth Clinic & strategic support";
     const payload = {
+      enquiryType: isGrowthClinic ? "growth_clinic" : "studio_project",
       brandName: getValue("brandName"),
       brandLink: getValue("brandLink"),
       painPoints: getValue("serviceInterest")
@@ -189,8 +192,8 @@ export default function GrowthClinicContactForm() {
         };
 
         metaWindow.fbq?.("track", "Lead", {
-          content_name: "Katta Studio Growth Clinic",
-          content_category: "Growth Clinic enquiry",
+          content_name: isGrowthClinic ? "Katta Studio Growth Clinic" : "Katta Studio Project Enquiry",
+          content_category: isGrowthClinic ? "Growth Clinic enquiry" : "Project enquiry",
           form_location: "Katta Studio page",
         });
       }

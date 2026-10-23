@@ -14,6 +14,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 type GrowthClinicBody = {
+  enquiryType?: unknown;
   brandName?: unknown;
   brandLink?: unknown;
   painPoints?: unknown;
@@ -59,6 +60,9 @@ export async function POST(request: Request) {
       );
     }
 
+    // Dedicated Growth Clinic landing page continues to default to Growth Clinic.
+    // The main Katta Studio page explicitly identifies project enquiries.
+    const isStudioProject = body.enquiryType === "studio_project";
     const brandName = cleanText(body.brandName, 160);
     const brandLink = cleanText(body.brandLink, 500);
     const painPoints = cleanText(body.painPoints, 2500);
@@ -100,13 +104,20 @@ export async function POST(request: Request) {
     }
 
     await sendWebsiteForm({
-      formName: "Katta Studio Growth Clinic Enquiry",
-      internalSubject: `[Katta Studio] Growth Clinic Enquiry — ${brandName}`,
+      formName: isStudioProject
+        ? "Katta Studio Project Enquiry"
+        : "Katta Studio Growth Clinic Enquiry",
+      internalSubject: isStudioProject
+        ? `[Katta Studio] New Project Enquiry — ${brandName}`
+        : `[Katta Studio] Growth Clinic Enquiry — ${brandName}`,
       submitterName: brandName,
       submitterEmail: email,
       acknowledgementMessage:
-        "Thank you for contacting the Katta Studio Growth Clinic. We have received your enquiry and the challenges you shared.",
-      sourceTag: "growth_clinic",
+        isStudioProject
+          ? "Thank you for contacting Katta Studio. We have received your project enquiry and will review the details you shared."
+          : "Thank you for contacting the Katta Studio Growth Clinic. We have received your enquiry and the challenges you shared.",
+      sourceTag: isStudioProject ? "studio_project" : "growth_clinic",
+      routingEmail: "studio@kulturekatta.com",
       fields: [
         { label: "Brand name", value: brandName },
         { label: "Website or social profile", value: brandLink },
@@ -137,7 +148,7 @@ export async function POST(request: Request) {
       {
         success: false,
         message:
-          "Your enquiry could not be sent. Please try again or email hey@kulturekatta.com.",
+          "Your enquiry could not be sent. Please try again or email studio@kulturekatta.com.",
       },
       { status: 500 },
     );

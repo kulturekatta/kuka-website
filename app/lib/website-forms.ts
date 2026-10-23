@@ -322,10 +322,69 @@ function getAcknowledgementFields(
   });
 }
 
+type AcknowledgementCopy = {
+  subject: string;
+  heading: string;
+};
+
+function getAcknowledgementCopy(
+  submission: WebsiteFormSubmission,
+  contactEmail: string,
+): AcknowledgementCopy {
+  const address = contactEmail.toLowerCase();
+    if (submission.sourceTag === "festive_business") {
+    return {
+      subject: "We've received your festive project enquiry — Katta Studio",
+      heading: "We've received your festive project enquiry.",
+    };
+  }
+  if (address === "partners@kulturekatta.com") {
+    return {
+      subject: "We've received your partnership enquiry — KultureKatta",
+      heading: "We've received your partnership enquiry.",
+    };
+  }
+  if (address === "careers@kulturekatta.com") {
+    return {
+      subject: "We've received your application — KultureKatta",
+      heading: "We've received your application.",
+    };
+  }
+  if (address === "studio@kulturekatta.com") {
+    const isGrowthClinic = submission.sourceTag.includes("growth");
+    return isGrowthClinic
+      ? {
+          subject: "We've received your Growth Clinic enquiry — Katta Studio",
+          heading: "We've received your Growth Clinic enquiry.",
+        }
+      : {
+          subject: "We've received your enquiry — Katta Studio",
+          heading: "We've received your Katta Studio enquiry.",
+        };
+  }
+  if (address === "organizations@kulturekatta.com") {
+    return {
+      subject: "We've received your organization enquiry — KultureKatta",
+      heading: "We've received your organization enquiry.",
+    };
+  }
+  if (address === "tailored@kulturekatta.com") {
+    return {
+      subject: "We've received your private experience enquiry — KultureKatta",
+      heading: "We've received your private experience enquiry.",
+    };
+  }
+  return {
+    subject: "We've received your enquiry — KultureKatta",
+    heading: "We've received your enquiry.",
+  };
+}
+
 function buildAcknowledgementHtml(
   submission: WebsiteFormSubmission,
-  publicContactEmail: string,
+  contactEmail: string,
   submittedAt: string,
+  heading: string,
 ): string {
   const acknowledgementFields = getAcknowledgementFields(submission);
 
@@ -335,7 +394,7 @@ function buildAcknowledgementHtml(
       <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>${submission.sourceTag === "festive_business" ? "We've received your festive project enquiry" : "We received your message"}</title>
+        <title>${escapeHtml(heading)}</title>
       </head>
       <body style="margin:0;padding:0;background:#f7f3ed;font-family:Arial,Helvetica,sans-serif;color:#201d1b;">
         <div style="padding:30px 14px;">
@@ -345,7 +404,7 @@ function buildAcknowledgementHtml(
                 KultureKatta
               </div>
               <h1 style="margin:10px 0 0;font-size:28px;line-height:1.2;">
-                ${submission.sourceTag === "festive_business" ? "We've received your festive project enquiry." : "We received your message."}
+                ${escapeHtml(heading)}
               </h1>
             </div>
             <div style="padding:28px;">
@@ -356,7 +415,7 @@ function buildAcknowledgementHtml(
                 ${escapeHtml(submission.acknowledgementMessage)}
               </p>
               <p style="margin:18px 0 0;font-size:16px;line-height:1.7;">
-                We will get back to you using the contact details you provided. If you would like to add anything, simply reply to this email or write to ${escapeHtml(publicContactEmail)}.
+                We will get back to you using the contact details you provided. If you would like to add anything, simply reply to this email or write to <a href="mailto:${escapeHtml(contactEmail)}" style="color:#7a4a23;text-decoration:underline;">${escapeHtml(contactEmail)}</a>.
               </p>
 
               <div style="margin:26px 0 14px;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#7a4a23;">
@@ -384,7 +443,7 @@ function buildAcknowledgementHtml(
 
 function buildAcknowledgementText(
   submission: WebsiteFormSubmission,
-  publicContactEmail: string,
+  contactEmail: string,
   submittedAt: string,
 ): string {
   const submissionCopy = getAcknowledgementFields(submission)
@@ -398,7 +457,7 @@ function buildAcknowledgementText(
 
 ${submission.acknowledgementMessage}
 
-We will get back to you using the contact details you provided. If you would like to add anything, simply reply to this email or write to ${publicContactEmail}.
+We will get back to you using the contact details you provided. If you would like to add anything, simply reply to this email or write to ${contactEmail}.
 
 COPY OF YOUR SUBMISSION
 Submitted on ${submittedAt}
@@ -420,6 +479,7 @@ export async function sendWebsiteForm(
     throw new Error("FORM_RECIPIENT_INVALID");
   }
   const contactEmail = routingEmail || config.publicContactEmail;
+  const acknowledgementCopy = getAcknowledgementCopy(submission, contactEmail);
   const submittedAt = new Intl.DateTimeFormat("en-IN", {
     dateStyle: "full",
     timeStyle: "short",
@@ -457,13 +517,12 @@ export async function sendWebsiteForm(
     from: config.senderEmail,
     to: [submission.submitterEmail],
     replyTo: contactEmail,
-    subject: submission.sourceTag === "festive_business"
-      ? "We've received your festive project enquiry — Katta Studio"
-      : `We've received your ${submission.formName.toLowerCase()} — KultureKatta`,
+    subject: acknowledgementCopy.subject,
     html: buildAcknowledgementHtml(
       submission,
       contactEmail,
       submittedAt,
+      acknowledgementCopy.heading,
     ),
     text: buildAcknowledgementText(
       submission,

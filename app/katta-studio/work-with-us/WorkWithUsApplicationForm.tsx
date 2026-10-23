@@ -61,9 +61,13 @@ const helperClassName = "mt-2 text-sm leading-6 text-black/55";
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
 const WORK_WITH_US_DRAFT_KEY =
-  "kuka-work-with-us-form-draft-v1";
+  "kuka-work-with-us-form-draft-v2";
 
-export default function WorkWithUsApplicationForm() {
+export default function WorkWithUsApplicationForm({
+  sourcePage = "/katta-studio/work-with-us#application-form",
+}: {
+  sourcePage?: string;
+}) {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [statusMessage, setStatusMessage] = useState("");
   const startedAtRef = useRef(0);
@@ -102,6 +106,7 @@ export default function WorkWithUsApplicationForm() {
       city: getValue("city"),
       email: getValue("email"),
       phone: getValue("phone"),
+      businessArea: getValue("businessArea"),
       opportunityType: getValue("opportunityType"),
       workArrangement: getValue("workArrangement"),
       availability: getValue("availability"),
@@ -112,7 +117,7 @@ export default function WorkWithUsApplicationForm() {
       consent: formData.get("consent") === "on",
       formGuard: getValue("formGuard"),
       startedAt: startedAtRef.current,
-      sourcePage: "/katta-studio/work-with-us#application-form",
+      sourcePage,
     };
 
     isSubmittingRef.current = true;
@@ -395,6 +400,17 @@ export default function WorkWithUsApplicationForm() {
                   </span>
                 </legend>
 
+                <div className="mb-6">
+                  <label htmlFor="businessArea" className={labelClassName}>
+                    Which part of KuKa interests you? <span className="text-[var(--kk-accent)]">*</span>
+                  </label>
+                  <select id="businessArea" name="businessArea" required defaultValue={sourcePage.startsWith("/katta-studio/") ? "Katta Studio" : ""} className={`${inputClassName} cursor-pointer`}>
+                    <option value="" disabled>Select an area</option>
+                    <option value="KultureKatta">KultureKatta</option>
+                    <option value="Katta Studio">Katta Studio</option>
+                    <option value="Both">Both</option>
+                  </select>
+                </div>
                 <div className="grid gap-6 sm:grid-cols-2">
                   <div>
                     <label
@@ -543,7 +559,7 @@ export default function WorkWithUsApplicationForm() {
 
                 <div className="mt-6">
                   <label htmlFor="message" className={labelClassName}>
-                    Why would you like to work with Katta Studio?{" "}
+                    Why would you like to work with KuKa?{" "}
                     <span className="text-[var(--kk-accent)]">*</span>
                   </label>
 
@@ -646,10 +662,10 @@ export default function WorkWithUsApplicationForm() {
                 <p className="kk-small-text mt-5">
                   Submission trouble? Email{" "}
                   <a
-                    href="mailto:hey@kulturekatta.com?subject=Katta%20Studio%20Work%20With%20Us"
+                    href="mailto:careers@kulturekatta.com?subject=Work%20With%20KuKa"
                     className="font-semibold text-[var(--kk-text)] underline decoration-[var(--kk-accent)] underline-offset-4 transition hover:text-black/60"
                   >
-                    hey@kulturekatta.com
+                    careers@kulturekatta.com
                   </a>
                   .
                 </p>
