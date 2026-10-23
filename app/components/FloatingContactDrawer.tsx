@@ -306,7 +306,7 @@ export default function FloatingContactDrawer() {
       if (!response.ok || !result.success) {
         throw new Error(
           result.message ||
-            "Your enquiry could not be sent. Please try again.",
+            "Your inquiry could not be sent. Please try again.",
         );
       }
 
@@ -323,7 +323,7 @@ export default function FloatingContactDrawer() {
 
       setStatus("success");
       setStatusMessage(
-        "Thank you. Your enquiry has been sent, and a confirmation email is on its way.",
+        "Thank you. Your inquiry has been sent, and a confirmation email is on its way.",
       );
     } catch (error) {
       setStatus("error");
@@ -528,7 +528,7 @@ export default function FloatingContactDrawer() {
                       <option value="host">Host a Katta</option>
                       <option value="career">Work with KultureKatta</option>
                       <option value="attend">Attend an experience</option>
-                      <option value="media">Press / media enquiry</option>
+                      <option value="media">Press / media inquiry</option>
                       <option value="other">Something else</option>
                   </select>
                 </div>
@@ -579,7 +579,7 @@ export default function FloatingContactDrawer() {
 
                   <span className="text-xs leading-5 text-black/55">
                     I agree that KultureKatta may use these details to respond
-                    to my enquiry as described in the{" "}
+                    to my inquiry as described in the{" "}
                     <a
                       href="/privacy-policy"
                       target="_blank"
@@ -616,8 +616,8 @@ export default function FloatingContactDrawer() {
                   className="kk-button-dark w-full justify-center disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {status === "submitting"
-                    ? "Sending enquiry..."
-                    : "Send enquiry"}
+                    ? "Sending inquiry..."
+                    : "Send inquiry"}
                 </button>
 
                 <p className="text-center text-xs leading-5 text-black/65">

@@ -44,9 +44,9 @@ export default function PrivateExperiencesForm() {
         }),
       });
       const result = (await response.json()) as { success?: boolean; message?: string };
-      if (!response.ok || !result.success) throw new Error(result.message || "Unable to send your enquiry.");
+      if (!response.ok || !result.success) throw new Error(result.message || "Unable to send your inquiry.");
       form.reset(); startedAt.current = Date.now();
-      setStatus("success"); setFeedback("Thank you! Your enquiry has been sent. Please check your email for a confirmation.");
+      setStatus("success"); setFeedback("Thank you! Your inquiry has been sent. Please check your email for a confirmation.");
     } catch (error) {
       setStatus("error"); setFeedback(error instanceof Error ? error.message : "Please try again.");
     } finally { submitting.current = false; }
@@ -56,12 +56,12 @@ export default function PrivateExperiencesForm() {
     <section id="private-enquiry" className="kk-section-cream kk-section-padding scroll-mt-24" aria-labelledby="private-enquiry-heading">
       <div className="kk-container">
         <div className="mx-auto max-w-3xl text-center">
-          <div className="mb-5 flex justify-center"><SemanticIcon icon="✉️" label="Private experience enquiry" size="section" /></div>
+          <div className="mb-5 flex justify-center"><SemanticIcon icon="✉️" label="Private experience inquiry" size="section" /></div>
           <p className="kk-section-label">Plan With Us</p>
           <h2 id="private-enquiry-heading" className="kk-section-heading mt-4">Tell us what you have in mind.</h2>
           <p className="kk-body-large mt-5">A few details are enough to get started. We will help you shape the rest.</p>
         </div>
-        <form onSubmit={submit} className="kk-panel mx-auto mt-12 max-w-4xl p-6 sm:p-10" aria-label="Private experiences enquiry form">
+        <form onSubmit={submit} className="kk-panel mx-auto mt-12 max-w-4xl p-6 sm:p-10" aria-label="Private experiences inquiry form">
           <p className="kk-card-body mb-7">Fields marked * are required.</p>
           <div className="grid gap-6 sm:grid-cols-2">
             <label className={labelClass}>Full name *<input name="fullName" className={inputClass} maxLength={100} autoComplete="name" required /></label>
@@ -77,8 +77,8 @@ export default function PrivateExperiencesForm() {
           </div>
           <label className={`${labelClass} mt-6`}>Tell us what you have in mind<textarea name="message" rows={4} maxLength={1800} className={inputClass} placeholder="Your ideas, group preferences, accessibility needs, anything helpful…" /></label>
           <div className="absolute -left-[10000px] h-px w-px overflow-hidden" aria-hidden="true"><label htmlFor="private-form-guard">Leave empty</label><input id="private-form-guard" name="formGuard" tabIndex={-1} autoComplete="off" /></div>
-          <label className="mt-7 flex items-start gap-3 text-sm leading-6 text-[var(--kk-text)]"><input type="checkbox" name="consent" required className="mt-1 h-4 w-4 shrink-0 accent-[var(--kk-accent)]" /><span>I agree to KultureKatta using these details to respond to my enquiry, as described in the <Link href="/privacy-policy" className="underline underline-offset-2">Privacy Policy</Link>. *</span></label>
-          <div className="mt-8"><button type="submit" disabled={status === "submitting"} className="kk-button-dark w-full justify-center disabled:opacity-60 sm:w-auto">{status === "submitting" ? "Sending enquiry…" : "Send Private Experience Enquiry"}</button></div>
+          <label className="mt-7 flex items-start gap-3 text-sm leading-6 text-[var(--kk-text)]"><input type="checkbox" name="consent" required className="mt-1 h-4 w-4 shrink-0 accent-[var(--kk-accent)]" /><span>I agree to KultureKatta using these details to respond to my inquiry, as described in the <Link href="/privacy-policy" className="underline underline-offset-2">Privacy Policy</Link>. *</span></label>
+          <div className="mt-8"><button type="submit" disabled={status === "submitting"} className="kk-button-dark w-full justify-center disabled:opacity-60 sm:w-auto">{status === "submitting" ? "Sending inquiry…" : "Send Private Experience inquiry"}</button></div>
           {feedback && <p tabIndex={-1} role={status === "error" ? "alert" : "status"} aria-live="polite" className={`mt-5 rounded-xl p-4 text-sm ${status === "error" ? "bg-red-50 text-red-800" : "bg-green-50 text-green-800"}`}>{feedback}</p>}
           <p className="kk-small-text mt-5">Trouble submitting? Email <a href="mailto:tailored@kulturekatta.com" className="underline">tailored@kulturekatta.com</a>.</p>
         </form>

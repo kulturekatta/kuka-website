@@ -23,7 +23,7 @@ const experienceTypes = [
     label: "Walks & Trails",
     title: "Explore walks and trails",
     emoji: "🧭",
-    text: "Heritage walks, food trails, nature walks, neighbourhood stories and routes that make familiar places feel fresh, layered and alive.",
+    text: "Heritage walks, food trails, nature walks, neighborhood stories and routes that make familiar places feel fresh, layered and alive.",
     href: "/experiences/walks",
   },
   {
@@ -51,14 +51,14 @@ const experienceTypes = [
     label: "Stories & Screen",
     title: "Explore stories and screen",
     emoji: "🎬",
-    text: "Theatre, film, documentaries, puppetry, oral histories, visual storytelling and narrative experiences that stay with you after you leave.",
+    text: "Theater, film, documentaries, puppetry, oral histories, visual storytelling and narrative experiences that stay with you after you leave.",
     href: "/experiences/stories",
   },
   {
     label: "Dance & Movement",
     title: "Explore dance and movement",
     emoji: "💃",
-    text: "Dance, rhythm, flow arts, embodied storytelling, physical theatre and movement-led experiences where culture lives in the body.",
+    text: "Dance, rhythm, flow arts, embodied storytelling, physical theater and movement-led experiences where culture lives in the body.",
     href: "/experiences/movement",
   },
   {
@@ -111,7 +111,7 @@ const sampleKattas = [
     icon: "🗺️",
     eyebrow: "Walks",
     title: "Step into the story of a place",
-    text: "Heritage walks, food trails, nature walks, neighbourhood routes and city explorations that make familiar places feel layered, alive and full of gossip.",
+    text: "Heritage walks, food trails, nature walks, neighborhood routes and city explorations that make familiar places feel layered, alive and full of gossip.",
   },
   {
     icon: "💬",

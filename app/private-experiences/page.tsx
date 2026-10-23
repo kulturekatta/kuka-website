@@ -131,7 +131,7 @@ export default function PrivateExperiencesPage() {
 
             <p className="kk-body-large mx-auto mt-6 max-w-3xl">
               Your final quote reflects group size, duration, venue, materials,
-              food, travel, collaborators and the level of customisation.
+              food, travel, collaborators and the level of customization.
             </p>
 
             <div className="mt-10">

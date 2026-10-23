@@ -31,7 +31,7 @@ function readAttribution(): Attribution {
 }
 
 const serviceOptions = ["Social & digital campaigns", "Print & event collateral", "Packaging & gifting", "Retail & in-store design", "Brand design support", "Sales & business communication", "Merchandise & branded products", "Other"];
-const inputClass = "w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-base text-[var(--kk-text)] outline-none placeholder:text-black/35 focus:border-[var(--kk-accent)] focus:ring-4 focus:ring-[var(--kk-accent)]/10";
+const inputClass = "w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-base text-[var(--kk-text)] outline-none placeholder:text-[#59524c] focus:border-[var(--kk-accent)] focus:ring-4 focus:ring-[var(--kk-accent)]/10";
 const labelClass = "mb-2 block text-sm font-semibold text-[var(--kk-text)]";
 
 export default function FestiveBusinessForm() {
@@ -82,13 +82,13 @@ export default function FestiveBusinessForm() {
     try {
       const response = await fetch("/api/festive-business", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
       const result = await response.json() as { success?: boolean; message?: string };
-      if (!response.ok || !result.success) throw new Error(result.message || "We could not send your enquiry. Please try again.");
+      if (!response.ok || !result.success) throw new Error(result.message || "We could not send your inquiry. Please try again.");
       form.reset(); clearDraft(); startedAt.current = Date.now(); setConsentError(false); setDeadlineError(false);
-      setStatus("success"); setMessage("Your enquiry has been sent. Please check your email for confirmation.");
+      setStatus("success"); setMessage("Your inquiry has been sent. Please check your email for confirmation.");
       try {
         if (window.localStorage.getItem(COOKIE_CONSENT_KEY) === "accepted") {
           const pixel = (window as Window & { fbq?: (...args: unknown[]) => void }).fbq;
-          pixel?.("track", "Lead", { content_name: "Katta Studio Festive Business", content_category: "Business creative enquiry", form_location: "Festive Business landing page" });
+          pixel?.("track", "Lead", { content_name: "Katta Studio Festive Business", content_category: "Business creative inquiry", form_location: "Festive Business landing page" });
         }
       } catch { /* analytics must not interrupt successful submission */ }
     } catch (err) {
@@ -115,13 +115,13 @@ export default function FestiveBusinessForm() {
         <div className="rounded-2xl border border-black/10 bg-black/[0.018] p-4 sm:col-span-2">
           <label className="flex items-start gap-3">
             <input type="checkbox" name="consent" required aria-invalid={consentError || undefined} aria-describedby={consentError ? "festive-consent-error" : undefined} className="mt-1 h-5 w-5 shrink-0 accent-[var(--kk-accent)]" onChange={(event) => { if (event.currentTarget.checked) setConsentError(false); }} />
-            <span className="min-w-0 text-sm leading-6 text-[var(--kk-text-muted)]">I agree that Katta Studio may use this information to respond to my enquiry, as described in the <Link className="font-semibold underline underline-offset-2" href="/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy Policy</Link>. *</span>
+            <span className="min-w-0 text-sm leading-6 text-[var(--kk-text-muted)]">I agree that Katta Studio may use this information to respond to my inquiry, as described in the <Link className="font-semibold underline underline-offset-2" href="/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy Policy</Link>. *</span>
           </label>
           {consentError && <p id="festive-consent-error" className="mt-2 pl-8 text-sm font-semibold leading-6 text-red-700">Please complete this required field.</p>}
         </div>
       </div>
       {message && <div ref={feedback} tabIndex={-1} role={status === "error" ? "alert" : "status"} aria-live={status === "error" ? "assertive" : "polite"} className={`mt-5 rounded-xl p-4 text-sm ${status === "error" ? "bg-red-50 text-red-800" : "bg-emerald-50 text-emerald-800"}`}>{message}</div>}
-      <button className="kk-button-dark mt-6 w-full disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={status === "submitting"}>{status === "submitting" ? "Sending enquiry…" : "Send project enquiry →"}</button>
+      <button className="kk-button-dark mt-6 w-full disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={status === "submitting"}>{status === "submitting" ? "Sending inquiry…" : "Send project inquiry →"}</button>
       <p className="mt-4 text-center text-xs text-[var(--kk-text-muted)]">No payment is taken through this form.</p>
     </form>
   );

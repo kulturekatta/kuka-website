@@ -53,7 +53,7 @@ const projects = [
     category: "Premium baking education",
     challenge:
       "Workshop visibility, customer communication, and a more structured promotion system.",
-    work: "Campaign planning, content, Meta Ads, event listings, and enquiry-flow support.",
+    work: "Campaign planning, content, Meta Ads, event listings, and inquiry-flow support.",
   },
   {
     title: "HiLiHiF",
@@ -215,7 +215,7 @@ export default async function GrowthClinicLandingPage({
             </h2>
             <p className="mt-5 text-lg leading-8 text-[var(--kk-text-muted)]">
               For founders, professionals, creators, small businesses, and
-              purpose-led organisations that have moved beyond guesswork—but
+              purpose-led organizations that have moved beyond guesswork—but
               still need a clearer way forward.
             </p>
           </div>
@@ -300,7 +300,7 @@ export default async function GrowthClinicLandingPage({
               You do not need to arrive with the answer.
             </h2>
             <p className="mt-5 text-lg leading-8 text-[var(--kk-text-muted)]">
-              Tell us what feels stuck. We will review your enquiry and help
+              Tell us what feels stuck. We will review your inquiry and help
               identify the most useful starting point.
             </p>
             <p className="mt-7 text-sm leading-6 text-[var(--kk-text-muted)]">

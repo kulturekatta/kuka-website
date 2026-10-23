@@ -18,7 +18,7 @@ const categories = [
 const interests = [
   "Host or facilitate experiences",
   "Provide a venue or space",
-  "Co-create a programme or event",
+  "Co-create a program or event",
   "Sponsor or fund cultural activities",
   "Showcase or sell creative work",
   "Collaborate on content or storytelling",
@@ -54,8 +54,8 @@ export default function PartnerForm() {
         }),
       });
       const result: { message?: string } = await response.json();
-      if (!response.ok) throw new Error(result.message || "Unable to submit your enquiry.");
-      setStatus("success"); setMessage("Thank you. We have received your partnership enquiry.");
+      if (!response.ok) throw new Error(result.message || "Unable to submit your inquiry.");
+      setStatus("success"); setMessage("Thank you. We have received your partnership inquiry.");
       form.reset(); startedAt.current = Date.now();
     } catch (error) {
       setStatus("error");
@@ -66,7 +66,7 @@ export default function PartnerForm() {
   const input = "mt-2.5 block min-h-11 w-full rounded-xl border border-black/15 bg-white px-4 py-3.5 text-[var(--kk-text)] outline-none transition duration-200 placeholder:text-black/35 hover:border-black/25 focus:border-[var(--kk-accent)] focus:ring-4 focus:ring-black/5";
   const field = "kk-form-label block text-sm font-semibold tracking-[0.01em] text-[var(--kk-text)]";
   return (
-    <form onSubmit={submit} className="kk-panel p-6 sm:p-9" aria-label="Partner With Us enquiry form">
+    <form onSubmit={submit} className="kk-panel p-6 sm:p-9" aria-label="Partner With Us inquiry form">
       <h2 className="kk-card-title">Tell us about yourself</h2>
       <p className="kk-card-body mt-3">Fields marked * are required. Please share links rather than uploading files.</p>
       <div className="mt-6 grid gap-5 sm:grid-cols-2">
@@ -96,8 +96,8 @@ export default function PartnerForm() {
       <label className={`${field} mt-5`}>Portfolio, website or social profile (optional)<input className={input} name="portfolioLink" type="url" maxLength={500} placeholder="https://" /></label>
       <label className={`${field} mt-5`}>Tell us a little more about your idea (optional)<textarea className={input} name="message" rows={3} maxLength={1800} placeholder="Have something specific in mind? Tell us about it. If you’re just exploring possibilities, that’s fine too." /></label>
       <div className="absolute -left-[10000px] h-px w-px overflow-hidden" aria-hidden="true"><label>Leave this empty<input name="formGuard" tabIndex={-1} autoComplete="off" /></label></div>
-      <label className="mt-6 flex items-start gap-3 text-sm leading-6 text-[var(--kk-text)]"><input className="mt-1 h-4 w-4" type="checkbox" name="consent" required /><span>I agree to KultureKatta using these details to respond to my enquiry, as described in the <Link className="font-semibold underline underline-offset-4 hover:text-[var(--kk-accent)]" href="/privacy-policy">Privacy Policy</Link>. *</span></label>
-      <button type="submit" disabled={status === "sending"} className="kk-button-dark mt-6 w-full sm:w-auto disabled:cursor-not-allowed disabled:opacity-50">{status === "sending" ? "Sending…" : "Send partnership enquiry"}</button>
+      <label className="mt-6 flex items-start gap-3 text-sm leading-6 text-[var(--kk-text)]"><input className="mt-1 h-4 w-4" type="checkbox" name="consent" required /><span>I agree to KultureKatta using these details to respond to my inquiry, as described in the <Link className="font-semibold underline underline-offset-4 hover:text-[var(--kk-accent)]" href="/privacy-policy">Privacy Policy</Link>. *</span></label>
+      <button type="submit" disabled={status === "sending"} className="kk-button-dark mt-6 w-full sm:w-auto disabled:cursor-not-allowed disabled:opacity-50">{status === "sending" ? "Sending…" : "Send partnership inquiry"}</button>
       {message && <p role={status === "error" ? "alert" : "status"} className={`mt-4 text-sm ${status === "error" ? "text-red-700" : "text-green-800"}`}>{message}</p>}
     </form>
   );

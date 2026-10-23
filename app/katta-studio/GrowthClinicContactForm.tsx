@@ -171,7 +171,7 @@ export default function GrowthClinicContactForm() {
       if (!response.ok || !result.success) {
         throw new Error(
           result.message ||
-            "Your enquiry could not be sent. Please try again.",
+            "Your inquiry could not be sent. Please try again.",
         );
       }
 
@@ -180,7 +180,7 @@ export default function GrowthClinicContactForm() {
       startedAtRef.current = Date.now();
       setStatus("success");
       setStatusMessage(
-        "Thank you. Your Katta Studio enquiry has been sent, and a confirmation email is on its way.",
+        "Thank you. Your Katta Studio inquiry has been sent, and a confirmation email is on its way.",
       );
 
       if (
@@ -192,8 +192,8 @@ export default function GrowthClinicContactForm() {
         };
 
         metaWindow.fbq?.("track", "Lead", {
-          content_name: isGrowthClinic ? "Katta Studio Growth Clinic" : "Katta Studio Project Enquiry",
-          content_category: isGrowthClinic ? "Growth Clinic enquiry" : "Project enquiry",
+          content_name: isGrowthClinic ? "Katta Studio Growth Clinic" : "Katta Studio Project inquiry",
+          content_category: isGrowthClinic ? "Growth Clinic inquiry" : "Project inquiry",
           form_location: "Katta Studio page",
         });
       }
@@ -252,7 +252,7 @@ export default function GrowthClinicContactForm() {
       {/* FORM INTRODUCTION */}
       <div className="border-b border-black/[0.07] bg-[var(--kk-accent)]/[0.055] px-6 py-10 text-center sm:px-10 sm:py-12">
         <div className="mb-5 flex justify-center">
-          <SemanticIcon icon="🌡️" label="Katta Studio enquiry" size="section" />
+          <SemanticIcon icon="🌡️" label="Katta Studio inquiry" size="section" />
         </div>
 
         <p className="kk-page-label text-[var(--kk-accent)]">
@@ -265,7 +265,7 @@ export default function GrowthClinicContactForm() {
 
         <p className="kk-body mx-auto mt-5 max-w-2xl">
           Tell us about your business, what you want to build or improve,
-          and the support you need. We will review your enquiry and suggest the next step.
+          and the support you need. We will review your inquiry and suggest the next step.
         </p>
       </div>
 
@@ -475,7 +475,7 @@ export default function GrowthClinicContactForm() {
               />
               <span className="text-sm leading-6 text-[var(--kk-text-muted)]">
                 I agree that Katta Studio may use the information submitted
-                here to review and respond to my enquiry as described in the{" "}
+                here to review and respond to my inquiry as described in the{" "}
                 <Link
                   href="/privacy-policy"
                   className="font-semibold underline decoration-black/30 underline-offset-2 hover:decoration-black"
@@ -512,7 +512,7 @@ export default function GrowthClinicContactForm() {
             disabled={status === "submitting"}
             className="kk-button-dark flex w-full items-center justify-center gap-3 px-8 py-4 disabled:cursor-not-allowed disabled:opacity-60 sm:mx-auto sm:w-auto sm:min-w-80"
           >
-            {status === "submitting" ? "Sending enquiry..." : "Send enquiry"}
+            {status === "submitting" ? "Sending inquiry..." : "Send inquiry"}
             <span aria-hidden="true">→</span>
           </button>
 

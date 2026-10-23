@@ -140,7 +140,7 @@ export default function GrowthClinicLandingForm() {
       if (!response.ok || !result.success) {
         throw new Error(
           result.message ||
-            "Your enquiry could not be sent. Please try again.",
+            "Your inquiry could not be sent. Please try again.",
         );
       }
 
@@ -149,7 +149,7 @@ export default function GrowthClinicLandingForm() {
       startedAtRef.current = Date.now();
       setStatus("success");
       setStatusMessage(
-        "Thank you. Your Growth Clinic enquiry has been sent, and a confirmation email is on its way.",
+        "Thank you. Your Growth Clinic inquiry has been sent, and a confirmation email is on its way.",
       );
 
       window.dispatchEvent(
@@ -163,7 +163,7 @@ export default function GrowthClinicLandingForm() {
       ) {
         window.fbq?.("track", "Lead", {
           content_name: "Katta Studio Growth Clinic",
-          content_category: "Growth Clinic enquiry",
+          content_category: "Growth Clinic inquiry",
           form_location: "Growth Clinic landing page",
         });
       }
@@ -222,7 +222,7 @@ export default function GrowthClinicLandingForm() {
           Tell us where your business feels stuck.
         </h2>
         <p className="mt-3 text-base leading-7 text-[var(--kk-text-muted)]">
-          A few clear sentences are enough. We will review your enquiry and
+          A few clear sentences are enough. We will review your inquiry and
           suggest the most useful next step.
         </p>
       </div>
@@ -333,7 +333,7 @@ export default function GrowthClinicLandingForm() {
           />
           <span className="text-sm leading-6 text-[var(--kk-text-muted)]">
             I agree that Katta Studio may use this information to review and
-            respond to my enquiry as described in the{" "}
+            respond to my inquiry as described in the{" "}
             <Link
               href="/privacy-policy"
               className="font-semibold underline decoration-black/30 underline-offset-2 hover:decoration-black"
@@ -366,7 +366,7 @@ export default function GrowthClinicLandingForm() {
         className="kk-button-dark mt-6 flex w-full items-center justify-center gap-3 px-8 py-4 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {status === "submitting"
-          ? "Sending enquiry..."
+          ? "Sending inquiry..."
           : "Request my Growth Clinic"}
         <span aria-hidden="true">→</span>
       </button>

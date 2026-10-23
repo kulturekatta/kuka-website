@@ -22,7 +22,7 @@ const problemItems = [
     icon: "🗺️",
     title: "Distance",
     description:
-      "Culture often feels too far away — physically, emotionally, or socially. We bring it closer to everyday neighbourhoods.",
+      "Culture often feels too far away — physically, emotionally, or socially. We bring it closer to everyday neighborhoods.",
   },
   {
     icon: "🏡",
@@ -43,7 +43,7 @@ const whatWeDoItems = [
     icon: "📍",
     title: "We bring culture closer",
     description:
-      "Into cafés, studios, homes, parks, libraries, schools, workplaces, and everyday neighbourhood spaces.",
+      "Into cafés, studios, homes, parks, libraries, schools, workplaces, and everyday neighborhood spaces.",
   },
   {
     icon: "🙌",
@@ -76,7 +76,7 @@ const whyKukaPrinciples = [
     icon: "🤝",
     title: "Connection through doing",
     description:
-      "Shared experiences give strangers something to talk about, neighbours something to build on, and communities room to grow.",
+      "Shared experiences give strangers something to talk about, neighbors something to build on, and communities room to grow.",
   },
   {
     icon: "🏡",
@@ -103,7 +103,7 @@ const communityItems = [
     icon: "🏠",
     title: "Venues & spaces",
     description:
-      "We activate cafés, studios, homes, terraces, parks, libraries, schools, workplaces, and neighbourhood corners.",
+      "We activate cafés, studios, homes, terraces, parks, libraries, schools, workplaces, and neighborhood corners.",
   },
   {
     icon: "👥",
@@ -161,7 +161,7 @@ const timeline = [
     year: "2025",
     title: "The universe expands",
     description:
-      "KuKa grows across cities, formats, collaborators, neighbourhoods, schools, workplaces, and community spaces.",
+      "KuKa grows across cities, formats, collaborators, neighborhoods, schools, workplaces, and community spaces.",
   },
   {
     icon: "🚀",
@@ -191,7 +191,7 @@ export default function AboutPage() {
           </p>
 
           <h1 className="kk-page-heading mx-auto mt-6 max-w-4xl">
-            The neighbourhood katta for the curious.
+            The neighborhood katta for the curious.
           </h1>
 
           <p className="kk-page-intro mx-auto mt-8 max-w-3xl">
@@ -265,7 +265,7 @@ export default function AboutPage() {
 
           <div className="mx-auto mt-8 max-w-3xl space-y-5">
             <p className="kk-body-large">
-              In Marathi, a katta is the ledge, corner, step, or neighbourhood
+              In Marathi, a katta is the ledge, corner, step, or neighborhood
               spot where people gather — to talk, listen, laugh, argue, share
               ideas, and let something slowly cook.
             </p>
@@ -394,7 +394,7 @@ export default function AboutPage() {
             </h2>
 
             <p className="kk-body-large mt-6">
-              We grow neighbourhood by neighbourhood — curating once, adapting
+              We grow neighborhood by neighborhood — curating once, adapting
               everywhere, and keeping every katta local, personal, and alive.
             </p>
           </div>
@@ -465,7 +465,7 @@ export default function AboutPage() {
             <p className="kk-section-label">Our Story</p>
 
             <h2 className="kk-section-heading mt-6">
-              From a question about culture to a growing neighbourhood-first
+              From a question about culture to a growing neighborhood-first
               cultural ecosystem.
             </h2>
 
@@ -510,7 +510,7 @@ export default function AboutPage() {
             </h2>
 
             <p className="kk-body-large mx-auto mt-6 max-w-2xl">
-              Attend one. Host one. Bring one to your neighbourhood, school,
+              Attend one. Host one. Bring one to your neighborhood, school,
               workplace, or community.
             </p>
 

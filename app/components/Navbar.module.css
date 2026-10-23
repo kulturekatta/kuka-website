@@ -72,7 +72,8 @@
 }
 
 .searchForm input::placeholder {
-  color: rgba(0, 0, 0, 0.45);
+  color: #55504b;
+  opacity: 1;
 }
 
 .searchForm input:focus-visible {
@@ -151,7 +152,8 @@
 }
 
 .mobileSearchForm input::placeholder {
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(255, 255, 255, 0.9);
+  opacity: 1;
 }
 
 .mobileSearchForm input:focus-visible {
