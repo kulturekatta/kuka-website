@@ -31,7 +31,7 @@ test("@exhaustive CONTENT-02 footer exposes every required section and destinati
 
   const requiredHeadings = [
     "Experiences",
-    "Studio Services",
+    "Katta Studio",
     "Connect",
     "Legal",
   ];
@@ -46,11 +46,11 @@ test("@exhaustive CONTENT-02 footer exposes every required section and destinati
     ["Private Experiences", "/private-experiences"],
     ["Home", "/"],
     ["About Us", "/about"],
-    ["Contact Us", "/contact"],
+    ["Connect", "/contact"],
     ["About Katta Studio", "/katta-studio"],
-    ["Website Development", "/katta-studio#websites-and-digital-presence"],
-    ["Brand Identity", "/katta-studio#brand-positioning-and-visual-identity"],
-    ["Social Media Presence", "/katta-studio#social-media-and-content"],
+    ["Digital Presence", "/katta-studio#websites-and-digital-presence"],
+    ["Design & Branding", "/katta-studio#brand-and-design"],
+    ["Growth Strategy", "/katta-studio#growth-clinic-and-strategic-support"],
     ["Privacy Policy", "/privacy-policy"],
     ["Terms of Use", "/terms-of-use"],
     ["Cookie Policy", "/cookie-policy"],
@@ -85,11 +85,11 @@ test("@exhaustive CONTENT-02A desktop footer copy never overlaps or wraps incorr
       );
       const tagline = footer.getByText("Come. Hang. Play. Learn.", { exact: true });
       const brandIdentity = footer.getByRole("link", {
-        name: "Brand Identity",
+        name: "Design & Branding",
         exact: true,
       });
       const socialMedia = footer.getByRole("link", {
-        name: "Social Media Presence",
+        name: "Growth Strategy",
         exact: true,
       });
 
@@ -110,9 +110,20 @@ test("@exhaustive CONTENT-02A desktop footer copy never overlaps or wraps incorr
       expect(taglineBox!.y).toBeGreaterThanOrEqual(
         descriptionBox!.y + descriptionBox!.height,
       );
-      expect(socialMediaBox!.y).toBeGreaterThanOrEqual(
-        brandIdentityBox!.y + brandIdentityBox!.height - 1,
-      );
+      // Footer links may share a row in separate columns. Assert that their
+      // actual rectangles do not overlap instead of assuming vertical stacking.
+      const horizontalOverlap = Math.min(
+        brandIdentityBox!.x + brandIdentityBox!.width,
+        socialMediaBox!.x + socialMediaBox!.width,
+      ) - Math.max(brandIdentityBox!.x, socialMediaBox!.x);
+      const verticalOverlap = Math.min(
+        brandIdentityBox!.y + brandIdentityBox!.height,
+        socialMediaBox!.y + socialMediaBox!.height,
+      ) - Math.max(brandIdentityBox!.y, socialMediaBox!.y);
+      expect(
+        horizontalOverlap > 1 && verticalOverlap > 1,
+        `Footer links overlap at ${width}px viewport`,
+      ).toBe(false);
 
       const brandIdentityLineCount = await brandIdentity.evaluate((element) => {
         const range = document.createRange();
@@ -148,7 +159,7 @@ test("@exhaustive CONTENT-02B mobile footer uses a compact two-column layout", a
 
       const experiencesBox = await sectionBox("Experiences");
       const kultureKattaBox = await sectionBox("KultureKatta");
-      const studioBox = await sectionBox("Studio Services");
+      const studioBox = await sectionBox("Katta Studio");
       const connectBox = await sectionBox("Connect");
       const legalBox = await sectionBox("Legal");
 
@@ -159,7 +170,7 @@ test("@exhaustive CONTENT-02B mobile footer uses a compact two-column layout", a
       expect(legalBox).not.toBeNull();
 
       expect(Math.abs(experiencesBox!.y - kultureKattaBox!.y)).toBeLessThanOrEqual(1);
-      expect(experiencesBox!.x).toBeLessThan(kultureKattaBox!.x);
+      expect(kultureKattaBox!.x).toBeLessThan(experiencesBox!.x);
       expect(Math.abs(studioBox!.y - connectBox!.y)).toBeLessThanOrEqual(1);
       expect(studioBox!.x).toBeLessThan(connectBox!.x);
       expect(legalBox!.width).toBeGreaterThan(experiencesBox!.width * 1.8);
@@ -268,7 +279,7 @@ test("@exhaustive CONTENT-06 contact details remain consistent on representative
               .toLowerCase(),
           ),
         ),
-      ])).toEqual(["hey@kulturekatta.com"]);
+      ])).toEqual(route === "/contact" ? ["hey@kulturekatta.com", "partners@kulturekatta.com"] : ["hey@kulturekatta.com"]);
       expect(await page.locator('a[href*="wa.me/"]').evaluateAll((links) => [
         ...new Set(links.map((link) => link.getAttribute("href"))),
       ])).toEqual(["https://wa.me/919730244996"]);

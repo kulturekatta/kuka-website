@@ -5,9 +5,9 @@ export function attributionEmailFields(body: object): WebsiteFormField[] {
   const source = body as Record<string, unknown>;
   const values: Array<[string, string, number]> = [
     ["Submission page", "sourcePage", 500],
-    ["Original landing page", "landingPage", 500],
-    ["Referrer", "referrer", 500],
-    ["First visit at", "firstVisitAt", 80],
+    ["Original campaign landing page", "landingPage", 500],
+    ["Original recorded referrer", "referrer", 500],
+    ["Campaign attribution first recorded", "firstVisitAt", 80],
     ["UTM source", "utmSource", 160],
     ["UTM medium", "utmMedium", 160],
     ["UTM campaign", "utmCampaign", 200],

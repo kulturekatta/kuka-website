@@ -406,7 +406,7 @@ export default function GrowthClinicContactForm() {
                 <Link
                   href="/privacy-policy"
                   className="font-semibold underline decoration-black/30 underline-offset-2 hover:decoration-black"
-                >
+                 target="_blank" rel="noopener noreferrer">
                   Privacy Policy
                 </Link>.{" "}
                 <span aria-hidden="true">*</span>
@@ -434,18 +434,46 @@ export default function GrowthClinicContactForm() {
 
         {/* SUBMIT AREA */}
         <div className="rounded-3xl bg-[var(--kk-accent)]/[0.07] px-5 py-6 text-center sm:px-8 sm:py-8">
-          <button
+          <div className="grid w-full grid-cols-1 items-stretch gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)]">
+<button
+                  type="button"
+                  disabled={status === "submitting"}
+                  onClick={(event) => {
+                    const form = event.currentTarget.form;
+                    if (!form) return;
+                    form.reset();
+                    form.querySelectorAll('[aria-invalid="true"]').forEach((field) => {
+                      field.removeAttribute("aria-invalid");
+                    });
+                    clearDraft();
+                  setStatus("idle");
+                  setStatusMessage("");
+                  startedAtRef.current = Date.now();
+                  }}
+                  className="flex min-h-12 w-full items-center justify-center rounded-full border border-[#2A1E19]/25 !bg-white px-4 py-3 text-center text-sm font-semibold leading-snug !text-[#2A1E19] transition-colors hover:!bg-[#f8f5f3] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2A1E19] disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Clear Form
+                </button>
+<button
             type="submit"
             disabled={status === "submitting"}
-            className="kk-button-dark flex w-full items-center justify-center gap-3 px-8 py-4 disabled:cursor-not-allowed disabled:opacity-60 sm:mx-auto sm:w-auto sm:min-w-80"
+            className="kk-button-dark flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-[#2A1E19] !bg-[#2A1E19] px-4 py-3 text-center text-sm font-semibold leading-snug !text-white transition-colors hover:!bg-[#402b23] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2A1E19] disabled:cursor-not-allowed disabled:opacity-60"
           >
             {status === "submitting" ? "Sending inquiry..." : "Send inquiry"}
             <span aria-hidden="true">→</span>
           </button>
+</div>
+
 
           <p className="mt-4 text-sm leading-relaxed text-[var(--kk-text-muted)]">
             You will receive an automatic confirmation after a successful
             submission.
+          </p>
+          <p className="mt-2 text-xs leading-5 text-[var(--kk-text-muted)]">
+            Project scope and outcomes are subject to agreement. See our{" "}
+            <Link href="/terms-of-use" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Terms of Use</Link>{" "}
+            and{" "}
+            <Link href="/disclaimer" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Disclaimer</Link>.
           </p>
         </div>
       </div>

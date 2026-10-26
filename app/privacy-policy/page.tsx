@@ -129,8 +129,8 @@ const sections: LegalSection[] = [
           <li>Maintain communication and business records</li>
           <li>Improve our website, forms, and services</li>
           <li>
-            Understand which campaigns or pages generate Growth
-            Clinic inquiries
+            Understand which campaigns or pages generate website
+            inquiries
           </li>
           <li>
             Measure website visits and successful inquiries where you
@@ -173,11 +173,16 @@ const sections: LegalSection[] = [
 
         <p>
           Submitting an inquiry also does not automatically subscribe
-          you to promotional or marketing communications.
+          you to promotional or marketing communications. Please also see
+          our{" "}
+          <Link href="/terms-of-use" className={linkClass} target="_blank" rel="noopener noreferrer">
+            Terms of Use
+          </Link>{" "}
+          for the general conditions that apply to website enquiries.
         </p>
 
         <p>
-          A Growth Clinic inquiry may include campaign-attribution
+          An inquiry may include campaign-attribution
           information associated with your visit, such as UTM
           parameters, a Meta click identifier where present, the
           original landing page, and the date and time of the first
@@ -284,7 +289,7 @@ const sections: LegalSection[] = [
 
         <p>
           Please read our{" "}
-          <Link href="/cookie-policy" className={linkClass}>
+          <Link href="/cookie-policy" className={linkClass} target="_blank" rel="noopener noreferrer">
             Cookie Policy
           </Link>{" "}
           for more information.
@@ -439,6 +444,46 @@ const sections: LegalSection[] = [
     ),
   },
   {
+    id: "applications-and-collaborations",
+    title: "Applications, partnerships and creative submissions",
+    content: (
+      <>
+        <p>
+          If you apply to work or collaborate with us, we may receive your
+          name, contact details, professional background, portfolio, work
+          samples, availability, and other information you choose to share.
+          We use this information to evaluate and respond to your application
+          or proposal and to coordinate any resulting engagement.
+        </p>
+        <p>
+          Please share only information relevant to your application. If
+          we need to retain your details for a future opportunity, you may
+          ask us not to do so by contacting us.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: "privacy-complaints",
+    title: "Privacy requests and concerns",
+    content: (
+      <>
+        <p>
+          You may contact us to request access, correction, or deletion of
+          information, withdraw a consent where applicable, or raise a
+          concern about our handling of personal data. We may need to
+          verify that the request relates to you before responding.
+        </p>
+        <p>
+          Write to hey@kulturekatta.com with “Privacy Request” in the
+          subject line. We will review requests under applicable law and
+          explain any information we must retain for legal or legitimate
+          operational reasons.
+        </p>
+      </>
+    ),
+  },
+  {
     id: "sensitive-information",
     title: "Sensitive information",
     content: (
@@ -492,7 +537,7 @@ const sections: LegalSection[] = [
         </p>
 
         <p>
-          First-party Growth Clinic campaign-attribution information is
+          First-party website inquiry campaign-attribution information is
           used for up to 30 days. Expired information is removed when
           it is next checked and may also be cleared or replaced
           earlier. Meta controls the retention of information it
@@ -686,7 +731,7 @@ export default function PrivacyPolicyPage() {
       iconLabel="Privacy and personal information"
       title="Privacy Policy"
       description="How KultureKatta collects, uses, stores, and protects information when you visit our website or submit an inquiry."
-      lastUpdated="September 2, 2026"
+      lastUpdated="October 25, 2026"
       currentPath="/privacy-policy"
       sections={sections}
     />

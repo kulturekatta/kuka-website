@@ -24,7 +24,7 @@ const partnerTypes = new Set([
 const interests = [
   "Host or facilitate experiences",
   "Provide a venue or space",
-  "Co-create a programme or event",
+  "Co-create a program or event",
   "Sponsor or fund cultural activities",
   "Showcase or sell creative work",
   "Collaborate on content or storytelling",
@@ -58,13 +58,15 @@ export async function POST(request: Request) {
     if (portfolioLink && !isValidHttpUrl(portfolioLink)) return NextResponse.json({ success: false, message: "Please enter a valid website or profile URL." }, { status: 400 });
     if (!hasValidConsent(body.consent)) return NextResponse.json({ success: false, message: "Consent is required." }, { status: 400 });
     await sendWebsiteForm({
-      formName: "Partner With KuKa Enquiry",
-      internalSubject: `[Partner With KuKa] ${partnerType} — ${fullName}`,
+      formName: "Partner With KuKa — Collaboration Enquiry",
+      internalSubject: `[KuKa Partner Enquiry] ${partnerType} — ${fullName}`,
       submitterName: fullName, submitterEmail: email,
       acknowledgementMessage: "Thank you for introducing yourself and sharing your collaboration idea. We'll review it and get in touch if there's a suitable next step.",
       sourceTag: "partner_with_us",
       routingEmail: "partners@kulturekatta.com",
       fields: [
+        { label: "Internal form ID", value: "kuka_partner_inquiry" },
+        { label: "Submission page", value: "/partner-with-us" },
         { label: "Name", value: fullName }, { label: "Email", value: email },
         { label: "City", value: city }, { label: "Phone / WhatsApp", value: phone },
         { label: "Organization / practice", value: organization }, { label: "Partner type", value: partnerType },

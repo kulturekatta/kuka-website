@@ -58,7 +58,7 @@ export default function PartnerForm() {
       });
       const result: { message?: string } = await response.json();
       if (!response.ok) throw new Error(result.message || "Unable to submit your inquiry.");
-      setStatus("success"); setMessage("Thank you. We have received your partnership inquiry.");
+      setStatus("success"); setMessage("Thank you. We have received your KuKa collaboration enquiry.");
       form.reset(); startedAt.current = Date.now();
     } catch (error) {
       setStatus("error");
@@ -69,8 +69,8 @@ export default function PartnerForm() {
   const input = "mt-2.5 block min-h-11 w-full rounded-xl border border-black/15 bg-white px-4 py-3.5 text-[var(--kk-text)] outline-none transition duration-200 placeholder:text-black/35 hover:border-black/25 focus:border-[var(--kk-accent)] focus:ring-4 focus:ring-black/5";
   const field = "kk-form-label block text-sm font-semibold tracking-[0.01em] text-[var(--kk-text)]";
   return (
-    <form onSubmit={submit} className="kk-panel p-6 sm:p-9" aria-label="Partner With Us inquiry form">
-      <h2 className="kk-card-title">Tell us about yourself</h2>
+    <form onSubmit={submit} className="kk-panel p-6 sm:p-9" aria-label="Partner With KuKa collaboration enquiry form">
+      <h2 className="kk-card-title">Partner With KuKa — Collaboration Enquiry</h2>
       <p className="kk-card-body mt-3">Fields marked * are required. Please share links rather than uploading files.</p>
       <div className="mt-6 grid gap-5 sm:grid-cols-2">
         <label className={field}>Name *<input className={input} name="fullName" maxLength={100} autoComplete="name" required /></label>
@@ -99,8 +99,29 @@ export default function PartnerForm() {
       <label className={`${field} mt-5`}>Portfolio, website or social profile (optional)<input className={input} name="portfolioLink" type="url" maxLength={500} placeholder="https://" /></label>
       <label className={`${field} mt-5`}>Tell us a little more about your idea (optional)<textarea className={input} name="message" rows={3} maxLength={1800} placeholder="Have something specific in mind? Tell us about it. If you’re just exploring possibilities, that’s fine too." /></label>
       <div className="absolute -left-[10000px] h-px w-px overflow-hidden" aria-hidden="true"><label>Leave this empty<input name="formGuard" tabIndex={-1} autoComplete="off" /></label></div>
-      <label className="mt-6 flex items-start gap-3 text-sm leading-6 text-[var(--kk-text)]"><input className="mt-1 h-4 w-4" type="checkbox" name="consent" required /><span>I agree to KultureKatta using these details to respond to my inquiry, as described in the <Link className="font-semibold underline underline-offset-4 hover:text-[var(--kk-accent)]" href="/privacy-policy">Privacy Policy</Link>. *</span></label>
-      <button type="submit" disabled={status === "sending"} className="kk-button-dark mt-6 w-full sm:w-auto disabled:cursor-not-allowed disabled:opacity-50">{status === "sending" ? "Sending…" : "Send partnership inquiry"}</button>
+      <label className="mt-6 flex items-start gap-3 text-sm leading-6 text-[var(--kk-text)]"><input className="mt-1 h-4 w-4" type="checkbox" name="consent" required /><span>I agree to KultureKatta using these details to respond to my inquiry, as described in the <Link className="font-semibold underline underline-offset-4 hover:text-[var(--kk-accent)]" href="/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy Policy</Link>. *</span></label>
+      <div className="grid w-full grid-cols-1 items-stretch gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)]">
+<button
+                  type="button"
+                  disabled={status === "sending"}
+                  onClick={(event) => {
+                    const form = event.currentTarget.form;
+                    if (!form) return;
+                    form.reset();
+                    form.querySelectorAll('[aria-invalid="true"]').forEach((field) => {
+                      field.removeAttribute("aria-invalid");
+                    });
+                    setStatus("idle");
+                  setMessage("");
+                  startedAt.current = Date.now();
+                  }}
+                  className="flex min-h-12 w-full items-center justify-center rounded-full border border-[#2A1E19]/25 !bg-white px-4 py-3 text-center text-sm font-semibold leading-snug !text-[#2A1E19] transition-colors hover:!bg-[#f8f5f3] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2A1E19] disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Clear Form
+                </button>
+<button type="submit" disabled={status === "sending"} className="kk-button-dark flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-[#2A1E19] !bg-[#2A1E19] px-4 py-3 text-center text-sm font-semibold leading-snug !text-white transition-colors hover:!bg-[#402b23] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2A1E19] disabled:cursor-not-allowed disabled:opacity-60">{status === "sending" ? "Sending…" : "Send collaboration enquiry"}</button>
+</div>
+
       {message && <p role={status === "error" ? "alert" : "status"} className={`mt-4 text-sm ${status === "error" ? "text-red-700" : "text-green-800"}`}>{message}</p>}
     </form>
   );

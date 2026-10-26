@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import CookieSettingsButton from "./CookieSettingsButton";
 
@@ -13,16 +14,16 @@ type FooterSection = {
   showCookieSettings?: boolean;
 };
 
-// Keep five visible items in each section. Unpublished destinations are text, not dead links.
+// Unpublished destinations are text, not dead links.
 const footerSections: FooterSection[] = [
   {
     title: "KultureKatta",
     links: [
       { label: "Home", href: "/" },
       { label: "About Us", href: "/about" },
-      { label: "Why KuKa?", href: "/about#why-kuka" },
       { label: "Our Team", href: "/our-team" },
-      { label: "Partner With Us", href: "/partner-with-us" },
+      { label: "Partner With KuKa", href: "/partner-with-us" },
+      { label: "Work With KuKa", href: "/work-with-us" },
     ],
   },
   {
@@ -39,18 +40,42 @@ const footerSections: FooterSection[] = [
     title: "Katta Studio",
     links: [
       { label: "About Katta Studio", href: "/katta-studio" },
-      { label: "Digital Presence", href: "/katta-studio#websites-and-digital-presence" },
-      { label: "Growth Strategy", href: "/katta-studio#growth-clinic-and-strategic-support" },
-      { label: "Design & Branding", href: "/katta-studio#brand-and-design" },
-      { label: "Work With KuKa", href: "/work-with-us" },
+      {
+        label: "Digital Presence",
+        href: "/katta-studio#websites-and-digital-presence",
+      },
+      {
+        label: "Growth Strategy",
+        href: "/katta-studio#growth-clinic-and-strategic-support",
+      },
+      {
+        label: "Design & Branding",
+        href: "/katta-studio#brand-and-design",
+      },
+      {
+        label: "Work With Katta Studio",
+        href: "/katta-studio/work-with-us",
+      },
     ],
   },
   {
     title: "Connect",
     links: [
-      { label: "Instagram", href: "https://www.instagram.com/kulturekatta/", external: true },
-      { label: "LinkedIn", href: "https://www.linkedin.com/company/kulturekatta/", external: true },
-      { label: "WhatsApp", href: "https://wa.me/919730244996", external: true },
+      {
+        label: "Instagram",
+        href: "https://www.instagram.com/kulturekatta/",
+        external: true,
+      },
+      {
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/company/kulturekatta/",
+        external: true,
+      },
+      {
+        label: "WhatsApp",
+        href: "https://wa.me/919730244996",
+        external: true,
+      },
       { label: "Email", href: "mailto:hey@kulturekatta.com" },
       { label: "Connect", href: "/contact" },
     ],
@@ -60,7 +85,7 @@ const footerSections: FooterSection[] = [
     links: [
       { label: "Privacy Policy", href: "/privacy-policy" },
       { label: "Terms of Use", href: "/terms-of-use" },
-      { label: "Disclaimer — Coming Soon" },
+      { label: "Disclaimer", href: "/disclaimer" },
       { label: "Cookie Policy", href: "/cookie-policy" },
     ],
     showCookieSettings: true,
@@ -70,15 +95,15 @@ const footerSections: FooterSection[] = [
 export default function Footer() {
   return (
     <footer className="kk-footer-dark overflow-x-clip bg-[#2A1E19] text-white">
-      <div className="mx-auto w-full max-w-[1280px] px-6 py-14 md:px-8 md:py-16">
+      <div className="mx-auto w-full max-w-[1280px] px-6 py-10 md:px-8 md:py-12">
         {/* MAIN FOOTER CONTENT */}
         <div
           className="
-            grid w-full grid-cols-2 items-start gap-x-6 gap-y-10
-            sm:gap-x-8 sm:gap-y-12
-            md:grid-cols-3
+            grid w-full grid-cols-2 items-start gap-x-6 gap-y-8
+            sm:gap-x-8
+            md:grid-cols-3 md:gap-y-10
             xl:grid-cols-[minmax(220px,1.3fr)_repeat(5,minmax(0,1fr))]
-            xl:gap-x-6
+            xl:gap-x-5
           "
         >
           {/* BRAND */}
@@ -93,8 +118,9 @@ export default function Footer() {
 
             <div className="mt-5">
               <p className="max-w-[280px] text-base leading-7 text-white/70 xl:leading-6">
-                Culture-led experiences, thoughtfully designed for organizations, teams,
-                private groups, celebrations, and curious people.
+                Culture-led experiences, thoughtfully designed for
+                organizations, teams, private groups, celebrations, and curious
+                people.
               </p>
 
               <p className="mt-5 text-sm font-semibold uppercase tracking-[0.16em] text-white/50">
@@ -106,6 +132,7 @@ export default function Footer() {
           {/* FOOTER NAVIGATION */}
           <nav className="contents" aria-label="Footer navigation">
             {footerSections.map((section) => {
+              const isLegalSection = section.title === "Legal";
               const isMobileFullWidth = section.showCookieSettings;
 
               return (
@@ -120,34 +147,37 @@ export default function Footer() {
                   </h2>
 
                   <ul
-                    className={`
-                      mt-3 gap-y-0 md:mt-5 md:flex md:flex-col md:gap-3
+                    className="
+                      mt-3 flex flex-col gap-y-0
+                      md:mt-5 md:gap-3
                       xl:grid xl:grid-cols-1
                       xl:grid-rows-[repeat(5,minmax(44px,auto))]
                       xl:gap-y-0
-                      ${
-                        isMobileFullWidth
-                          ? "grid grid-cols-2 gap-x-6"
-                          : "flex flex-col"
-                      }
-                    `}
+                    "
                   >
                     {section.links.map((link) => {
+                      const opensNewTab = link.external || isLegalSection;
+
                       return (
-                        <li
-                          key={`${section.title}-${link.label}`}
-                        >
+                        <li key={`${section.title}-${link.label}`}>
                           {link.href ? (
                             <Link
                               href={link.href}
-                              target={link.external ? "_blank" : undefined}
-                              rel={link.external ? "noopener noreferrer" : undefined}
+                              target={opensNewTab ? "_blank" : undefined}
+                              rel={
+                                opensNewTab
+                                  ? "noopener noreferrer"
+                                  : undefined
+                              }
                               className="inline-flex min-h-11 min-w-11 max-w-full items-center break-words text-sm font-normal leading-6 text-white/65 transition-colors duration-200 hover:text-white"
                             >
                               {link.label}
                             </Link>
                           ) : (
-                            <span aria-disabled="true" className="inline-flex min-h-11 items-center text-sm leading-6 text-white/45">
+                            <span
+                              aria-disabled="true"
+                              className="inline-flex min-h-11 items-center text-sm leading-6 text-white/45"
+                            >
                               {link.label}
                             </span>
                           )}
@@ -157,7 +187,9 @@ export default function Footer() {
 
                     {section.showCookieSettings && (
                       <li>
-                        <CookieSettingsButton className="inline-flex min-h-11 min-w-11 max-w-full items-center break-words text-left !text-sm !font-normal font-[inherit] leading-6 text-white/65 transition-colors duration-200 hover:text-white xl:whitespace-nowrap" />
+                        <CookieSettingsButton
+                          className="inline-flex min-h-11 min-w-11 max-w-full items-center break-words text-left !text-sm !font-normal font-[inherit] leading-6 text-white/65 transition-colors duration-200 hover:text-white xl:whitespace-nowrap"
+                        />
                       </li>
                     )}
                   </ul>
@@ -168,47 +200,15 @@ export default function Footer() {
         </div>
 
         {/* BOTTOM BAR */}
-        <div className="mt-10 border-t border-white/15 pt-6 md:mt-16">
-          <div className="flex flex-col gap-6 md:flex-row md:flex-wrap md:items-end md:justify-between">
-            <div className="min-w-0">
-              <p className="text-sm text-white/60">
-                © {new Date().getFullYear()} KultureKatta. All rights reserved.
-              </p>
+        <div className="mt-8 border-t border-white/15 pt-5">
+          <div className="flex flex-col gap-1">
+            <p className="text-sm text-white/60">
+              © {new Date().getFullYear()} KultureKatta. All rights reserved.
+            </p>
 
-              <p className="mt-2 text-sm leading-6 text-white/60">
-                KultureKatta is operated by BuffyFish (OPC) Private Limited.
-              </p>
-
-              <p className="mt-1 text-sm leading-6 text-white/60">
-                Thoughtful cultural experiences for organizations, teams, and
-                communities.
-              </p>
-            </div>
-
-            <div className="hidden min-w-0 max-w-full flex-wrap items-center gap-x-5 gap-y-3 md:flex">
-              <Link
-                href="/privacy-policy"
-                className="inline-flex min-h-11 min-w-11 max-w-full items-center break-words text-sm font-normal leading-6 text-white/60 transition-colors duration-200 hover:text-white"
-              >
-                Privacy Policy
-              </Link>
-
-              <Link
-                href="/terms-of-use"
-                className="inline-flex min-h-11 min-w-11 max-w-full items-center break-words text-sm font-normal leading-6 text-white/60 transition-colors duration-200 hover:text-white"
-              >
-                Terms of Use
-              </Link>
-
-              <Link
-                href="/cookie-policy"
-                className="inline-flex min-h-11 min-w-11 max-w-full items-center break-words text-sm font-normal leading-6 text-white/60 transition-colors duration-200 hover:text-white"
-              >
-                Cookie Policy
-              </Link>
-
-              <CookieSettingsButton className="inline-flex min-h-11 min-w-11 max-w-full items-center break-words text-left !text-sm !font-normal font-[inherit] leading-6 text-white/65 transition-colors duration-200 hover:text-white" />
-            </div>
+            <p className="text-sm leading-6 text-white/60">
+              KultureKatta is operated by BuffyFish (OPC) Private Limited.
+            </p>
           </div>
         </div>
       </div>

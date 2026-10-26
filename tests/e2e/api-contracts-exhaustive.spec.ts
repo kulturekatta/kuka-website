@@ -93,23 +93,24 @@ test("@exhaustive API-VALIDATION rejects missing fields, invalid email, and miss
     message: expect.stringMatching(/consent/i),
   });
 
-  const missingPortfolio = await request.post("/api/work-with-us", {
+  const missingExperience = await request.post("/api/work-with-us", {
     data: {
       fullName: "API test",
       city: "Pune",
       email: "api-test@example.com",
+      businessArea: "KultureKatta",
       opportunityType: "collaboration",
       workArrangement: "remote",
       availability: "Available",
-      experience: "Relevant experience",
+      // Portfolio is optional; missing experience must still be rejected.
       message: "Application",
       consent: true,
       formGuard: "",
       startedAt: oldStart,
     },
   });
-  expect(missingPortfolio.status()).toBe(400);
-  expect(await missingPortfolio.json()).toMatchObject({
+  expect(missingExperience.status()).toBe(400);
+  expect(await missingExperience.json()).toMatchObject({
     success: false,
     message: expect.stringMatching(/required fields/i),
   });
@@ -119,6 +120,7 @@ test("@exhaustive API-VALIDATION rejects missing fields, invalid email, and miss
       fullName: "API test",
       city: "Pune",
       email: "api-test@example.com",
+      businessArea: "KultureKatta",
       opportunityType: "collaboration",
       workArrangement: "remote",
       availability: "Available",

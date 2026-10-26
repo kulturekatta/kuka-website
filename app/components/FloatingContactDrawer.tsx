@@ -586,6 +586,7 @@ export default function FloatingContactDrawer() {
                       href="/privacy-policy"
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={saveDraft}
                       className="font-semibold underline decoration-black/30 underline-offset-2 hover:decoration-black"
                     >
                       Privacy Policy
@@ -612,15 +613,37 @@ export default function FloatingContactDrawer() {
                   </p>
                 )}
 
-                <button
+                <div className="grid w-full grid-cols-1 items-stretch gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)]">
+<button
+                  type="button"
+                  disabled={status === "submitting"}
+                  onClick={(event) => {
+                    const form = event.currentTarget.form;
+                    if (!form) return;
+                    form.reset();
+                    form.querySelectorAll('[aria-invalid="true"]').forEach((field) => {
+                      field.removeAttribute("aria-invalid");
+                    });
+                    clearDraft();
+                  setStatus("idle");
+                  setStatusMessage("");
+                  startedAtRef.current = Date.now();
+                  }}
+                  className="flex min-h-12 w-full items-center justify-center rounded-full border border-[#2A1E19]/25 !bg-white px-4 py-3 text-center text-sm font-semibold leading-snug !text-[#2A1E19] transition-colors hover:!bg-[#f8f5f3] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2A1E19] disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Clear Form
+                </button>
+<button
                   type="submit"
                   disabled={status === "submitting"}
-                  className="kk-button-dark w-full justify-center disabled:cursor-not-allowed disabled:opacity-60"
+                  className="kk-button-dark flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-[#2A1E19] !bg-[#2A1E19] px-4 py-3 text-center text-sm font-semibold leading-snug !text-white transition-colors hover:!bg-[#402b23] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2A1E19] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {status === "submitting"
                     ? "Sending inquiry..."
                     : "Send inquiry"}
                 </button>
+</div>
+
 
                 <p className="text-center text-xs leading-5 text-black/65">
                   You will receive an automatic confirmation after a successful

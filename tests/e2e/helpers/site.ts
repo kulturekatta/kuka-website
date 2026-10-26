@@ -18,6 +18,8 @@ const staticRoutes = [
   "/katta-studio",
   "/katta-studio/growth-clinic",
   "/katta-studio/work-with-us",
+  "/partner-with-us",
+  "/work-with-us",
   "/contact",
   "/privacy-policy",
   "/cookie-policy",

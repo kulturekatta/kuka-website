@@ -223,6 +223,18 @@ function getConfig(): WebsiteFormConfig {
   };
 }
 
+// A route may supply its own submission page and the attribution helper may
+// add it again. Keep the first non-empty occurrence in internal notifications.
+function getInternalEmailFields(submission: WebsiteFormSubmission): WebsiteFormField[] {
+  const seen = new Set<string>();
+  return submission.fields.filter((field) => {
+    const key = field.label.trim().toLowerCase().replace(/[_-]+/g, " ").replace(/\s+/g, " ");
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
 function buildInternalEmailHtml(
   submission: WebsiteFormSubmission,
   submittedAt: string,
@@ -254,7 +266,7 @@ function buildInternalEmailHtml(
                 Submitted on ${escapeHtml(submittedAt)}
               </div>
               <table role="presentation" style="width:100%;border-collapse:collapse;border:1px solid #ece7df;">
-                ${submission.fields.map(emailRow).join("")}
+                ${getInternalEmailFields(submission).map(emailRow).join("")}
               </table>
               <p style="margin:28px 0 0;font-size:12px;line-height:1.6;color:#746a62;">
                 Reply directly to this email to contact ${escapeHtml(submission.submitterName)} at ${escapeHtml(submission.submitterEmail)}.
@@ -271,7 +283,7 @@ function buildInternalEmailText(
   submission: WebsiteFormSubmission,
   submittedAt: string,
 ): string {
-  const rows = submission.fields
+  const rows = getInternalEmailFields(submission)
     .map(
       (field) =>
         `${field.label}: ${normalizeFieldValue(field.value)}`,
@@ -300,12 +312,17 @@ function getAcknowledgementFields(
   // Campaign attribution and routing details belong in the internal email only.
   const internalOnlyLabels = new Set([
     "source page",
+    "internal form id",
+    "form identifier",
     "submission page",
     "original landing page",
+    "original campaign landing page",
     "referring page",
     "referrer",
+    "original recorded referrer",
     "first visit",
     "first visit at",
+    "campaign attribution first recorded",
     "submission date and time",
     "utm source",
     "utm medium",
@@ -343,7 +360,7 @@ function getAcknowledgementCopy(
     },
     work_with_us: {
       subject: "Work With KuKa application received | KultureKatta",
-      heading: "We've received your application.",
+      heading: "We've received your Work With KuKa application.",
     },
     growth_clinic: {
       subject: "Growth Clinic inquiry received | Katta Studio",
@@ -370,6 +387,26 @@ function getAcknowledgementCopy(
       heading: "We've received your contact inquiry.",
     },
   };
+  if (submission.sourceTag === "work_with_us") {
+    const formId = submission.fields.find(
+      (field) => field.label === "Internal form ID",
+    )?.value;
+
+    if (formId === "katta_studio_careers_application") {
+      return {
+        subject: "Work With Katta Studio application received | Katta Studio",
+        heading: "We've received your Work With Katta Studio application.",
+      };
+    }
+
+    if (formId === "kuka_joint_careers_application") {
+      return {
+        subject: "Work With KuKa & Katta Studio application received | KultureKatta",
+        heading: "We've received your joint KuKa and Katta Studio application.",
+      };
+    }
+  }
+
   return copies[submission.sourceTag] ?? {
     subject: "Website inquiry received | KultureKatta",
     heading: "We've received your inquiry.",

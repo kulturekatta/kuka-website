@@ -213,9 +213,20 @@ test("@exhaustive FORM-RETURN main Contact data survives a Privacy Policy visit 
   await form.locator('input[name="email"]').fill("return@example.com");
   await form.locator('textarea[name="message"]').fill("Please keep this text.");
 
-  await form.getByRole("link", { name: "Privacy Policy" }).click();
-  await expect(page).toHaveURL(/\/privacy-policy$/);
-  await page.goBack();
+  const privacyLink = form.getByRole("link", { name: "Privacy Policy" });
+
+await expect(privacyLink).toHaveAttribute("target", "_blank");
+await expect(privacyLink).toHaveAttribute("rel", /noopener/);
+
+const [privacyTab] = await Promise.all([
+  page.waitForEvent("popup"),
+  privacyLink.click(),
+]);
+
+await expect(privacyTab).toHaveURL(/\/privacy-policy$/);
+await expect(page).toHaveURL(/\/contact$/);
+
+await privacyTab.close();
 
   await expect(form.locator('input[name="name"]')).toHaveValue("Return-state test");
   await expect(form.locator('input[name="email"]')).toHaveValue("return@example.com");

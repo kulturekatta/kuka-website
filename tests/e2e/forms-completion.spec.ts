@@ -394,18 +394,34 @@ for (const formCase of completionFormCases) {
           const marker = `${formCase.name} ${destination} return`;
           const { inputName, textareaName } = await fillReturnMarkers(form, marker);
 
-          if (destination === "privacy") {
-            await Promise.all([
-              stepPage.waitForURL(/\/privacy-policy$/, {
-                waitUntil: "domcontentloaded",
-              }),
-              form.getByRole("link", { name: "Privacy Policy" }).click(),
-            ]);
-          } else {
-            await stepPage.goto("/terms-of-use");
-          }
+          const expectedPath = destination === "privacy" ? "/privacy-policy" : "/terms-of-use";
+          const legalLink = form.getByRole("link", {
+            name: destination === "privacy" ? "Privacy Policy" : "Terms of Use",
+            exact: true,
+          }).first();
 
-          await stepPage.goBack();
+          if (await legalLink.count()) {
+            await expect(legalLink).toHaveAttribute("href", expectedPath);
+            await expect(legalLink).toHaveAttribute("target", "_blank");
+            const originalURL = stepPage.url();
+            const [legalPage] = await Promise.all([
+              stepPage.waitForEvent("popup"),
+              legalLink.click(),
+            ]);
+            try {
+              await legalPage.waitForLoadState("domcontentloaded");
+              await expect(legalPage).toHaveURL(new RegExp(`${expectedPath}$`));
+              await expect(legalPage.locator("main#main-content")).toBeVisible();
+              expect(stepPage.url()).toBe(originalURL);
+            } finally {
+              await legalPage.close();
+            }
+          } else {
+            // Some forms link only to Privacy Policy. Visit Terms directly
+            // in the same tab for those forms and exercise Back restoration.
+            await stepPage.goto(expectedPath);
+            await stepPage.goBack({ waitUntil: "domcontentloaded" });
+          }
           if (formCase.floating) {
             await expect(
               stepPage.getByRole("dialog", { name: "Let’s start a conversation." }),

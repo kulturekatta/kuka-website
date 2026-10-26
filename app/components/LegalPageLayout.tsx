@@ -33,6 +33,10 @@ const legalPages = [
     label: "Terms of Use",
     href: "/terms-of-use",
   },
+  {
+    label: "Disclaimer",
+    href: "/disclaimer",
+  },
 ];
 
 function ContentsLinks({
@@ -188,11 +192,13 @@ export default function LegalPageLayout({
               you use it.
             </p>
 
-            <div className="mt-9 flex flex-col justify-center gap-4 sm:flex-row">
+            <div className="mt-9 flex flex-wrap flex-col justify-center gap-4 sm:flex-row">
               {relatedPages.map((page) => (
                 <Link
                   key={page.href}
                   href={page.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="kk-button-on-light"
                 >
                   {page.label}

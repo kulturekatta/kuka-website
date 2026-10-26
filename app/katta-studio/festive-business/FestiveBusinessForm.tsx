@@ -102,8 +102,38 @@ export default function FestiveBusinessForm() {
         </div>
       </div>
       {message && <div ref={feedback} tabIndex={-1} role={status === "error" ? "alert" : "status"} aria-live={status === "error" ? "assertive" : "polite"} className={`mt-5 rounded-xl p-4 text-sm ${status === "error" ? "bg-red-50 text-red-800" : "bg-emerald-50 text-emerald-800"}`}>{message}</div>}
-      <button className="kk-button-dark mt-6 w-full disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={status === "submitting"}>{status === "submitting" ? "Sending inquiry…" : "Send project inquiry →"}</button>
+      <div className="grid w-full grid-cols-1 items-stretch gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)]">
+<button
+                  type="button"
+                  disabled={status === "submitting"}
+                  onClick={(event) => {
+                    const form = event.currentTarget.form;
+                    if (!form) return;
+                    form.reset();
+                    form.querySelectorAll('[aria-invalid="true"]').forEach((field) => {
+                      field.removeAttribute("aria-invalid");
+                    });
+                    clearDraft();
+                  setStatus("idle");
+                  setMessage("");
+                  setConsentError(false);
+                  setDeadlineError(false);
+                  startedAt.current = Date.now();
+                  }}
+                  className="flex min-h-12 w-full items-center justify-center rounded-full border border-[#2A1E19]/25 !bg-white px-4 py-3 text-center text-sm font-semibold leading-snug !text-[#2A1E19] transition-colors hover:!bg-[#f8f5f3] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2A1E19] disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Clear Form
+                </button>
+<button className="kk-button-dark flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-[#2A1E19] !bg-[#2A1E19] px-4 py-3 text-center text-sm font-semibold leading-snug !text-white transition-colors hover:!bg-[#402b23] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2A1E19] disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={status === "submitting"}>{status === "submitting" ? "Sending inquiry…" : "Send project inquiry →"}</button>
+</div>
+
       <p className="mt-4 text-center text-xs text-[var(--kk-text-muted)]">No payment is taken through this form.</p>
+      <p className="mt-2 text-center text-xs leading-5 text-[var(--kk-text-muted)]">
+        Project scope and deadlines are subject to agreement. See our{" "}
+        <Link href="/terms-of-use" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Terms of Use</Link>{" "}
+        and{" "}
+        <Link href="/disclaimer" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Disclaimer</Link>.
+      </p>
     </form>
   );
 }

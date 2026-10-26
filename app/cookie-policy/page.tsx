@@ -49,7 +49,7 @@ const sections: LegalSection[] = [
           KultureKatta uses browser local storage to remember your
           cookie preference and, when campaign information is present,
           to retain limited first-party attribution information for
-          Growth Clinic inquiries. If you accept optional cookies, the
+          website inquiries. If you accept optional cookies, the
           Meta Pixel may also set or use Meta browser identifiers.
         </p>
 
@@ -108,7 +108,7 @@ const sections: LegalSection[] = [
                   Retains campaign source information, such as UTM
                   parameters, a Meta click identifier where present,
                   the original landing page, and first-visit time, so a
-                  Growth Clinic inquiry can be attributed after site
+                  website inquiry can be attributed after site
                   navigation
                 </td>
 
@@ -180,7 +180,7 @@ const sections: LegalSection[] = [
 
         <p>
           This information helps us understand which campaign or page
-          generated a Growth Clinic inquiry if you move between pages
+          generated a website inquiry if you move between pages
           before submitting the form. The storage does not itself load
           the Meta Pixel or send an event to Meta.
         </p>
@@ -195,7 +195,7 @@ const sections: LegalSection[] = [
         <p>
           With your permission, KultureKatta uses the Meta Pixel to
           understand visits arising from Meta advertising and measure
-          successful Growth Clinic inquiries.
+          successful website inquiries.
         </p>
 
         <p>The Meta Pixel records:</p>
@@ -203,7 +203,7 @@ const sections: LegalSection[] = [
         <ul className={listClass}>
           <li>A PageView event when an accepted page is viewed</li>
           <li>
-            A Lead event after a Growth Clinic inquiry is successfully
+            A Lead event after a website inquiry is successfully
             submitted
           </li>
           <li>
@@ -372,7 +372,7 @@ const sections: LegalSection[] = [
 
           <p>
             You may also review our{" "}
-            <Link href="/privacy-policy" className={linkClass}>
+            <Link href="/privacy-policy" className={linkClass} target="_blank" rel="noopener noreferrer">
               Privacy Policy
             </Link>
             .
@@ -390,7 +390,7 @@ export default function CookiePolicyPage() {
       iconLabel="Cookies and browser settings"
       title="Cookie Policy"
       description="How KultureKatta uses cookies, browser storage, the Meta Pixel, and related technologies to operate the website, remember your choices, and measure advertising performance."
-      lastUpdated="September 2, 2026"
+      lastUpdated="October 25, 2026"
       currentPath="/cookie-policy"
       sections={sections}
     />

@@ -389,10 +389,10 @@ test("@completion SRCH-005 special-character no-result searches remain safe on m
       await expect(page.getByRole("heading", { name: "No results found." })).toBeVisible();
       await expect(
         page.locator("main#main-content").getByRole("link", {
-          name: "Explore experiences",
+          name: "Explore private experiences",
           exact: true,
         }),
-      ).toHaveAttribute("href", "/experiences");
+      ).toHaveAttribute("href", "/private-experiences");
       expect(await page.evaluate(() => document.querySelectorAll("script script").length)).toBe(0);
     });
   }

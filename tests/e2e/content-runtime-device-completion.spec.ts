@@ -80,7 +80,7 @@ test("@completion CONTACT-EXACT approved email, phone and WhatsApp targets stay 
         ...new Set(links.map((link) => link.getAttribute("href"))),
       ]);
 
-      expect(mailTargets).toEqual(["hey@kulturekatta.com"]);
+      expect(mailTargets).toEqual(route === "/contact" ? ["hey@kulturekatta.com", "partners@kulturekatta.com"] : ["hey@kulturekatta.com"]);
       expect(whatsAppTargets).toEqual(["https://wa.me/919730244996"]);
       expect(
         telephoneTargets.every((target) => target === "tel:+919730244996"),
@@ -103,11 +103,11 @@ test("@completion NAV-004 NAV-013 NAV-014 NAV-015 footer contracts are exact on 
     ["Private Experiences", "/private-experiences"],
     ["Home", "/"],
     ["About Us", "/about"],
-    ["Contact Us", "/contact"],
+    ["Connect", "/contact"],
     ["About Katta Studio", "/katta-studio"],
-    ["Website Development", "/katta-studio#websites-and-digital-presence"],
-    ["Brand Identity", "/katta-studio#brand-positioning-and-visual-identity"],
-    ["Social Media Presence", "/katta-studio#social-media-and-content"],
+    ["Digital Presence", "/katta-studio#websites-and-digital-presence"],
+    ["Design & Branding", "/katta-studio#brand-and-design"],
+    ["Growth Strategy", "/katta-studio#growth-clinic-and-strategic-support"],
     ["Privacy Policy", "/privacy-policy"],
     ["Terms of Use", "/terms-of-use"],
     ["Cookie Policy", "/cookie-policy"],
@@ -115,7 +115,7 @@ test("@completion NAV-004 NAV-013 NAV-014 NAV-015 footer contracts are exact on 
   const externalLinks: Array<[string, string]> = [
     ["Instagram", "https://www.instagram.com/kulturekatta/"],
     ["LinkedIn", "https://www.linkedin.com/company/kulturekatta/"],
-    ["WhatsApp/Phone", "https://wa.me/919730244996"],
+    ["WhatsApp", "https://wa.me/919730244996"],
     ["Email", "mailto:hey@kulturekatta.com"],
   ];
 
@@ -132,7 +132,7 @@ test("@completion NAV-004 NAV-013 NAV-014 NAV-015 footer contracts are exact on 
       for (const heading of [
         "Experiences",
         "KultureKatta",
-        "Studio Services",
+        "Katta Studio",
         "Connect",
         "Legal",
       ]) {

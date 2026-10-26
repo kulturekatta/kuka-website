@@ -81,7 +81,6 @@ export async function POST(request: Request) {
       !opportunityType ||
       !workArrangement ||
       !availability ||
-      !portfolioLink ||
       !experience ||
       !message
     ) {
@@ -105,7 +104,7 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!isValidHttpUrl(portfolioLink)) {
+    if (portfolioLink && !isValidHttpUrl(portfolioLink)) {
       return NextResponse.json(
         {
           success: false,
@@ -125,16 +124,35 @@ export async function POST(request: Request) {
       );
     }
 
+    const sourcePage = cleanText(body.sourcePage, 300) || "/work-with-us";
+    const isStudioApplication = businessArea === "Katta Studio";
+    const isBothApplication = businessArea === "Both";
+    const formName = isStudioApplication
+      ? "Work With Katta Studio — Application"
+      : isBothApplication
+        ? "Work With KuKa & Katta Studio — Application"
+        : "Work With KuKa — Application";
+    const formId = isStudioApplication
+      ? "katta_studio_careers_application"
+      : isBothApplication
+        ? "kuka_joint_careers_application"
+        : "kuka_careers_application";
+
     await sendWebsiteForm({
-      formName: "Work With KuKa Application",
-      internalSubject: `[${businessArea}] Work With KuKa — ${opportunityType} — ${fullName}`,
+      formName,
+      internalSubject: `[${formId}] ${opportunityType} — ${fullName}`,
       submitterName: fullName,
       submitterEmail: email,
-      acknowledgementMessage:
-        "Thank you for your interest in working with KuKa. We have received your application and work-sample link.",
+      acknowledgementMessage: isStudioApplication
+        ? "Thank you for your interest in working with Katta Studio. We have received your application and will review the details you shared."
+         : isBothApplication
+          ? "Thank you for your interest in working with KuKa and Katta Studio. We have received your application and will review the details you shared."
+          : "Thank you for your interest in working with KuKa. We have received your application and will review the details you shared.",
       sourceTag: "work_with_us",
       routingEmail: "careers@kulturekatta.com",
       fields: [
+        { label: "Internal form ID", value: formId },
+        { label: "Application page", value: sourcePage },
         { label: "Full name", value: fullName },
         { label: "Email", value: email },
         { label: "Phone / WhatsApp", value: phone },
@@ -144,10 +162,10 @@ export async function POST(request: Request) {
         { label: "Preferred work arrangement", value: workArrangement },
         { label: "Availability", value: availability },
         { label: "Expected compensation", value: compensation },
-        { label: "Portfolio / résumé link", value: portfolioLink },
+        ...(portfolioLink ? [{ label: "Portfolio / résumé link", value: portfolioLink }] : []),
         { label: "Relevant skills and experience", value: experience },
-        { label: "Why KuKa", value: message },
-        ...attributionEmailFields(body),
+        { label: "Why would you like to work with us?", value: message },
+        ...attributionEmailFields(body).filter((field) => field.label !== "Submission page"),
       ],
     });
 

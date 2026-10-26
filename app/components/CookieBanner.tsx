@@ -208,14 +208,14 @@ export default function CookieBanner() {
             <Link
               href="/cookie-policy"
               className="inline-flex min-h-11 items-center text-sm font-semibold text-[var(--kk-text)] underline decoration-black/30 underline-offset-4 transition hover:decoration-black"
-            >
+             target="_blank" rel="noopener noreferrer">
               Cookie Policy
             </Link>
 
             <Link
               href="/privacy-policy"
               className="inline-flex min-h-11 items-center text-sm font-semibold text-[var(--kk-text)] underline decoration-black/30 underline-offset-4 transition hover:decoration-black"
-            >
+             target="_blank" rel="noopener noreferrer">
               Privacy Policy
             </Link>
           </div>
