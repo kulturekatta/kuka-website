@@ -107,6 +107,7 @@ export default function WorkWithKuKaPage() {
 
       <section className="kk-section-light kk-section-padding">
         <div className="kk-container text-center">
+          <div className="mb-5 flex justify-center"><SemanticIcon icon="🪢" label="Collaboration alternatives" size="section" /></div>
           <h2 className="kk-section-heading">Looking for a collaboration instead?</h2>
           <p className="kk-body-large mx-auto mt-6 max-w-3xl">If you are an artist, facilitator, venue, sponsor or cultural collaborator proposing an experience or partnership, use our dedicated partnership form.</p>
           <Link href="/partner-with-us" className="kk-button-on-light mt-8">Partner With Us</Link>

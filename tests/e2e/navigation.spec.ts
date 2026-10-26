@@ -57,13 +57,19 @@ test("desktop navbar, active state, logo and footer navigation work", async ({
     name: "Footer navigation",
   });
 
-  await footerNav
-    .getByRole("link", {
-      name: "Privacy Policy",
-    })
-    .click();
+  const privacyLink = footerNav.getByRole("link", {
+    name: "Privacy Policy",
+  });
+  await expect(privacyLink).toHaveAttribute("target", "_blank");
+  await expect(privacyLink).toHaveAttribute("rel", /noopener/);
 
-  await expect(page).toHaveURL(/\/privacy-policy\/?$/);
+  const [privacyTab] = await Promise.all([
+    page.waitForEvent("popup"),
+    privacyLink.click(),
+  ]);
+  await expect(privacyTab).toHaveURL(/\/privacy-policy\/?$/);
+  await expect(page).toHaveURL(/\/$/);
+  await privacyTab.close();
 });
 
 test("mobile menu opens, focuses, closes with Escape and closes after navigation", async ({

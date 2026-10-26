@@ -102,19 +102,30 @@ test("@gap NAV-02 every internal footer link can be clicked", async ({
     const link = page.locator("footer a[href]").nth(index);
 
     await link.scrollIntoViewIfNeeded();
-    await link.click();
 
-    await expect
-      .poll(
-        () => {
+    if ((await link.getAttribute("target")) === "_blank") {
+      await expect(link).toHaveAttribute("rel", /noopener/);
+      const [popup] = await Promise.all([
+        page.waitForEvent("popup"),
+        link.click(),
+      ]);
+      await expect
+        .poll(() => {
+          const currentURL = new URL(popup.url());
+          return `${currentURL.pathname}${currentURL.search}`;
+        }, { message: `Footer popup did not navigate to ${target}` })
+        .toBe(target);
+      await popup.close();
+      await expect.poll(() => new URL(page.url()).pathname).toBe(sourcePath);
+    } else {
+      await link.click();
+      await expect
+        .poll(() => {
           const currentURL = new URL(page.url());
           return `${currentURL.pathname}${currentURL.search}`;
-        },
-        {
-          message: `Footer link did not navigate to ${target}`,
-        },
-      )
-      .toBe(target);
+        }, { message: `Footer link did not navigate to ${target}` })
+        .toBe(target);
+    }
   }
 });
 

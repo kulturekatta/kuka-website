@@ -4,6 +4,7 @@ import { getInquiryAttributionPayload } from "../lib/campaign-attribution";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
+import SemanticIcon from "../components/SemanticIcon";
 
 const categories = [
   "Artist / Performer / Creative Practitioner",
@@ -70,6 +71,7 @@ export default function PartnerForm() {
   const field = "kk-form-label block text-sm font-semibold tracking-[0.01em] text-[var(--kk-text)]";
   return (
     <form onSubmit={submit} className="kk-panel p-6 sm:p-9" aria-label="Partner With KuKa collaboration enquiry form">
+      <div className="mb-5 flex justify-center"><SemanticIcon icon="📮" label="Collaboration enquiry details" size="card" /></div>
       <h2 className="kk-card-title">Partner With KuKa — Collaboration Enquiry</h2>
       <p className="kk-card-body mt-3">Fields marked * are required. Please share links rather than uploading files.</p>
       <div className="mt-6 grid gap-5 sm:grid-cols-2">
