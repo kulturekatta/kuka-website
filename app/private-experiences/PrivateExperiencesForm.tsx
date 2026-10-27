@@ -65,7 +65,7 @@ export default function PrivateExperiencesForm() {
           <p className="kk-body-large mt-5">A few details are enough to get started. We will help you shape the rest.</p>
         </div>
         <form onSubmit={submit} className="kk-panel mx-auto mt-12 max-w-4xl p-6 sm:p-10" aria-label="Private experiences inquiry form">
-          <div className="mb-5 flex justify-center"><SemanticIcon icon="📨" label="Private booking details" size="card" /></div>
+          <div className="mb-5 flex justify-center"><SemanticIcon icon="🗓️ 📩" label="Private booking details" size="card" /></div>
           <p className="kk-card-body mb-7">Fields marked * are required.</p>
           <div className="grid gap-6 sm:grid-cols-2">
             <label className={labelClass}>Full name *<input name="fullName" className={inputClass} maxLength={100} autoComplete="name" required /></label>
