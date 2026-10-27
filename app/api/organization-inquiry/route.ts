@@ -1,3 +1,4 @@
+import { attributionEmailFields } from "@/app/lib/website-attribution-email";
 import { NextResponse } from "next/server";
 import {
   cleanEmail,
@@ -82,8 +83,7 @@ export async function POST(request: Request) {
     const budget = cleanText(body.budget, 120);
     const details = cleanText(body.details, 3000);
     const referralSource = cleanText(body.referralSource, 160);
-    const sourcePage =
-      cleanText(body.sourcePage, 200) || "/for-organizations";
+
 
     if (inquiryType !== "organization") {
       return NextResponse.json(
@@ -135,12 +135,13 @@ export async function POST(request: Request) {
 
     await sendWebsiteForm({
       formName: "Organization Inquiry",
-      internalSubject: `[KuKa Organizations] New Enquiry — ${subjectOrganizationName}`,
+      internalSubject: `[KuKa Organizations] New Inquiry — ${subjectOrganizationName}`,
       submitterName: fullName,
       submitterEmail: workEmail,
       acknowledgementMessage:
         "Thank you for contacting KuKa for Organizations. We have received your inquiry and the experience requirements you shared.",
       sourceTag: "organization_form",
+      routingEmail: "organizations@kulturekatta.com",
       fields: [
         { label: "Full name", value: fullName },
         { label: "Designation", value: designation },
@@ -159,7 +160,7 @@ export async function POST(request: Request) {
         { label: "Approximate budget", value: budget },
         { label: "Additional details", value: details },
         { label: "Referral source", value: referralSource },
-        { label: "Source page", value: sourcePage },
+        ...attributionEmailFields(body),
       ],
     });
 
@@ -174,7 +175,7 @@ export async function POST(request: Request) {
       {
         success: false,
         message:
-          "Your inquiry could not be sent. Please try again or email hey@kulturekatta.com.",
+          "Your inquiry could not be sent. Please try again or email organizations@kulturekatta.com.",
       },
       { status: 500 },
     );

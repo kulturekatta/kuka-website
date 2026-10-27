@@ -250,7 +250,7 @@ const whatWeCreate = [
     icon: "🏢",
     iconLabel: "Organizations",
     title: "Experiences for Organizations",
-    text: "Explore one-time experiences, curated packages, and longer programmes for companies, schools, colleges, NGOs, institutions, communities, and teams that want to connect, create, learn, or celebrate together.",
+    text: "Explore one-time experiences, curated packages, and longer programs for companies, schools, colleges, NGOs, institutions, communities, and teams that want to connect, create, learn, or celebrate together.",
     href: "/for-organizations",
     cta: "Explore for Organizations",
   },

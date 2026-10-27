@@ -1,5 +1,7 @@
 "use client";
 
+import { getInquiryAttributionPayload } from "../../lib/campaign-attribution";
+
 import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
@@ -33,7 +35,7 @@ const applicationTips = [
     icon: "🔗",
     title: "Share relevant work",
     description:
-      "Add a portfolio, résumé, LinkedIn profile, Google Drive folder or links to work samples.",
+      "If available, share a portfolio, résumé, LinkedIn profile or work samples. Links are optional.",
   },
   {
     number: "02",
@@ -61,9 +63,18 @@ const helperClassName = "mt-2 text-sm leading-6 text-black/55";
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
 const WORK_WITH_US_DRAFT_KEY =
-  "kuka-work-with-us-form-draft-v1";
+  "kuka-work-with-us-form-draft-v2";
 
-export default function WorkWithUsApplicationForm() {
+export default function WorkWithUsApplicationForm({
+  sourcePage = "/katta-studio/work-with-us#application-form",
+}: {
+  sourcePage?: string;
+}) {
+  // Shared component: distinguish KuKa and Katta Studio applications by route.
+  const isStudioApplication = sourcePage.startsWith("/katta-studio/");
+  const applicationName = isStudioApplication
+    ? "Work With Katta Studio — Application"
+    : "Work With KuKa — Application";
   const [status, setStatus] = useState<FormStatus>("idle");
   const [statusMessage, setStatusMessage] = useState("");
   const startedAtRef = useRef(0);
@@ -102,6 +113,7 @@ export default function WorkWithUsApplicationForm() {
       city: getValue("city"),
       email: getValue("email"),
       phone: getValue("phone"),
+      businessArea: getValue("businessArea"),
       opportunityType: getValue("opportunityType"),
       workArrangement: getValue("workArrangement"),
       availability: getValue("availability"),
@@ -112,7 +124,7 @@ export default function WorkWithUsApplicationForm() {
       consent: formData.get("consent") === "on",
       formGuard: getValue("formGuard"),
       startedAt: startedAtRef.current,
-      sourcePage: "/katta-studio/work-with-us#application-form",
+      sourcePage,
     };
 
     isSubmittingRef.current = true;
@@ -125,7 +137,7 @@ export default function WorkWithUsApplicationForm() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...payload, ...getInquiryAttributionPayload() }),
       });
 
       const result = (await response.json()) as {
@@ -145,7 +157,7 @@ export default function WorkWithUsApplicationForm() {
       startedAtRef.current = Date.now();
       setStatus("success");
       setStatusMessage(
-        "Thank you. Your application has been sent, and a confirmation email is on its way.",
+        `Thank you. ${applicationName} received. A confirmation email is on its way.`,
       );
     } catch (error) {
       setStatus("error");
@@ -251,8 +263,8 @@ export default function WorkWithUsApplicationForm() {
                   </p>
 
                   <p className="mt-2 text-sm leading-6 text-black/60">
-                    Add a publicly accessible portfolio, LinkedIn, Google Drive,
-                    or résumé link in the form.
+                    If you have a portfolio, résumé or work-sample link, feel free
+                    to share it. It is optional.
                   </p>
                 </div>
               </div>
@@ -395,6 +407,17 @@ export default function WorkWithUsApplicationForm() {
                   </span>
                 </legend>
 
+                <div className="mb-6">
+                  <label htmlFor="businessArea" className={labelClassName}>
+                    Which part of KuKa interests you? <span className="text-[var(--kk-accent)]">*</span>
+                  </label>
+                  <select id="businessArea" name="businessArea" required defaultValue={sourcePage.startsWith("/katta-studio/") ? "Katta Studio" : ""} className={`${inputClassName} cursor-pointer`}>
+                    <option value="" disabled>Select an area</option>
+                    <option value="KultureKatta">KultureKatta</option>
+                    <option value="Katta Studio">Katta Studio</option>
+                    <option value="Both">Both</option>
+                  </select>
+                </div>
                 <div className="grid gap-6 sm:grid-cols-2">
                   <div>
                     <label
@@ -503,8 +526,7 @@ export default function WorkWithUsApplicationForm() {
 
                 <div>
                   <label htmlFor="portfolioLink" className={labelClassName}>
-                    Portfolio, résumé or work-sample link{" "}
-                    <span className="text-[var(--kk-accent)]">*</span>
+                     Portfolio, résumé or work-sample link (optional)
                   </label>
 
                   <input
@@ -512,15 +534,13 @@ export default function WorkWithUsApplicationForm() {
                     name="portfolioLink"
                     type="url"
                     inputMode="url"
-                    required
                     autoComplete="url"
                     placeholder="Portfolio, LinkedIn, Google Drive or résumé link"
                     className={inputClassName}
                   />
 
                   <p className={helperClassName}>
-                    Make sure the link is publicly accessible or shared with the
-                    recipient.
+                    If provided, make sure the link is accessible to our team.
                   </p>
                 </div>
 
@@ -543,7 +563,7 @@ export default function WorkWithUsApplicationForm() {
 
                 <div className="mt-6">
                   <label htmlFor="message" className={labelClassName}>
-                    Why would you like to work with Katta Studio?{" "}
+                    Why would you like to work with us?{" "}
                     <span className="text-[var(--kk-accent)]">*</span>
                   </label>
 
@@ -601,6 +621,8 @@ export default function WorkWithUsApplicationForm() {
                     application as described in the{" "}
                     <Link
                       href="/privacy-policy"
+                        target="_blank"
+                        rel="noopener noreferrer"
                       className="font-semibold underline decoration-black/30 underline-offset-2 hover:decoration-black"
                     >
                       Privacy Policy
@@ -611,20 +633,42 @@ export default function WorkWithUsApplicationForm() {
               </fieldset>
 
               <div className="mt-8">
-                <button
+                <div className="grid w-full grid-cols-1 items-stretch gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)]">
+<button
+                  type="button"
+                  disabled={status === "submitting"}
+                  onClick={(event) => {
+                    const form = event.currentTarget.form;
+                    if (!form) return;
+                    form.reset();
+                    form.querySelectorAll('[aria-invalid="true"]').forEach((field) => {
+                      field.removeAttribute("aria-invalid");
+                    });
+                    clearDraft();
+                  setStatus("idle");
+                  setStatusMessage("");
+                  startedAtRef.current = Date.now();
+                  }}
+                  className="flex min-h-12 w-full items-center justify-center rounded-full border border-[#2A1E19]/25 !bg-white px-4 py-3 text-center text-sm font-semibold leading-snug !text-[#2A1E19] transition-colors hover:!bg-[#f8f5f3] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2A1E19] disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Clear Form
+                </button>
+<button
                   type="submit"
                   disabled={status === "submitting"}
-                  className="kk-button-dark w-full justify-center disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                  className="kk-button-dark flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-[#2A1E19] !bg-[#2A1E19] px-4 py-3 text-center text-sm font-semibold leading-snug !text-white transition-colors hover:!bg-[#402b23] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2A1E19] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {status === "submitting"
                     ? "Sending application..."
-                    : "Apply to Work With Us"}{" "}
+                    : applicationName}{" "}
                   <span aria-hidden="true">→</span>
                 </button>
+</div>
+
 
                 <p className="kk-small-text mt-4 max-w-2xl">
-                  Keep your portfolio and résumé links publicly accessible. You
-                  will receive an automatic confirmation after submission.
+                  Portfolio links are optional. You will receive an automatic
+                  confirmation after submission.
                 </p>
 
                 {statusMessage && (
@@ -646,10 +690,10 @@ export default function WorkWithUsApplicationForm() {
                 <p className="kk-small-text mt-5">
                   Submission trouble? Email{" "}
                   <a
-                    href="mailto:hey@kulturekatta.com?subject=Katta%20Studio%20Work%20With%20Us"
+                    href="mailto:careers@kulturekatta.com?subject=Work%20With%20KuKa"
                     className="font-semibold text-[var(--kk-text)] underline decoration-[var(--kk-accent)] underline-offset-4 transition hover:text-black/60"
                   >
-                    hey@kulturekatta.com
+                    careers@kulturekatta.com
                   </a>
                   .
                 </p>

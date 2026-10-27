@@ -27,7 +27,7 @@ const sections: LegalSection[] = [
         <p>
           By accessing or using this website, you agree to these Terms
           of Use and our{" "}
-          <Link href="/privacy-policy" className={linkClass}>
+          <Link href="/privacy-policy" className={linkClass} target="_blank" rel="noopener noreferrer">
             Privacy Policy
           </Link>
           .
@@ -329,6 +329,40 @@ const sections: LegalSection[] = [
     ),
   },
   {
+    id: "katta-studio-engagements",
+    title: "Katta Studio projects and professional services",
+    content: (
+      <>
+        <p>
+          Katta Studio may provide design, branding, content, digital,
+          campaign, strategic and related services. A website enquiry
+          is not an acceptance of a project. The agreed proposal,
+          quotation, statement of work or contract governs scope,
+          deliverables, fees, timelines, revisions, approvals, usage
+          rights and ownership arrangements for each project.
+        </p>
+        <p>
+          Clients should have permission to supply any logos, images,
+          text, data or other materials they provide for our use. They
+          remain responsible for the accuracy of business claims and for
+          reviewing and approving deliverables before publication,
+          unless a specific written agreement assigns a responsibility
+          otherwise.
+        </p>
+        <p>
+          Recommendations and campaign forecasts are not guarantees of
+          sales, revenue, leads, search rankings or other commercial
+          results. Outcomes may depend on budgets, implementation,
+          third-party platforms, audiences and market conditions.
+          Please also read our{" "}
+          <Link href="/disclaimer" className={linkClass} target="_blank" rel="noopener noreferrer">
+            Disclaimer
+          </Link>.
+        </p>
+      </>
+    ),
+  },
+  {
     id: "intellectual-property",
     title: "Intellectual property",
     content: (
@@ -549,7 +583,7 @@ export default function TermsOfUsePage() {
       iconLabel="Terms and website conditions"
       title="Terms of Use"
       description="The terms that apply when you access the KultureKatta website, submit an inquiry, or engage with our experiences and services."
-      lastUpdated="August 2, 2026"
+      lastUpdated="October 25, 2026"
       currentPath="/terms-of-use"
       sections={sections}
     />

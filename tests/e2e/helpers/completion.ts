@@ -84,6 +84,24 @@ export async function openCompletionForm(
 
   const form = page.locator(formCase.selector).first();
   await expect(form, `${formCase.name} form did not open`).toBeVisible();
+
+  // A visible server-rendered form is not necessarily hydrated. In particular,
+  // clicking submit before React attaches onSubmit can trigger the browser's
+  // native GET submission and place form values in the URL.
+  await expect
+    .poll(
+      () =>
+        form.evaluate((element) =>
+          Object.keys(element).some((key) => {
+            if (!key.startsWith("__reactProps$")) return false;
+            const reactProps = (element as unknown as Record<string, { onSubmit?: unknown }>)[key];
+            return typeof reactProps?.onSubmit === "function";
+          }),
+        ),
+      { message: `${formCase.name} form submit handler was not hydrated`, timeout: 15_000 },
+    )
+    .toBe(true);
+
   return form;
 }
 

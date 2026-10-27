@@ -239,8 +239,8 @@ test("@exhaustive SEARCH-03 empty and no-result searches have useful states", as
   await expect(
     page
       .locator("main#main-content")
-      .getByRole("link", { name: "Explore experiences", exact: true }),
-  ).toHaveAttribute("href", "/experiences");
+      .getByRole("link", { name: "Explore private experiences", exact: true }),
+  ).toHaveAttribute("href", "/private-experiences");
 });
 
 test("@exhaustive SEARCH-04 a second search replaces the first query cleanly", async ({

@@ -1,3 +1,4 @@
+import { attributionEmailFields } from "@/app/lib/website-attribution-email";
 import { NextResponse } from "next/server";
 import {
   cleanEmail,
@@ -26,13 +27,17 @@ type ContactBody = {
 };
 
 const interestLabels: Record<string, string> = {
-  organization: "Organization enquiry",
-  attend: "Attend an experience",
-  partner: "Partnership enquiry",
-  volunteer: "Volunteer enquiry",
+  organization: "Organization experience enquiry",
+  private: "Private experience enquiry",
+  studio: "Work with Katta Studio enquiry",
+  partner: "Partnership or volunteering enquiry",
   host: "Host a Katta enquiry",
+  career: "Work with KultureKatta enquiry",
+  attend: "Attend an experience enquiry",
   media: "Press or media enquiry",
   other: "General enquiry",
+  // Continue accepting older saved form drafts.
+  volunteer: "Volunteering enquiry",
 };
 
 export async function POST(request: Request) {
@@ -65,7 +70,7 @@ export async function POST(request: Request) {
     const phone = cleanText(body.phone, 40);
     const interest = cleanText(body.interest, 60);
     const message = cleanText(body.message, 2500);
-    const sourcePage = cleanText(body.sourcePage, 200) || "/contact";
+
     const interestLabel = interestLabels[interest];
 
     if (!name || !email || !interestLabel || !message) {
@@ -92,20 +97,35 @@ export async function POST(request: Request) {
       );
     }
 
+    const routingByInterest: Record<string, string> = {
+      organization: "organizations@kulturekatta.com",
+      private: "tailored@kulturekatta.com",
+      studio: "studio@kulturekatta.com",
+      partner: "partners@kulturekatta.com",
+      volunteer: "partners@kulturekatta.com",
+      host: "partners@kulturekatta.com",
+      career: "careers@kulturekatta.com",
+      attend: "hey@kulturekatta.com", // Until experiences@ is established.
+      media: "hey@kulturekatta.com",
+      other: "hey@kulturekatta.com",
+    };
+    const routingEmail = routingByInterest[interest] || "hey@kulturekatta.com";
+
     await sendWebsiteForm({
       formName: "General Website Enquiry",
-      internalSubject: `[KuKa Website] ${interestLabel} — ${name}`,
+      internalSubject: `[KuKa Contact] ${interestLabel} — ${name}`,
       submitterName: name,
       submitterEmail: email,
       acknowledgementMessage: `Thank you for contacting KultureKatta. We have received your ${interestLabel.toLowerCase()}.`,
       sourceTag: "contact_form",
+      routingEmail,
       fields: [
         { label: "Name", value: name },
         { label: "Email", value: email },
         { label: "Phone / WhatsApp", value: phone },
         { label: "Enquiry type", value: interestLabel },
         { label: "Message", value: message },
-        { label: "Source page", value: sourcePage },
+        ...attributionEmailFields(body),
       ],
     });
 

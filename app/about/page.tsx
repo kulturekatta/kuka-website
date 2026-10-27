@@ -22,7 +22,7 @@ const problemItems = [
     icon: "🗺️",
     title: "Distance",
     description:
-      "Culture often feels too far away — physically, emotionally, or socially. We bring it closer to everyday neighbourhoods.",
+      "Culture often feels too far away — physically, emotionally, or socially. We bring it closer to everyday neighborhoods.",
   },
   {
     icon: "🏡",
@@ -43,13 +43,52 @@ const whatWeDoItems = [
     icon: "📍",
     title: "We bring culture closer",
     description:
-      "Into cafés, studios, homes, parks, libraries, schools, workplaces, and everyday neighbourhood spaces.",
+      "Into cafés, studios, homes, parks, libraries, schools, workplaces, and everyday neighborhood spaces.",
   },
   {
     icon: "🙌",
     title: "We make participation easy",
     description:
       "People do not just watch. They make, ask, taste, move, reflect, share, and try.",
+  },
+];
+
+const whyKukaPrinciples = [
+  {
+    icon: "🌍",
+    title: "Culture is everyday life",
+    description:
+      "It lives in food, language, music, rituals, places, and the little things we do — not only on stages or in museums.",
+  },
+  {
+    icon: "🙌",
+    title: "Participation over spectatorship",
+    description:
+      "We believe culture becomes more meaningful when you make, taste, listen, question, move, and try it for yourself.",
+  },
+  {
+    icon: "💡",
+    title: "Curiosity over expertise",
+    description:
+      "You do not need to be an expert, an artist, or even particularly good at something to begin. Being curious is enough.",
+  },
+  {
+    icon: "🤝",
+    title: "Connection through doing",
+    description:
+      "Shared experiences give strangers something to talk about, neighbors something to build on, and communities room to grow.",
+  },
+  {
+    icon: "🏡",
+    title: "Small can be meaningful",
+    description:
+      "An intimate gathering, an unfamiliar skill, or an afternoon spent paying attention can stay with you long after it ends.",
+  },
+  {
+    icon: "🌿",
+    title: "The freedom to simply be",
+    description:
+      "No pressure to perform, prove yourself, or earn your place. Do something or do nothing. Join in or just be. What we do is culture — and what we choose not to do is part of it, too.",
   },
 ];
 
@@ -64,7 +103,7 @@ const communityItems = [
     icon: "🏠",
     title: "Venues & spaces",
     description:
-      "We activate cafés, studios, homes, terraces, parks, libraries, schools, workplaces, and neighbourhood corners.",
+      "We activate cafés, studios, homes, terraces, parks, libraries, schools, workplaces, and neighborhood corners.",
   },
   {
     icon: "👥",
@@ -122,7 +161,7 @@ const timeline = [
     year: "2025",
     title: "The universe expands",
     description:
-      "KuKa grows across cities, formats, collaborators, neighbourhoods, schools, workplaces, and community spaces.",
+      "KuKa grows across cities, formats, collaborators, neighborhoods, schools, workplaces, and community spaces.",
   },
   {
     icon: "🚀",
@@ -152,7 +191,7 @@ export default function AboutPage() {
           </p>
 
           <h1 className="kk-page-heading mx-auto mt-6 max-w-4xl">
-            The neighbourhood katta for the curious.
+            The neighborhood katta for the curious.
           </h1>
 
           <p className="kk-page-intro mx-auto mt-8 max-w-3xl">
@@ -226,7 +265,7 @@ export default function AboutPage() {
 
           <div className="mx-auto mt-8 max-w-3xl space-y-5">
             <p className="kk-body-large">
-              In Marathi, a katta is the ledge, corner, step, or neighbourhood
+              In Marathi, a katta is the ledge, corner, step, or neighborhood
               spot where people gather — to talk, listen, laugh, argue, share
               ideas, and let something slowly cook.
             </p>
@@ -236,6 +275,62 @@ export default function AboutPage() {
               nostalgia, but as a living, breathing way to reconnect with
               culture, creativity, and each other.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* WHY KUKA */}
+      <section
+        id="why-kuka"
+        aria-labelledby="why-kuka-heading"
+        className="kk-section-light kk-section-padding scroll-mt-24"
+      >
+        <div className="kk-container">
+          <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 flex justify-center">
+              <SemanticIcon icon="✨" label="Why KuKa" size="section" />
+            </div>
+
+            <p className="kk-section-label">Why KuKa?</p>
+
+            <h2
+              id="why-kuka-heading"
+              className="kk-section-heading mt-6"
+            >
+              Because culture isn&apos;t just something we watch. It&apos;s
+              something we do.
+            </h2>
+
+            <p className="kk-body-large mt-6">
+              We want to make more room for curiosity in everyday life — for
+              discovering something unfamiliar, sharing what we know, and
+              connecting with people through experiences that invite us in.
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {whyKukaPrinciples.map((principle) => (
+              <article
+                key={principle.title}
+                className="kk-card kk-card--centered kk-card--interactive !flex !flex-col !items-center !justify-start"
+              >
+                <div className="flex w-full shrink-0 justify-center">
+                  <SemanticIcon
+                    icon={principle.icon}
+                    label={principle.title}
+                    size="card"
+                  />
+                </div>
+
+                <h3 className="kk-card-title mt-5 flex min-h-[3.2em] w-full items-center justify-center text-center">
+                  {principle.title}
+                </h3>
+
+                <p className="kk-card-body mt-4 w-full text-center">
+                  {principle.description}
+                </p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
@@ -299,7 +394,7 @@ export default function AboutPage() {
             </h2>
 
             <p className="kk-body-large mt-6">
-              We grow neighbourhood by neighbourhood — curating once, adapting
+              We grow neighborhood by neighborhood — curating once, adapting
               everywhere, and keeping every katta local, personal, and alive.
             </p>
           </div>
@@ -370,7 +465,7 @@ export default function AboutPage() {
             <p className="kk-section-label">Our Story</p>
 
             <h2 className="kk-section-heading mt-6">
-              From a question about culture to a growing neighbourhood-first
+              From a question about culture to a growing neighborhood-first
               cultural ecosystem.
             </h2>
 
@@ -415,7 +510,7 @@ export default function AboutPage() {
             </h2>
 
             <p className="kk-body-large mx-auto mt-6 max-w-2xl">
-              Attend one. Host one. Bring one to your neighbourhood, school,
+              Attend one. Host one. Bring one to your neighborhood, school,
               workplace, or community.
             </p>
 

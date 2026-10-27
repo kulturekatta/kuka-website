@@ -1,5 +1,7 @@
 "use client";
 
+import { getInquiryAttributionPayload } from "../../lib/campaign-attribution";
+
 import Link from "next/link";
 import { COOKIE_CONSENT_KEY } from "../../components/CookieBanner";
 import { useEffect, useRef, useState } from "react";
@@ -19,65 +21,20 @@ declare global {
 }
 
 const DRAFT_KEY = "kuka-growth-clinic-landing-form-draft-v1";
-const ATTRIBUTION_STORAGE_KEY = "kuka-growth-attribution-v1";
-
-type GrowthAttribution = {
-  utmSource: string;
-  utmMedium: string;
-  utmCampaign: string;
-  utmContent: string;
-  utmTerm: string;
-  fbclid: string;
-  landingPage: string;
-  firstVisitAt: string;
-  savedAt: number;
-};
-
-function captureLandingAttribution(): GrowthAttribution {
-  const params = new URLSearchParams(window.location.search);
-  const attribution: GrowthAttribution = {
-    utmSource: params.get("utm_source") ?? "",
-    utmMedium: params.get("utm_medium") ?? "",
-    utmCampaign: params.get("utm_campaign") ?? "",
-    utmContent: params.get("utm_content") ?? "",
-    utmTerm: params.get("utm_term") ?? "",
-    fbclid: params.get("fbclid") ?? "",
-    landingPage: `${window.location.pathname}${window.location.search}`,
-    firstVisitAt: new Date().toISOString(),
-    savedAt: Date.now(),
-  };
-
-  const hasCampaignData = Boolean(
-    attribution.utmSource ||
-      attribution.utmMedium ||
-      attribution.utmCampaign ||
-      attribution.utmContent ||
-      attribution.utmTerm ||
-      attribution.fbclid,
-  );
-  if (hasCampaignData) {
-    window.localStorage.setItem(
-      ATTRIBUTION_STORAGE_KEY,
-      JSON.stringify(attribution),
-    );
-  }
-  return attribution;
-}
-
 export default function GrowthClinicLandingForm() {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [statusMessage, setStatusMessage] = useState("");
   const startedAtRef = useRef(0);
   const statusMessageRef = useRef<HTMLDivElement>(null);
   const isSubmittingRef = useRef(false);
-  const attributionRef = useRef<GrowthAttribution | null>(null);
+  const attributionRef = useRef<ReturnType<typeof getInquiryAttributionPayload> | null>(null);
   const { formRef, saveDraft, clearDraft } = useFormDraft(DRAFT_KEY);
   const { handleInvalid, handleValidationInput } =
     useAccessibleFormValidation();
 
   useEffect(() => {
     startedAtRef.current = Date.now();
-    attributionRef.current = captureLandingAttribution();
+    attributionRef.current = getInquiryAttributionPayload();
   }, []);
 
   useEffect(() => {
@@ -99,7 +56,7 @@ export default function GrowthClinicLandingForm() {
       String(formData.get(fieldName) ?? "");
 
     const attribution =
-      attributionRef.current ?? captureLandingAttribution();
+      attributionRef.current ?? getInquiryAttributionPayload();
     const payload = {
       brandName: getValue("brandName"),
       brandLink: getValue("brandLink"),
@@ -129,7 +86,7 @@ export default function GrowthClinicLandingForm() {
       const response = await fetch("/api/growth-clinic", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...payload, ...getInquiryAttributionPayload() }),
       });
 
       const result = (await response.json()) as {
@@ -140,7 +97,7 @@ export default function GrowthClinicLandingForm() {
       if (!response.ok || !result.success) {
         throw new Error(
           result.message ||
-            "Your enquiry could not be sent. Please try again.",
+            "Your inquiry could not be sent. Please try again.",
         );
       }
 
@@ -149,7 +106,7 @@ export default function GrowthClinicLandingForm() {
       startedAtRef.current = Date.now();
       setStatus("success");
       setStatusMessage(
-        "Thank you. Your Growth Clinic enquiry has been sent, and a confirmation email is on its way.",
+        "Thank you. Your Growth Clinic inquiry has been sent, and a confirmation email is on its way.",
       );
 
       window.dispatchEvent(
@@ -163,7 +120,7 @@ export default function GrowthClinicLandingForm() {
       ) {
         window.fbq?.("track", "Lead", {
           content_name: "Katta Studio Growth Clinic",
-          content_category: "Growth Clinic enquiry",
+          content_category: "Growth Clinic inquiry",
           form_location: "Growth Clinic landing page",
         });
       }
@@ -222,7 +179,7 @@ export default function GrowthClinicLandingForm() {
           Tell us where your business feels stuck.
         </h2>
         <p className="mt-3 text-base leading-7 text-[var(--kk-text-muted)]">
-          A few clear sentences are enough. We will review your enquiry and
+          A few clear sentences are enough. We will review your inquiry and
           suggest the most useful next step.
         </p>
       </div>
@@ -333,11 +290,11 @@ export default function GrowthClinicLandingForm() {
           />
           <span className="text-sm leading-6 text-[var(--kk-text-muted)]">
             I agree that Katta Studio may use this information to review and
-            respond to my enquiry as described in the{" "}
+            respond to my inquiry as described in the{" "}
             <Link
               href="/privacy-policy"
               className="font-semibold underline decoration-black/30 underline-offset-2 hover:decoration-black"
-            >
+             target="_blank" rel="noopener noreferrer">
               Privacy Policy
             </Link>. <span aria-hidden="true">*</span>
           </span>
@@ -360,19 +317,47 @@ export default function GrowthClinicLandingForm() {
         </div>
       )}
 
-      <button
+      <div className="grid w-full grid-cols-1 items-stretch gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)]">
+<button
+                  type="button"
+                  disabled={status === "submitting"}
+                  onClick={(event) => {
+                    const form = event.currentTarget.form;
+                    if (!form) return;
+                    form.reset();
+                    form.querySelectorAll('[aria-invalid="true"]').forEach((field) => {
+                      field.removeAttribute("aria-invalid");
+                    });
+                    clearDraft();
+                  setStatus("idle");
+                  setStatusMessage("");
+                  startedAtRef.current = Date.now();
+                  }}
+                  className="flex min-h-12 w-full items-center justify-center rounded-full border border-[#2A1E19]/25 !bg-white px-4 py-3 text-center text-sm font-semibold leading-snug !text-[#2A1E19] transition-colors hover:!bg-[#f8f5f3] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2A1E19] disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Clear Form
+                </button>
+<button
         type="submit"
         disabled={status === "submitting"}
-        className="kk-button-dark mt-6 flex w-full items-center justify-center gap-3 px-8 py-4 disabled:cursor-not-allowed disabled:opacity-60"
+        className="kk-button-dark flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-[#2A1E19] !bg-[#2A1E19] px-4 py-3 text-center text-sm font-semibold leading-snug !text-white transition-colors hover:!bg-[#402b23] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2A1E19] disabled:cursor-not-allowed disabled:opacity-60"
       >
         {status === "submitting"
-          ? "Sending enquiry..."
+          ? "Sending inquiry..."
           : "Request my Growth Clinic"}
         <span aria-hidden="true">→</span>
       </button>
+</div>
+
 
       <p className="mt-4 text-center text-sm leading-6 text-[var(--kk-text-muted)]">
         You will receive an email confirmation after submission.
+      </p>
+      <p className="mt-2 text-center text-xs leading-5 text-[var(--kk-text-muted)]">
+        Project scope and outcomes are subject to agreement. Read our{" "}
+        <Link href="/terms-of-use" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Terms of Use</Link>{" "}
+        and{" "}
+        <Link href="/disclaimer" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">Disclaimer</Link>.
       </p>
     </form>
   );

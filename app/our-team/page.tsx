@@ -30,7 +30,7 @@ const creativeTeam = [
     image: "/images/team/neha.webp",
     alt: "Neha Murumkar, Visual Content Designer at KultureKatta",
     paragraphs: [
-      "Neha turns ideas, stories and experiences into thoughtful visual communication at KultureKatta. She loves the process of finding a visual language for an idea — from the big concept to the tiny details in typography, colour, packaging or composition that most people might miss.",
+      "Neha turns ideas, stories and experiences into thoughtful visual communication at KultureKatta. She loves the process of finding a visual language for an idea — from the big concept to the tiny details in typography, color, packaging or composition that most people might miss.",
       "Inspired by culturally rooted storytelling and designers like Sabyasachi Mukherjee, she is especially interested in work that feels contemporary without losing its sense of place and heritage.",
       "Outside design, Neha is drawn to travel, photography and history, and can happily spend hours discovering the stories, architecture and traditions that make a place unique. Her ideal KultureKatta gathering? Good food, hands-on creativity, meaningful conversation, interesting people — and preferably, very few screens.",
     ],
@@ -118,9 +118,9 @@ export default function OurTeamPage() {
           </p>
 
           <p className="kk-body-large">
-            Away from KuKa, you’ll probably find her singing, writing, travelling
+            Away from KuKa, you’ll probably find her singing, writing, traveling
             somewhere new, walking towards a mountain, hunting for a brilliant film
-            or book, or being reminded by her cat who really runs the organisation.
+            or book, or being reminded by her cat who really runs the organization.
           </p>
         </div>
 

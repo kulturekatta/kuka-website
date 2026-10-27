@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import SemanticIcon from "../components/SemanticIcon";
+import PrivateExperiencesForm from "./PrivateExperiencesForm";
 
 export const metadata: Metadata = {
   title: "Private Cultural Experiences | KultureKatta",
@@ -47,9 +47,9 @@ export default function PrivateExperiencesPage() {
           </p>
 
           <div className="mt-10">
-            <Link href="/contact" className="kk-button-dark">
+            <a href="#private-enquiry" className="kk-button-dark">
               Plan a Private Experience
-            </Link>
+            </a>
           </div>
         </div>
       </section>
@@ -86,8 +86,8 @@ export default function PrivateExperiencesPage() {
               </article>
             ))}
 
-            <Link
-              href="/contact"
+            <a
+              href="#private-enquiry"
               aria-label="Plan a custom private experience"
               className="kk-card kk-card--centered kk-card--interactive min-h-[150px] border-2 border-[var(--kk-accent)]"
             >
@@ -106,7 +106,7 @@ export default function PrivateExperiencesPage() {
                   Tell us what you have in mind →
                 </p>
               </div>
-            </Link>
+            </a>
           </div>
         </div>
       </section>
@@ -131,17 +131,19 @@ export default function PrivateExperiencesPage() {
 
             <p className="kk-body-large mx-auto mt-6 max-w-3xl">
               Your final quote reflects group size, duration, venue, materials,
-              food, travel, collaborators and the level of customisation.
+              food, travel, collaborators and the level of customization.
             </p>
 
             <div className="mt-10">
-              <Link href="/contact" className="kk-button-dark">
+              <a href="#private-enquiry" className="kk-button-dark">
                 Share Your Occasion
-              </Link>
+              </a>
             </div>
           </div>
         </div>
       </section>
+
+      <PrivateExperiencesForm />
     </div>
   );
 }

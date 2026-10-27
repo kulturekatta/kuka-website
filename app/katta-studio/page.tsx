@@ -17,8 +17,8 @@ const businessOutcomes = [
   { icon: "📣", title: "Consistency across brand touchpoints" },
   { icon: "🗂️", title: "Better sales & marketing material" },
   { icon: "🤝", title: "Stronger customer engagement" },
-  { icon: "📩", title: "Improved enquiry journeys" },
-  { icon: "⚙️", title: "Organised business systems" },
+  { icon: "📩", title: "Improved inquiry journeys" },
+  { icon: "⚙️", title: "organized business systems" },
   { icon: "📈", title: "Practical opportunities for growth" },
   { icon: "🎙️", title: "Find your voice" },
 ];
@@ -56,7 +56,7 @@ const coreServiceAreas = [
       "Business and professional website development",
       "Landing-page design and development",
       "Website content direction and restructuring",
-      "Enquiry pathways, WhatsApp and form integration",
+      "inquiry pathways, WhatsApp and form integration",
       "Google Business Profile support",
       "Basic search visibility and analytics setup",
     ],
@@ -111,7 +111,7 @@ const coreServiceAreas = [
       "Project and task-management systems",
       "Lead and client tracking",
       "Content-planning systems",
-      "Knowledge and document organisation",
+      "Knowledge and document organization",
       "Founder dashboards",
       "Standard operating procedures",
       "Business-workflow improvement",
@@ -122,7 +122,7 @@ const audienceSegments = [
   {
     icon: "🏛️",
     title: "Culture, Heritage & Creative Economy",
-    text: "Cultural organisations, museums, galleries, archives, libraries, heritage ventures, arts foundations, festivals, craft collectives, cultural institutions, and culture-led platforms.",
+    text: "Cultural organizations, museums, galleries, archives, libraries, heritage ventures, arts foundations, festivals, craft collectives, cultural institutions, and culture-led platforms.",
     featured: true,
   },
   {
@@ -133,17 +133,17 @@ const audienceSegments = [
   {
     icon: "📚",
     title: "Media, Publishing, Research & Knowledge",
-    text: "Publishers, magazines, digital publications, podcast networks, documentary platforms, research organisations, think tanks, science-communication initiatives, professional associations, and knowledge platforms.",
+    text: "Publishers, magazines, digital publications, podcast networks, documentary platforms, research organizations, think tanks, science-communication initiatives, professional associations, and knowledge platforms.",
   },
   {
     icon: "🎓",
     title: "Education, Academies & Training",
-    text: "Schools, colleges, coaching centres, academies, vocational institutes, training companies, skill-development organisations, children’s learning centres, independent educators, and workshop facilitators.",
+    text: "Schools, colleges, coaching centers, academies, vocational institutes, training companies, skill-development organizations, children’s learning centers, independent educators, and workshop facilitators.",
   },
   {
     icon: "⚕️",
     title: "Healthcare, Wellness & Personal Care",
-    text: "Doctors, dentists, clinics, physiotherapists, psychologists, counsellors, nutritionists, allied-health practitioners, yoga and movement studios, wellness centres, salons, and beauty professionals.",
+    text: "Doctors, dentists, clinics, physiotherapists, psychologists, counsellors, nutritionists, allied-health practitioners, yoga and movement studios, wellness centers, salons, and beauty professionals.",
   },
   {
     icon: "📐",
@@ -168,12 +168,12 @@ const audienceSegments = [
   {
     icon: "🐾",
     title: "Pet Care, Retail & Local Businesses",
-    text: "Veterinary clinics, grooming salons, pet boarding businesses, trainers, pet stores, neighbourhood retailers, bookstores, speciality stores, florists, nurseries, supermarkets, and organised local-service businesses.",
+    text: "Veterinary clinics, grooming salons, pet boarding businesses, trainers, pet stores, neighborhood retailers, bookstores, specialty stores, florists, nurseries, supermarkets, and organized local-service businesses.",
   },
   {
     icon: "🤲",
-    title: "Nonprofits, Social Enterprises & Growing Organisations",
-    text: "Nonprofits, foundations, social enterprises, community organisations, CSR initiatives, associations, mission-led ventures, multi-location businesses, franchise networks, and founder-led organisations preparing to scale.",
+    title: "Nonprofits, Social Enterprises & Growing Organizations",
+    text: "Nonprofits, foundations, social enterprises, community organizations, CSR initiatives, associations, mission-led ventures, multi-location businesses, franchise networks, and founder-led organizations preparing to scale.",
   },
 ];
 const brandHealthAreas = [
@@ -229,11 +229,11 @@ const selectedProjects = [
       "Reel concepts and copy",
       "Meta Ads",
       "Event listings",
-      "Enquiry-flow support",
+      "inquiry-flow support",
       "Website recommendations",
     ],
     outcome:
-      "A more streamlined marketing approach with clearer content planning, workshop promotion, and enquiry management.",
+      "A more streamlined marketing approach with clearer content planning, workshop promotion, and inquiry management.",
   },
   {
     icon: "🎪",
@@ -250,7 +250,7 @@ const selectedProjects = [
       "Partnership and growth strategy",
     ],
     outcome:
-      "An event-led initiative developed into a multi-vertical platform with clearer communication, digital pathways, and organised business systems.",
+      "An event-led initiative developed into a multi-vertical platform with clearer communication, digital pathways, and organized business systems.",
   },
 ];
 const processSteps = [
@@ -269,7 +269,7 @@ const processSteps = [
   {
     number: "03",
     icon: "🎯",
-    title: "Prioritise",
+    title: "Prioritize",
     text: "We focus on the actions that are most useful and realistic for your current stage.",
   },
   {
@@ -288,7 +288,7 @@ const processSteps = [
 const partnerLedServices = [
   "Photography and videography",
   "Motion graphics and animation",
-  "3D visualisation and specialist illustration",
+  "3D visualization and specialist illustration",
   "Print and packaging production",
   "Advanced UX and customer research",
   "Advanced e-commerce and technical integrations",
@@ -341,7 +341,7 @@ const brandDesignAreas = [
     "description": "Build a recognisable visual identity for your business.",
     "services": [
       "Logo design, refreshes and sub-brand identities",
-      "Colour, typography and graphic systems",
+      "Color, typography and graphic systems",
       "Iconography and imagery direction",
       "Brand guidelines and creative direction"
     ]
@@ -351,7 +351,7 @@ const brandDesignAreas = [
     "title": "Communication & Graphic Design",
     "description": "Make everyday communication clear and consistent.",
     "services": [
-      "Brochures, flyers, posters and catalogues",
+      "Brochures, flyers, posters and catalogs",
       "Company profiles and sales material",
       "Business cards and branded stationery",
       "Invitations, menus and signage"
@@ -451,7 +451,7 @@ export default function KattaStudioPage() {
               What we help businesses achieve
             </p>
             <h2 className="kk-section-heading">
-              Stronger foundations for clearer, more organised growth.
+              Stronger foundations for clearer, more organized growth.
             </h2>
             <p className="kk-body mx-auto mt-6 max-w-3xl">
               Our work is designed to improve not only how a business looks, but
@@ -603,7 +603,7 @@ export default function KattaStudioPage() {
             </h2>
             <p className="kk-body mx-auto mt-6 max-w-3xl">
               We work with founders, professionals, creators, institutions,
-              organisations, and owner-led businesses that have meaningful work
+              organizations, and owner-led businesses that have meaningful work
               or strong potential—but need clearer communication, stronger
               digital visibility, or better systems for growth.
             </p>
@@ -642,7 +642,7 @@ export default function KattaStudioPage() {
                 </h3>
                 <p className="kk-card-body mt-4">
                   These are examples, not rigid industry boxes. If you have a
-                  valuable service, product, programme, or idea, we would be
+                  valuable service, product, program, or idea, we would be
                   happy to understand what you are building.
                 </p>
               </div>
@@ -754,7 +754,7 @@ export default function KattaStudioPage() {
             </div>
             <p className="kk-section-label mb-5">How we work</p>
             <h2 className="kk-section-heading">
-              Understand. Diagnose. Prioritise. Build. Refine.
+              Understand. Diagnose. Prioritize. Build. Refine.
             </h2>
             <p className="kk-body mx-auto mt-6 max-w-3xl">
               Every engagement begins with understanding the business before
@@ -870,7 +870,7 @@ export default function KattaStudioPage() {
             Katta Studio emerged from the experience of building KultureKatta
             itself. We understand the practical realities of developing a brand,
             designing a visual identity, communicating multiple offerings, building a website, creating
-            content, managing partnerships, and organising the systems behind
+            content, managing partnerships, and organizing the systems behind
             growth.
           </p>
           <div className="mx-auto mt-12 grid max-w-5xl gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -927,9 +927,9 @@ export default function KattaStudioPage() {
         <div className="mx-auto max-w-3xl">
           <div className="mb-10 text-center">
             <div className="mb-5 flex justify-center">
-              <SemanticIcon icon="📨" label="Katta Studio enquiry form" size="section" />
+              <SemanticIcon icon="📨" label="Katta Studio inquiry form" size="section" />
             </div>
-            <p className="kk-section-label mb-5">Enquiry form</p>
+            <p className="kk-section-label mb-5">inquiry form</p>
             <h2 className="kk-section-heading">
               Tell us what you want to build or improve.
             </h2>

@@ -1,19 +1,19 @@
-KultureKatta SEO foundation patch
+KultureKatta shared email attribution corrections
 
-Replace these files in the project:
-- app/sitemap.ts
-- app/robots.ts
-- app/layout.tsx
+Files:
+  app/lib/website-attribution-email.ts
+  app/lib/website-forms.ts
 
-Important:
-- The sitemap now imports the same canonical category dataset used by app/experiences/[slug]/page.tsx: @/data/experienceCategories.
-- Do not delete data/experienceCategories.ts.
-- app/experiences/experienceCategories.ts appears to be an obsolete duplicate and should only be removed after confirming no imports remain.
-- layout.tsx adds metadataBase only. It intentionally does not add one global canonical URL, because each public route needs its own self-referencing canonical.
+Extract into E:\kulture-katta-site so the files land under app\lib.
 
-After replacing:
-1. npm run lint
-2. npm run build
-3. npm run dev
-4. Check http://localhost:3000/sitemap.xml
-5. Check http://localhost:3000/robots.txt
+Changes:
+- Rename attribution labels in internal notifications.
+- Remove repeated internal notification rows with the same label (first one wins).
+- Keep new attribution labels and internal form identifiers out of submitter acknowledgements.
+- No changes to recipients, subjects, source tags, email sending or data capture.
+
+Validate:
+  npx tsc --noEmit
+  npx eslint app/lib/website-attribution-email.ts app/lib/website-forms.ts
+
+Keep changes local until review and testing.
