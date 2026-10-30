@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import KattaStudioWorkWithUs from "../components/KattaStudioWorkWithUs";
 import SemanticIcon from "../components/SemanticIcon";
 import GrowthClinicContactForm from "./GrowthClinicContactForm";
 export const metadata: Metadata = {
@@ -918,7 +917,6 @@ export default function KattaStudioPage() {
           </div>
         </div>
       </section>
-      <KattaStudioWorkWithUs />
       {/* CONTACT FORM */}
       <section
         id="growth-clinic-form"

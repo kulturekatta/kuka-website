@@ -233,7 +233,7 @@ export default function OrganizationInquiryForm() {
             />
           </div>
 
-          <p className="kk-section-label">Work with KuKa</p>
+          <p className="kk-section-label">Plan with KuKa</p>
 
           <h2 className="kk-page-heading mt-3">
             Let’s Design an Experience for Your Organization

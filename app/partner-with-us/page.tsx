@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import SemanticIcon from "../components/SemanticIcon";
 import PartnerForm from "./PartnerForm";
 
@@ -110,13 +109,6 @@ export default function PartnerWithUsPage() {
           </div>
           <div className="mx-auto mt-12 max-w-3xl">
             <PartnerForm />
-            <p className="kk-card-body mt-7 text-center">
-              Looking for a job or internship instead? Visit{" "}
-              <Link href="/work-with-us" className="font-semibold underline underline-offset-4 hover:text-[var(--kk-accent)]">
-                Work With KuKa
-              </Link>
-              .
-            </p>
           </div>
         </div>
       </section>

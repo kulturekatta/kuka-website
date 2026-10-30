@@ -82,8 +82,8 @@ export default async function ExperienceCategoryPage({
               View All Experiences
             </Link>
 
-            <Link href="/contact" className="kk-button-on-light px-7 py-4">
-              Collaborate With Us
+            <Link href="/partner-with-us" className="kk-button-on-light px-7 py-4">
+              Partner With KuKa
             </Link>
           </div>
         </div>

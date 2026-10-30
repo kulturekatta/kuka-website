@@ -5,11 +5,16 @@ import {
   redirectCases,
 } from "./helpers/site";
 
+const retiredRecruitmentRoutes = new Set([
+  "/work-with-us",
+  "/katta-studio/work-with-us",
+]);
+
 test.beforeEach(async ({ page }) => {
   await preparePage(page);
 });
 
-for (const route of publicRoutes) {
+for (const route of publicRoutes.filter((route) => !retiredRecruitmentRoutes.has(route))) {
   test(`route health: ${route}`, async ({ page }) => {
     const pageErrors: string[] = [];
     page.on("pageerror", (error) => pageErrors.push(error.message));
@@ -44,3 +49,15 @@ for (const [source, destination] of redirectCases) {
     expect(new URL(page.url()).pathname).toBe(destination);
   });
 }
+
+for (const route of retiredRecruitmentRoutes) {
+  test(`retired recruitment route returns 404: ${route}`, async ({ page }) => {
+    const response = await page.goto(route, { waitUntil: "domcontentloaded" });
+    expect(response?.status()).toBe(404);
+  });
+}
+
+test("retired recruitment submission endpoint rejects public applications", async ({ request }) => {
+  const response = await request.post("/api/work-with-us", { data: {} });
+  expect(response.status()).toBe(410);
+});

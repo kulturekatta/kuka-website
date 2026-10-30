@@ -23,7 +23,6 @@ const footerSections: FooterSection[] = [
       { label: "About Us", href: "/about" },
       { label: "Our Team", href: "/our-team" },
       { label: "Partner With KuKa", href: "/partner-with-us" },
-      { label: "Work With KuKa", href: "/work-with-us" },
     ],
   },
   {
@@ -52,10 +51,7 @@ const footerSections: FooterSection[] = [
         label: "Design & Branding",
         href: "/katta-studio#brand-and-design",
       },
-      {
-        label: "Work With Katta Studio",
-        href: "/katta-studio/work-with-us",
-      },
+      { label: "Growth Clinic", href: "/katta-studio/growth-clinic" },
     ],
   },
   {
