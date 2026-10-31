@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Contact KultureKatta",
   description:
-    "Contact KultureKatta about cultural experiences, organizational programs, partnerships, hosting, volunteering, and media enquiries.",
+    "Contact KultureKatta about cultural experiences, organizational programs, partnerships, hosting, and media enquiries.",
   alternates: {
     canonical: "/contact",
   },

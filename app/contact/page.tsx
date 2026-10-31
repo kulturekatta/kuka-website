@@ -42,14 +42,6 @@ const contactOptions = [
     href: "/partner-with-us",
   },
   {
-    icon: "🙌",
-    label: "Volunteer",
-    title: "Volunteer with KultureKatta",
-    text: "Want to help at events, support artists, assist with community building, documentation, research, or on-ground coordination?",
-    buttonText: "Volunteer with us",
-    href: "mailto:partners@kulturekatta.com?subject=Volunteer%20with%20KultureKatta",
-  },
-  {
     icon: "🎤",
     label: "Host",
     title: "Host a Katta",
@@ -280,7 +272,7 @@ export default function ContactPage() {
           </p>
 
           <p className="kk-page-intro mt-6 max-w-4xl">
-            Want to host, collaborate, volunteer, partner, or bring a Katta to
+            Want to host, collaborate, partner, or bring a Katta to
             your space? We’d love to hear from you.
           </p>
 
@@ -326,7 +318,7 @@ export default function ContactPage() {
 
             <p className="kk-body mt-6">
               Whether you are planning something for an organization, looking to
-              host, partner, volunteer, or simply ask a question, there’s a
+              host, partner, or simply ask a question, there’s a
               place to begin.
             </p>
           </div>
@@ -593,9 +585,8 @@ export default function ContactPage() {
                                             <option value="organization">Plan an experience for my organization</option>
                       <option value="private">Plan a private experience</option>
                       <option value="studio">Work with Katta Studio</option>
-                      <option value="partner">Partner / volunteer with KultureKatta</option>
+                      <option value="partner">Partner with KultureKatta</option>
                       <option value="host">Host a Katta</option>
-                      <option value="career">Work with KultureKatta</option>
                       <option value="attend">Attend an experience</option>
                       <option value="media">Press / media inquiry</option>
                       <option value="other">Something else</option>

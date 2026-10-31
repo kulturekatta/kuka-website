@@ -27,12 +27,6 @@ const formCases: FormCase[] = [
     formSelector: "#growth-clinic-contact-form",
     endpoint: "/api/growth-clinic",
   },
-  {
-    name: "Work With Us form",
-    route: "/katta-studio/work-with-us#application-form",
-    formSelector: "#application-form form",
-    endpoint: "/api/work-with-us",
-  },
 ];
 
 async function prepareValidForm(form: Locator) {

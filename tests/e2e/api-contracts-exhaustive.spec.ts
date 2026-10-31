@@ -5,7 +5,6 @@ const endpoints = [
   "/api/floating-contact",
   "/api/organization-inquiry",
   "/api/growth-clinic",
-  "/api/work-with-us",
 ];
 
 for (const endpoint of endpoints) {
@@ -93,48 +92,13 @@ test("@exhaustive API-VALIDATION rejects missing fields, invalid email, and miss
     message: expect.stringMatching(/consent/i),
   });
 
-  const missingExperience = await request.post("/api/work-with-us", {
-    data: {
-      fullName: "API test",
-      city: "Pune",
-      email: "api-test@example.com",
-      businessArea: "KultureKatta",
-      opportunityType: "collaboration",
-      workArrangement: "remote",
-      availability: "Available",
-      // Portfolio is optional; missing experience must still be rejected.
-      message: "Application",
-      consent: true,
-      formGuard: "",
-      startedAt: oldStart,
-    },
-  });
-  expect(missingExperience.status()).toBe(400);
-  expect(await missingExperience.json()).toMatchObject({
-    success: false,
-    message: expect.stringMatching(/required fields/i),
-  });
 
-  const invalidPortfolio = await request.post("/api/work-with-us", {
-    data: {
-      fullName: "API test",
-      city: "Pune",
-      email: "api-test@example.com",
-      businessArea: "KultureKatta",
-      opportunityType: "collaboration",
-      workArrangement: "remote",
-      availability: "Available",
-      portfolioLink: "not a public URL",
-      experience: "Relevant experience",
-      message: "Application",
-      consent: true,
-      formGuard: "",
-      startedAt: oldStart,
-    },
+});
+
+
+test("@exhaustive API-RETIRED recruitment endpoint returns Gone for submitted applications", async ({ request }) => {
+  const response = await request.post("/api/work-with-us", {
+    data: { formGuard: "filled-by-a-bot", startedAt: Date.now() - 10_000 },
   });
-  expect(invalidPortfolio.status()).toBe(400);
-  expect(await invalidPortfolio.json()).toMatchObject({
-    success: false,
-    message: expect.stringMatching(/valid public portfolio/i),
-  });
+  expect(response.status()).toBe(410);
 });

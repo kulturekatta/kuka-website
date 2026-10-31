@@ -526,9 +526,8 @@ export default function FloatingContactDrawer() {
                                           <option value="organization">Plan an experience for my organization</option>
                       <option value="private">Plan a private experience</option>
                       <option value="studio">Work with Katta Studio</option>
-                      <option value="partner">Partner / volunteer with KultureKatta</option>
+                      <option value="partner">Partner with KultureKatta</option>
                       <option value="host">Host a Katta</option>
-                      <option value="career">Work with KultureKatta</option>
                       <option value="attend">Attend an experience</option>
                       <option value="media">Press / media inquiry</option>
                       <option value="other">Something else</option>

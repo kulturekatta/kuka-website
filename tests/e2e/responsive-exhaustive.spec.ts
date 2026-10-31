@@ -93,7 +93,6 @@ test("@exhaustive RESP-390 forms, legal pages, Moods, Moments and verticals fit 
     "/privacy-policy",
     "/cookie-policy",
     "/terms-of-use",
-    "/katta-studio/work-with-us",
   ];
 
   for (const route of routes) {

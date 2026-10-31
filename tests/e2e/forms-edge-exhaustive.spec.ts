@@ -32,12 +32,6 @@ const formCases: FormCase[] = [
     selector: "#growth-clinic-contact-form",
     endpoint: "/api/growth-clinic",
   },
-  {
-    name: "Work With Us",
-    route: "/katta-studio/work-with-us#application-form",
-    selector: "#application-form form",
-    endpoint: "/api/work-with-us",
-  },
 ];
 
 const sequentialFormCases: SequentialFormCase[] = [
@@ -164,22 +158,6 @@ for (const formCase of formCases) {
     await expect(page.locator("script").filter({ hasText: "text only" })).toHaveCount(0);
   });
 }
-
-test("@exhaustive FORM-LINK Work With Us is link-only and validates its portfolio field as a URL", async ({
-  page,
-}) => {
-  await page.goto("/katta-studio/work-with-us#application-form");
-  const form = page.locator("#application-form form");
-
-  await expect(form.locator('input[type="file"]')).toHaveCount(0);
-  const portfolio = form.locator('input[name="portfolioLink"]');
-  await expect(portfolio).toHaveAttribute("type", "url");
-
-  await portfolio.fill("not a public link");
-  expect(await portfolio.evaluate((input: HTMLInputElement) => input.validity.valid)).toBe(false);
-  await portfolio.fill("https://example.com/portfolio");
-  expect(await portfolio.evaluate((input: HTMLInputElement) => input.validity.valid)).toBe(true);
-});
 
 test("@exhaustive FORM-SEMANTICS email, phone and URL fields expose browser-friendly input attributes", async ({
   page,

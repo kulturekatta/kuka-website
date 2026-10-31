@@ -32,13 +32,6 @@ export const mainCompletionFormCases: CompletionFormCase[] = [
     endpoint: "/api/growth-clinic",
     phoneField: "mobile",
   },
-  {
-    name: "Work With Us",
-    route: "/katta-studio/work-with-us#application-form",
-    selector: "#application-form form",
-    endpoint: "/api/work-with-us",
-    phoneField: "phone",
-  },
 ];
 
 export const completionFormCases: CompletionFormCase[] = [

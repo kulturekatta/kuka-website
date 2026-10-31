@@ -5,6 +5,11 @@ import {
   sitemapRoutes,
 } from "./helpers/site";
 
+const retiredRecruitmentRoutes = new Set([
+  "/work-with-us",
+  "/katta-studio/work-with-us",
+]);
+
 test.beforeEach(async ({ page }) => {
   await preparePage(page);
 });
@@ -38,13 +43,18 @@ test("sitemap.xml contains every intended public sitemap route without duplicate
   ).toEqual(["https://kulturekatta.com"]);
 
   const paths = parsedLocations.map((location) => location.pathname).sort();
-  const expectedPaths = [...new Set(sitemapRoutes)].sort();
+  const expectedPaths = [...new Set(sitemapRoutes)].filter(
+    (route) => !retiredRecruitmentRoutes.has(route),
+  ).sort();
+  for (const route of retiredRecruitmentRoutes) {
+    expect(paths, `Retired recruitment URL must not be indexed: ${route}`).not.toContain(route);
+  }
   expect(paths, "Sitemap differs from the approved indexable route inventory").toEqual(
     expectedPaths,
   );
 });
 
-for (const route of representativeRoutes) {
+for (const route of representativeRoutes.filter((route) => !retiredRecruitmentRoutes.has(route))) {
   test(`metadata and document structure: ${route}`, async ({ page }) => {
     await page.goto(route, { waitUntil: "domcontentloaded" });
 

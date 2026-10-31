@@ -495,23 +495,23 @@ export default function AboutPage() {
         </div>
       </section>    
 
-      {/* JOIN THE KATTA */}
+      {/* EXPLORE AND PARTNER */}
       <section className="kk-section-light kk-section-padding">
         <div className="kk-container text-center">
           <div className="kk-panel mx-auto max-w-4xl">
             <div className="mb-5 flex justify-center">
-              <SemanticIcon icon="🚪" label="Join the Katta" size="section" />
+              <SemanticIcon icon="🌌" label="Explore KuKa" size="section" />
             </div>
 
-            <p className="kk-section-label">Join the Katta</p>
+            <p className="kk-section-label">Explore KuKa</p>
 
             <h2 className="kk-section-heading mx-auto mt-6 max-w-3xl">
-              Find your katta. Or help us build one.
+              Find an experience. Or explore a partnership.
             </h2>
 
             <p className="kk-body-large mx-auto mt-6 max-w-2xl">
-              Attend one. Host one. Bring one to your neighborhood, school,
-              workplace, or community.
+              Discover cultural experiences, or explore bringing one to your
+              neighborhood, school, workplace, or community.
             </p>
 
             <div className="mt-10 flex flex-wrap justify-center gap-4">
@@ -519,8 +519,8 @@ export default function AboutPage() {
                 Explore Kattas
               </Link>
 
-              <Link href="/contact" className="kk-button-on-light">
-                Collaborate With Us
+              <Link href="/partner-with-us" className="kk-button-on-light">
+                Partner With KuKa
               </Link>
             </div>
           </div>

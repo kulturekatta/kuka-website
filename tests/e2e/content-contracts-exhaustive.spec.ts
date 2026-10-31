@@ -279,7 +279,7 @@ test("@exhaustive CONTENT-06 contact details remain consistent on representative
               .toLowerCase(),
           ),
         ),
-      ])).toEqual(route === "/contact" ? ["hey@kulturekatta.com", "partners@kulturekatta.com"] : ["hey@kulturekatta.com"]);
+      ])).toEqual(["hey@kulturekatta.com"]);
       expect(await page.locator('a[href*="wa.me/"]').evaluateAll((links) => [
         ...new Set(links.map((link) => link.getAttribute("href"))),
       ])).toEqual(["https://wa.me/919730244996"]);
