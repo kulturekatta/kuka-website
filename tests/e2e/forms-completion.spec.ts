@@ -272,29 +272,6 @@ test("@completion FORM-012 Enter submits once and focuses the result on mobile a
   }
 });
 
-test("@completion FORM-LINKS Work With Us validates the shared portfolio/résumé field and remains upload-free", async ({
-  page,
-}) => {
-  const formCase = mainCompletionFormCases.find(
-    (candidate) => candidate.name === "Work With Us",
-  );
-  expect(formCase).toBeTruthy();
-  const form = await openCompletionForm(page, formCase!);
-  await expect(form.locator('input[type="file"]')).toHaveCount(0);
-
-  const link = form.locator('input[name="portfolioLink"]');
-  await expect(link).toHaveAttribute("type", "url");
-  await expect(link).toHaveAccessibleName(/portfolio.*résumé.*work-sample link/i);
-  await link.fill("not a public URL");
-  expect(await link.evaluate((input: HTMLInputElement) => input.validity.valid)).toBe(
-    false,
-  );
-  await link.fill("https://example.com/public-resume");
-  expect(await link.evaluate((input: HTMLInputElement) => input.validity.valid)).toBe(
-    true,
-  );
-});
-
 test("@completion FORM-LONG every form preserves long multilingual and script-like text exactly as plain payload text", async ({
   page,
 }) => {

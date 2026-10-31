@@ -102,11 +102,29 @@ test("@exhaustive COOKIE-04 an accepted choice can be changed to rejected", asyn
   await startWithCookieChoice(page, "accepted");
   await page.goto("/");
 
+  // Wait until the cookie-settings listener is mounted before clicking.
+  await expect
+    .poll(() => page.locator("html").getAttribute("data-cookie-settings-ready"))
+    .toBe("true");
+
   const settings = page.getByRole("button", { name: "Cookie Settings" }).first();
+  // The settings button is server-rendered; ensure its React click handler
+  // is hydrated as well as CookieBanner's event listener.
+  await expect
+    .poll(() =>
+      settings.evaluate((button) =>
+        Object.keys(button).some((key) => {
+          if (!key.startsWith("__reactProps$")) return false;
+          const props = (button as unknown as Record<string, { onClick?: unknown }>)[key];
+          return typeof props?.onClick === "function";
+        }),
+      ),
+    )
+    .toBe(true);
   await settings.click();
-  await page
-    .getByRole("button", { name: "Decline optional cookies" })
-    .click();
+  const banner = page.getByRole("region", { name: "A tiny cookie note 🍪" });
+  await expect(banner).toBeVisible();
+  await banner.getByRole("button", { name: "Decline optional cookies" }).click();
 
   await expect
     .poll(() => page.evaluate((key) => localStorage.getItem(key), COOKIE_CONSENT_KEY))

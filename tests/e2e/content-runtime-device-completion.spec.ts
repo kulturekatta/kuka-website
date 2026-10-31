@@ -80,7 +80,7 @@ test("@completion CONTACT-EXACT approved email, phone and WhatsApp targets stay 
         ...new Set(links.map((link) => link.getAttribute("href"))),
       ]);
 
-      expect(mailTargets).toEqual(route === "/contact" ? ["hey@kulturekatta.com", "partners@kulturekatta.com"] : ["hey@kulturekatta.com"]);
+      expect(mailTargets).toEqual(["hey@kulturekatta.com"]);
       expect(whatsAppTargets).toEqual(["https://wa.me/919730244996"]);
       expect(
         telephoneTargets.every((target) => target === "tel:+919730244996"),

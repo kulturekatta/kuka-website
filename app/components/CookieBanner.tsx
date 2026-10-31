@@ -71,8 +71,11 @@ export default function CookieBanner() {
       "kuka:open-cookie-settings",
       openCookieSettings,
     );
+    // Expose listener readiness to interaction tests.
+    document.documentElement.dataset.cookieSettingsReady = "true";
 
     return () => {
+      delete document.documentElement.dataset.cookieSettingsReady;
       window.removeEventListener(
         "kuka:open-cookie-settings",
         openCookieSettings,

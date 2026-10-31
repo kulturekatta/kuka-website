@@ -500,7 +500,7 @@ export default function AboutPage() {
         <div className="kk-container text-center">
           <div className="kk-panel mx-auto max-w-4xl">
             <div className="mb-5 flex justify-center">
-              <SemanticIcon icon="🚪" label="Explore KuKa" size="section" />
+              <SemanticIcon icon="🌌" label="Explore KuKa" size="section" />
             </div>
 
             <p className="kk-section-label">Explore KuKa</p>

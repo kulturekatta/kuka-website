@@ -27,8 +27,8 @@ test("@completion EXPERIENCE-CONTENT every approved category exposes its complet
         main.getByRole("link", { name: "View All Experiences" }),
       ).toHaveAttribute("href", "/experiences");
       await expect(
-        main.getByRole("link", { name: "Collaborate With Us" }),
-      ).toHaveAttribute("href", "/contact");
+        main.getByRole("link", { name: "Partner With KuKa" }),
+      ).toHaveAttribute("href", "/partner-with-us");
 
       for (const label of [
         "What this means",
