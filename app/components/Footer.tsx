@@ -28,8 +28,8 @@ const footerSections: FooterSection[] = [
   {
     title: "Experiences",
     links: [
-      { label: "All Experiences", href: "/experiences" },
-      { label: "Upcoming — Coming Soon" },
+      { label: "Upcoming Experiences", href: "/experiences/upcoming" },
+      { label: "Discover Experiences", href: "/experiences" },
       { label: "Explore by Mood", href: "/moods" },
       { label: "For Organizations", href: "/for-organizations" },
       { label: "Private Experiences", href: "/private-experiences" },

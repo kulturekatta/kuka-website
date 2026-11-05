@@ -8,6 +8,7 @@ export type LegalSection = {
   id: string;
   title: string;
   content: ReactNode;
+  icon?: string;
 };
 
 type LegalPageLayoutProps = {
@@ -18,6 +19,9 @@ type LegalPageLayoutProps = {
   lastUpdated: string;
   currentPath: string;
   sections: LegalSection[];
+  categoryLabel?: string;
+  backLink?: { href: string; label: string };
+  closingNote?: ReactNode;
 };
 
 const legalPages = [
@@ -72,6 +76,9 @@ export default function LegalPageLayout({
   lastUpdated,
   currentPath,
   sections,
+  categoryLabel = "Legal",
+  backLink,
+  closingNote,
 }: LegalPageLayoutProps) {
   const relatedPages = legalPages.filter(
     (page) => page.href !== currentPath,
@@ -82,6 +89,13 @@ export default function LegalPageLayout({
       {/* HERO */}
       <section className="kk-section-light overflow-hidden">
         <div className="kk-container text-center">
+          {backLink && (
+            <div className="mb-8 flex justify-center">
+              <Link href={backLink.href} className="font-semibold text-[var(--kk-text)] underline decoration-[var(--kk-accent)]/40 underline-offset-4 transition hover:text-[var(--kk-accent)]">
+                ← {backLink.label}
+              </Link>
+            </div>
+          )}
           <IconLead
             icon={icon}
             label={iconLabel}
@@ -89,7 +103,7 @@ export default function LegalPageLayout({
             align="center"
           />
 
-          <p className="kk-page-label mt-6">Legal</p>
+          <p className="kk-page-label mt-6">{categoryLabel}</p>
 
           <h1 className="kk-page-heading mx-auto mt-5 max-w-4xl">
             {title}
@@ -148,7 +162,11 @@ export default function LegalPageLayout({
                   id={section.id}
                   className="kk-card scroll-mt-28"
                 >
-                  <SequenceMarker index={index} label={section.title} />
+                  {section.icon ? (
+                    <SemanticIcon icon={section.icon} label={section.title} size="card" />
+                  ) : (
+                    <SequenceMarker index={index} label={section.title} />
+                  )}
 
                   <p className="kk-card-label mt-5">
                     Section {String(index + 1).padStart(2, "0")}
@@ -163,6 +181,7 @@ export default function LegalPageLayout({
                   </div>
                 </section>
               ))}
+              {closingNote && <div className="kk-panel">{closingNote}</div>}
             </div>
           </div>
         </div>

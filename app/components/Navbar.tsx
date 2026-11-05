@@ -13,7 +13,7 @@ import styles from "./Navbar.module.css";
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "/experiences", label: "Experiences" },
+  { href: "/experiences/upcoming", label: "Upcoming Experiences" },
   { href: "/private-experiences", label: "Private Experiences" },
   { href: "/for-organizations", label: "For Organizations" },
   { href: "/katta-studio", label: "Katta Studio" },

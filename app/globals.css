@@ -1300,3 +1300,86 @@ main select:focus {
 #floating-contact-drawer.kk-contact-dialog:not([open]) {
   display: none;
 }
+/* KuKa enquiry-form design standard — For Organizations reference */
+.kk-enquiry-form .kk-form-section-heading { margin-top: 2rem; margin-bottom: 1.5rem; }
+.kk-enquiry-form .kk-form-section-heading:first-child { margin-top: 0; }
+.kk-enquiry-form .kk-form-field-label,
+.kk-enquiry-form .kk-form-label { font-size: 1rem !important; font-weight: 600; line-height: 1.75rem; letter-spacing: normal; }
+@media (min-width:768px) { .kk-enquiry-form .kk-form-field-label, .kk-enquiry-form .kk-form-label { font-size: 1.05rem !important; } }
+.kk-enquiry-form label:has(> input[type="checkbox"]),
+.kk-enquiry-form label:has(> input[type="radio"]) {
+  border: 1px solid rgba(42,30,25,.10);
+  border-radius: 1rem;
+  padding: .9rem 1rem;
+  background-color: var(--kk-site-bg, #faf8f4);
+  transition: border-color .2s, background-color .2s;
+}
+.kk-enquiry-form label:has(> input[type="checkbox"]),
+.kk-enquiry-form label:has(> input[type="radio"]) { font-size: 1rem; line-height: 1.75rem; }
+.kk-enquiry-form label:has(> input[type="checkbox"]) > span,
+.kk-enquiry-form label:has(> input[type="radio"]) > span { font-size: 1rem !important; line-height: 1.75rem !important; }
+.kk-enquiry-form label:has(> input[type="checkbox"]):hover,
+.kk-enquiry-form label:has(> input[type="radio"]):hover { border-color: rgba(42,30,25,.28); }
+.kk-enquiry-form label:has(> input[type="checkbox"]:checked),
+.kk-enquiry-form label:has(> input[type="radio"]:checked) { border-color: var(--kk-accent); }
+.kk-enquiry-form [data-form-validation-error="true"] { margin-top: .4rem; color: #b91c1c; font-size: .875rem; line-height: 1.4; font-weight: 600; }
+
+/* KuKa enquiry form typography and alignment — November 2026 */
+.kk-enquiry-form .kk-form-intro { margin: 0 0 2rem; max-width: 46rem; text-align: left; }
+.kk-enquiry-form .kk-form-intro-title { margin-top: 1rem; font-size: clamp(1.5rem, 2.5vw, 1.875rem); font-weight: 700; line-height: 1.25; letter-spacing: -.025em; color: var(--kk-text); text-wrap: balance; }
+.kk-enquiry-form .kk-form-intro-description { margin: .75rem 0 0; max-width: 38rem; font-size: 1rem; font-weight: 400; line-height: 1.75; color: var(--kk-text-muted); text-wrap: pretty; }
+.kk-enquiry-form .kk-form-required-note { margin: 1rem 0 0; font-size: .9375rem; font-weight: 400; line-height: 1.65; color: var(--kk-text-muted); }
+.kk-enquiry-form .kk-form-helper { font-size: .9375rem; font-weight: 400; line-height: 1.65; color: var(--kk-text-muted); }
+.kk-enquiry-form .kk-form-section-heading { display: flex; flex-direction: row; align-items: flex-start; gap: 1rem; text-align: left; margin: 2.5rem 0 1.5rem; }
+.kk-enquiry-form .kk-form-section-heading > div { max-width: 42rem; }
+.kk-enquiry-form .kk-form-section-heading h3 { text-wrap: balance; }
+.kk-enquiry-form .kk-form-section-heading p { font-size: 1rem; font-weight: 400; line-height: 1.75; color: var(--kk-text-muted); text-wrap: pretty; }
+.kk-enquiry-form .kk-form-footer { margin-top: 1.25rem; text-align: center; }
+.kk-enquiry-form .kk-form-footer-text { font-size: .9375rem; font-weight: 400; line-height: 1.65; color: var(--kk-text-muted); }
+/* Original For Organizations form uses semantic fieldsets and legends rather than FormSectionIntro. */
+.kk-enquiry-form fieldset > .flex.items-start.gap-4 { flex-direction: row; align-items: flex-start; text-align: left; gap: 1rem; }
+.kk-enquiry-form fieldset > .flex.items-start.gap-4 > div { max-width: 42rem; }
+/* Katta Studio main form includes numbered sections; retain numbering, center visual introduction. */
+.kk-enquiry-form section > .mb-6.flex.items-start.gap-4 { flex-wrap: nowrap; justify-content: flex-start; align-items: flex-start; text-align: left; }
+.kk-enquiry-form section > .mb-6.flex.items-start.gap-4 > div:last-child { flex-basis: auto; min-width: 0; }
+@media (max-width: 480px) {
+  .kk-enquiry-form .kk-form-intro-title { font-size: 1.5rem; }
+  .kk-enquiry-form .kk-form-section-heading { margin-top: 2rem; }
+}
+
+/* Shared form alignment: icon, title and explanation start on the same left edge.
+   Keep field labels/inputs and intentionally centered submission actions unchanged. */
+.kk-enquiry-form .kk-form-intro > .flex { justify-content: flex-start; }
+.kk-enquiry-form .kk-form-section-heading > div { min-width: 0; }
+
+/* Consistent section titles on Upcoming Experiences and event pages. */
+.kuka-experience-heading { font-family: Georgia, Cambria, "Times New Roman", serif; font-size: clamp(2.25rem, 3.5vw, 3.45rem); line-height: 1.12; font-weight: 500; letter-spacing: -0.035em; }
+
+/* Experiences pages: match the prominence of the main site headings. */
+.kuka-experiences-surface .kuka-experience-heading {
+  font-family: Georgia, Cambria, "Times New Roman", serif;
+  font-size: clamp(2.85rem, 2.1rem + 3.1vw, 5rem);
+  line-height: 1.06;
+  letter-spacing: -0.042em;
+  font-weight: 500;
+  text-wrap: balance;
+}
+/* SVG icons should remain visible regardless of inherited reset styles. */
+.kuka-experiences-surface svg.lucide {
+  display: inline-block;
+  min-width: 1em;
+  overflow: visible;
+  flex-shrink: 0;
+  stroke: currentColor;
+  fill: none;
+  vertical-align: middle;
+}
+.kuka-experiences-surface .kk-icon { flex-shrink: 0; }
+@media (max-width: 640px) {
+  .kuka-experiences-surface .kuka-experience-heading { font-size: clamp(2.65rem, 8.5vw, 3.5rem); }
+}
+
+/* Kirigami experience: section heads match the more expressive editorial scale used by the experience hero. */
+.kuka-kirigami-page .kk-section-heading {
+  font-size: clamp(2.35rem, 2rem + 1.8vw, 3.5rem);
+}
