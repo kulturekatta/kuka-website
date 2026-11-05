@@ -249,7 +249,7 @@ test("@exhaustive CONTENT-05 every approved 'Pick Your Doorway' card is linked",
   await expect(section).toBeVisible();
 
   const expectedDestinations = [
-  "/experiences",
+  "/experiences/upcoming",
   "/private-experiences",
   "/for-organizations",
 ];

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import SemanticIcon from "../../components/SemanticIcon";
 import { getInquiryAttributionPayload } from "@/app/lib/campaign-attribution";
 
 type Result = { success?: boolean; message?: string };
@@ -51,6 +52,7 @@ export default function KirigamiEnquiryForm() {
   const field = "mt-1 min-h-12 w-full rounded-xl border border-[#D9C8B6] bg-[#FFFCF8] px-4 text-[#30231E] outline-offset-2 focus-visible:outline-[#95613E]";
   return (
     <form onSubmit={submit} className="mt-7 space-y-5">
+      <SemanticIcon icon="📨" label="Send your booking enquiry" size="card" />
       <div><label htmlFor="kir-name" className="block text-sm font-semibold">Full name *</label><input id="kir-name" required maxLength={100} autoComplete="name" className={field} value={name} onChange={(e) => setName(e.target.value)} /></div>
       <div className="grid gap-5 sm:grid-cols-2">
         <div><label htmlFor="kir-email" className="block text-sm font-semibold">Email *</label><input id="kir-email" required type="email" autoComplete="email" className={field} value={email} onChange={(e) => setEmail(e.target.value)} /></div>

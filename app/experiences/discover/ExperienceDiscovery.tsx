@@ -75,7 +75,7 @@ const moodCards = [
   { icon: "🤝", title: "I want to meet people without networking" },
   { icon: "🏠", title: "I want to leave my house but not my personality" },
   { icon: "💡", title: "I want to learn something strange and specific" },
-  { icon: "🌿", title: "I want to slow down and find meaning" },
+  { icon: "🐌", title: "I want to slow down and find meaning" },
   { icon: "🎟️", title: "I want culture without the stiff-chair energy" },
   { icon: "👣", title: "I want to walk, notice, and eavesdrop on history" },
   { icon: "🍽️", title: "I want to eat my way into knowledge" },

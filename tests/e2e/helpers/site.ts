@@ -6,6 +6,9 @@ export const COOKIE_CONSENT_KEY = "kuka-cookie-consent-v1";
 const staticRoutes = [
   "/",
   "/experiences",
+  "/experiences/upcoming",
+  "/experiences/kirigami-paper-cutting",
+  "/experiences/kirigami-paper-cutting/terms",
   "/moods",
   "/moments",
   "/experiences/custom-combination",
