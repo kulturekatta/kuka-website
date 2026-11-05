@@ -350,9 +350,21 @@ function getAcknowledgementCopy(
   // Classify by the actual form, not the recipient address: multiple forms
   // can share a mailbox without sharing an email subject.
   const copies: Record<string, AcknowledgementCopy> = {
+    upcoming_experience_kirigami: {
+      subject: "Kirigami workshop enquiry received | KultureKatta",
+      heading: "We received your Kirigami workshop enquiry (not yet a confirmed booking).",
+    },
     festive_business: {
       subject: "Festive Business inquiry received | Katta Studio",
       heading: "We've received your Festive Business inquiry.",
+    },
+    artist_collaborations: {
+      subject: "Artist collaboration introduction received | KultureKatta",
+      heading: "We've received your artist collaboration introduction.",
+    },
+    space_collaborations: {
+      subject: "Space collaboration enquiry received | KultureKatta",
+      heading: "We've received your space collaboration enquiry.",
     },
     partner_with_us: {
       subject: "Partnership inquiry received | KultureKatta",

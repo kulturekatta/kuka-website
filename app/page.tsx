@@ -235,7 +235,7 @@ const whatWeCreate = [
     iconLabel: "Open",
     title: "Open Experiences",
     text: "Discover upcoming workshops, walks, gatherings, performances, conversations, sensory sessions, and other cultural experiences that are open for anyone to join.",
-    href: "/experiences",
+    href: "/experiences/upcoming",
     cta: "Explore Open Experiences",
   },
   {
@@ -469,7 +469,7 @@ export default function HomePage() {
           </div>
 
           <div className="mt-12 flex justify-center">
-            <Link href="/experiences" className="kk-button-dark">
+            <Link href="/experiences/upcoming" className="kk-button-dark">
               View upcoming experiences
             </Link>
           </div>

@@ -75,7 +75,7 @@ test("@completion NAV-MOBILE-ACTIVE every mobile primary route exposes its curre
     "/private-experiences",
     "/about",
     "/katta-studio",
-    "/experiences",
+    "/experiences/upcoming",
   ];
 
   for (const route of routes) {
@@ -273,7 +273,7 @@ test("@completion MOBILE-MENU-SHORT the menu scrolls on short screens and its to
   await expect(
     page
       .getByRole("navigation", { name: "Mobile navigation" })
-      .getByRole("link", { name: "Experiences", exact: true }),
+      .getByRole("link", { name: "Upcoming Experiences", exact: true }),
   ).toBeVisible();
   expect(await page.evaluate(() => window.scrollY)).toBe(initialScrollY);
 
