@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import SemanticIcon from "../../components/SemanticIcon";
 import { getInquiryAttributionPayload } from "@/app/lib/campaign-attribution";
+import { COOKIE_CONSENT_KEY } from "../../components/CookieBanner";
+
 
 type Result = { success?: boolean; message?: string };
 
@@ -41,6 +43,25 @@ export default function KirigamiEnquiryForm() {
       });
       const data = (await response.json()) as Result;
       if (!response.ok || !data.success) throw new Error(data.message || "Unable to send enquiry.");
+      
+
+if (
+  window.localStorage.getItem(COOKIE_CONSENT_KEY) ===
+  "accepted"
+) {
+  const fbq = (
+    window as typeof window & {
+      fbq?: (...args: unknown[]) => void;
+    }
+  ).fbq;
+
+  fbq?.("track", "Lead", {
+    content_name: "Kirigami Paper Cutting Workshop",
+    content_category: "Workshop Enquiry",
+  });
+}
+
+
       setResult({ success: true, message: "Enquiry sent. We’ll contact you about availability and payment. Your seat is not booked or confirmed yet." });
     } catch (error) {
       setResult({ success: false, message: error instanceof Error ? error.message : "Unable to send enquiry. Please try again." });
